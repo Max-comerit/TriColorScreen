@@ -1,1 +1,1 @@
-"# TriColorScreen" 
+# TriColorScreen
