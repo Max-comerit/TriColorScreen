@@ -16,7 +16,7 @@ TriColorScreen/
 │       ├── header/         # Header component images
 │       ├── tcs-wallpaper.png   # Background wallpaper (fallback)
 │       └── tcs-wallpaper.webp  # Background wallpaper (WebP)
-├── components/              # Vue components
+├── components/             # Vue components
 │   ├── base/               # Base/primitive components (BaseButton, BaseInput)
 │   ├── common/             # Common reusable components
 │   ├── features/           # Feature-specific components
@@ -52,5 +52,6 @@ TriColorScreen/
 ├── tsconfig.json           # TypeScript configuration
 ├── eslint.config.mjs       # ESLint configuration
 ├── package.json            # Dependencies and scripts
-└── CODING_STANDARDS.md     # This file
+├── CODING_STANDARDS.md     # Project Coding Standard
+└── README.md               # This file
 ```
