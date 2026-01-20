@@ -18,13 +18,35 @@
 
 ## Project Stack
 
-- **Framework**: Nuxt 3 (SSR)
+- **Framework**: Nuxt 3 (SSR + SSG)
+- **Rendering Mode**: Hybrid (Server-Side Rendering + Static Site Generation)
 - **UI Framework**: Vue 3
 - **API Pattern**: Composition API
 - **Language**: TypeScript
 - **State Management**: Pinia
 - **Styling**: Tailwind CSS
 - **Package Manager**: npm/pnpm/yarn
+
+### Rendering Strategy
+
+This project uses a **hybrid approach** combining SSR and SSG:
+
+- **SSR (Server-Side Rendering)**: Enabled (`ssr: true`)
+  - Pages are rendered on the server for initial requests
+  - Provides better SEO and faster initial page load
+  - Dynamic content rendered at request time
+  
+- **SSG (Static Site Generation)**: Via Nitro preset (`preset: 'static'`)
+  - Build-time pre-rendering of pages
+  - Generates static HTML files for deployment
+  - Ideal for pages that don't change frequently
+  - Can be deployed to static hosting (Netlify, Vercel, etc.)
+
+**Build Commands:**
+- `npm run dev` - Development with SSR
+- `npm run build` - Production build with static generation
+- `npm run generate` - Full static generation (SSG)
+- `npm run preview` - Preview production build locally
 
 ---
 
