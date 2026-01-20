@@ -22,22 +22,8 @@ export default {
     },
     extend: {
       colors: {
-        // Primary brand color - CMYK Magenta (M=100% from logo)
+        // Primary brand color - CMYK Cyan (C=100% from logo)
         primary: {
-          50: '#fef1f7',
-          100: '#fee5f1',
-          200: '#fecce4',
-          300: '#fea3cd',
-          400: '#fc6aa9',
-          500: '#f53d87',
-          600: '#e6007e',  // Logo Magenta - WCAG AA on white (4.51:1)
-          700: '#c30060',
-          800: '#a10050',
-          900: '#870346',
-          950: '#520027',
-        },
-        // Secondary brand color - CMYK Cyan (C=100% from logo)
-        secondary: {
           50: '#f0f9ff',
           100: '#e0f3fe',
           200: '#bae7fd',
@@ -50,8 +36,8 @@ export default {
           900: '#0b567a',
           950: '#073651',
         },
-        // Accent color - CMYK Yellow (Y=100% from logo)
-        accent: {
+        // Secondary brand color - CMYK Yellow (Y=100% from logo)
+        secondary: {
           50: '#fefce8',
           100: '#fef9c3',
           200: '#fef08a',
@@ -63,6 +49,20 @@ export default {
           800: '#854d0e',
           900: '#713f12',
           950: '#422006',
+        },
+        // Accent color - CMYK Magenta (M=100% from logo)
+        accent: {
+          50: '#fef1f7',
+          100: '#fee5f1',
+          200: '#fecce4',
+          300: '#fea3cd',
+          400: '#fc6aa9',
+          500: '#f53d87',
+          600: '#e6007e',  // Logo Magenta - WCAG AA on white (4.51:1)
+          700: '#c30060',
+          800: '#a10050',
+          900: '#870346',
+          950: '#520027',
         },
         // Layout colors - CMYK Black (K=100% from logo) for header/footer
         layout: {
