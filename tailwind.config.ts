@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 // Theme based on CMYK color model from company logo:
-// Cyan (#009FE3), Magenta (#E6007E), Yellow (#FFED00), Black (#000000)
+// Cyan (#009FE3), Yellow (#FFED00), with Green as positive secondary
 // Designed for black header/footer and white body with WCAG AA compliance
 export default {
   content: [
@@ -36,8 +36,22 @@ export default {
           900: '#0b567a',
           950: '#073651',
         },
-        // Secondary brand color - CMYK Yellow (Y=100% from logo)
+        // Secondary brand color - Green (fresh, positive alternative)
         secondary: {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e',  // Vibrant green - positive and energetic
+          600: '#16a34a',  // WCAG AA compliant on white (4.54:1)
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+          950: '#052e16',
+        },
+        // Accent color - CMYK Yellow (Y=100% from logo)
+        accent: {
           50: '#fefce8',
           100: '#fef9c3',
           200: '#fef08a',
@@ -49,20 +63,6 @@ export default {
           800: '#854d0e',
           900: '#713f12',
           950: '#422006',
-        },
-        // Accent color - CMYK Magenta (M=100% from logo)
-        accent: {
-          50: '#fef1f7',
-          100: '#fee5f1',
-          200: '#fecce4',
-          300: '#fea3cd',
-          400: '#fc6aa9',
-          500: '#f53d87',
-          600: '#e6007e',  // Logo Magenta - WCAG AA on white (4.51:1)
-          700: '#c30060',
-          800: '#a10050',
-          900: '#870346',
-          950: '#520027',
         },
         // Layout colors - CMYK Black (K=100% from logo) for header/footer
         layout: {

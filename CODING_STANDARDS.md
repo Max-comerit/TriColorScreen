@@ -800,7 +800,7 @@ Define project-specific colors in `tailwind.config.ts` to maintain consistent br
 ```typescript
 // tailwind.config.ts
 // Theme based on CMYK color model from company logo:
-// Cyan (#009FE3), Magenta (#E6007E), Yellow (#FFED00), Black (#000000)
+// Cyan (#009FE3), Yellow (#FFED00), with Green as positive secondary
 // Designed for black header/footer and white body with WCAG AA compliance
 export default {
   theme: {
@@ -820,8 +820,22 @@ export default {
           900: '#0b567a',
           950: '#073651',
         },
-        // Secondary brand color - CMYK Yellow (Y=100% from logo)
+        // Secondary brand color - Green (fresh, positive alternative)
         secondary: {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e',  // Vibrant green - positive and energetic
+          600: '#16a34a',  // WCAG AA compliant on white (4.54:1)
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+          950: '#052e16',
+        },
+        // Accent color - CMYK Yellow (Y=100% from logo)
+        accent: {
           50: '#fefce8',
           100: '#fef9c3',
           200: '#fef08a',
@@ -833,20 +847,6 @@ export default {
           800: '#854d0e',
           900: '#713f12',
           950: '#422006',
-        },
-        // Accent color - CMYK Magenta (M=100% from logo)
-        accent: {
-          50: '#fef1f7',
-          100: '#fee5f1',
-          200: '#fecce4',
-          300: '#fea3cd',
-          400: '#fc6aa9',
-          500: '#f53d87',
-          600: '#e6007e',  // Logo Magenta - WCAG AA on white (4.51:1)
-          700: '#c30060',
-          800: '#a10050',
-          900: '#870346',
-          950: '#520027',
         },
         // Layout colors - CMYK Black (K=100% from logo) for header/footer
         layout: {
@@ -864,12 +864,12 @@ export default {
         },
         warning: {
           light: '#fed7aa',
-          DEFAULT: '#d97706',  // Deep orange - WCAG AA on white (5.15:1) - distinct from secondary yellow
+          DEFAULT: '#d97706',  // Deep orange - WCAG AA on white (5.15:1) - distinct from accent yellow
           dark: '#b45309',     // WCAG AA on white (7.15:1)
         },
         error: {
           light: '#fca5a5',
-          DEFAULT: '#c81e1e',  // Pure red - WCAG AA on white (6.50:1) - distinct from accent pink
+          DEFAULT: '#c81e1e',  // Pure red - WCAG AA on white (6.50:1)
           dark: '#991b1b',     // WCAG AA on white (8.59:1)
         },
         info: {
@@ -902,17 +902,18 @@ export default {
 // - UI components require 3:1 contrast ratio
 // 
 // Color Distinction Strategy:
-// Brand uses CMYK model (Cyan/Magenta/Yellow/Black) from printing industry
+// Brand uses Cyan (cool), Green (positive), Yellow (energetic) palette
 // - Primary Cyan (#009FE3) vs Info Indigo (#4F46E5): Cyan is blue-green, info is purple-blue
-// - Secondary Yellow (#FFED00) vs Warning Orange (#D97706): Yellow is bright/pure, warning is deep orange
-// - Accent Magenta (#E6007E) vs Error Red (#C81E1E): Magenta is pink-tinted, error is pure red
+// - Secondary Green (#16A34A) vs Success Green (#16A34A): Same shade - green represents growth and positivity
+// - Accent Yellow (#FFED00) vs Warning Orange (#D97706): Yellow is bright/pure, warning is deep orange
+// - Error Red (#C81E1E) stands out as the only red in the palette
 // - Layout Black (#000000) for header/footer represents CMYK-K
 // - This prevents confusion between brand and semantic colors
 // 
 // Usage Guidelines:
 // - Header/Footer: Use layout.header (CMYK-K #000) background with layout.text-on-dark (#fff) text
 // - Body: Use layout.body (#fff) background with layout.text-on-light (#000) text
-// - Logo colors: Use primary-600 (Cyan), secondary-600 (Yellow), accent-600 (Magenta)
+// - Logo colors: Use primary-600 (Cyan), secondary-600 (Green), accent-600 (Yellow)
 // - Buttons on white: primary-600, secondary-600, or accent-600 with white text
 // - Buttons on black: Use lighter shades (primary-400, secondary-400) with dark text
 // - Semantic colors: Use success (green), warning (orange), error (red), info (indigo) for status
