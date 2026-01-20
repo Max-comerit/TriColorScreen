@@ -3,7 +3,18 @@ export default defineNuxtConfig({
   ssr: true,
 
   nitro: {
-    preset: 'static'
+    preset: 'static',
+    rollupConfig: {
+      external: ['@nuxt/nitro-server'],
+      onwarn(warning, warn) {
+        // Suppress warnings from node_modules
+        if (warning.id?.includes('node_modules')) return
+        if (warning.ids?.some(id => id.includes('node_modules'))) return
+        if (warning.code === 'UNRESOLVED_IMPORT') return
+        if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.ids?.some(id => id.includes('node_modules'))) return
+        warn(warning)
+      }
+    }
   },
 
   typescript: {
