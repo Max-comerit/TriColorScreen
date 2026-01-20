@@ -2281,6 +2281,7 @@ chore: update dependencies
 - [ ] Responsive design tested on all breakpoints
 - [ ] No ESLint errors or warnings
 - [ ] Code has been reviewed by at least one team member
+- [ ] Lighthouse performance is still ok
 
 ---
 
