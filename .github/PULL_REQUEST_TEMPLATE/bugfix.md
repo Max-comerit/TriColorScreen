@@ -16,7 +16,7 @@ Fixes #(issue number)
 - [ ] No console.logs in production code
 - [ ] Responsive design tested on all breakpoints
 - [ ] No ESLint errors or warnings
-- [ ] Code has been reviewed by at least one team member
+- [ ] No security audit errors or warnings
 - [ ] Lighthouse performance is still ok
 
 ## 💡 Additional context
