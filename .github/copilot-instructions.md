@@ -5,9 +5,11 @@ Follow all coding standards defined in CODING_STANDARDS.md for this Nuxt 3 proje
 ## Critical Standards
 
 ### Component Structure
+
 Always follow this order in `<script setup>`:
+
 1. Imports
-2. Props & Emits  
+2. Props & Emits
 3. Composables & Stores
 4. State (ref/reactive)
 5. Computed
@@ -16,22 +18,26 @@ Always follow this order in `<script setup>`:
 8. Watchers
 
 ### TypeScript
+
 - Use TypeScript with strict typing for all files
 - Define props with `defineProps<Props>()` interface
 - Use `withDefaults` for optional props
 - Avoid `any` - use `unknown` when type is uncertain
 
 ### Vue 3 Patterns
+
 - Use Composition API with `<script setup lang="ts">`
 - Use `ref` for primitives and objects (better TS support)
 - Destructure stores with `storeToRefs` for reactivity
 
 ### Pinia Stores
+
 - One store per domain (user, cart, products)
 - Structure: state → getters → actions
 - Type everything with interfaces
 
 ### Tailwind CSS
+
 - Mobile-first responsive design
 - Breakpoints: sm(640) md(768) lg(1024) xl(1280) 2xl(1536)
 - Use utility classes in template, avoid custom CSS unless necessary
@@ -42,6 +48,7 @@ Always follow this order in `<script setup>`:
 - Always use theme values instead of arbitrary colors/sizes
 
 ### Naming Conventions
+
 - Components: PascalCase (`UserProfile.vue`)
 - Composables: camelCase with `use` prefix (`useAuth.ts`)
 - Stores: camelCase with Store suffix (`userStore.ts`)
@@ -49,7 +56,9 @@ Always follow this order in `<script setup>`:
 - Constants: UPPER_SNAKE_CASE
 
 ### Accessibility (WCAG 2.1 AA)
+
 **All code must be accessible:**
+
 - Use semantic HTML5 elements (`<header>`, `<nav>`, `<main>`, `<article>`, `<section>`, `<footer>`)
 - Proper heading hierarchy (h1-h6, no skipping levels, only one h1 per page)
 - All images must have descriptive `alt` text (empty `alt=""` for decorative)
@@ -65,5 +74,6 @@ Always follow this order in `<script setup>`:
 - Test with keyboard navigation and screen readers
 
 ### Git Workflow
+
 - Branch naming: `123-feature-name` (use issue numbers)
 - Commits: `feat:`, `fix:`, `refactor:`, `docs:`, `style:`, `test:`, `chore:`

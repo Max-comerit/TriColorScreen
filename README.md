@@ -3,6 +3,7 @@
 ## File and Folder Structure
 
 ### Directory Structure
+
 ```
 TriColorScreen/
 ├── .github/                # GitHub workflows and config

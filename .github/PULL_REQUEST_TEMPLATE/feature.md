@@ -1,5 +1,6 @@
 ## 📝 Description
-Please include a summary of the changes and the related issue. 
+
+Please include a summary of the changes and the related issue.
 
 Fixes #(issue number)
 
@@ -8,6 +9,7 @@ Fixes #(issue number)
 - [x] New feature
 
 ## ✅ Checklist
+
 - [ ] Code follows project coding standards
 - [ ] All TypeScript types are properly defined
 - [ ] Components are properly documented
@@ -18,4 +20,5 @@ Fixes #(issue number)
 - [ ] Lighthouse performance is still ok
 
 ## 💡 Additional context
+
 Add any other context about the PR here.

@@ -11,19 +11,23 @@ export default defineNuxtConfig({
         if (warning.id?.includes('node_modules')) return
         if (warning.ids?.some(id => id.includes('node_modules'))) return
         if (warning.code === 'UNRESOLVED_IMPORT') return
-        if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.ids?.some(id => id.includes('node_modules'))) return
+        if (
+          warning.code === 'CIRCULAR_DEPENDENCY' &&
+          warning.ids?.some(id => id.includes('node_modules'))
+        )
+          return
         warn(warning)
-      }
-    }
+      },
+    },
   },
 
   typescript: {
-    strict: true // enables strict type-checking
+    strict: true, // enables strict type-checking
   },
-    
+
   css: ['~/assets/css/main.css'],
-  
+
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@nuxt/image', '@nuxtjs/tailwindcss']
+  modules: ['@nuxt/eslint', '@nuxt/image', '@nuxtjs/tailwindcss'],
 })
