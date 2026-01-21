@@ -31,6 +31,12 @@ TriColorScreen/
 │   └── services/           # Services pages
 ├── plugins/                # Nuxt plugins
 ├── public/                 # Static files (served as-is)
+│   ├── data/               # Public data organized by page
+│   │   ├── about/          # About page data
+│   │   ├── contact/        # Contact page data
+│   │   ├── custom-design/  # Custom design data
+│   │   ├── index/          # Home page data
+│   │   └── services/       # Services page data
 │   ├── images/             # Public images organized by page
 │   │   ├── about/          # About page images
 │   │   ├── contact/        # Contact page images
