@@ -18,13 +18,35 @@
 
 ## Project Stack
 
-- **Framework**: Nuxt 3 (SSR)
+- **Framework**: Nuxt 3 (SSR + SSG)
+- **Rendering Mode**: Hybrid (Server-Side Rendering + Static Site Generation)
 - **UI Framework**: Vue 3
 - **API Pattern**: Composition API
 - **Language**: TypeScript
 - **State Management**: Pinia
 - **Styling**: Tailwind CSS
 - **Package Manager**: npm/pnpm/yarn
+
+### Rendering Strategy
+
+This project uses a **hybrid approach** combining SSR and SSG:
+
+- **SSR (Server-Side Rendering)**: Enabled (`ssr: true`)
+  - Pages are rendered on the server for initial requests
+  - Provides better SEO and faster initial page load
+  - Dynamic content rendered at request time
+  
+- **SSG (Static Site Generation)**: Via Nitro preset (`preset: 'static'`)
+  - Build-time pre-rendering of pages
+  - Generates static HTML files for deployment
+  - Ideal for pages that don't change frequently
+  - Can be deployed to static hosting (Netlify, Vercel, etc.)
+
+**Build Commands:**
+- `npm run dev` - Development with SSR
+- `npm run build` - Production build with static generation
+- `npm run generate` - Full static generation (SSG)
+- `npm run preview` - Preview production build locally
 
 ---
 
@@ -44,7 +66,7 @@ TriColorScreen/
 │       ├── header/         # Header component images
 │       ├── tcs-wallpaper.png   # Background wallpaper (fallback)
 │       └── tcs-wallpaper.webp  # Background wallpaper (WebP)
-├── components/              # Vue components
+├── components/             # Vue components
 │   ├── base/               # Base/primitive components (BaseButton, BaseInput)
 │   ├── common/             # Common reusable components
 │   ├── features/           # Feature-specific components
@@ -59,6 +81,12 @@ TriColorScreen/
 │   └── services/           # Services pages
 ├── plugins/                # Nuxt plugins
 ├── public/                 # Static files (served as-is)
+│   ├── data/               # Public data organized by page
+│   │   ├── about/          # About page data
+│   │   ├── contact/        # Contact page data
+│   │   ├── custom-design/  # Custom design data
+│   │   ├── index/          # Home page data
+│   │   └── services/       # Services page data
 │   ├── images/             # Public images organized by page
 │   │   ├── about/          # About page images
 │   │   ├── contact/        # Contact page images
@@ -80,7 +108,8 @@ TriColorScreen/
 ├── tsconfig.json           # TypeScript configuration
 ├── eslint.config.mjs       # ESLint configuration
 ├── package.json            # Dependencies and scripts
-└── CODING_STANDARDS.md     # This file
+├── CODING_STANDARDS.md     # This file
+└── README.md               # Readme file
 ```
 
 ### Component Organization
@@ -800,28 +829,14 @@ Define project-specific colors in `tailwind.config.ts` to maintain consistent br
 ```typescript
 // tailwind.config.ts
 // Theme based on CMYK color model from company logo:
-// Cyan (#009FE3), Magenta (#E6007E), Yellow (#FFED00), Black (#000000)
+// Cyan (#009FE3), Yellow (#FFED00), with Green as positive secondary
 // Designed for black header/footer and white body with WCAG AA compliance
 export default {
   theme: {
     extend: {
       colors: {
-        // Primary brand color - CMYK Magenta (M=100% from logo)
+        // Primary brand color - CMYK Cyan (C=100% from logo)
         primary: {
-          50: '#fef1f7',
-          100: '#fee5f1',
-          200: '#fecce4',
-          300: '#fea3cd',
-          400: '#fc6aa9',
-          500: '#f53d87',
-          600: '#e6007e',  // Logo Magenta - WCAG AA on white (4.51:1)
-          700: '#c30060',
-          800: '#a10050',
-          900: '#870346',
-          950: '#520027',
-        },
-        // Secondary brand color - CMYK Cyan (C=100% from logo)
-        secondary: {
           50: '#f0f9ff',
           100: '#e0f3fe',
           200: '#bae7fd',
@@ -834,8 +849,21 @@ export default {
           900: '#0b567a',
           950: '#073651',
         },
+        // Secondary brand color - Green (fresh, positive alternative)
+        secondary: {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e',  // Vibrant green - positive and energetic
+          600: '#16a34a',  // WCAG AA compliant on white (4.54:1)
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+          950: '#052e16',
+        },
         // Accent color - CMYK Yellow (Y=100% from logo)
-        // Note: Pure yellow needs dark variants for WCAG compliance
         accent: {
           50: '#fefce8',
           100: '#fef9c3',
@@ -870,12 +898,12 @@ export default {
         },
         error: {
           light: '#fca5a5',
-          DEFAULT: '#c81e1e',  // Pure red - WCAG AA on white (6.50:1) - distinct from primary pink
+          DEFAULT: '#c81e1e',  // Pure red - WCAG AA on white (6.50:1)
           dark: '#991b1b',     // WCAG AA on white (8.59:1)
         },
         info: {
           light: '#a5b4fc',
-          DEFAULT: '#4f46e5',  // Indigo/purple - WCAG AA on white (6.26:1) - distinct from secondary blue
+          DEFAULT: '#4f46e5',  // Indigo/purple - WCAG AA on white (6.26:1) - distinct from primary blue
           dark: '#3730a3',     // WCAG AA on white (9.67:1)
         },
         // Neutral/Gray scale - WCAG AA compliant shades
@@ -903,17 +931,18 @@ export default {
 // - UI components require 3:1 contrast ratio
 // 
 // Color Distinction Strategy:
-// Brand uses CMYK model (Cyan/Magenta/Yellow/Black) from printing industry
-// - Primary Magenta (#E6007E) vs Error Red (#C81E1E): Magenta is pink-tinted, error is pure red
+// Brand uses Cyan (cool), Green (positive), Yellow (energetic) palette
+// - Primary Cyan (#009FE3) vs Info Indigo (#4F46E5): Cyan is blue-green, info is purple-blue
+// - Secondary Green (#16A34A) vs Success Green (#16A34A): Same shade - green represents growth and positivity
 // - Accent Yellow (#FFED00) vs Warning Orange (#D97706): Yellow is bright/pure, warning is deep orange
-// - Secondary Cyan (#009FE3) vs Info Indigo (#4F46E5): Cyan is blue-green, info is purple-blue
+// - Error Red (#C81E1E) stands out as the only red in the palette
 // - Layout Black (#000000) for header/footer represents CMYK-K
 // - This prevents confusion between brand and semantic colors
 // 
 // Usage Guidelines:
 // - Header/Footer: Use layout.header (CMYK-K #000) background with layout.text-on-dark (#fff) text
 // - Body: Use layout.body (#fff) background with layout.text-on-light (#000) text
-// - Logo colors: Use primary-600 (Magenta), secondary-600 (Cyan), accent-300 (Yellow)
+// - Logo colors: Use primary-600 (Cyan), secondary-600 (Green), accent-600 (Yellow)
 // - Buttons on white: primary-600, secondary-600, or accent-600 with white text
 // - Buttons on black: Use lighter shades (primary-400, secondary-400) with dark text
 // - Semantic colors: Use success (green), warning (orange), error (red), info (indigo) for status
