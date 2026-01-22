@@ -232,6 +232,9 @@ const handleNavClick = async (event: Event, item: INavItem): Promise<void> => {
       } else {
         toggleDropdown(item.href)
       }
+    } else {
+      // Desktop: toggle on click
+      toggleDropdown(item.href)
     }
   } else {
     // Navigate for items without children
@@ -258,7 +261,7 @@ onMounted(() => {
 // Sync current route with store on mount and route changes
 watch(
   () => route.path,
-  newPath => {
+  (newPath) => {
     navigationStore.setCurrentRoute(newPath)
   },
   { immediate: true }
@@ -266,11 +269,7 @@ watch(
 </script>
 
 <template>
-  <nav
-    class="flex flex-1 justify-end"
-    :class="{ 'is-touch-device': isTouchDevice }"
-    aria-label="Huvudnavigering"
-  >
+  <nav class="flex flex-1 justify-end" :class="{ 'is-touch-device': isTouchDevice }" aria-label="Huvudnavigering">
     <ul class="hidden sm:flex items-center gap-0 list-none m-0 p-0">
       <li
         v-for="item in menuItems"
@@ -289,10 +288,7 @@ watch(
           :aria-expanded="openDropdown === item.href"
           :aria-haspopup="true"
           @click="handleNavClick($event, item)"
-          @keydown="
-            handleDropdownKeydown($event, item)
-            handleNavKeydown($event)
-          "
+          @keydown="handleDropdownKeydown($event, item); handleNavKeydown($event)"
           @focus="handleNavFocus(item)"
         >
           {{ item.label }}
@@ -315,11 +311,7 @@ watch(
         <ul
           v-if="item.children"
           class="absolute top-full left-0 min-w-[250px] bg-neutral-900 list-none m-0 py-2 transition-all duration-200 ease-in-out"
-          :class="
-            openDropdown === item.href
-              ? 'opacity-100 pointer-events-auto translate-y-0 shadow-lg'
-              : 'opacity-0 pointer-events-none -translate-y-2.5 shadow-none'
-          "
+          :class="openDropdown === item.href ? 'opacity-100 pointer-events-auto translate-y-0 shadow-lg' : 'opacity-0 pointer-events-none -translate-y-2.5 shadow-none'"
           :aria-label="`${item.label} undermeny`"
         >
           <li v-for="(child, index) in item.children" :key="child.href" class="dropdown-item flex">
