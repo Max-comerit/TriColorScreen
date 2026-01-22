@@ -1,8 +1,13 @@
+<script setup lang="ts">
+import AppFooter from '~/components/layout/AppFooter.vue';
+
+</script>
+
 <template>
   <div class="min-h-screen bg-tiled-logo">
     <!-- <Header /> -->
     <slot />
-    <!-- <Footer /> -->
+    <AppFooter />
   </div>
 </template>
 
