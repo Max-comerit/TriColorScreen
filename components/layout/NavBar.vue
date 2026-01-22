@@ -232,9 +232,6 @@ const handleNavClick = async (event: Event, item: INavItem): Promise<void> => {
       } else {
         toggleDropdown(item.href)
       }
-    } else {
-      // Desktop: toggle on click
-      toggleDropdown(item.href)
     }
   } else {
     // Navigate for items without children
