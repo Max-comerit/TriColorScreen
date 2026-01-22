@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-export default defineNuxtConfig({
+
+import svgLoader from 'vite-svg-loader'
+export default defineNuxtConfig({  
+  vite: {
+    plugins: [svgLoader()],
+  },
   ssr: true,
 
   nitro: {
