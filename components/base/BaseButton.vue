@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue'
-import Spinner from '../common/LoadingSpinner.vue'
+import LoadingSpinner from '../common/LoadingSpinner.vue'
 
 /** Available button style variants */
 type Variant = 'primary' | 'secondary' | 'outline' | 'text'
@@ -54,8 +54,7 @@ const variantClasses: Record<Variant, string> = {
     'bg-secondary-500 text-white hover:bg-secondary-700 focus-visible:ring-secondary-600 shadow-drop',
   outline:
     'border border-neutral-300 text-neutral-900 hover:bg-neutral-100 focus-visible:ring-neutral-400 shadow-drop',
-  text:
-    'text-neutral-900 hover:bg-neutral-100 focus-visible:ring-neutral-400',
+  text: 'text-neutral-900 hover:bg-neutral-100 focus-visible:ring-neutral-400',
 }
 
 /** Size-specific dimensions and typography */
@@ -84,7 +83,6 @@ function onClick(event: MouseEvent) {
 }
 </script>
 
-
 <template>
   <button
     type="button"
@@ -96,7 +94,7 @@ function onClick(event: MouseEvent) {
     @click="onClick"
   >
     <span v-if="props.loading" class="flex items-center gap-2">
-      <Spinner />
+      <LoadingSpinner />
       <span class="sr-only">Loading</span>
     </span>
 
