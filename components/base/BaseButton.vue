@@ -4,7 +4,8 @@ import LoadingSpinner from '../common/LoadingSpinner.vue'
 
 /** Available button style variants */
 type Variant = 'primary' | 'secondary' | 'outline' | 'text'
-/** Available button sizes */
+
+/** Available button size options */
 type Size = 'sm' | 'md' | 'lg'
 
 /** Props for BaseButton component */
@@ -19,6 +20,9 @@ interface Props {
   loading?: boolean
   /** Optional custom background color (hex, rgb, var, etc.) */
   backgroundColor?: string
+  /** Optional custom background color on hover state */
+  backgroundColorHover?: string
+  color?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,6 +31,8 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   loading: false,
   backgroundColor: undefined,
+  backgroundColorHover: undefined,
+  color: undefined,
 })
 
 /** Passthrough attributes (aria-label, aria-describedby, etc.) */
@@ -42,19 +48,19 @@ const isDisabled = computed(() => props.disabled || props.loading)
 
 /** Base button classes shared across all variants */
 const baseClasses =
-  'inline-flex items-center justify-center font-medium rounded-[16px] transition ' +
+  'base-button inline-flex items-center justify-center font-medium rounded-button transition ' +
   'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ' +
   'disabled:opacity-50 disabled:cursor-not-allowed'
 
-/** Variant-specific styling */
+/** Variant-specific styling (colors, text, shadows) */
 const variantClasses: Record<Variant, string> = {
   primary:
     'bg-primary-500 text-white hover:bg-primary-700 focus-visible:ring-primary-600 shadow-drop',
   secondary:
-    'bg-secondary-500 text-white hover:bg-secondary-700 focus-visible:ring-secondary-600 shadow-drop',
+    'bg-secondary-300 text-black hover:bg-secondary-400 focus-visible:ring-secondary-600 shadow-drop',
   outline:
-    'border border-neutral-300 text-neutral-900 hover:bg-neutral-100 focus-visible:ring-neutral-400 shadow-drop',
-  text: 'text-neutral-900 hover:bg-neutral-100 focus-visible:ring-neutral-400',
+    'border border-neutral-300 text-neutral-900 hover:bg-neutral-200 focus-visible:ring-neutral-400 shadow-drop',
+  text: 'text-neutral-900 hover:bg-neutral-200 focus-visible:ring-neutral-400',
 }
 
 /** Size-specific dimensions and typography */
@@ -64,17 +70,36 @@ const sizeClasses: Record<Size, string> = {
   lg: 'w-[200px] h-[70px] text-lg',
 }
 
-/** Combine all computed classes */
+/** Combine all computed classes and add flag for custom background colors */
 const buttonClasses = computed(() => [
   baseClasses,
   variantClasses[props.variant],
   sizeClasses[props.size],
+  {
+    'has-custom-bg': !!props.backgroundColor,
+  },
+  {
+    'has-custom-color': !!props.color,
+  },
 ])
 
-/** Apply custom background color if provided */
-const buttonStyle = computed(() =>
-  props.backgroundColor ? { backgroundColor: props.backgroundColor } : undefined
-)
+/**
+ * Expose CSS variables for custom background colors
+ * Uses CSS custom properties to allow styling in the <style> block
+ * --btn-bg: primary background color (if backgroundColor prop is set)
+ * --btn-bg-hover: hover background color (if backgroundColorHover prop is set)
+ */
+const buttonStyle = computed(() => ({
+  ...(props.backgroundColor && {
+    '--btn-bg': props.backgroundColor,
+  }),
+  ...(props.backgroundColorHover && {
+    '--btn-bg-hover': props.backgroundColorHover,
+  }),
+  ...(props.color && {
+    '--btn-color': props.color,
+  }),
+}))
 
 /** Handle click event - prevents click when disabled or loading */
 function onClick(event: MouseEvent) {
@@ -84,6 +109,7 @@ function onClick(event: MouseEvent) {
 </script>
 
 <template>
+  <!-- Main button element with conditional classes and styles -->
   <button
     type="button"
     v-bind="attrs"
@@ -93,13 +119,35 @@ function onClick(event: MouseEvent) {
     :aria-busy="props.loading"
     @click="onClick"
   >
+    <!-- Loading state: Show spinner and loading indicator -->
     <span v-if="props.loading" class="flex items-center gap-2">
       <LoadingSpinner />
       <span class="sr-only">Loading</span>
     </span>
 
+    <!-- Default state: Render slot content -->
     <span v-else>
       <slot />
     </span>
   </button>
 </template>
+
+<style scoped>
+/* Apply custom background color when has-custom-bg class is present */
+.base-button.has-custom-bg {
+  background-color: var(--btn-bg);
+}
+.base-button.has-custom-color {
+  color: var(--btn-color);
+}
+/* Apply hover background color (fallback to primary bg if hover color not provided) */
+.base-button.has-custom-bg:hover:not(:disabled) {
+  background-color: var(--btn-bg-hover, var(--btn-bg));
+}
+
+/* Disabled button styling */
+.base-button:disabled {
+  color: black;
+  @apply bg-neutral-400;
+}
+</style>
