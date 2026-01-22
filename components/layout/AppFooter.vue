@@ -1,3 +1,12 @@
+<script setup lang="ts">
+  import MapMarker from '~/assets/images/footer/map-marker.svg'
+  import PhoneIcon from '~/assets/images/footer/phone-icon.svg'
+  import EmailIcon from '~/assets/images/footer/email-icon.svg'
+  import FacebookIcon from '~/assets/images/footer/facebook-icon.svg'
+  import InstagramIcon from '~/assets/images/footer/instagram-icon.svg'
+  import LinkedInIcon from '~/assets/images/footer/linkedin-icon.svg'
+</script>
+
 <template>
   <footer class="bg-neutral-900 text-white py-6 mt-12">
     <div class="flex justify-between px-5 md:px-10 text-sm md:text-base">
@@ -6,15 +15,15 @@
         <ul class="space-y-1">
           <li class="flex items-center">
             <MapMarker class="w-6 h-6 text-accent-600 mr-2" aria-hidden="true" />
-            <span>Öregrundsgatan 24, 115 59 Stockholm</span>
+            <address>Öregrundsgatan 24, 115 59 Stockholm</address>
           </li>
           <li class="flex items-center">
             <EmailIcon class="w-6 h-6 text-accent-600 mr-2" aria-hidden="true" />
-            <span>info@tricolorscreen.se</span>
+            <address>info@tricolorscreen.se</address>
           </li>
           <li class="flex items-center">
             <PhoneIcon class="w-6 h-6 text-accent-600 mr-2" aria-hidden="true" />
-            <span>08-665 30 95</span>
+            <address>08-665 30 95</address>
           </li>
         </ul>
       </div>
@@ -62,13 +71,3 @@
     </div>
   </footer>
 </template>
-
-<script setup lang="ts">
-  import MapMarker from '~/assets/images/footer/map-marker.svg'
-  import PhoneIcon from '~/assets/images/footer/phone-icon.svg'
-  import EmailIcon from '~/assets/images/footer/email-icon.svg'
-  import FacebookIcon from '~/assets/images/footer/facebook-icon.svg'
-  import InstagramIcon from '~/assets/images/footer/instagram-icon.svg'
-  import LinkedInIcon from '~/assets/images/footer/linkedin-icon.svg'
-
-</script>
