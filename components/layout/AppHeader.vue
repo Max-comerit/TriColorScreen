@@ -26,7 +26,7 @@ const handleNavigation = async (href: string): Promise<void> => {
       <NuxtLink to="/" class="logo-link" @click="handleNavigation('/')">
         <img
           src="~/assets/images/header/tcs-logo.png"
-          alt="TriColor Screen logotyp"
+          alt="Tricolor Screen logotyp"
           class="h-[50px] w-auto block"
         >
       </NuxtLink>
