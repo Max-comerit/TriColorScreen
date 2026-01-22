@@ -25,6 +25,14 @@ export default defineNuxtConfig({
     strict: true, // enables strict type-checking
   },
 
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: 'sv',
+      },
+    },
+  },
+
   css: ['~/assets/css/main.css'],
 
   compatibilityDate: '2025-07-15',
