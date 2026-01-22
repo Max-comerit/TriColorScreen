@@ -10,9 +10,8 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "security:audit": "npm audit --audit-level=high",
-    "prepare": "husky install"
-  },
+    "security:audit": "npm audit --audit-level=high"
+    },
   "dependencies": {
     "@nuxt/eslint": "^1.12.1",
     "@nuxt/image": "^2.0.0",
