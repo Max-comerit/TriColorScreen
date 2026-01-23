@@ -1,9 +1,3 @@
-<template>
-  <main>
-    <!-- Printed Matter page content -->
-  </main>
-</template>
-
 <script setup lang="ts">
 // Printed Matter page
 useHead({
@@ -16,3 +10,9 @@ useHead({
   ],
 })
 </script>
+
+<template>
+  <main>
+    <!-- Printed Matter page content -->
+  </main>
+</template>

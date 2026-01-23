@@ -1,9 +1,3 @@
-<template>
-  <main>
-    <!-- Decoration Foiling page content -->
-  </main>
-</template>
-
 <script setup lang="ts">
 // Decoration Foiling page
 useHead({
@@ -16,3 +10,9 @@ useHead({
   ],
 })
 </script>
+
+<template>
+  <main>
+    <!-- Decoration Foiling page content -->
+  </main>
+</template>

@@ -1,9 +1,3 @@
-<template>
-  <main>
-    <!-- Graphic Production page content -->
-  </main>
-</template>
-
 <script setup lang="ts">
 // Graphic Production page
 useHead({
@@ -16,3 +10,9 @@ useHead({
   ],
 })
 </script>
+
+<template>
+  <main>
+    <!-- Graphic Production page content -->
+  </main>
+</template>

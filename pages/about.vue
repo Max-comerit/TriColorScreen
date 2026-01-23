@@ -1,9 +1,3 @@
-<template>
-  <main>
-    <!-- About Us page content -->
-  </main>
-</template>
-
 <script setup lang="ts">
 // About Us page
 useHead({
@@ -16,3 +10,9 @@ useHead({
   ],
 })
 </script>
+
+<template>
+  <main>
+    <!-- About Us page content -->
+  </main>
+</template>

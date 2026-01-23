@@ -1,9 +1,3 @@
-<template>
-  <main>
-    <!-- Index page content -->
-  </main>
-</template>
-
 <script setup lang="ts">
 // Index page
 useHead({
@@ -20,3 +14,9 @@ useHead({
   ],
 })
 </script>
+
+<template>
+  <main>
+    <!-- Index page content -->
+  </main>
+</template>
