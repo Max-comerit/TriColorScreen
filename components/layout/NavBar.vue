@@ -210,12 +210,6 @@ const handleNavFocus = (item: INavItem): void => {
  */
 const handleNavigation = async (href: string): Promise<void> => {
   closeDropdown()
-
-  // Remove focus from active element to prevent stuck hover states on touch devices
-  if (isTouchDevice.value && document.activeElement instanceof HTMLElement) {
-    document.activeElement.blur()
-  }
-
   await router.push(href)
 }
 
