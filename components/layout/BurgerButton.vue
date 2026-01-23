@@ -1,30 +1,36 @@
 <script setup lang="ts">
-defineProps<{
-  open: boolean
-}>()
-
-defineEmits<{
-  (e: 'toggle'): void
-}>()
+defineProps<{ open: boolean }>()
+defineEmits<{ (e: 'toggle'): void }>()
 </script>
 
 <template>
   <button
     aria-label="Toggle menu"
-    class="flex flex-col gap-1.5 w-8 h-8 justify-center text-white"
+    class="relative w-10 h-10 text-white"
     @click="$emit('toggle')"
   >
+    <!-- Top bar -->
     <span
-      class="h-0.5 bg-current transition"
-      :class="open && 'rotate-45 translate-y-2'"
+      class="absolute left-1/2 top-1/2 w-10 h-0.5 bg-current transition-transform duration-200"
+      :class="open
+        ? 'rotate-45 -translate-x-1/2 -translate-y-1/2'
+        : '-translate-x-1/2 -translate-y-3'"
     />
+
+    <!-- Middle bar -->
     <span
-      class="h-0.5 bg-current transition"
-      :class="open && 'opacity-0'"
+      class="absolute left-1/2 top-1/2 w-10 h-0.5 bg-current transition-opacity duration-200"
+      :class="open
+        ? 'opacity-0'
+        : '-translate-x-1/2 -translate-y-1/2'"
     />
+
+    <!-- Bottom bar -->
     <span
-      class="h-0.5 bg-current transition"
-      :class="open && '-rotate-45 -translate-y-2'"
+      class="absolute left-1/2 top-1/2 w-10 h-0.5 bg-current transition-transform duration-200"
+      :class="open
+        ? '-rotate-45 -translate-x-1/2 -translate-y-1/2'
+        : '-translate-x-1/2 translate-y-3'"
     />
   </button>
 </template>
