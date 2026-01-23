@@ -90,7 +90,7 @@ watch(
   <Transition name="slide">
     <aside
       v-if="isOpen"
-      class="fixed mt-4 w-72 bg-neutral-900 z-50 shadow-xl"
+      class="fixed top-[80px] w-72 bg-neutral-900 z-50 shadow-xl"
       :class="side === 'left' ? 'left-0' : 'right-0'"
       role="dialog"
       aria-modal="true"
