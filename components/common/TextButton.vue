@@ -35,7 +35,7 @@ interface Props {
   color?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   label: '',
   variant: 'primary',
   size: 'md',
