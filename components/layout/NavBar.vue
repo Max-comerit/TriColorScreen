@@ -266,8 +266,8 @@ watch(
 </script>
 
 <template>
-  <nav class="flex flex-1 justify-end" :class="{ 'is-touch-device': isTouchDevice }" aria-label="Huvudnavigering">
-    <ul class="hidden sm:flex items-center gap-0 list-none m-0 p-0">
+  <nav class="hidden sm:flex flex-1 justify-end" :class="{ 'is-touch-device': isTouchDevice }" aria-label="Huvudnavigering">
+    <ul class="flex items-center gap-0 list-none m-0 p-0">
       <li
         v-for="item in menuItems"
         :key="item.href"
@@ -308,7 +308,7 @@ watch(
         <ul
           v-if="item.children"
           class="absolute top-full left-0 min-w-[250px] bg-neutral-900 list-none m-0 py-2 transition-all duration-200 ease-in-out"
-          :class="openDropdown === item.href ? 'opacity-100 pointer-events-auto translate-y-0 shadow-lg' : 'opacity-0 pointer-events-none -translate-y-2.5 shadow-none'"
+          :class="openDropdown === item.href ? 'opacity-100 pointer-events-auto translate-y-0 shadow-[4px_4px_10px_rgba(0,0,0,0.25)] shadow-black/50' : 'opacity-0 pointer-events-none -translate-y-2.5 shadow-none'"
           :aria-label="`${item.label} undermeny`"
         >
           <li v-for="(child, index) in item.children" :key="child.href" class="dropdown-item flex">
@@ -354,8 +354,8 @@ watch(
 }
 
 .nav-link.active {
-  @apply bg-neutral-700;
-  border-bottom-color: white;
+  @apply text-accent-300;
+  border-bottom-color: theme('colors.accent.300');
 }
 
 /* Dropdown links */
@@ -374,10 +374,10 @@ watch(
 }
 
 .dropdown-link:focus-visible {
-  @apply outline-2 outline-layout-text-on-dark -outline-offset-2 bg-neutral-700;
+  @apply outline-2 outline-layout-text-on-dark -outline-offset-2;
 }
 
 .dropdown-link.active {
-  @apply bg-neutral-700 font-semibold;
+  @apply text-accent-300;
 }
 </style>
