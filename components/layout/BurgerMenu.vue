@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, watch } from 'vue'
+import { useNavigationStore } from '~/stores/navigationStore'
 import type { INavItem } from '~/types/NavigationStore'
 
 /** Props for BurgerMenu component */
@@ -21,6 +22,11 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>()
+
+/** Initialize router and navigation store for active route tracking */
+const router = useRouter()
+const route = useRoute()
+const navigationStore = useNavigationStore()
 
 /** Two-way binding for menu visibility */
 const isOpen = computed({
@@ -47,11 +53,35 @@ onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown)
 })
 
+/** Check if route or any of its children is active */
+const isActiveOrParent = (item: INavItem): boolean => {
+  return (
+    navigationStore.isRouteActive(item.href) ||
+    (item.children ? navigationStore.isParentActive(item.href) : false)
+  )
+}
+
+/** Check if a single item is active */
+const isItemActive = (item: INavItem): boolean => {
+  console.log(navigationStore.isRouteActive(item.href))
+  console.log(item.href)
+  return navigationStore.isRouteActive(item.href)
+}
+
 /** Handle navigation link click */
 const handleNavClick = (href: string) => {
   close()
   // Navigation will be handled by NuxtLink
 }
+
+/** Sync current route with store on mount and route changes */
+watch(
+  () => route.path,
+  (newPath) => {
+    navigationStore.setCurrentRoute(newPath)
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
@@ -81,6 +111,7 @@ const handleNavClick = (href: string) => {
             v-if="!item.children"
             :to="item.href"
             class="block px-6 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
+            :class="{ active: isActiveOrParent(item) }"
             @click="handleNavClick(item.href)"
           >
             {{ item.label }}
@@ -88,7 +119,7 @@ const handleNavClick = (href: string) => {
 
           <!-- Menu item with children (submenu) -->
           <details v-else class="group px-3 py-1">
-            <summary class="cursor-pointer px-3 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center font-medium">
+            <summary class="cursor-pointer px-3 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center font-medium" :class="{ active: isActiveOrParent(item) }">
               {{ item.label }}
             </summary>
             <!-- Submenu items -->
@@ -98,6 +129,9 @@ const handleNavClick = (href: string) => {
                 :key="child.href"
                 :to="child.href"
                 class="block px-9 py-2 text-sm text-neutral-300 hover:text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
+                :class="{
+              active: navigationStore.isRouteActive(child.href),
+            }"
                 @click="handleNavClick(child.href)"
               >
                 {{ child.label }}
@@ -133,5 +167,10 @@ const handleNavClick = (href: string) => {
 .slide-enter-from,
 .slide-leave-to {
   transform: translateX(100%);
+}
+
+.active {
+  @apply text-accent-400;
+  border-bottom-color: theme('colors.accent.400');
 }
 </style>
