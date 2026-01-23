@@ -28,12 +28,12 @@ const handleNavigation = async (href: string): Promise<void> => {
           <source
             srcset="~/assets/images/header/tcs-logo.webp"
             type="image/webp"
-          />
+          >
           <img
             src="~/assets/images/header/tcs-logo.png"
             alt="Tricolor Screen logotyp"
             class="h-[50px] w-[50px] block"
-          />
+          >
         </picture>
       </NuxtLink>
 
