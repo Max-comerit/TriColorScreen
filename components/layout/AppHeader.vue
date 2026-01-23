@@ -24,11 +24,17 @@ const handleNavigation = async (href: string): Promise<void> => {
     <div class="max-w-screen-xl mx-auto flex items-center justify-between min-h-[80px]">
       <!-- Logo -->
       <NuxtLink to="/" class="logo-link" @click="handleNavigation('/')">
-        <img
-          src="~/assets/images/header/tcs-logo.png"
-          alt="Tricolor Screen logotyp"
-          class="h-[50px] w-auto block"
-        >
+        <picture>
+          <source
+            srcset="~/assets/images/header/tcs-logo.webp"
+            type="image/webp"
+          >
+          <img
+            src="~/assets/images/header/tcs-logo.png"
+            alt="Tricolor Screen logotyp"
+            class="h-[50px] w-[50px] block"
+          >
+        </picture>
       </NuxtLink>
 
       <!-- Desktop Navigation -->

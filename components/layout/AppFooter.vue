@@ -8,8 +8,8 @@
 </script>
 
 <template>
-  <footer class="bg-neutral-900 text-white py-6 mt-12">
-    <div class="flex justify-between px-5 md:px-10 text-sm md:text-base">
+  <footer class="bg-neutral-900 text-white py-6 mt-12 justify-center px-5">
+    <div class="flex justify-between text-sm md:text-base max-w-screen-xl mx-auto flex items-center justify-between">
       <div>
         <h2 class="text-sm md:text-base font-semibold mb-2">Kontakt Info</h2>
         <ul class="space-y-1">
