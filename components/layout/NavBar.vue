@@ -265,28 +265,33 @@ watch(
 <template>
   <nav class="flex flex-1 justify-end" :class="{ 'is-touch-device': isTouchDevice }" aria-label="Huvudnavigering">
     <ul class="hidden sm:flex  align-end items-center gap-0 list-none m-0 p-0">
-      <li v-for="item in menuItems" :key="item.href" class="nav-item relative flex items-stretch"
+      <li
+      v-for="item in menuItems" :key="item.href" class="nav-item relative flex items-stretch"
         @mouseenter="handleMouseEnter(item)" @mouseleave="handleMouseLeave" @focusout="handleNavItemFocusOut">
         <!-- Parent menu item with dropdown -->
-        <button v-if="item.children" type="button" class="nav-link" :class="{ active: isActiveOrParent(item) }"
+        <button
+        v-if="item.children" type="button" class="nav-link" :class="{ active: isActiveOrParent(item) }"
           :aria-expanded="openDropdown === item.href" :aria-haspopup="true" @click="handleNavClick($event, item)"
           @keydown="handleDropdownKeydown($event, item); handleNavKeydown($event)" @focus="handleNavFocus(item)">
           {{ item.label }}
         </button>
 
         <!-- Regular nav link (no children) -->
-        <NuxtLink v-else :to="item.href" class="nav-link" :class="{ active: isActiveOrParent(item) }"
+        <NuxtLink
+        v-else :to="item.href" class="nav-link" :class="{ active: isActiveOrParent(item) }"
           @click="handleNavClick($event, item)" @keydown="handleNavKeydown($event)" @focus="handleNavFocus(item)">
           {{ item.label }}
         </NuxtLink>
 
         <!-- Dropdown menu for children -->
-        <ul v-if="item.children"
+        <ul
+        v-if="item.children"
           class="absolute top-full left-0 min-w-[250px] bg-neutral-900 list-none m-0 py-2 transition-all duration-200 ease-in-out"
           :class="openDropdown === item.href ? 'opacity-100 pointer-events-auto translate-y-0 shadow-[4px_4px_10px_rgba(0,0,0,0.25)] shadow-black/50' : 'opacity-0 pointer-events-none -translate-y-2.5 shadow-none'"
           :aria-label="`${item.label} undermeny`">
           <li v-for="(child, index) in item.children" :key="child.href" class="dropdown-item flex">
-            <NuxtLink :to="child.href" class="dropdown-link" :class="{
+            <NuxtLink
+            :to="child.href" class="dropdown-link" :class="{
               active: navigationStore.isRouteActive(child.href),
             }" @click.prevent="handleNavigation(child.href)"
               @keydown="handleDropdownItemKeydown($event, item.href, index, item.children.length)"
@@ -301,7 +306,7 @@ watch(
     <div class="visible sm:hidden">
       <BurgerButton :open="isBurgerOpen" @toggle="isBurgerOpen = !isBurgerOpen" />
 
-      <BurgerMenu v-model="isBurgerOpen" side="right" :menuItems="menuItems" />
+      <BurgerMenu v-model="isBurgerOpen" side="right" :menu-items="menuItems" />
     </div>
   </nav>
 </template>

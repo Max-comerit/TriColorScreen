@@ -24,7 +24,6 @@ const emit = defineEmits<{
 }>()
 
 /** Initialize router and navigation store for active route tracking */
-const router = useRouter()
 const route = useRoute()
 const navigationStore = useNavigationStore()
 
@@ -61,15 +60,8 @@ const isActiveOrParent = (item: INavItem): boolean => {
   )
 }
 
-/** Check if a single item is active */
-const isItemActive = (item: INavItem): boolean => {
-  console.log(navigationStore.isRouteActive(item.href))
-  console.log(item.href)
-  return navigationStore.isRouteActive(item.href)
-}
-
 /** Handle navigation link click */
-const handleNavClick = (href: string) => {
+const handleNavClick = () => {
   close()
   // Navigation will be handled by NuxtLink
 }
@@ -112,7 +104,7 @@ watch(
             :to="item.href"
             class="block px-6 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
             :class="{ active: isActiveOrParent(item) }"
-            @click="handleNavClick(item.href)"
+            @click="handleNavClick()"
           >
             {{ item.label }}
           </NuxtLink>
@@ -132,7 +124,7 @@ watch(
                 :class="{
               active: navigationStore.isRouteActive(child.href),
             }"
-                @click="handleNavClick(child.href)"
+                @click="handleNavClick()"
               >
                 {{ child.label }}
               </NuxtLink>
