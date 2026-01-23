@@ -20,7 +20,7 @@ const handleNavigation = async (href: string): Promise<void> => {
 </script>
 
 <template>
-  <header class="bg-neutral-900 px-5 sticky top-0 z-50 shadow-lg">
+  <header class="bg-neutral-900 px-5 sticky top-0 z-50 shadow-[0_4px_10px_rgba(0,0,0,0.25)] shadow-black/50">
     <div class="max-w-screen-xl mx-auto flex items-center justify-between min-h-[80px]">
       <!-- Logo -->
       <NuxtLink to="/" class="logo-link" @click="handleNavigation('/')">
