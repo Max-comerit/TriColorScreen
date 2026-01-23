@@ -348,8 +348,8 @@ watch(
 }
 
 .nav-link.active {
-  @apply text-accent-300;
-  border-bottom-color: theme('colors.accent.300');
+ @apply text-accent-400;
+  border-bottom-color: theme('colors.accent.400');
 }
 
 /* Dropdown links */
@@ -372,6 +372,6 @@ watch(
 }
 
 .dropdown-link.active {
-  @apply text-accent-300;
+  @apply text-accent-400;
 }
 </style>
