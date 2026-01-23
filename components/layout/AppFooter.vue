@@ -14,15 +14,15 @@
         <h2 class="text-sm md:text-base font-semibold mb-2">Kontakt Info</h2>
         <ul class="space-y-1">
           <li class="flex items-center">
-            <MapMarker class="w-6 h-6 text-accent-600 mr-2" aria-hidden="true" />
+            <MapMarker class="w-6 h-6 text-accent-400 mr-2" aria-hidden="true" />
             <address>Öregrundsgatan 24, 115 59 Stockholm</address>
           </li>
           <li class="flex items-center">
-            <EmailIcon class="w-6 h-6 text-accent-600 mr-2" aria-hidden="true" />
+            <EmailIcon class="w-6 h-6 text-accent-400 mr-2" aria-hidden="true" />
             <address>info@tricolorscreen.se</address>
           </li>
           <li class="flex items-center">
-            <PhoneIcon class="w-6 h-6 text-accent-600 mr-2" aria-hidden="true" />
+            <PhoneIcon class="w-6 h-6 text-accent-400 mr-2" aria-hidden="true" />
             <address>08-665 30 95</address>
           </li>
         </ul>
