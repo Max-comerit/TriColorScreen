@@ -1,9 +1,3 @@
-<template>
-  <main>
-    <!-- Event Advertisement page content -->
-  </main>
-</template>
-
 <script setup lang="ts">
 // Event Advertisement page
 useHead({
@@ -16,3 +10,9 @@ useHead({
   ],
 })
 </script>
+
+<template>
+  <main>
+    <!-- Event Advertisement page content -->
+  </main>
+</template>

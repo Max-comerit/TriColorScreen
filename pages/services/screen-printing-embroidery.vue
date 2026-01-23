@@ -1,9 +1,3 @@
-<template>
-  <main>
-    <!-- Screen Printing & Embroidery page content -->
-  </main>
-</template>
-
 <script setup lang="ts">
 // Screen Printing & Embroidery page
 useHead({
@@ -16,3 +10,9 @@ useHead({
   ],
 })
 </script>
+
+<template>
+  <main>
+    <!-- Screen Printing & Embroidery page content -->
+  </main>
+</template>

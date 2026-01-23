@@ -1,9 +1,3 @@
-<template>
-  <main>
-    <!-- Contact page content -->
-  </main>
-</template>
-
 <script setup lang="ts">
 // Contact page
 useHead({
@@ -16,3 +10,9 @@ useHead({
   ],
 })
 </script>
+
+<template>
+  <main>
+    <!-- Contact page content -->
+  </main>
+</template>
