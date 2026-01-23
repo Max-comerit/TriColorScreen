@@ -36,7 +36,7 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  label: '',
+  label: 'TextButton',
   variant: 'primary',
   size: 'md',
   disabled: false,
