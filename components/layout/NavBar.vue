@@ -354,7 +354,7 @@ watch(
 
 /* Dropdown links */
 .dropdown-link {
-  @apply block w-full px-6 py-3 text-layout-text-on-dark text-sm lg:text-base;
+  @apply block w-full px-6 py-3 text-layout-text-on-dark font-medium text-sm lg:text-base;
   @apply no-underline transition-colors duration-200 min-h-[44px];
 }
 
