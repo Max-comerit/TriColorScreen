@@ -87,7 +87,7 @@ export const useNavigationStore = defineStore('navigation', {
     /**
      * Check if current route matches any child route of a menu item
      */
-    isParent: state => {
+    hasChildren: state => {
       return (parentHref: string): boolean => {
         const parent = state.menuItems.find(item => item.href === parentHref)
         if (!parent?.children) {
@@ -143,9 +143,9 @@ export const useNavigationStore = defineStore('navigation', {
 
 
       if(contactItem && parentItem) {
-        const isParent = this.isParent('/services') ? 'TRUE' : 'FALSE';
+        const hasChildren = this.hasChildren('/services') ? 'TRUE' : 'FALSE';
         const isParentActive = this.isParentActive('/services') ? 'TRUE' : 'FALSE';
-        contactItem.label = `${isParent}:${isParentActive}`;
+        contactItem.label = `${hasChildren}:${isParentActive}:${this.currentRoute}`;
         // contactItem.label = parentItem.children?.[0]?.href ?? 'null'
         // contactItem.label = this.currentRoute;
       }
