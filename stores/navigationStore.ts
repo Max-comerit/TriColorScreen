@@ -121,13 +121,18 @@ export const useNavigationStore = defineStore('navigation', {
      * Set menu items with computed contact label based on current route
      */
     setContactLabel(): void {
-      const lastRoutePart = this.currentRoute.split("/").filter(Boolean).pop()?.toUpperCase() ?? "/";
+      // const lastRoutePart = this.currentRoute.split("/").filter(Boolean).pop()?.toUpperCase() ?? "/";
+      const contactItem = this.menuItems.find(item => item.href === '/contact');
+      const servicesItem = this.menuItems.find(item => item.href === '/services/printed-matter');
       
-      this.menuItems.forEach(item => {
-        if (item.href === '/contact') {
-          item.label = lastRoutePart;
+      if(contactItem ) {
+        if(servicesItem) {
+          const isActiveParent = this.isParentActive(servicesItem.href);
+          contactItem.label = isActiveParent ? 'TRUE' : 'FALSE';
+        } else {
+          contactItem.label = 'NOT FOUND';
         }
-      });
+      }
     },
 
     /**
