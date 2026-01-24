@@ -85,20 +85,6 @@ export const useNavigationStore = defineStore('navigation', {
     },
 
     /**
-     * Check if current route has children menu items
-     */
-    hasChildren: state => {
-      return (parentHref: string): boolean => {
-        const parent = state.menuItems.find(item => item.href === parentHref)
-        if (!parent?.children) {
-          return false
-        } else {
-          return true;
-        }
-      }
-    },
-
-    /**
      * Check if current route matches any child route of a menu item
      */
     isParentActive(): (parentHref: string) => boolean {
@@ -126,24 +112,6 @@ export const useNavigationStore = defineStore('navigation', {
 
   // ===== ACTIONS =====
   actions: {
-    /**
-     * Set menu items with computed contact label based on current route
-     */
-    setContactLabel(): void {
-      // const lastRoutePart = this.currentRoute.split("/").filter(Boolean).pop()?.toUpperCase() ?? "/";
-      const contactItem = this.menuItems.find(item => item.href === '/contact');
-      const parentItem = this.menuItems.find(item => item.href === '/services');
-
-
-      if(contactItem && parentItem) {
-        const hasChildren = this.hasChildren('/services') ? 'TRUE' : 'FALSE';
-        const isParentActive = this.isParentActive('/services') ? 'TRUE' : 'FALSE';
-        contactItem.label = `${hasChildren}:${isParentActive}:${this.currentRoute}:${parentItem.children?.[0]?.href ?? 'null'} `;
-        // contactItem.label = parentItem.children?.[0]?.href ?? 'null'
-        // contactItem.label = this.currentRoute;
-      }
-    },
-
     /**
      * Toggle mobile menu open/closed state
      * Manages body scroll lock to prevent background scrolling

@@ -182,7 +182,7 @@ const handleNavItemFocusOut = (event: FocusEvent): void => {
 }
 
 /**
- * Handle focus leaving the nav item (safari issue fix)
+ * Handle focus leaving the nav item (Safari issue fix)
  */
 const handleOutsidePointer = (event: PointerEvent) => {
   // Check if click/tap is inside the currently open dropdown
@@ -279,7 +279,6 @@ watch(
   () => route.path,
   (newPath) => {
     navigationStore.setCurrentRoute(newPath)
-    navigationStore.setContactLabel()
   },
   { immediate: true, flush: 'sync' }
 )
