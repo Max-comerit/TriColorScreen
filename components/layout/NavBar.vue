@@ -25,6 +25,21 @@ const isTouchDevice = ref(false)
 const isBurgerOpen = ref(false)
 const navDropdownRefs = ref<Record<string, HTMLElement>>({})
 
+// ===== COMPUTED =====
+/**
+ * Create a reactive map of active states for all menu items
+ * This ensures proper reactivity on all devices including iPad Safari
+ */
+const activeStates = computed(() => {
+  const states: Record<string, boolean> = {}
+  menuItems.value.forEach((item) => {
+    states[item.href] = 
+      navigationStore.isRouteActive(item.href) ||
+      (item.children ? navigationStore.isParentActive(item.href) : false)
+  })
+  return states
+})
+
 // ===== METHODS =====
 /**
  * Toggle dropdown visibility
@@ -255,10 +270,7 @@ const handleNavClick = async (event: Event, item: INavItem): Promise<void> => {
  * Check if route or any of its children is active
  */
 const isActiveOrParent = (item: INavItem): boolean => {
-  return (
-    navigationStore.isRouteActive(item.href) ||
-    (item.children ? navigationStore.isParentActive(item.href) : false)
-  )
+  return activeStates.value[item.href] ?? false
 }
 
 // ===== LIFECYCLE =====
