@@ -28,7 +28,7 @@ export const useNavigationStore = defineStore('navigation', {
       { label: 'HEM', href: '/' },
       {
         label: 'VÅRA TJÄNSTER',
-        href: '/services/printed-matter',
+        href: '/services',
         children: [
           { label: 'TRYCKSAKER', href: '/services/printed-matter' },
           {
@@ -123,15 +123,11 @@ export const useNavigationStore = defineStore('navigation', {
     setContactLabel(): void {
       // const lastRoutePart = this.currentRoute.split("/").filter(Boolean).pop()?.toUpperCase() ?? "/";
       const contactItem = this.menuItems.find(item => item.href === '/contact');
-      const servicesItem = this.menuItems.find(item => item.href === '/services/printed-matter');
-      
+
+
       if(contactItem ) {
-        if(servicesItem) {
-          const isActiveParent = this.isParentActive(servicesItem.href);
-          contactItem.label = isActiveParent ? 'TRUE' : 'FALSE';
-        } else {
-          contactItem.label = 'NOT FOUND';
-        }
+        const isActiveParent = this.isParentActive('/services');
+        contactItem.label = isActiveParent ? 'TRUE' : 'FALSE';
       }
     },
 
