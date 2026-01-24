@@ -123,11 +123,13 @@ export const useNavigationStore = defineStore('navigation', {
     setContactLabel(): void {
       // const lastRoutePart = this.currentRoute.split("/").filter(Boolean).pop()?.toUpperCase() ?? "/";
       const contactItem = this.menuItems.find(item => item.href === '/contact');
+      const parentItem = this.menuItems.find(item => item.href === '/services');
 
 
-      if(contactItem ) {
-        const isActiveParent = this.isParentActive('/services');
-        contactItem.label = isActiveParent ? 'TRUE' : 'FALSE';
+      if(contactItem && parentItem) {
+        // const isActiveParent = this.isParentActive('/services');
+        // contactItem.label = isActiveParent ? 'TRUE' : 'FALSE';
+        contactItem.label = parentItem.children?.[0]?.href ?? 'null'
       }
     },
 
