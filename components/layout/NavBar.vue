@@ -266,6 +266,7 @@ const isActiveOrParent = (item: INavItem): boolean => {
 onMounted(() => {
   isTouchDevice.value = 'ontouchstart' in window || navigator.maxTouchPoints > 0
   document.addEventListener('pointerdown', handleOutsidePointer)
+  navigationStore.setCurrentRoute(route.path)
 })
 
 onUnmounted(() => {
