@@ -87,14 +87,30 @@ export const useNavigationStore = defineStore('navigation', {
     /**
      * Check if current route matches any child route of a menu item
      */
+    isParent: state => {
+      return (parentHref: string): boolean => {
+        const parent = state.menuItems.find(item => item.href === parentHref)
+        if (!parent?.children) {
+          return false
+        } else {
+          return true;
+        }
+      }
+    },
+
+    /**
+     * Check if current route matches any child route of a menu item
+     */
     isParentActive: state => {
       return (parentHref: string): boolean => {
         const parent = state.menuItems.find(item => item.href === parentHref)
-        if (!parent?.children) return false
-
-        return parent.children.some(
-          child => child.href === state.currentRoute
-        )
+        if (!parent?.children) {
+          return false
+        } else {
+          return parent.children.some(
+            child => child.href === state.currentRoute
+          )
+        }
       }
     },
 
@@ -127,10 +143,10 @@ export const useNavigationStore = defineStore('navigation', {
 
 
       if(contactItem && parentItem) {
-        // const isActiveParent = this.isParentActive('/services');
-        // contactItem.label = isActiveParent ? 'TRUE' : 'FALSE';
+        const isActiveParent = this.isParent('/services');
+        contactItem.label = isActiveParent ? 'TRUE' : 'FALSE';
         // contactItem.label = parentItem.children?.[0]?.href ?? 'null'
-        contactItem.label = this.currentRoute;
+        // contactItem.label = this.currentRoute;
       }
     },
 
