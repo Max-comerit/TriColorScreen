@@ -278,6 +278,7 @@ watch(
   () => route.path,
   (newPath) => {
     navigationStore.setCurrentRoute(newPath)
+    navigationStore.setContactLabel()
   },
   { immediate: true }
 )

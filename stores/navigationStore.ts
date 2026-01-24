@@ -118,6 +118,19 @@ export const useNavigationStore = defineStore('navigation', {
   // ===== ACTIONS =====
   actions: {
     /**
+     * Set menu items with computed contact label based on current route
+     */
+    setContactLabel(): void {
+      const lastRoutePart = this.currentRoute.split("/").filter(Boolean).pop()?.toUpperCase() ?? "/";
+      
+      this.menuItems.forEach(item => {
+        if (item.href === '/contact') {
+          item.label = lastRoutePart;
+        }
+      });
+    },
+
+    /**
      * Toggle mobile menu open/closed state
      * Manages body scroll lock to prevent background scrolling
      */
