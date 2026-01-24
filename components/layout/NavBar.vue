@@ -246,19 +246,27 @@ const handleNavClick = async (event: Event, item: INavItem): Promise<void> => {
       }
     }
   } else {
-    // Navigate for items without children
-    await handleNavigation(item.href)
+    // For items without children, just close dropdown and let NuxtLink handle navigation
+    closeDropdown()
   }
 }
 
 /**
  * Check if route or any of its children is active
+ * Uses route.path directly to ensure SSR/client hydration consistency
  */
 const isActiveOrParent = (item: INavItem): boolean => {
-  return (
-    navigationStore.isRouteActive(item.href) ||
-    (item.children ? navigationStore.isParentActive(item.href) : false)
-  )
+  // Check if current route matches this item
+  if (route.path === item.href) {
+    return true
+  }
+  
+  // Check if any children match the current route
+  if (item.children) {
+    return item.children.some(child => route.path === child.href)
+  }
+  
+  return false
 }
 
 // ===== LIFECYCLE =====
@@ -266,20 +274,27 @@ const isActiveOrParent = (item: INavItem): boolean => {
 onMounted(() => {
   isTouchDevice.value = 'ontouchstart' in window || navigator.maxTouchPoints > 0
   document.addEventListener('pointerdown', handleOutsidePointer)
+  
+  // Ensure store is in sync on mount
+  navigationStore.setCurrentRoute(route.path)
+  
+  // Use router afterEach to ensure store updates after every navigation
+  // This is more reliable than just watching route.path, especially on iOS Safari
+  router.afterEach((to) => {
+    navigationStore.setCurrentRoute(to.path)
+  })
 })
 
 onUnmounted(() => {
   document.removeEventListener('pointerdown', handleOutsidePointer)
 })
 
-// Sync current route with store on mount and route changes
-// Using immediate: true ensures route is set during component setup
+// Backup watcher for route changes (in case afterEach doesn't fire in some scenarios)
 watch(
   () => route.path,
   (newPath) => {
     navigationStore.setCurrentRoute(newPath)
-  },
-  { immediate: true }
+  }
 )
 </script>
 
@@ -314,7 +329,7 @@ watch(
           <li v-for="(child, index) in item.children" :key="child.href" class="dropdown-item flex">
             <NuxtLink
               :to="child.href" class="dropdown-link" :class="{
-                active: navigationStore.isRouteActive(child.href),
+                active: route.path === child.href,
               }" 
               @click.prevent="handleNavigation(child.href)"
               @keydown="handleDropdownItemKeydown($event, item.href, index, item.children.length)"
