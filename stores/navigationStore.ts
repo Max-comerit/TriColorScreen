@@ -143,8 +143,9 @@ export const useNavigationStore = defineStore('navigation', {
 
 
       if(contactItem && parentItem) {
-        const isActiveParent = this.isParent('/services');
-        contactItem.label = isActiveParent ? 'TRUE' : 'FALSE';
+        const isParent = this.isParent('/services') ? 'TRUE' : 'FALSE';
+        const isParentActive = this.isParentActive('/services') ? 'TRUE' : 'FALSE';
+        contactItem.label = `${isParent}:${isParentActive}`;
         // contactItem.label = parentItem.children?.[0]?.href ?? 'null'
         // contactItem.label = this.currentRoute;
       }
