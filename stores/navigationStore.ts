@@ -101,16 +101,14 @@ export const useNavigationStore = defineStore('navigation', {
     /**
      * Check if current route matches any child route of a menu item
      */
-    isParentActive: state => {
+    isParentActive(): (parentHref: string) => boolean {
       return (parentHref: string): boolean => {
-        const parent = state.menuItems.find(item => item.href === parentHref)
-        if (!parent?.children) {
-          return false
-        } else {
-          return parent.children.some(
-            child => child.href === state.currentRoute
-          )
-        }
+        const parent = this.menuItems.find(item => item.href === parentHref)
+        if (!parent?.children) return false
+
+        return parent.children.some(
+          child => child.href === this.currentRoute
+        )
       }
     },
 
