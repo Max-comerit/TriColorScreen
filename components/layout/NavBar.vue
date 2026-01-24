@@ -83,7 +83,7 @@ const handleDropdownKeydown = (event: KeyboardEvent, item: INavItem): void => {
  */
 const handleDropdownItemKeydown = (
   event: KeyboardEvent,
-  parentHref: string,
+  _parentHref: string,
   childIndex: number,
   totalChildren: number
 ): void => {
