@@ -274,13 +274,14 @@ onUnmounted(() => {
 
 // Sync current route with store on mount and route changes
 // Using immediate: true ensures route is set during component setup
+// flush: 'sync' ensures store is updated before rendering on iPad Safari
 watch(
   () => route.path,
   (newPath) => {
     navigationStore.setCurrentRoute(newPath)
     navigationStore.setContactLabel()
   },
-  { immediate: true }
+  { immediate: true, flush: 'sync' }
 )
 </script>
 
