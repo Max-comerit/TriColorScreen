@@ -129,7 +129,8 @@ export const useNavigationStore = defineStore('navigation', {
       if(contactItem && parentItem) {
         // const isActiveParent = this.isParentActive('/services');
         // contactItem.label = isActiveParent ? 'TRUE' : 'FALSE';
-        contactItem.label = parentItem.children?.[0]?.href ?? 'null'
+        // contactItem.label = parentItem.children?.[0]?.href ?? 'null'
+        contactItem.label = this.currentRoute;
       }
     },
 
