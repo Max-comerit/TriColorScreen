@@ -306,7 +306,7 @@ watch(
         <!-- Dropdown menu for children -->
         <ul
         v-if="item.children"
-          ref="el => { if (el) navDropdownRefs.value[item.href] = el }"
+          :ref="(el) => { if (el) navDropdownRefs[item.href] = el as HTMLElement }"
           class="absolute top-full left-0 min-w-[250px] bg-neutral-900 list-none m-0 py-2 transition-all duration-200 ease-in-out"
           :class="openDropdown === item.href ? 'opacity-100 pointer-events-auto translate-y-0 shadow-[4px_4px_10px_rgba(0,0,0,0.25)] shadow-black/50' : 'opacity-0 pointer-events-none -translate-y-2.5 shadow-none'"
           :aria-label="`${item.label} undermeny`">
