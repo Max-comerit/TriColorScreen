@@ -23,6 +23,7 @@ const route = useRoute()
 const openDropdown = ref<string | null>(null)
 const isTouchDevice = ref(false)
 const isBurgerOpen = ref(false)
+const navDropdownRefs = ref<Record<string, HTMLElement>>({})
 
 // ===== METHODS =====
 /**
@@ -82,7 +83,7 @@ const handleDropdownKeydown = (event: KeyboardEvent, item: INavItem): void => {
  */
 const handleDropdownItemKeydown = (
   event: KeyboardEvent,
-  parentHref: string,
+  _parentHref: string,
   childIndex: number,
   totalChildren: number
 ): void => {
@@ -175,7 +176,21 @@ const handleNavItemFocusOut = (event: FocusEvent): void => {
   const relatedTarget = event.relatedTarget as HTMLElement
 
   // Check if the new focus target is still within this nav item
-  if (!navItem.contains(relatedTarget)) {
+  if (!relatedTarget || !navItem.contains(relatedTarget)) {
+    closeDropdown()
+  }
+}
+
+/**
+ * Handle focus leaving the nav item (Safari issue fix)
+ */
+const handleOutsidePointer = (event: PointerEvent) => {
+  // Check if click/tap is inside the currently open dropdown
+  const openHref = openDropdown.value
+  if (!openHref) return
+
+  const dropdownEl = navDropdownRefs.value[openHref]
+  if (!dropdownEl?.contains(event.target as Node)) {
     closeDropdown()
   }
 }
@@ -250,15 +265,22 @@ const isActiveOrParent = (item: INavItem): boolean => {
 // Detect touch device on mount
 onMounted(() => {
   isTouchDevice.value = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+  document.addEventListener('pointerdown', handleOutsidePointer)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('pointerdown', handleOutsidePointer)
 })
 
 // Sync current route with store on mount and route changes
+// Using immediate: true ensures route is set during component setup
+// flush: 'sync' ensures store is updated before rendering on iPad Safari
 watch(
   () => route.path,
   (newPath) => {
     navigationStore.setCurrentRoute(newPath)
   },
-  { immediate: true }
+  { immediate: true, flush: 'sync' }
 )
 </script>
 
@@ -286,14 +308,16 @@ watch(
         <!-- Dropdown menu for children -->
         <ul
         v-if="item.children"
-          class="absolute top-full left-0 min-w-[250px] bg-neutral-900 list-none m-0 py-2 transition-all duration-200 ease-in-out"
+          :ref="(el) => { if (el) navDropdownRefs[item.href] = el as HTMLElement }"
+          class="absolute top-full left-0 min-w-[250px] max-h-[80vh] overflow-y-auto bg-neutral-900 list-none m-0 py-2 transition-all duration-200 ease-in-out"
           :class="openDropdown === item.href ? 'opacity-100 pointer-events-auto translate-y-0 shadow-[4px_4px_10px_rgba(0,0,0,0.25)] shadow-black/50' : 'opacity-0 pointer-events-none -translate-y-2.5 shadow-none'"
           :aria-label="`${item.label} undermeny`">
           <li v-for="(child, index) in item.children" :key="child.href" class="dropdown-item flex">
             <NuxtLink
-            :to="child.href" class="dropdown-link" :class="{
-              active: navigationStore.isRouteActive(child.href),
-            }" @click.prevent="handleNavigation(child.href)"
+              :to="child.href" class="dropdown-link" :class="{
+                active: navigationStore.isRouteActive(child.href),
+              }" 
+              @click.prevent="handleNavigation(child.href)"
               @keydown="handleDropdownItemKeydown($event, item.href, index, item.children.length)"
               @focus="openDropdownMenu(item.href)">
               {{ child.label }}

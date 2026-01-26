@@ -28,7 +28,7 @@ export const useNavigationStore = defineStore('navigation', {
       { label: 'HEM', href: '/' },
       {
         label: 'VÅRA TJÄNSTER',
-        href: '/services/printed-matter',
+        href: '/services',
         children: [
           { label: 'TRYCKSAKER', href: '/services/printed-matter' },
           {
@@ -87,14 +87,9 @@ export const useNavigationStore = defineStore('navigation', {
     /**
      * Check if current route matches any child route of a menu item
      */
-    isParentActive: state => {
+    isParentActive(): (parentHref: string) => boolean {
       return (parentHref: string): boolean => {
-        const parent = state.menuItems.find(item => item.href === parentHref)
-        if (!parent?.children) return false
-
-        return parent.children.some(
-          child => child.href === state.currentRoute
-        )
+        return this.currentRoute.startsWith(parentHref + '/')
       }
     },
 
