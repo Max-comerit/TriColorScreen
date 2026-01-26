@@ -7,32 +7,12 @@
  */
 
 // ===== IMPORTS =====
-import BaseButton from '../base/BaseButton.vue'
-
-/** Available button style variants */
-type Variant = 'primary' | 'secondary' | 'outline' | 'text'
-
-/** Available button size options */
-type Size = 'sm' | 'md' | 'lg' | 'fit'
+import BaseButton, { type Props as BaseButtonProps } from '../base/BaseButton.vue'
 
 /** Props for TextButton component */
-interface Props {
-  /** Button label text - default: '' */
+interface Props extends BaseButtonProps {
+  /** Button label text - default: 'TextButton' */
   label?: string
-  /** Button style variant - default: 'primary' */
-  variant?: Variant
-  /** Button size - default: 'md' */
-  size?: Size
-  /** Disable button interaction - default: false */
-  disabled?: boolean
-  /** Show loading state with spinner - default: false */
-  loading?: boolean
-  /** Optional custom background color (hex, rgb, var, etc.) */
-  backgroundColor?: string
-  /** Optional custom background color on hover state */
-  backgroundColorHover?: string
-  /** Optional custom text color */
-  color?: string
 }
 
 withDefaults(defineProps<Props>(), {

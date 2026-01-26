@@ -1,19 +1,27 @@
+<!-- IconTextButton.vue -->
 <script setup lang="ts">
 /**
- * IconButton Component
+ * IconTextButton Component
  *
- * @description An icon button component that wraps BaseButton and provides
- * flexible icon usage through either a src prop or an icon slot.
+ * @description An icon & text button component that wraps BaseButton and
+ * provides flexible icon and text usage through either props or slots.
  * Requires aria-label for accessibility.
  */
 
 // ===== IMPORTS =====
 import BaseButton, { type Props as BaseButtonProps } from '../base/BaseButton.vue'
 
-/** Props for IconButton component */
+/** Icon position relative to label */
+type IconPosition = 'left' | 'right'
+
+/** Props for IconTextButton component */
 interface Props extends BaseButtonProps {
   /** Icon image source (path or URL) - optional if using icon slot */
   iconSrc?: string
+  /** Button label text - default: 'IconTextButton' */
+  label?: string
+  /** Icon position relative to label - default: 'left' */
+  iconPosition?: IconPosition
   /** Alt text for icon image - required when using iconSrc */
   iconAlt?: string
   /** ARIA label for accessibility - REQUIRED for icon-only buttons */
@@ -23,6 +31,8 @@ interface Props extends BaseButtonProps {
 const props = withDefaults(defineProps<Props>(), {
   iconSrc: undefined,
   iconAlt: '',
+  label: 'IconTextButton',
+  iconPosition: 'left',
   ariaLabel: undefined,
   variant: 'primary',
   size: 'md',
@@ -69,27 +79,30 @@ const iconSize = computed(() => {
     :background-color-hover="backgroundColorHover"
     :color="color"
     :aria-label="ariaLabel"
-    class="icon-button"
+    class="icon-text-button"
     @click="handleClick"
   >
-    <!-- Icon slot for custom icon components (e.g., SVG components) -->
-    <slot name="icon">
-      <!-- Fallback to img element if iconSrc prop is provided -->
-      <img
-        v-if="iconSrc"
-        :src="iconSrc"
-        :alt="iconAlt"
-        :class="iconSize"
-        class="icon-image"
-      >
-    </slot>
+    <div class="flex flex-row items-center justify-center gap-3" :class="{ 'flex-row-reverse': iconPosition === 'right', 'px-3': size === 'fit' } ">
+      <!-- Icon slot for custom icon components (e.g., SVG components) -->
+      <slot name="icon">
+        <!-- Fallback to img element if iconSrc prop is provided -->
+        <img
+          v-if="iconSrc"
+          :src="iconSrc"
+          :alt="iconAlt"
+          :class="iconSize"
+          class="icon-image flex-shrink-0"
+        >
+      </slot>
+      {{ label }}
+    </div>
   </BaseButton>
 </template>
 
 <style scoped>
-/* Icon button specific styles */
-.icon-button {
-  @apply flex items-center justify-center;
+/* IconTextButton specific styles */
+.icon-text-button {
+  @apply inline-flex items-center justify-center;
 }
 
 .icon-image {
@@ -97,12 +110,12 @@ const iconSize = computed(() => {
 }
 
 /* Ensure icon inherits color from parent when using color prop */
-.icon-button :deep(svg) {
-  @apply w-full h-full;
+.icon-text-button :deep(svg) {
+  @apply flex-shrink-0;
 }
 
 /* Apply custom color to SVG icons */
-.icon-button :deep(svg path) {
+.icon-text-button :deep(svg path) {
   fill: currentColor;
 }
 </style>
