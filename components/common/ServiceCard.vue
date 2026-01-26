@@ -12,12 +12,16 @@ interface Props {
   width?: string | number
   height?: string | number
   backgroundColor?: string
+  textColor?: string
+  link?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   height: 'auto',
   backgroundColor: 'bg-primary-50',
+  textColor: 'black',
+  link: '#',
 })
 
 const emit = defineEmits<{
@@ -28,11 +32,14 @@ const cardStyle = computed(() => ({
   width: typeof props.width === 'number' ? `${props.width}px` : props.width,
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
 }))
+
+const textColorClass = computed(() => `text-${props.textColor}`)
 </script>
 
 <template>
+  <NuxtLink :to="link">
   <article
-    class="group flex flex-col overflow-hidden rounded-lg shadow-md transition-transform duration-200 hover:-translate-y-1 focus-within:-translate-y-1 cursor-pointer"
+    class="group flex flex-col overflow-hidden rounded-lg shadow-drop transition-transform duration-200 hover:-translate-y-1 focus-within:-translate-y-1 cursor-pointer"
     :class="backgroundColor"
     :style="cardStyle"
     tabindex="0"
@@ -41,7 +48,7 @@ const cardStyle = computed(() => ({
     @keydown.space.prevent="emit('click')"
   >
     <!-- Image -->
-    <div class="w-full aspect-[4/3] overflow-hidden">
+    <div class="w-5/6 aspect-[4/3] overflow-hidden align-middle mx-auto mt-4 rounded-md bg-gray-200">
       <img
         :src="imageSrc"
         :alt="title"
@@ -51,12 +58,13 @@ const cardStyle = computed(() => ({
 
     <!-- Content -->
     <div class="flex flex-1 flex-col gap-2 p-5">
-      <h3 class="text-lg font-semibold text-layout-text-on-dark">
+      <h3 :class="['text-lg font-semibold', textColorClass]">
         {{ title }}
       </h3>
-      <p class="text-sm text-layout-text-on-dark/80 leading-relaxed">
+      <p :class="['text-sm leading-relaxed', textColorClass]">
         {{ description }}
       </p>
     </div>
   </article>
+  </NuxtLink>
 </template>
