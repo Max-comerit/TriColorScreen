@@ -17,7 +17,7 @@ type Size = 'sm' | 'md' | 'lg' | 'fit'
 
 /** Props for TextButton component */
 interface Props {
-  /** Button label text - default: '' */
+  /** Button label text - default: 'TextButton' */
   label?: string
   /** Button style variant - default: 'primary' */
   variant?: Variant

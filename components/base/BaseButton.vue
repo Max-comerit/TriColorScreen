@@ -48,7 +48,7 @@ const isDisabled = computed(() => props.disabled || props.loading)
 
 /** Base button classes shared across all variants */
 const baseClasses =
-  'base-button inline-flex items-center justify-center font-medium rounded-button transition ' +
+  'base-button inline-flex items-center justify-center font-medium rounded-button transition overflow-hidden ' +
   'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ' +
   'disabled:opacity-50 disabled:cursor-not-allowed'
 
