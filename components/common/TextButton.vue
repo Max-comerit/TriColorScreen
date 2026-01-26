@@ -13,7 +13,7 @@ import BaseButton from '../base/BaseButton.vue'
 type Variant = 'primary' | 'secondary' | 'outline' | 'text'
 
 /** Available button size options */
-type Size = 'sm' | 'md' | 'lg'
+type Size = 'sm' | 'md' | 'lg' | 'fit'
 
 /** Props for TextButton component */
 interface Props {
@@ -68,6 +68,8 @@ const handleClick = (event: MouseEvent): void => {
     @click="handleClick"
   >
     <!-- Use label slot if provided, otherwise use label prop -->
-    <slot>{{ label }}</slot>
+    <span :class="{ 'px-3': size === 'fit' }">
+      <slot>{{ label }}</slot>
+    </span>
   </BaseButton>
 </template>
