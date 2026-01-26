@@ -14,7 +14,7 @@ import BaseButton from '../base/BaseButton.vue'
 type Variant = 'primary' | 'secondary' | 'outline' | 'text'
 
 /** Available button size options */
-type Size = 'sm' | 'md' | 'lg'
+type Size = 'sm' | 'md' | 'lg' | 'fit'
 
 /** Props for IconButton component */
 interface Props {
@@ -65,6 +65,8 @@ const handleClick = (event: MouseEvent): void => {
 /** Icon size based on button size */
 const iconSize = computed(() => {
   switch (props.size) {
+    case 'fit':
+      return 'w-6 h-6'
     case 'sm':
       return 'w-5 h-5'
     case 'md':

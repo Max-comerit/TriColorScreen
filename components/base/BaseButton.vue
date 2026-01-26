@@ -6,7 +6,7 @@ import LoadingSpinner from '../common/LoadingSpinner.vue'
 type Variant = 'primary' | 'secondary' | 'outline' | 'text'
 
 /** Available button size options */
-type Size = 'sm' | 'md' | 'lg'
+type Size = 'sm' | 'md' | 'lg' | 'fit'
 
 /** Props for BaseButton component */
 interface Props {
@@ -68,6 +68,7 @@ const sizeClasses: Record<Size, string> = {
   sm: 'w-[140px] h-[50px] text-sm',
   md: 'w-[170px] h-[60px] text-base',
   lg: 'w-[200px] h-[70px] text-lg',
+  fit: 'w-fit h-fit p-3 text-base min-h-[44px] min-w-[44px] shrink-0',
 }
 
 /** Combine all computed classes and add flag for custom background colors */

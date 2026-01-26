@@ -134,6 +134,14 @@ export const sizesExample = `
   aria-label="Call us"
   size="lg"
 />
+
+<!-- Fit (wraps content with padding) -->
+<IconButton 
+  icon-src="/assets/images/footer/phone-icon.svg"
+  icon-alt="Phone"
+  aria-label="Call us"
+  size="fit"
+/>
 `
 
 /**
