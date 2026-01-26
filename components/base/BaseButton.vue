@@ -9,7 +9,7 @@ type Variant = 'primary' | 'secondary' | 'outline' | 'text'
 type Size = 'sm' | 'md' | 'lg' | 'fit'
 
 /** Props for BaseButton component */
-interface Props {
+export interface Props {
   /** Button style variant - default: 'primary' */
   variant?: Variant
   /** Button size - default: 'md' */
@@ -24,6 +24,8 @@ interface Props {
   backgroundColorHover?: string
   color?: string
 }
+
+export type { Variant, Size }
 
 const props = withDefaults(defineProps<Props>(), {
   variant: 'primary',

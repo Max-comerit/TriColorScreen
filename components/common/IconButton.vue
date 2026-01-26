@@ -8,36 +8,16 @@
  */
 
 // ===== IMPORTS =====
-import BaseButton from '../base/BaseButton.vue'
-
-/** Available button style variants */
-type Variant = 'primary' | 'secondary' | 'outline' | 'text'
-
-/** Available button size options */
-type Size = 'sm' | 'md' | 'lg' | 'fit'
+import BaseButton, { type Props as BaseButtonProps } from '../base/BaseButton.vue'
 
 /** Props for IconButton component */
-interface Props {
+interface Props extends BaseButtonProps {
   /** Icon image source (path or URL) - optional if using icon slot */
   iconSrc?: string
   /** Alt text for icon image - required when using iconSrc */
   iconAlt?: string
   /** ARIA label for accessibility - REQUIRED for icon-only buttons */
   ariaLabel?: string
-  /** Button style variant - default: 'primary' */
-  variant?: Variant
-  /** Button size - default: 'md' */
-  size?: Size
-  /** Disable button interaction - default: false */
-  disabled?: boolean
-  /** Show loading state with spinner - default: false */
-  loading?: boolean
-  /** Optional custom background color (hex, rgb, var, etc.) */
-  backgroundColor?: string
-  /** Optional custom background color on hover state */
-  backgroundColorHover?: string
-  /** Optional custom icon color */
-  color?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
