@@ -48,11 +48,16 @@ const textColorClass = computed(() => `text-${props.textColor}`)
     @keydown.space.prevent="emit('click')"
   >
     <!-- Image -->
-    <div class="w-5/6 aspect-[4/3] overflow-hidden align-middle mx-auto mt-4 rounded-md bg-gray-200">
-      <img
+    <div class="w-5/6 overflow-hidden align-middle mx-auto mt-4 rounded-md bg-gray-200">
+        <NuxtImg
         :src="imageSrc"
         :alt="title"
-        class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        quality="80"
+        sizes="sm:100vw md:100vw lg:1280px"
+        format="webp"
+        loading="lazy"
+        fetchpriority="low"
+        class="w-full object-cover transition-transform duration-300 group-hover:scale-105"
       />
     </div>
 
