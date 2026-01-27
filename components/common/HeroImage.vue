@@ -92,7 +92,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 /* Title styles */
 .title {
-  @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
+  @apply text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
   @apply font-display font-bold text-white mb-3 md:mb-4;
 }
 
