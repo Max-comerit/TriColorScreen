@@ -27,12 +27,12 @@ const bragItems = [
 </script>
 
 <template>
-  <div class="grid grid-cols-2  md:grid-cols-4 bg-primary-600 md:justify-items-center">
+  <section class="grid grid-cols-2  md:grid-cols-4 bg-primary-600 md:justify-items-center">
     <BragBarItem
       v-for="(item) in bragItems"
       :key="item.text"
       :icon="item.icon"
       :text="item.text"
     />
-  </div>
+  </section>
 </template>

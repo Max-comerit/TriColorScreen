@@ -26,7 +26,7 @@ defineProps<Props>()
         />
       </div>
 
-      <p class="m-0 text-xl text-white font-semibold">
+      <p class="m-0 text-lg sm:text-xl text-white font-semibold">
         {{ text }}
       </p>
     </div>
