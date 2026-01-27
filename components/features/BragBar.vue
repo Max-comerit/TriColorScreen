@@ -17,7 +17,7 @@ const bragItems = [
   },
   {
     icon: starSolidFull,
-    text: 'Hög Kvalitativ Tryck och Design',
+    text: 'Högkvalitativ Tryck och Design',
   },
     {
     icon: phoneSolidFull,

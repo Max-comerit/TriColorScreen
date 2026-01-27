@@ -11,8 +11,8 @@ defineProps<Props>()
 
 
 <template>
-  <div
-    class="w-[80%] min-w-fit p-4 transition-all duration-300 cursor-pointer
+  <article
+    class="w-[80%] min-w-fit p-4 transition-all duration-300
            hover:bg-primary-800 flex items-center"
   >
     <div class="flex items-center gap-4">
@@ -30,5 +30,5 @@ defineProps<Props>()
         {{ text }}
       </p>
     </div>
-  </div>
+  </article>
 </template>
