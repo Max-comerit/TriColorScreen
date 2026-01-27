@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <section class="container-section" :aria-labelledby="headingId">
+  <section class="container-section">
     <!-- Hero Image -->
     <NuxtImg
       :src="props.src"
@@ -60,7 +60,7 @@ const props = withDefaults(defineProps<Props>(), {
 
     <!-- Text Overlay -->
     <div class="overlay">
-      <h1 :id="headingId" class="title">
+      <h1 class="title">
         <slot name="title">
           {{ props.title }}
         </slot>
