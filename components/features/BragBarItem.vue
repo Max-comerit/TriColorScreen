@@ -1,26 +1,34 @@
-
-
 <script setup lang="ts">
+import type { Component } from 'vue'
+
 interface Props {
-  icon: string
+  icon: Component
   text: string
 }
-const props = defineProps<Props>()
+
+defineProps<Props>()
 </script>
+
 
 <template>
   <div
-    class="w-full p-4 transition-all duration-300 cursor-pointer rounded-card hover:bg-black/5 hover:-translate-y-0.5 hover:shadow-lg"
+    class="w-[80%] min-w-fit p-4 transition-all duration-300 cursor-pointer
+           hover:bg-primary-800 flex items-center"
   >
-    <div class="flex items-center gap-4 flex-wrap md:flex-nowrap">
-      <div class="flex-shrink-0 text-primary text-2xl md:text-xl sm:text-lg" aria-hidden="true">
-        <i :class="icon" />
+    <div class="flex items-center gap-4">
+      <div
+        class="flex-shrink-0 text-primary"
+        aria-hidden="true"
+      >
+        <component
+          :is="icon"
+          class="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] fill-current"
+        />
       </div>
-      <div class="flex-1 min-w-[150px]">
-        <p class="m-0 text-base font-medium text-neutral-800 md:text-sm sm:text-[0.95rem]">
-          {{ text }}
-        </p>
-      </div>
+
+      <p class="m-0 text-xl text-white font-semibold">
+        {{ text }}
+      </p>
     </div>
   </div>
 </template>
