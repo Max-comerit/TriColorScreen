@@ -28,9 +28,9 @@ useHead({
         width="1280"
         height="853"
         :sizes="{
-          sm: 640,
-          md: 768,
-          lg: 1024
+          sm: '100vw',
+          md: '100vw',
+          lg: '100vw'
         }"
         format="webp"
         quality="80"
