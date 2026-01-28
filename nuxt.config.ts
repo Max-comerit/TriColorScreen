@@ -9,6 +9,12 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'static',
+    prerender: {
+      crawlLinks: true,
+      ignore: [
+        /^\/\.netlify\/images/
+      ]
+    },
     rollupConfig: {
       external: ['@nuxt/nitro-server'],
       onwarn(warning, warn) {
@@ -23,12 +29,6 @@ export default defineNuxtConfig({
           return
         warn(warning)
       },
-    },
-    prerender: {
-      crawlLinks: true,
-      ignore: [
-        /^\/\.netlify\/images/
-      ]
     },
   },
 
@@ -47,7 +47,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   image: {
-    provider: 'ipx',
+    provider: 'ipx', // default
     screens: {
       sm: 640,
       md: 768,
