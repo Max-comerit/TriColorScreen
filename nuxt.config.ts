@@ -47,6 +47,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   image: {
+    provider: 'ipx',
     screens: {
       sm: 640,
       md: 768,
