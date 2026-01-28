@@ -47,7 +47,8 @@
   }
 
   /* Responsive typography for larger screens */
-  @media (min-width: 768px) {
+  /* sm: 640px - Small devices (landscape phones) */
+  @media (min-width: 640px) {
     h1 {
       @apply text-5xl;
     }
@@ -61,6 +62,18 @@
     }
   }
 
+  /* md: 768px - Medium devices (tablets) */
+  @media (min-width: 768px) {
+    h1 {
+      @apply text-5xl;
+    }
+
+    h2 {
+      @apply text-4xl;
+    }
+  }
+
+  /* lg: 1024px - Large devices (desktops) */
   @media (min-width: 1024px) {
     h1 {
       @apply text-6xl;
