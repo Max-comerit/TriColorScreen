@@ -3,7 +3,7 @@
 <script setup lang="ts">
 // Index page
 import HeroImage from '~/components/common/HeroImage.vue'
-import BragBar from '~/components/features/BragBar.vue';
+import BragBar from '~/components/features/BragBar.vue'
 import Section from '~/components/common/Section.vue'
 
 useHead({
