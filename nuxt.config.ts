@@ -47,12 +47,8 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   image: {
-    provider: 'ipx', // default
-    screens: {
-      sm: 640,
-      md: 768,
-      lg: 1024
-    }
+    provider: 'ipx',
+    screens: { sm: 640, md: 768, lg: 1024 }
   },
 
   compatibilityDate: '2025-07-15',
