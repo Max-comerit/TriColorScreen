@@ -22,15 +22,13 @@ useHead({
 <template>
   <div>
     <!-- Hero: full width -->
-    <header class="w-full aspect-3/2 relative overflow-hidden">
+    <header class="w-full aspect-3/2  max-h-[80vh] relative overflow-hidden">
       <!-- Hero image -->
       <NuxtImg
         src="/images/index/hero.png"
         alt="Hero image"
         format="webp"
         quality="80"
-        loading="eager"
-        fetchpriority="high"
         :sizes="{ xs: '412px', sm: '640px', md: '768px', lg: '1024px' }"
         class="w-full h-full object-cover"
       />
