@@ -31,7 +31,8 @@ useHead({
         quality="80"
         loading="eager"
         fetchpriority="high"
-        class="w-full object-cover"
+        :sizes="{ xs: '412px', sm: '640px', md: '768px', lg: '1024px' }"
+        class="w-full h-full object-cover"
         style="max-height: 80vh"
       />
       <!-- Overlay text -->
