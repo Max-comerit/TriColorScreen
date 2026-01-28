@@ -33,9 +33,9 @@ useHead({
       Hoppa till huvudinnehåll
     </a>
 
-    <div class="min-h-screen bg-tiled-logo">
+    <div class="min-h-screen bg-tiled-logo flex flex-col">
       <AppHeader />
-      <main id="main-content" role="main" aria-label="Huvudinnehåll" tabindex="-1">
+      <main id="main-content" role="main" aria-label="Huvudinnehåll" tabindex="-1" class="flex-1">
         <NuxtPage />
       </main>
       <AppFooter />
