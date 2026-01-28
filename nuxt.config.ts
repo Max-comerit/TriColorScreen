@@ -1,3 +1,5 @@
+// nuxt.config.ts
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import svgLoader from 'vite-svg-loader'

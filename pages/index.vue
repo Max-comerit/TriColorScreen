@@ -1,3 +1,5 @@
+// pages/index.vue
+
 <script setup lang="ts">
 import BragBar from '~/components/features/BragBar.vue';
 
@@ -25,8 +27,6 @@ useHead({
       <NuxtImg
         src="/images/index/hero.png"
         alt="Hero image"
-        width="1280"
-        height="853"
         format="webp"
         quality="80"
         loading="eager"
