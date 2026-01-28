@@ -14,7 +14,8 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       ignore: [
-        /^\/\.netlify\/images/
+        /^\/\.netlify\/images/,
+        /^\/ipx/
       ]
     },
     rollupConfig: {
