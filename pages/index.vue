@@ -22,16 +22,18 @@ useHead({
     <!-- Hero: full width -->
     <header class="w-full relative max-h-[80vh] overflow-hidden">
       <!-- Hero image placeholder or NuxtImage -->
-      <div
-        class="w-full bg-cyan-200 object-cover"
+      <NuxtImg
+        src="/images/index/hero.png"
+        alt="Hero Image"
+        class="w-full object-cover"
         style="aspect-ratio: 3/2; max-height: 80vh;"
       />
       <!-- Overlay text -->
-      <div class="absolute bottom-0 left-0 p-3 md:p-6 z-10">
-        <h1>
-          Hero Image
+      <div class="absolute bottom-0 left-0 p-3 md:p-6 z-10 bg-black/50 backdrop-blur-sm sm:rounded-tr-xl w-full md:w-auto max-w-screen-lg">
+        <h1 class="text-white">
+          Tricolor Screen
         </h1>
-        <p class="font-bold">
+        <p class="font-bold text-white">
           Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </p>
       </div>
