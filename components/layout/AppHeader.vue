@@ -7,16 +7,6 @@ import NavBar from '~/components/layout/NavBar.vue'
  * @description Desktop header with logo and navigation bar
  */
 
-// ===== COMPOSABLES =====
-const router = useRouter()
-
-// ===== METHODS =====
-/**
- * Handle navigation to home
- */
-const handleNavigation = async (href: string): Promise<void> => {
-  await router.push(href)
-}
 </script>
 
 <template>
