@@ -27,10 +27,10 @@ useHead({
     <HeroImage 
       src="/images/index/hero.png"
       title="Tricolor Screen"
-      description="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+      description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering"
       :width="1280"
       :height="854"
-      alt="Tricolor Screen hero image"
+      alt="Professional screen printing equipment and process at TriColor Screen workshop"
     />
 
     <!-- Brag Bar -->
