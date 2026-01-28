@@ -1,11 +1,10 @@
 // pages/index.vue
 
 <script setup lang="ts">
-import Section from '~/components/common/Section.vue'
-import BragBar from '~/components/features/BragBar.vue';
-
 // Index page
 import HeroImage from '~/components/common/HeroImage.vue'
+import BragBar from '~/components/features/BragBar.vue';
+import Section from '~/components/common/Section.vue'
 
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
