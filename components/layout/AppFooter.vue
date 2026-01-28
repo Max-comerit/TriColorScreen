@@ -8,27 +8,27 @@
 </script>
 
 <template>
-  <footer class="bg-neutral-900 text-white py-6 mt-12 justify-center px-5">
-    <div class="flex justify-between text-sm md:text-base max-w-screen-xl mx-auto flex items-center justify-between">
+  <footer class="h-auto bg-neutral-900 text-white py-6 mt-12 justify-center px-5">
+    <div class="flex items-top justify-between text-sm md:text-base max-w-screen-xl mx-auto">
       <div>
-        <h2 class="text-sm md:text-base font-semibold mb-2">Kontakt Info</h2>
+        <h2 class="text-sm md:text-base font-semibold my-2 mb-4 text-inherit">Kontakt Info</h2>
         <ul class="space-y-1">
-          <li class="flex items-center">
+          <li class="flex items-center text-inherit">
             <MapMarker class="w-6 h-6 text-accent-400 mr-2" aria-hidden="true" />
             <address>Öregrundsgatan 24, 115 59 Stockholm</address>
           </li>
-          <li class="flex items-center">
+          <li class="flex items-center text-inherit">
             <EmailIcon class="w-6 h-6 text-accent-400 mr-2" aria-hidden="true" />
             <address>info@tricolorscreen.se</address>
           </li>
-          <li class="flex items-center">
+          <li class="flex items-center text-inherit">
             <PhoneIcon class="w-6 h-6 text-accent-400 mr-2" aria-hidden="true" />
             <address>08-665 30 95</address>
           </li>
         </ul>
       </div>
       <div>
-        <h2 class="text-sm md:text-base font-semibold mb-2">Sociala Medier</h2>
+        <h2 class="text-sm md:text-base font-semibold my-2 mb-4 text-inherit">Sociala Medier</h2>
         <ul class="flex gap-3">
           <li>
             <a
@@ -66,8 +66,8 @@
         </ul>
       </div>
     </div>
-    <div class="text-center text-sm md:text-base mt-6">
-      <p>Copyright &copy; 2026 | Powered by Tricolorscreen</p>
+    <div class="mt-6">
+      <p class="text-center text-sm md:text-base text-inherit">Copyright &copy; 2026 | Powered by Tricolorscreen</p>
     </div>
   </footer>
 </template>
