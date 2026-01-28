@@ -70,7 +70,7 @@ const sizeClasses: Record<Size, string> = {
   sm: 'w-[140px] h-[50px] text-sm',
   md: 'w-[170px] h-[60px] text-base',
   lg: 'w-[200px] h-[70px] text-lg',
-  fit: 'w-fit h-fit p-3 text-base min-h-[44px] min-w-[44px] shrink-0',
+  fit: 'w-fit h-fit p-3 sm:text-sm md:text-base lg:text-lg min-h-[44px] min-w-[44px] shrink-0',
 }
 
 /** Combine all computed classes and add flag for custom background colors */

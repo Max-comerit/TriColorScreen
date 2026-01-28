@@ -1,3 +1,5 @@
+// nuxt.config.ts
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import svgLoader from 'vite-svg-loader'
@@ -9,6 +11,13 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'static',
+    prerender: {
+      crawlLinks: true,
+      ignore: [
+        /^\/\.netlify\/images/,
+        /^\/ipx/
+      ]
+    },
     rollupConfig: {
       external: ['@nuxt/nitro-server'],
       onwarn(warning, warn) {
@@ -39,6 +48,19 @@ export default defineNuxtConfig({
   },
 
   css: ['~/assets/css/main.css'],
+
+  image: {
+    provider: 'ipx',
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+      '2xl': 1536
+    },
+  },
 
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
