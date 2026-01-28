@@ -24,7 +24,7 @@ useHead({
         format="webp"
         fit="cover"
         quality="80"
-        sizes="100vw md:100vw lg:1280px"
+        sizes="sm:100vw md:100vw lg:1280px"
         loading="eager"
         fetchpriority="high"
         class="w-full object-cover"
