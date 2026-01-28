@@ -48,7 +48,7 @@ export default defineNuxtConfig({
 
   image: {
     provider: 'ipx',
-    screens: { sm: 640, md: 768, lg: 1024 }
+    screens: { xs: 412, sm: 640, md: 768, lg: 1024 } // xs is to make lighthouse happy as it uses a 412w mobile device
   },
 
   compatibilityDate: '2025-07-15',
