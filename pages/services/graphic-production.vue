@@ -1,5 +1,7 @@
 <script setup lang="ts">
 // Graphic Production page
+import HeroImage from '~/components/common/HeroImage.vue'
+
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
   meta: [
@@ -14,32 +16,14 @@ useHead({
 <template>
   <div>
     <!-- Hero: full width -->
-    <header class="w-full aspect-3/2 max-h-[80vh] relative overflow-hidden">
-      <!-- Hero image -->
-      <NuxtImg
-        src="/images/index/hero.png"
-        alt="Hero image"
-        width="1280"
-        height="854"
-        format="webp"
-        fit="cover"
-        quality="80"
-        sizes="sm:100vw md:100vw lg:1280px"
-        loading="eager"
-        fetchpriority="high"
-        class="w-full object-cover"
-        style="max-height: 80vh"
-      />
-      <!-- Overlay text -->
-      <div class="absolute bottom-0 left-0 p-3 md:p-6 z-10 bg-black/50 sm:backdrop-blur-sm sm:rounded-tr-[30px] w-full sm:w-auto max-w-screen-lg">
-        <h1 class="text-white">
-          Tricolor Screen
-        </h1>
-        <p class="font-bold text-white">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        </p>
-      </div>
-    </header>
+    <HeroImage 
+      src="/images/index/hero.png"
+      title="Tricolor Screen"
+      description="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+      :width="1280"
+      :height="854"
+      alt="Tricolor Screen hero image"
+    />
 
     <!-- Boxed content -->
     <div class="max-w-screen-xl mx-auto px-5 py-6">

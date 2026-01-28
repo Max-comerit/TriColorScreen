@@ -65,9 +65,9 @@ const props = withDefaults(defineProps<Props>(), {
           {{ props.title }}
         </slot>
       </h1>
-      <div class="description">
+      <div>
         <slot name="description">
-          <p>{{ props.description }}</p>
+          <p class="description">{{ props.description }}</p>
         </slot>
       </div>
     </div>
