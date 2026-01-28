@@ -36,7 +36,6 @@ useHead({
         quality="80"
         loading="eager"
         fetchpriority="high"
-        preload
         class="w-full object-cover"
         style="max-height: 80vh"
       />
