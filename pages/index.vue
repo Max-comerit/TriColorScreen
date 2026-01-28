@@ -27,7 +27,11 @@ useHead({
         alt="Hero image"
         width="1280"
         height="853"
-        sizes="100vw"
+        :sizes="{
+          sm: 640,
+          md: 768,
+          lg: 1024
+        }"
         format="webp"
         quality="80"
         loading="eager"
