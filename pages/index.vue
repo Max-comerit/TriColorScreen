@@ -27,11 +27,6 @@ useHead({
         alt="Hero image"
         width="1280"
         height="853"
-        :sizes="{
-          sm: '100vw',
-          md: '100vw',
-          lg: '100vw'
-        }"
         format="webp"
         quality="80"
         loading="eager"
