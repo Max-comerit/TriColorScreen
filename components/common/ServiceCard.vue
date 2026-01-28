@@ -64,7 +64,7 @@ const textColorClass = computed(() => `text-${props.textColor}`)
       @keydown.space.prevent="emit('click')"
     >
       <!-- Image container with zoom effect on hover --> 
-      <div class="w-full align-middle bg-gray-200 rounded-t-card overflow-hidden">
+      <div class="w-full max-h-[75%]  align-middle bg-gray-200 rounded-t-card ">
         <NuxtImg
           :src="imageSrc"
           :alt="alt"
@@ -73,14 +73,14 @@ const textColorClass = computed(() => `text-${props.textColor}`)
           format="webp"
           loading="lazy"
           fetchpriority="low"
-          class="w-full object-cover aspect-[4/3] transition-transform duration-300 group-hover:scale-105  rounded-t-card"
+          class="w-full object-cover aspect-[4/3] h-full  transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
         />
       </div>
 
       <!-- Text content section with title and description -->
-      <div class="flex flex-1 flex-col gap-2 py-4">
+      <div class="flex flex-1 flex-col gap-1 ">
         <!-- Service title -->
-        <h3 :class="['text-lg font-semibold line-clamp-2', textColorClass]">
+        <h3 :class="['text-lg font-semibold line-clamp-1', textColorClass]">
           {{ title }}
         </h3>
         <!-- Service description -->
