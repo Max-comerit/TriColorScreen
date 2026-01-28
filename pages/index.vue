@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import BragBar from '~/components/features/BragBar.vue';
+
 // Index page
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
@@ -18,5 +20,7 @@ useHead({
 <template>
   <main>
     <!-- Index page content -->
+         <BragBar />
+
   </main>
 </template>
