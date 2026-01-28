@@ -47,10 +47,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   image: {
-    provider: 'ipx',
-    netlify: {
-      baseURL: process.env.IMAGES_URL
-    },
+    provider: 'ipx', // default
     screens: {
       sm: 640,
       md: 768,
