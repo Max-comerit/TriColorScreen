@@ -22,21 +22,23 @@ useHead({
 <template>
   <div>
     <!-- Hero: full width -->
-    <header class="w-full aspect-3/2  max-h-[80vh] relative overflow-hidden">
+    <header class="w-full aspect-3/2 max-h-[80vh] relative overflow-hidden">
       <!-- Hero image -->
       <NuxtImg
         src="/images/index/hero.png"
         alt="Hero image"
+        width="1280"
+        height="854"
         format="webp"
         fit="cover"
         quality="80"
         loading="eager"
         fetchpriority="high"
-        :sizes="{ xs: '412px', sm: '640px', md: '768px', lg: '1024px' }"
-        class="w-full h-full object-cover"
+        class="w-full object-cover"
+        style="max-height: 80vh"
       />
       <!-- Overlay text -->
-      <div class="absolute bottom-0 left-0 p-3 md:p-6 z-10 bg-black/50 sm:backdrop-blur-sm sm:rounded-tr-xl w-full md:w-auto max-w-screen-lg">
+      <div class="absolute bottom-0 left-0 p-3 md:p-6 z-10 bg-black/50 sm:backdrop-blur-sm sm:rounded-tr-lg w-full md:w-auto max-w-screen-lg">
         <h1 class="text-white">
           Tricolor Screen
         </h1>
