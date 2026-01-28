@@ -28,7 +28,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   width: '100%',
-  height: 'auto',
+  height: '100%',
   backgroundColor: 'bg-primary-50',
   textColor: 'black',
   link: '#',
@@ -55,7 +55,7 @@ const textColorClass = computed(() => `text-${props.textColor}`)
   <NuxtLink :to="link">
     <!-- Main card container with accessibility and interaction features -->
     <article
-      class="group flex flex-col overflow-hidden rounded-card shadow-drop transition-transform duration-200 hover:-translate-y-1 focus-within:-translate-y-1 cursor-pointer"
+      class="group flex flex-col p-5 overflow-hidden rounded-card shadow-drop transition-transform duration-200 hover:-translate-y-1 focus-within:-translate-y-1 cursor-pointer"
       :class="backgroundColor"
       :style="cardStyle"
       tabindex="0"
@@ -63,28 +63,28 @@ const textColorClass = computed(() => `text-${props.textColor}`)
       @keydown.enter.prevent="emit('click')"
       @keydown.space.prevent="emit('click')"
     >
-      <!-- Image container with zoom effect on hover -->
-      <div class="w-5/6 align-middle mx-auto mt-4 bg-gray-200 rounded-t-card">
+      <!-- Image container with zoom effect on hover --> 
+      <div class="w-full align-middle bg-gray-200 rounded-t-card overflow-hidden">
         <NuxtImg
           :src="imageSrc"
           :alt="alt"
           quality="80"
-          sizes="sm:100vw md:100vw lg:1280px"
+          sizes="sm:100vw md:100vw"
           format="webp"
           loading="lazy"
           fetchpriority="low"
-          class="w-full object-cover transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
+          class="w-full object-cover aspect-[4/3] transition-transform duration-300 group-hover:scale-105  rounded-t-card"
         />
       </div>
 
       <!-- Text content section with title and description -->
-      <div class="flex flex-1 flex-col gap-2 p-5">
+      <div class="flex flex-1 flex-col gap-2 py-4">
         <!-- Service title -->
-        <h3 :class="['text-lg font-semibold ', textColorClass]">
+        <h3 :class="['text-lg font-semibold line-clamp-2', textColorClass]">
           {{ title }}
         </h3>
         <!-- Service description -->
-        <p :class="['text-sm leading-relaxed overflow-hidden', textColorClass]">
+        <p :class="['text-sm leading-relaxed line-clamp-3', textColorClass]">
           {{ description }}
         </p>
       </div>
