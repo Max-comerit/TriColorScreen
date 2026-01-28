@@ -28,7 +28,10 @@ useHead({
         src="/images/index/hero.png"
         alt="Hero image"
         format="webp"
+        fit="cover"
         quality="80"
+        loading="eager"
+        fetchpriority="high"
         :sizes="{ xs: '412px', sm: '640px', md: '768px', lg: '1024px' }"
         class="w-full h-full object-cover"
       />
