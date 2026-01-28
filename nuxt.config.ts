@@ -46,17 +46,17 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  image: {
-    provider: 'netlify',
-    netlify: {
-      baseURL: process.env.IMAGES_URL
+    image: {
+      provider: 'netlify',
+      netlify: {
+        baseURL: process.env.IMAGES_URL || process.env.URL || '/'
+      },
+      screens: {
+        sm: 640,
+        md: 768,
+        lg: 1024
+      }
     },
-    screens: {
-      sm: 640,
-      md: 768,
-      lg: 1024
-    }
-  },
 
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
