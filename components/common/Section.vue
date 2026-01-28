@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   title: undefined,
   description: undefined,
   id: undefined,
-  backgroundColor: 'bg-transparent',
+  backgroundColor: 'bg-white',
   textColor: 'text-neutral-900',
   paddingY: 'medium',
   contained: true,
