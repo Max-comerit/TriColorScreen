@@ -32,7 +32,7 @@ useHead({
         format="webp"
         fit="cover"
         quality="80"
-        sizes="sm:100vw md:100vw lg:100vw"
+        sizes="100vw md:100vw lg:1280px"
         loading="eager"
         fetchpriority="high"
         class="w-full object-cover"
