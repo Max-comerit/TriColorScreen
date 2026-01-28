@@ -6,7 +6,9 @@ import AppFooter from '~/components/layout/AppFooter.vue';
 <template>
   <div class="min-h-screen bg-tiled-logo">
     <AppHeader />
-    <slot />
+    <main id="main-content">
+      <NuxtPage />
+    </main>
     <AppFooter />
   </div>
 </template>

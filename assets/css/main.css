@@ -1,3 +1,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* Typography - WCAG AA compliant defaults for headings and paragraphs */
+  /* Following semantic HTML hierarchy with proper visual distinction */
+
+  /* Main page title - only one per page */
+  h1 {
+    @apply text-4xl font-bold leading-tight text-layout-text-on-light;
+    @apply mb-6;
+  }
+
+  /* Section headings */
+  h2 {
+    @apply text-3xl font-bold leading-snug text-layout-text-on-light;
+    @apply mb-5 mt-8;
+  }
+
+  /* Subsection headings */
+  h3 {
+    @apply text-2xl font-semibold leading-snug text-layout-text-on-light;
+    @apply mb-4 mt-6;
+  }
+
+  /* Minor headings */
+  h4 {
+    @apply text-xl font-semibold leading-normal text-layout-text-on-light;
+    @apply mb-3 mt-5;
+  }
+
+  h5 {
+    @apply text-lg font-medium leading-normal text-layout-text-on-light;
+    @apply mb-3 mt-4;
+  }
+
+  h6 {
+    @apply text-base font-medium leading-normal text-layout-text-on-light;
+    @apply mb-2 mt-3;
+  }
+
+  /* Paragraph text - optimized for readability */
+  p {
+    @apply text-base leading-relaxed text-layout-text-on-light;
+    @apply mb-4;
+  }
+
+  /* Responsive typography for larger screens */
+  @media (min-width: 768px) {
+    h1 {
+      @apply text-5xl;
+    }
+
+    h2 {
+      @apply text-4xl;
+    }
+
+    h3 {
+      @apply text-3xl;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    h1 {
+      @apply text-6xl;
+    }
+
+    h2 {
+      @apply text-5xl;
+    }
+  }
+}
