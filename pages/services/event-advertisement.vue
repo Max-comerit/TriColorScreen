@@ -21,12 +21,15 @@ useHead({
         alt="Hero image"
         width="1280"
         height="853"
-        sizes="100vw"
-        loading="eager"
-        fetchpriority="high"
-        preload
+        :sizes="{
+          sm: 640,
+          md: 768,
+          lg: 1024
+        }"
         format="webp"
         quality="80"
+        loading="eager"
+        fetchpriority="high"
         class="w-full object-cover"
         style="max-height: 80vh"
       />
@@ -55,3 +58,4 @@ useHead({
     </div>
   </div>
 </template>
+
