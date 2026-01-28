@@ -23,6 +23,7 @@ interface Props {
   textColor?: string
   /** Navigation link for the card */
   link?: string
+  alt?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   backgroundColor: 'bg-primary-50',
   textColor: 'black',
   link: '#',
+  alt: 'Service Image',
 })
 
 /** Emits 'click' event when the card is clicked or activated via keyboard */
@@ -53,7 +55,7 @@ const textColorClass = computed(() => `text-${props.textColor}`)
   <NuxtLink :to="link">
     <!-- Main card container with accessibility and interaction features -->
     <article
-      class="group flex flex-col overflow-hidden rounded-lg shadow-drop transition-transform duration-200 hover:-translate-y-1 focus-within:-translate-y-1 cursor-pointer"
+      class="group flex flex-col overflow-hidden rounded-card shadow-drop transition-transform duration-200 hover:-translate-y-1 focus-within:-translate-y-1 cursor-pointer"
       :class="backgroundColor"
       :style="cardStyle"
       tabindex="0"
@@ -62,27 +64,27 @@ const textColorClass = computed(() => `text-${props.textColor}`)
       @keydown.space.prevent="emit('click')"
     >
       <!-- Image container with zoom effect on hover -->
-      <div class="w-5/6 overflow-hidden align-middle mx-auto mt-4 rounded-md bg-gray-200">
+      <div class="w-5/6 align-middle mx-auto mt-4 bg-gray-200 rounded-t-card">
         <NuxtImg
           :src="imageSrc"
-          :alt="title"
+          :alt="alt"
           quality="80"
           sizes="sm:100vw md:100vw lg:1280px"
           format="webp"
           loading="lazy"
           fetchpriority="low"
-          class="w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          class="w-full object-cover transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
         />
       </div>
 
       <!-- Text content section with title and description -->
       <div class="flex flex-1 flex-col gap-2 p-5">
         <!-- Service title -->
-        <h3 :class="['text-lg font-semibold', textColorClass]">
+        <h3 :class="['text-lg font-semibold ', textColorClass]">
           {{ title }}
         </h3>
         <!-- Service description -->
-        <p :class="['text-sm leading-relaxed', textColorClass]">
+        <p :class="['text-sm leading-relaxed overflow-hidden', textColorClass]">
           {{ description }}
         </p>
       </div>
