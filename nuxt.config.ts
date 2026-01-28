@@ -47,7 +47,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   image: {
-    provider: 'netlify',
+    provider: 'ipx',
     netlify: {
       baseURL: process.env.IMAGES_URL
     },

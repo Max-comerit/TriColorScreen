@@ -28,11 +28,11 @@ useHead({
         width="1280"
         height="853"
         sizes="100vw"
+        format="webp"
+        quality="80"
         loading="eager"
         fetchpriority="high"
         preload
-        format="webp"
-        quality="80"
         class="w-full object-cover"
         style="max-height: 80vh"
       />
