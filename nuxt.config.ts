@@ -24,6 +24,12 @@ export default defineNuxtConfig({
         warn(warning)
       },
     },
+    prerender: {
+      crawlLinks: true,
+      ignore: [
+        /^\/\.netlify\/images/
+      ]
+    },
   },
 
   typescript: {
