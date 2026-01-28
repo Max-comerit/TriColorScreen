@@ -27,8 +27,6 @@ useHead({
       <NuxtImg
         src="/images/index/hero.png"
         alt="Hero image"
-        width="1280"
-        height="854"
         format="webp"
         fit="cover"
         quality="80"
