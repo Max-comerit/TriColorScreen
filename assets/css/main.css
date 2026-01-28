@@ -8,79 +8,47 @@
 
   /* Main page title - only one per page */
   h1 {
-    @apply text-4xl font-bold leading-tight text-layout-text-on-light;
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-layout-text-on-light;
     @apply mb-6;
   }
 
   /* Section headings */
   h2 {
-    @apply text-3xl font-bold leading-snug text-layout-text-on-light;
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold leading-snug text-layout-text-on-light;
     @apply mb-5 mt-8;
   }
 
   /* Subsection headings */
   h3 {
-    @apply text-2xl font-semibold leading-snug text-layout-text-on-light;
+    @apply text-xl md:text-2xl lg:text-3xl font-semibold leading-snug text-layout-text-on-light;
     @apply mb-4 mt-6;
   }
 
   /* Minor headings */
   h4 {
-    @apply text-xl font-semibold leading-normal text-layout-text-on-light;
+    @apply text-lg md:text-xl lg:text-2xl font-semibold leading-normal text-layout-text-on-light;
     @apply mb-3 mt-5;
   }
 
   h5 {
-    @apply text-lg font-medium leading-normal text-layout-text-on-light;
+    @apply text-base md:text-lg lg:text-xl font-medium leading-normal text-layout-text-on-light;
     @apply mb-3 mt-4;
   }
 
   h6 {
-    @apply text-base font-medium leading-normal text-layout-text-on-light;
+    @apply text-base md:text-lg lg:text-xl font-medium leading-normal text-layout-text-on-light;
     @apply mb-2 mt-3;
   }
 
   /* Paragraph text - optimized for readability */
+  /* Mobile-first: 16px base for better readability on small screens */
   p {
-    @apply text-base leading-relaxed text-layout-text-on-light;
+    @apply text-base md:text-lg lg:text-xl leading-relaxed text-layout-text-on-light;
     @apply mb-4;
   }
 
-  /* Responsive typography for larger screens */
-  /* sm: 640px - Small devices (landscape phones) */
-  @media (min-width: 640px) {
-    h1 {
-      @apply text-5xl;
-    }
-
-    h2 {
-      @apply text-4xl;
-    }
-
-    h3 {
-      @apply text-3xl;
-    }
-  }
-
-  /* md: 768px - Medium devices (tablets) */
-  @media (min-width: 768px) {
-    h1 {
-      @apply text-5xl;
-    }
-
-    h2 {
-      @apply text-4xl;
-    }
-  }
-
-  /* lg: 1024px - Large devices (desktops) */
-  @media (min-width: 1024px) {
-    h1 {
-      @apply text-6xl;
-    }
-
-    h2 {
-      @apply text-5xl;
-    }
-  }
+  /* Note: Responsive typography is handled by Tailwind utilities in the base styles above */
+  /* Mobile: < 640px - base sizes (text-3xl, text-2xl, etc.) */
+  /* Tablet: 640px - 1024px - md: sizes (md:text-4xl, md:text-3xl, etc.) */
+  /* Desktop: ≥ 1024px - lg: sizes (lg:text-5xl, lg:text-4xl, etc.) */
 }
