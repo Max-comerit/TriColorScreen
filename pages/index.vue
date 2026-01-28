@@ -22,7 +22,7 @@ useHead({
 <template>
   <div>
     <!-- Hero: full width -->
-    <header class="w-full relative max-h-[80vh] overflow-hidden">
+    <header class="w-full aspect-3/2 relative overflow-hidden">
       <!-- Hero image -->
       <NuxtImg
         src="/images/index/hero.png"
@@ -33,7 +33,6 @@ useHead({
         fetchpriority="high"
         :sizes="{ xs: '412px', sm: '640px', md: '768px', lg: '1024px' }"
         class="w-full h-full object-cover"
-        style="max-height: 80vh"
       />
       <!-- Overlay text -->
       <div class="absolute bottom-0 left-0 p-3 md:p-6 z-10 bg-black/50 sm:backdrop-blur-sm sm:rounded-tr-xl w-full md:w-auto max-w-screen-lg">
