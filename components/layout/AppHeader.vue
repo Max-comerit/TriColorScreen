@@ -11,7 +11,7 @@ import NavBar from '~/components/layout/NavBar.vue'
 
 <template>
   <header class="bg-neutral-900 px-5 sticky top-0 z-50 shadow-[0_4px_10px_rgba(0,0,0,0.25)] shadow-black/50">
-    <div class="max-w-screen-xl mx-auto flex items-center justify-between min-h-[80px]">
+    <div class="max-w-full mx-auto flex items-center justify-between min-h-[80px]">
       <!-- Logo -->
       <NuxtLink to="/" aria-label="Gå till hemsida" class="logo-link">
         <NuxtImg
@@ -28,6 +28,10 @@ import NavBar from '~/components/layout/NavBar.vue'
 
       <!-- Desktop Navigation -->
       <NavBar />
+
+      <!-- Dummy layout element -->
+      <div class="hidden sm:block min-w-[50px] min-h-[50px]" aria-hidden="true"/>
+
     </div>
   </header>
 </template>

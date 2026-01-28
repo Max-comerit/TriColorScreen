@@ -285,7 +285,7 @@ watch(
 </script>
 
 <template>
-  <nav class="flex flex-1 justify-end" :class="{ 'is-touch-device': isTouchDevice }" aria-label="Huvudnavigering">
+  <nav class="flex flex-1 justify-end sm:justify-center" :class="{ 'is-touch-device': isTouchDevice }" aria-label="Huvudnavigering">
     <ul class="hidden sm:flex  align-end items-center gap-0 list-none m-0 p-0">
       <li
       v-for="item in menuItems" :key="item.href" class="nav-item relative flex items-stretch"
