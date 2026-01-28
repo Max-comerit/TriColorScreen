@@ -31,7 +31,7 @@ useHead({
         style="max-height: 80vh"
       />
       <!-- Overlay text -->
-      <div class="absolute bottom-0 left-0 p-3 md:p-6 z-10 bg-black/50 sm:backdrop-blur-sm sm:rounded-tr-lg w-full md:w-auto max-w-screen-lg">
+      <div class="absolute bottom-0 left-0 p-3 md:p-6 z-10 bg-black/50 sm:backdrop-blur-sm sm:rounded-tr-[30px] w-full sm:w-auto max-w-screen-lg">
         <h1 class="text-white">
           Tricolor Screen
         </h1>
