@@ -21,12 +21,20 @@ useHead({
   <div>
     <!-- Hero: full width -->
     <header class="w-full relative max-h-[80vh] overflow-hidden">
-      <!-- Hero image placeholder or NuxtImage -->
+      <!-- Hero image -->
       <NuxtImg
         src="/images/index/hero.png"
-        alt="Hero Image"
+        alt="Hero image"
+        width="1280"
+        height="853"
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        preload
+        format="webp"
+        quality="80"
         class="w-full object-cover"
-        style="aspect-ratio: 3/2; max-height: 80vh;"
+        style="max-height: 80vh"
       />
       <!-- Overlay text -->
       <div class="absolute bottom-0 left-0 p-3 md:p-6 z-10 bg-black/50 sm:backdrop-blur-sm sm:rounded-tr-xl w-full md:w-auto max-w-screen-lg">
