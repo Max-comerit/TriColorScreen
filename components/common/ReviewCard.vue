@@ -46,7 +46,7 @@ const cardStyle = computed(() => ({
     </div>
 
     <!-- Horizontal separator between review and reviewer info -->
-    <hr class="border-gray-300 my-2" />
+    <hr class="border-gray-300 my-2">
     
     <!-- Reviewer information section -->
     <div class="flex flex-col">
