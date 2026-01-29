@@ -1,10 +1,10 @@
 // pages/index.vue
 
 <script setup lang="ts">
-import BragBar from '~/components/features/BragBar.vue';
-
 // Index page
 import HeroImage from '~/components/common/HeroImage.vue'
+import BragBar from '~/components/features/BragBar.vue'
+import Section from '~/components/common/Section.vue'
 
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
@@ -36,17 +36,24 @@ useHead({
     <!-- Brag Bar -->
     <BragBar />
 
-    <!-- Boxed content -->
+    <!-- Sections -->
     <div class="max-w-screen-xl mx-auto px-5 py-6">
-      <section>
-        <h2>Section 1</h2>
+      <Section 
+        id="services" 
+        title="Våra tjänster" 
+        align="center"
+        aria-label="Våra tjänster och lösningar"
+      >
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
-      </section>
-
-      <section>
-        <h2>Section 2</h2>
+      </Section>
+      <Section 
+        id="testimonials" 
+        title="Omdömen" 
+        align="center"
+        aria-label="Kundrecensioner och omdömen"
+      >
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
-      </section>
+      </Section>
     </div>
   </div>
 </template>
