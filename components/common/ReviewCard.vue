@@ -3,7 +3,7 @@
  * ReviewCard Component
  *
  * A reusable card for displaying customer reviews with reviewer information.
- * Features responsive layout with vertical separator and customizable styling.
+ * Features vertical layout with review text above reviewer details and customizable styling.
  */
 
 /** Props interface for ReviewCard component */
@@ -25,7 +25,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   height: 'auto',
-  backgroundColor: 'bg-primary-50',
+  backgroundColor: 'bg-accent-100',
 })
 
 /** Computes dynamic style object for card dimensions */
@@ -37,32 +37,29 @@ const cardStyle = computed(() => ({
 
 <template>
   <!-- Review card container -->
-  <article
-    class="flex flex-col md:flex-row gap-4 md:gap-6 p-4 md:p-6 rounded-card shadow-drop"
-    :class="backgroundColor"
-    :style="cardStyle"
-  >
+  <article class="flex flex-col gap-4 p-4 md:p-6 rounded-card shadow-drop" :class="backgroundColor" :style="cardStyle">
     <!-- Review text section -->
     <div class="flex-1">
       <blockquote class="text-sm md:text-base leading-relaxed text-gray-700 italic">
-        "{{ review }}"
+        {{ review }}
       </blockquote>
     </div>
 
-    <!-- Vertical separator -->
-    <div class="hidden md:block w-px bg-gray-300"></div>
-    <!-- Horizontal separator for mobile -->
-    <div class="md:hidden h-px bg-gray-300"></div>
-
+    <!-- Horizontal separator between review and reviewer info -->
+    <hr class="border-gray-300 my-2" />
+    
     <!-- Reviewer information section -->
-    <div class="flex flex-col justify-center md:min-w-fit">
+    <div class="flex flex-col">
       <!-- Reviewer name -->
       <p class="font-semibold text-gray-900 text-sm md:text-base">
         {{ name }}
       </p>
       <!-- Review date -->
       <p class="text-xs md:text-sm text-gray-500">
-        {{ date }}
+        <time :datetime="date">
+          {{ date }}
+        </time>
+
       </p>
     </div>
   </article>
@@ -75,5 +72,13 @@ const cardStyle = computed(() => ({
 blockquote {
   margin: 0;
   padding: 0;
+}
+
+blockquote::before {
+  content: "“";
+}
+
+blockquote::after {
+  content: "”";
 }
 </style>
