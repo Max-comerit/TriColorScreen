@@ -46,7 +46,7 @@ const cardStyle = computed(() => ({
 
 /** Order classes so image can be shown first or second on wide screens */
 const imageOrderClass = computed(() => (props.imageFirst ? 'order-1 md:order-1' : 'order-1 md:order-2'))
-const contentOrderClass = computed(() => (props.imageFirst ? 'order-2 md:order-2' : 'order-2 md:order-1'))
+const contentOrderClass = computed(() => (props.imageFirst ? 'order-2 md:order-2' : 'order-2 text-right md:order-1'))
 
 </script>
 
@@ -64,7 +64,7 @@ const contentOrderClass = computed(() => (props.imageFirst ? 'order-2 md:order-2
     @keydown.space.prevent="emit('click')"
   >
     <!-- Title above image and content -->
-    <h3 class="text-lg md:text-xl font-display font-medium mb-4 text-neutral-900 w-fit mx-auto">
+    <h3 class="text-lg md:text-xl font-display font-medium mb-4 text-neutral-900 w-fit mx-auto my-0">
       {{ title }}
     </h3>
 
