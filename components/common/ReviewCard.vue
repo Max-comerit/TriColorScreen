@@ -37,7 +37,7 @@ const cardStyle = computed(() => ({
 
 <template>
   <!-- Review card container -->
-  <article class="flex flex-col gap-4 p-4 md:p-6 rounded-card shadow-drop" :class="backgroundColor" :style="cardStyle">
+  <article class="flex flex-col gap-4 p-4 md:p-6 rounded-card shadow-drop" :class="backgroundColor" :style="cardStyle" aria-label="Customer review">
     <!-- Review text section -->
     <div class="flex-1">
       <blockquote class="text-sm md:text-base leading-relaxed text-gray-700 italic">
@@ -55,7 +55,7 @@ const cardStyle = computed(() => ({
         {{ name }}
       </p>
       <!-- Review date -->
-      <p class="text-xs md:text-sm text-gray-500">
+      <p class="text-sm md:text-md text-gray-700">
         <time :datetime="date">
           {{ date }}
         </time>
