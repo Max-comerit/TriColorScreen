@@ -1,10 +1,10 @@
 /**
- * Card Types
+ * Card Interfaces
  *
- * Type definitions for card components used throughout the application.
+ * Interfaces for card components used throughout the application.
  */
 
-/** ServiceCard component props type */
+/** ServiceCard component props interface */
 export interface IServiceCard {
   /** Image source URL for the service card */
   imageSrc: string
