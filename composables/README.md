@@ -22,40 +22,6 @@ const { data, loading, error, fetchContent } = useContent<MyType>(
 )
 ```
 
-### `useServiceCategories.ts`
-Lazy-loads service category cards from `/public/data/index/service-categories.json`
-
-```vue
-<script setup lang="ts">
-const { serviceCategories, loading, error, load, loadOnVisible, loadOnInteraction } = useServiceCategories()
-
-// Option 1: Load immediately
-onMounted(() => load())
-
-// Option 2: Load when element enters viewport
-const sectionRef = ref<HTMLElement | null>(null)
-loadOnVisible(sectionRef, 0.1)
-
-// Option 3: Load on user interaction
-const buttonRef = ref<HTMLElement | null>(null)
-loadOnInteraction(buttonRef)
-</script>
-
-<template>
-  <section ref="sectionRef">
-    <div v-if="loading">Loading...</div>
-    <div v-else-if="error">Error: {{ error.message }}</div>
-    <div v-else-if="serviceCategories">
-      <ServiceCard
-        v-for="(category, index) in serviceCategories"
-        :key="index"
-        v-bind="category"
-      />
-    </div>
-  </section>
-</template>
-```
-
 ### `useCardContent.ts`
 Generic composable for lazy-loading card content from any JSON file.
 
@@ -137,18 +103,23 @@ onMounted(() => {
 ✅ IntersectionObserver - loads only visible content  
 ✅ CDN-friendly - static JSON served from `/public`
 
+
 ## Bugfixes (2026-01-29)
 
-- `useServiceCategories` and `useCardContent` now accept either a `Ref<HTMLElement | null>` or a getter function (e.g. `() => element`) for `loadOnVisible` and `loadOnInteraction`.
+- `useCardContent` now accepts either a `Ref<HTMLElement | null>` or a getter function (e.g. `() => element`) for `loadOnVisible` and `loadOnInteraction`.
     - This allows compatibility with both template refs and exposed DOM elements, and prevents Vue warnings about invalid watch sources.
 - Both composables now handle IntersectionObserver and event listeners robustly for both ref and function usage.
 - Example usage:
 
 ```ts
-// Correct usage with getter function
+// Correct usage with getter function (for custom/exposed DOM elements)
 onMounted(() => {
-  loadOnVisible(() => sectionRef.value?.$el, 0.1)
+  loadOnVisible(() => sectionRef.value, 0.1)
 })
 ```
 
-- This ensures lazy loading works with custom/exposed DOM elements and avoids runtime errors or warnings.
+- This ensures lazy loading works with both template refs and custom/exposed DOM elements, and avoids runtime errors or warnings.
+
+## CardGrid Usage Note
+
+The CardGrid component does not expose a slot. It renders cards automatically based on the loaded content and the `type` prop. Do not use `<template #default>` or slot syntax with CardGrid.
