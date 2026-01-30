@@ -19,6 +19,9 @@ useHead({
   ],
   link: [
     { rel: 'canonical', href: 'https://tricolorscreen.se' },
+    // Preload tcs-wallpaper images for eager loading
+    { rel: 'preload', as: 'image', href: '/assets/images/tcs-wallpaper.webp', type: 'image/webp', fetchpriority: 'high' },
+    { rel: 'preload', as: 'image', href: '/assets/images/tcs-wallpaper.png', type: 'image/png', fetchpriority: 'high' },
   ],
 })
 </script>
@@ -63,6 +66,6 @@ useHead({
     url('/assets/images/tcs-wallpaper.webp') type('image/webp'),
     url('/assets/images/tcs-wallpaper.png') type('image/png')
   );
-  background-size: 50%;
+  background-size: 12.5%;
 }
 </style>

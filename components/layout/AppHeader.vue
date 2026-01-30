@@ -21,6 +21,7 @@ import NavBar from '~/components/layout/NavBar.vue'
           height="169"
           format="webp"
           loading="eager"
+          fetchpriority="high"
           decoding="async"
           class="h-[50px] w-[50px] block"
         />
