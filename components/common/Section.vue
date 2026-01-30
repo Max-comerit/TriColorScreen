@@ -60,7 +60,6 @@ const alignClass = computed(() => {
   }
   return alignMap[props.align]
 })
-
 </script>
 
 <template>
