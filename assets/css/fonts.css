@@ -1,0 +1,11 @@
+/**
+ * Font Loading Optimization
+ * 
+ * Uses font-display: swap to prevent FOIT (Flash of Invisible Text)
+ * and reduce Cumulative Layout Shift (CLS) during font loading.
+ */
+
+/* Apply font-display: swap to all font faces */
+@font-face {
+  font-display: swap;
+}

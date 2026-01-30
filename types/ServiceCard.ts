@@ -5,7 +5,7 @@
  */
 
 /** ServiceCard component props type */
-export interface ServiceCard {
+export interface IServiceCard {
   /** Image source URL for the service card */
   imageSrc: string
   /** Title text displayed on the card */

@@ -1,3 +1,6 @@
+/* Font loading optimization to prevent CLS */
+@import './fonts.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

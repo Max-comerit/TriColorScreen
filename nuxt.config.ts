@@ -18,6 +18,39 @@ export default defineNuxtConfig({
         /^\/ipx/
       ]
     },
+    compressPublicAssets: true,
+    routeRules: {
+      // Cache static pages for 1 hour (revalidate in background)
+      '/**': { 
+        headers: { 
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400' 
+        } 
+      },
+      // Cache images for 1 year (immutable)
+      '/images/**': { 
+        headers: { 
+          'Cache-Control': 'public, max-age=31536000, immutable' 
+        } 
+      },
+      // Cache optimized images for 1 year
+      '/_ipx/**': { 
+        headers: { 
+          'Cache-Control': 'public, max-age=31536000, immutable' 
+        } 
+      },
+      // Cache static assets (CSS, JS, fonts) for 1 year
+      '/_nuxt/**': { 
+        headers: { 
+          'Cache-Control': 'public, max-age=31536000, immutable' 
+        } 
+      },
+      // Cache JSON data for 1 hour with stale-while-revalidate
+      '/data/**': { 
+        headers: { 
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400' 
+        } 
+      },
+    },
     rollupConfig: {
       external: ['@nuxt/nitro-server'],
       onwarn(warning, warn) {
