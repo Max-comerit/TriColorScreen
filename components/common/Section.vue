@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   title: undefined,
   description: undefined,
   id: undefined,
-  backgroundColor: 'bg-white',
+  backgroundColor: 'bg-transparent',
   textColor: 'text-neutral-900',
   paddingY: 'medium',
   contained: true,
@@ -61,19 +61,11 @@ const alignClass = computed(() => {
   return alignMap[props.align]
 })
 
-/** Template ref for the root section element */
-const sectionRef = ref<HTMLElement | null>(null)
-
-/** Expose the root element for parent components to access */
-defineExpose({
-  $el: sectionRef,
-})
 </script>
 
 <template>
   <section
     :id="id"
-    ref="sectionRef"
     :class="[backgroundColor, paddingClass, textColor]"
     :aria-label="ariaLabel || title"
   >
