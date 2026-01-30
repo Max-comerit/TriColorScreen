@@ -20,8 +20,8 @@ useHead({
   link: [
     { rel: 'canonical', href: 'https://tricolorscreen.se' },
     // Preload tcs-wallpaper images for eager loading
-    { rel: 'preload', as: 'image', href: '/assets/images/tcs-wallpaper.webp', type: 'image/webp', fetchpriority: 'high' },
-    { rel: 'preload', as: 'image', href: '/assets/images/tcs-wallpaper.png', type: 'image/png', fetchpriority: 'high' },
+    { rel: 'preload', as: 'image', href: '/images/tcs-wallpaper.webp', type: 'image/webp', fetchpriority: 'high' },
+    { rel: 'preload', as: 'image', href: '/images/tcs-wallpaper.png', type: 'image/png', fetchpriority: 'high' },
   ],
 })
 </script>
@@ -63,8 +63,8 @@ useHead({
   @apply absolute inset-0 bg-repeat opacity-30 -z-10;
   content: '';
   background-image: image-set(
-    url('/assets/images/tcs-wallpaper.webp') type('image/webp'),
-    url('/assets/images/tcs-wallpaper.png') type('image/png')
+    url('/images/tcs-wallpaper.webp') type('image/webp'),
+    url('/images/tcs-wallpaper.png') type('image/png')
   ) !important;
   background-size: 12.5% !important;
 }
