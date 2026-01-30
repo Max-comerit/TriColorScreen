@@ -55,7 +55,7 @@ const cardStyle = computed(() => ({
         {{ name }}
       </p>
       <!-- Review date -->
-      <p class="text-sm md:text-md text-gray-700">
+      <p class="text-sm md:text-base text-gray-700">
         <time :datetime="date">
           {{ date }}
         </time>
