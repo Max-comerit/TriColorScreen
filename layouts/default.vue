@@ -21,9 +21,8 @@ useHead({
   ],
   link: [
     { rel: 'canonical', href: 'https://tricolorscreen.se' },
-    // Preload tcs-wallpaper images for eager loading
+    // Preload tcs-wallpaper.webp image for eager loading
     { rel: 'preload', as: 'image', href: '/images/tcs-wallpaper.webp', type: 'image/webp', fetchpriority: 'high' },
-    { rel: 'preload', as: 'image', href: '/images/tcs-wallpaper.png', type: 'image/png', fetchpriority: 'high' },
   ],
 })
 </script>
