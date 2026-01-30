@@ -22,7 +22,13 @@ useHead({
   link: [
     { rel: 'canonical', href: 'https://tricolorscreen.se' },
     // Preload tcs-wallpaper.webp image for eager loading
-    { rel: 'preload', as: 'image', href: '/images/tcs-wallpaper.webp', type: 'image/webp', fetchpriority: 'high' },
+    {
+      rel: 'preload',
+      as: 'image',
+      href: '/images/tcs-wallpaper.webp',
+      type: 'image/webp',
+      fetchpriority: 'low', // decorative → low priority
+    },
   ],
 })
 </script>
@@ -61,12 +67,21 @@ useHead({
 }
 
 .bg-tiled-logo::before {
-  @apply absolute inset-0 bg-repeat opacity-30 -z-10;
+  position: absolute;
+  inset: 0;
   content: '';
-  background-image: image-set(
-    url('/images/tcs-wallpaper.webp') type('image/webp'),
-    url('/images/tcs-wallpaper.png') type('image/png')
-  ) !important;
-  background-size: 12.5% !important;
+  background-repeat: repeat;
+  opacity: 0.3;
+  z-index: -10;
+
+  /* WebP first, PNG fallback for older browsers */
+  background-image: url('/images/tcs-wallpaper.webp');
+  
+  /* fallback for browsers that don't support WebP */
+  @supports not (background-image: url('/images/tcs-wallpaper.webp')) {
+    background-image: url('/images/tcs-wallpaper.png');
+  }
+
+  background-size: 12.5%;
 }
 </style>

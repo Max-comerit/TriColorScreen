@@ -1,3 +1,5 @@
+// tailwind.config.ts
+
 import type { Config } from 'tailwindcss'
 
 // Theme based on CMYK color model from company logo:
