@@ -68,6 +68,8 @@ const textColorClass = computed(() => `text-${props.textColor}`)
         <NuxtImg
           :src="imageSrc"
           :alt="alt"
+          width="300"
+          height="400"
           quality="80"
           sizes="sm:100vw md:100vw"
           format="webp"

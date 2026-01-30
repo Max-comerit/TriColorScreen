@@ -17,8 +17,8 @@ import NavBar from '~/components/layout/NavBar.vue'
         <NuxtImg
           src="/images/header/tcs-logo.png"
           alt="Tricolor Screen logotyp"
-          width="174"
-          height="169"
+          width="50"
+          height="50"
           format="webp"
           loading="eager"
           fetchpriority="high"

@@ -56,12 +56,16 @@ loadOnInteraction(buttonRef)
 </template>
 ```
 
-### `useServices.ts`
-Lazy-loads services by category from `/public/data/services/{category}/services.json`
+### `useCardContent.ts`
+Generic composable for lazy-loading card content from any JSON file.
 
 ```vue
 <script setup lang="ts">
-const { services, loading, error, load, loadOnVisible } = useServices('graphic-production')
+import type { IServiceCard } from '~/types/ServiceCard'
+import { useCardContent } from '~/composables/useCardContent'
+
+// Example: Load services for a specific category
+const { services, loading, error, load, loadOnVisible } = useCardContent<IServiceCard[]>('/data/services/graphic-production/services.json')
 
 // Load when section is visible
 const servicesRef = ref<HTMLElement | null>(null)
@@ -83,19 +87,27 @@ loadOnVisible(servicesRef)
 </template>
 ```
 
-**Prefetch multiple categories:**
+**Prefetch multiple files:**
 
 ```vue
 <script setup lang="ts">
-const { prefetch } = usePrefetchServices([
-  'graphic-production',
-  'decoration-foiling',
-  'screen-printing-embroidery'
-])
+import { useCardContent } from '~/composables/useCardContent'
 
-// Prefetch on interaction or idle
+const files = [
+  '/data/services/graphic-production/services.json',
+  '/data/services/decoration-foiling/services.json',
+  '/data/services/screen-printing-embroidery/services.json',
+]
+
+const prefetchAll = () => {
+  files.forEach((src) => {
+    const { load } = useCardContent(src)
+    load()
+  })
+}
+
 onMounted(() => {
-  requestIdleCallback(() => prefetch())
+  requestIdleCallback(() => prefetchAll())
 })
 </script>
 ```
@@ -110,7 +122,7 @@ onMounted(() => {
 
 ## Cache Behavior
 
-- **Cache Key Format**: `content_{type}` or `services_{category}`
+- **Cache Key Format**: `content_{type}` or `services_{src}`
 - **TTL**: Infinite (static data never expires)
 - **Shared State**: Uses `useState` for cross-component cache sharing
 - **Hydration Safe**: Client-only fetching prevents mismatch
@@ -127,7 +139,7 @@ onMounted(() => {
 
 ## Bugfixes (2026-01-29)
 
-- `useServiceCategories` and `useServices` now accept either a `Ref<HTMLElement | null>` or a getter function (e.g. `() => element`) for `loadOnVisible` and `loadOnInteraction`.
+- `useServiceCategories` and `useCardContent` now accept either a `Ref<HTMLElement | null>` or a getter function (e.g. `() => element`) for `loadOnVisible` and `loadOnInteraction`.
     - This allows compatibility with both template refs and exposed DOM elements, and prevents Vue warnings about invalid watch sources.
 - Both composables now handle IntersectionObserver and event listeners robustly for both ref and function usage.
 - Example usage:

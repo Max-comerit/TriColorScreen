@@ -1,30 +1,24 @@
 /**
- * Service Categories Composable
+ * Services Composable
  *
- * Lazy-loads service category JSON data via interaction or IntersectionObserver.
- * Uses deterministic cache key to ensure single-fetch behavior across all instances.
+ * Lazy-loads JSON card content data by category via interaction or viewport proximity.
+ * Uses deterministic cache keys per category to ensure single-fetch behavior.
  * Cached indefinitely in memory (static read-only data).
  */
 
-import type { IServiceCard } from '~/types/ServiceCard'
 import { useContent } from '~/composables/useContent'
 
-// Deterministic cache key for service categories
-const CACHE_KEY = 'service_categories_index'
-const DATA_URL = '/data/index/service-categories.json'
-
 /**
- * Composable for fetching service category cards
- * Implements lazy loading with IntersectionObserver support
+ * Generic composable for fetching card content data from a JSON file
+ * @param src - Relative path to the JSON file
  */
-export function useServiceCategories() {
-  const { data, loading, error, fetchContent } = useContent<IServiceCard[]>(
-    CACHE_KEY,
-    DATA_URL,
-  )
+export function useCardContent<T>(src: string) {
+  const cacheKey = `cardContent_${src}`
+  const dataUrl = src
+  const { data, loading, error, fetchContent } = useContent<T>(cacheKey, dataUrl)
 
   /**
-   * Lazy load service categories when element enters viewport
+   * Lazy load card content when element enters viewport
    * @param element - Target element ref or getter function
    * @param threshold - Intersection threshold (0-1)
    */
@@ -69,10 +63,12 @@ export function useServiceCategories() {
   }
 
   /**
-   * Load service categories on user interaction (click, hover, focus)
-   * @param element - Target element for interaction
+   * Load card content on user interaction (click, hover, focus)
+   * @param element - Target element ref or getter function
    */
-  const loadOnInteraction = (element: Ref<HTMLElement | null>) => {
+  const loadOnInteraction = (
+    element: Ref<HTMLElement | null> | (() => HTMLElement | null | undefined),
+  ) => {
     if (!import.meta.client) return
 
     const load = () => {
@@ -81,8 +77,16 @@ export function useServiceCategories() {
       }
     }
 
+    // Handle both ref and getter function
+    const getElement = () => {
+      if (typeof element === 'function') {
+        return element()
+      }
+      return unref(element)
+    }
+
     watch(
-      element,
+      getElement,
       (el) => {
         if (el) {
           el.addEventListener('mouseenter', load, { once: true })
@@ -95,7 +99,7 @@ export function useServiceCategories() {
   }
 
   /**
-   * Eager load (fetch immediately)
+   * Eager load card content (fetch immediately)
    */
   const load = () => {
     if (!data.value) {
@@ -104,7 +108,7 @@ export function useServiceCategories() {
   }
 
   return {
-    serviceCategories: data,
+    cardContent: data,
     loading: readonly(loading),
     error: readonly(error),
     load,
