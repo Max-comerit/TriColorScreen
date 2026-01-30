@@ -65,7 +65,7 @@ useHead({
   background-image: image-set(
     url('/assets/images/tcs-wallpaper.webp') type('image/webp'),
     url('/assets/images/tcs-wallpaper.png') type('image/png')
-  );
-  background-size: 12.5%;
+  ) !important;
+  background-size: 12.5% !important;
 }
 </style>
