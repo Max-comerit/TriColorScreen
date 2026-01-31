@@ -27,7 +27,7 @@ const bragItems = [
 </script>
 
 <template>
-  <section class="grid grid-cols-2  md:grid-cols-4 bg-primary-600 md:justify-items-center">
+  <section class="grid grid-cols-2 md:grid-cols-4 bg-primary-600 md:justify-items-center min-h-[200px] md:min-h-[100px]">
     <BragBarItem
       v-for="(item) in bragItems"
       :key="item.text"

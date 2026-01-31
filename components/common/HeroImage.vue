@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <section class="container-section">
+  <section class="container-section" overflow="hidden" role="img" :aria-label="props.alt">
     <!-- Hero Image -->
     <NuxtImg
       :src="props.src"
@@ -53,6 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
       fit="cover"
       quality="80"
       sizes="xl:100vw 1280px"
+      densities="x1 x2"
       loading="eager"
       fetchpriority="high"
       class="absolute inset-0 w-full h-full object-cover"
@@ -78,7 +79,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 /* Container - styles for the hero image section */
 .container-section {
-  @apply relative w-full h-[60vh] md:h-[70vh] lg:h-[80vh] overflow-hidden;
+  @apply relative w-full h-[60vh] md:h-[70vh] lg:h-[80vh] min-h-[500px] overflow-hidden;
 }
 
 /* Text Overlay - styles for the text container on the hero image */
