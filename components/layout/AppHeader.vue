@@ -14,24 +14,27 @@ import NavBar from '~/components/layout/NavBar.vue'
     <div class="max-w-full mx-auto flex items-center justify-between min-h-[80px]">
       <!-- Logo -->
       <NuxtLink to="/" aria-label="Gå till hemsida" class="logo-link">
-        <NuxtImg
-          src="/images/header/tcs-logo.png"
-          alt="Tricolor Screen logotyp"
-          width="50"
-          height="50"
-          format="webp"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          class="h-[50px] w-[50px] block"
-        />
+        <picture>
+          <source srcset="/images/header/tcs-logo-60.webp 1x, /images/header/tcs-logo-120.webp 2x" type="image/webp">
+          <img
+            src="/images/header/tcs-logo-60.png"
+            width="60"
+            height="60"
+            loading="eager"
+            fetchpriority="high"
+            alt="Tricolor Screen logotyp"
+            decoding="async"
+            class="h-[60px] w-[60px] object-contain"
+            style="image-rendering: crisp-edges;"
+          >
+        </picture>
       </NuxtLink>
 
       <!-- Desktop Navigation -->
       <NavBar />
 
       <!-- Dummy layout element -->
-      <div class="hidden sm:block min-w-[50px] min-h-[50px]" aria-hidden="true"/>
+      <div class="hidden sm:block min-w-[60px] min-h-[60px]" aria-hidden="true"/>
 
     </div>
   </header>
