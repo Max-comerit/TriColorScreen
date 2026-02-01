@@ -13,10 +13,6 @@ useHead({
       name: 'description',
       content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
     },
-    {
-      name: 'robots',
-      content: 'index, follow',
-    },
   ],
 })
 </script>
