@@ -1,0 +1,7 @@
+# Netlify Configuration
+
+# Override default noindex header for deploy previews to allow indexing
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "index, follow"
