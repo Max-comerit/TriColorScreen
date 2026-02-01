@@ -81,6 +81,8 @@ const iconSize = computed(() => {
         :alt="iconAlt"
         :class="iconSize"
         class="icon-image"
+        width="24"
+        height="24"
       >
     </slot>
   </BaseButton>

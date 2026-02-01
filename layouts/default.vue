@@ -34,7 +34,7 @@ useHead({
 </script>
 
 <template>
-  <div>
+  <div class="min-h-[100svh] bg-tiled-logo flex flex-col">
     <!-- Skip to main content link for keyboard navigation -->
     <a
       href="#main-content"
@@ -43,7 +43,7 @@ useHead({
       Hoppa till huvudinnehåll
     </a>
 
-    <div class="min-h-screen bg-tiled-logo flex flex-col">
+    <div>
       <AppHeader />
       <main id="main-content" role="main" aria-label="Huvudinnehåll" tabindex="-1" class="flex-1">
         <NuxtPage />

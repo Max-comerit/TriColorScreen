@@ -27,7 +27,7 @@ useHead({
     />
 
     <!-- Sections -->
-    <div class="max-w-screen-xl mx-auto px-5 py-6">
+    <div class="layout-container">
       <Section 
         id="services" 
         title="Våra tjänster" 

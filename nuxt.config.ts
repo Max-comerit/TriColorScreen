@@ -3,7 +3,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import svgLoader from 'vite-svg-loader'
-export default defineNuxtConfig({  
+export default defineNuxtConfig({
   vite: {
     plugins: [svgLoader()],
   },
@@ -80,7 +80,11 @@ export default defineNuxtConfig({
     },
   },
 
-  css: ['~/assets/css/main.css'],
+  css: [
+    '~/assets/css/main.css',
+    '~/assets/css/fonts.css',
+    '~/assets/css/layout.css'
+  ],
 
   image: {
     provider: 'ipx',
