@@ -12,6 +12,11 @@
     scrollbar-gutter: stable;
   }
 
+  /* Base font family for better performance and reduced CLS */
+  body {
+    font-family: system-ui, sans-serif;
+  }
+
   /* Typography - WCAG AA compliant defaults for headings and paragraphs */
   /* Following semantic HTML hierarchy with proper visual distinction */
 
