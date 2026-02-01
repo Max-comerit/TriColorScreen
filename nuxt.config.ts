@@ -21,9 +21,11 @@ export default defineNuxtConfig({
     compressPublicAssets: true,
     routeRules: {
       // Cache static pages for 1 hour (revalidate in background)
+      // Override Netlify's default noindex header to allow indexing
       '/**': { 
         headers: { 
-          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400' 
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+          'X-Robots-Tag': 'index, follow'
         } 
       },
       // Cache images for 1 year (immutable)
