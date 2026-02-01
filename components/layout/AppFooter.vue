@@ -8,7 +8,7 @@
 </script>
 
 <template>
-  <footer class="h-auto bg-neutral-900 text-white py-6 mt-12 justify-center px-5">
+  <footer class="min-h-[200px] h-auto bg-neutral-900 text-white py-6 mt-12 justify-center px-5">
     <div class="flex items-top justify-between text-sm md:text-base max-w-screen-xl mx-auto">
       <div>
         <h2 class="text-sm md:text-base font-semibold my-2 mb-4 text-inherit">Kontakt Info</h2>
