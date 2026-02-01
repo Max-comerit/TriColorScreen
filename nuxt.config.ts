@@ -77,6 +77,12 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'sv',
       },
+      meta: [
+        {
+          name: 'robots',
+          content: 'index, follow'
+        }
+      ]
     },
   },
 
@@ -106,10 +112,5 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
-    ['@nuxtjs/robots', {
-      UserAgent: '*',
-      Allow: "/",
-      Disallow: "/dashboard/"
-    }]
   ],
 })
