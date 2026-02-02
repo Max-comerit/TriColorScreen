@@ -1,7 +1,7 @@
 /**
  * Services Composable
  *
- * Lazy-loads JSON card content data by category via interaction or viewport proximity.
+ * Lazy-loads JSON content data by category via interaction or viewport proximity.
  * Uses deterministic cache keys per category to ensure single-fetch behavior.
  * Cached indefinitely in memory (static read-only data).
  */
@@ -9,16 +9,16 @@
 import { useContent } from '~/composables/useContent'
 
 /**
- * Generic composable for fetching card content data from a JSON file
+ * Generic composable for fetching JSON content data from a JSON file
  * @param src - Relative path to the JSON file
  */
-export function useCardContent<T>(src: string) {
-  const cacheKey = `cardContent_${src}`
+export function useJsonContent<T>(src: string) {
+  const cacheKey = `jsonContent_${src}`
   const dataUrl = src
   const { data, loading, error, fetchContent } = useContent<T>(cacheKey, dataUrl)
 
   /**
-   * Lazy load card content when element enters viewport
+   * Lazy load JSON content when element enters viewport
    * @param element - Target element ref or getter function
    * @param threshold - Intersection threshold (0-1)
    */
@@ -63,7 +63,7 @@ export function useCardContent<T>(src: string) {
   }
 
   /**
-   * Load card content on user interaction (click, hover, focus)
+   * Load JSON content on user interaction (click, hover, focus)
    * @param element - Target element ref or getter function
    */
   const loadOnInteraction = (
@@ -115,7 +115,7 @@ export function useCardContent<T>(src: string) {
   }
 
   /**
-   * Eager load card content (fetch immediately)
+   * Eager load JSON content (fetch immediately)
    */
   const load = () => {
     if (!data.value) {
@@ -124,7 +124,7 @@ export function useCardContent<T>(src: string) {
   }
 
   return {
-    cardContent: data,
+    jsonContent: data,
     loading: readonly(loading),
     error: readonly(error),
     load,

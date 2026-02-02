@@ -23,6 +23,7 @@ interface Props {
   textColor?: string
   /** Navigation link for the card */
   link?: string
+  /** Alt text for the image */
   alt?: string
 }
 
@@ -65,18 +66,20 @@ const textColorClass = computed(() => `text-${props.textColor}`)
     >
       <!-- Image container with zoom effect on hover --> 
       <!-- Note that width & height are set to reduce layout shifts -->
-      <div class="w-full max-h-[75%]  align-middle bg-gray-200 rounded-t-card ">
+      <div class="w-full max-h-[75%] align-middle bg-gray-200 rounded-t-card overflow-hidden">
         <NuxtImg
           :src="imageSrc"
           width="300"
           height="200"
+          format="webp"
           :alt="alt || title"
           quality="80"
-          sizes="sm:100vw md:100vw"
-          format="webp"
+          sizes="100vw sm:50vw lg:33vw xl:25vw"
+          densities="x1 x2"
+          fit="cover"
           loading="lazy"
           fetchpriority="low"
-          class="w-full object-cover aspect-[3/2] h-full  transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
+          class="w-full object-cover transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
         />
       </div>
 
