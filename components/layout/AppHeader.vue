@@ -10,27 +10,31 @@ import NavBar from '~/components/layout/NavBar.vue'
 </script>
 
 <template>
-  <header class="bg-neutral-900 px-3 lg:px-5 sticky top-0 z-50 shadow-[0_4px_10px_rgba(0,0,0,0.25)] shadow-black/50">
-    <div class="max-w-full mx-auto flex items-center justify-between min-h-[80px]">
+  <header class="min-h-[80px] bg-neutral-900 sticky top-0 z-50 shadow-[0_4px_10px_rgba(0,0,0,0.25)] shadow-black/50">
+    <div class="h-[80px] mx-auto max-w-full px-3 lg:px-5 flex items-center justify-between">
       <!-- Logo -->
       <NuxtLink to="/" aria-label="Gå till hemsida" class="logo-link">
-        <NuxtImg
-          src="/images/header/tcs-logo.png"
-          alt="Tricolor Screen logotyp"
-          width="174"
-          height="169"
-          format="webp"
-          loading="eager"
-          decoding="async"
-          class="h-[50px] w-[50px] block"
-        />
+        <picture>
+          <source srcset="/images/header/tcs-logo-60.webp 1x, /images/header/tcs-logo-120.webp 2x" type="image/webp">
+          <img
+            src="/images/header/tcs-logo-60.png"
+            width="60"
+            height="60"
+            loading="eager"
+            fetchpriority="high"
+            alt="Tricolor Screen logotyp"
+            decoding="async"
+            class="h-[60px] w-[60px] object-contain"
+            style="image-rendering: crisp-edges;"
+          >
+        </picture>
       </NuxtLink>
 
       <!-- Desktop Navigation -->
       <NavBar />
 
       <!-- Dummy layout element -->
-      <div class="hidden sm:block min-w-[50px] min-h-[50px]" aria-hidden="true"/>
+      <div class="hidden sm:block min-w-[60px] min-h-[60px]" aria-hidden="true"/>
 
     </div>
   </header>

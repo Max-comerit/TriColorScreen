@@ -1,3 +1,5 @@
+// components/common/HeroImage.vue
+
 <script setup lang="ts">
 /**
  * HeroImage Component
@@ -35,14 +37,26 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   title: 'Title Here',
   description: 'Description here',
-  width: 1920,
-  height: 1280,
+  width: 1280,
+  height: 854,
   alt: 'Hero banner image',
+})
+
+// ===== COMPUTED =====
+const aspectRatio = computed(() => {
+  // Prevent division by zero
+  if (!props.width || !props.height) return 3 / 2
+  return props.width / props.height
 })
 </script>
 
 <template>
-  <section class="container-section">
+  <section
+    class="container-section"
+    role="img"
+    :aria-label="props.alt"
+    :style="{ aspectRatio: aspectRatio }"
+  >
     <!-- Hero Image -->
     <NuxtImg
       :src="props.src"
@@ -52,14 +66,16 @@ const props = withDefaults(defineProps<Props>(), {
       format="webp"
       fit="cover"
       quality="80"
-      sizes="sm:100vw md:100vw lg:1280px"
+      sizes="xl:100vw 1280px"
+      densities="x1 x2"
       loading="eager"
       fetchpriority="high"
+      decoding="async"
       class="absolute inset-0 w-full h-full object-cover"
     />
 
     <!-- Text Overlay -->
-    <div class="overlay">
+    <div class="overlay" role="presentation">
       <h1 class="title">
         <slot name="title">
           {{ props.title }}
@@ -78,7 +94,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 /* Container - styles for the hero image section */
 .container-section {
-  @apply relative w-full h-[60vh] md:h-[70vh] lg:h-[80vh] overflow-hidden;
+  @apply relative w-full min-h-[50svh] max-h-[80svh] overflow-hidden;
 }
 
 /* Text Overlay - styles for the text container on the hero image */

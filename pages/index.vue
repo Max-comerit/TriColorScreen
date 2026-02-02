@@ -13,10 +13,6 @@ useHead({
       name: 'description',
       content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
     },
-    {
-      name: 'robots',
-      content: 'index, follow',
-    },
   ],
 })
 </script>
@@ -37,12 +33,12 @@ useHead({
     <BragBar />
 
     <!-- Sections -->
-    <div class="max-w-screen-xl mx-auto px-5 py-6">
+    <div class="layout-container">
       <Section 
-        id="services" 
+        id="services"
         title="Våra tjänster" 
         align="center"
-        aria-label="Våra tjänster och lösningar"
+        aria-label="Våra tjänster"
       >
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
       </Section>

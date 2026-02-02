@@ -1,2 +1,2 @@
-export * from './ServiceCard'
+export * from './CardContent'
 export * from './NavigationStore'

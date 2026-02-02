@@ -1,0 +1,16 @@
+/**
+ * Layout Container Styles
+ * 
+ *  Defines CLS critical layouts for main content areas
+ *  to ensure consistent spacing and alignment across different screen sizes.
+ */
+
+.layout-container {
+  max-width: 1280px;      /* screen-xl */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;  /* px-5 */
+  padding-right: 1.25rem;
+  padding-top: 1.5rem;    /* py-6 */
+  padding-bottom: 1.5rem;
+}

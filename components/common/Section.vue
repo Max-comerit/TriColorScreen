@@ -1,3 +1,5 @@
+// components/common/Section.vue
+
 <script setup lang="ts">
 /**
  * Section Component
@@ -18,8 +20,6 @@ interface Props {
   backgroundColor?: string
   /** Tailwind text color class for title and description */
   textColor?: string
-  /** Vertical padding size: 'none', 'small', 'medium', 'large' */
-  paddingY?: 'none' | 'small' | 'medium' | 'large'
   /** Whether to constrain content width with container */
   contained?: boolean
   /** Text alignment for header */
@@ -32,25 +32,14 @@ const props = withDefaults(defineProps<Props>(), {
   title: undefined,
   description: undefined,
   id: undefined,
-  backgroundColor: 'bg-white',
+  backgroundColor: 'bg-transparent',
   textColor: 'text-neutral-900',
-  paddingY: 'medium',
   contained: true,
   align: 'left',
   ariaLabel: undefined,
 })
 
-/** Computed class for vertical padding based on size prop */
-const paddingClass = computed(() => {
-  const paddingMap = {
-    none: '',
-    small: 'py-4 md:py-6',
-    medium: 'py-6 md:py-8 lg:py-10',
-    large: 'py-8 md:py-12 lg:py-16',
-  }
-  return paddingMap[props.paddingY]
-})
-
+// ===== COMPUTED =====
 /** Computed class for text alignment */
 const alignClass = computed(() => {
   const alignMap = {
@@ -65,7 +54,7 @@ const alignClass = computed(() => {
 <template>
   <section
     :id="id"
-    :class="[backgroundColor, paddingClass, textColor]"
+    :class="[backgroundColor, textColor, 'py-4 md:py-6 lg:py-8 xl:py-12 2xl:py-16']"
     :aria-label="ariaLabel || title"
   >
     <div :class="{ 'container mx-auto': contained }">

@@ -64,16 +64,19 @@ const textColorClass = computed(() => `text-${props.textColor}`)
       @keydown.space.prevent="emit('click')"
     >
       <!-- Image container with zoom effect on hover --> 
+      <!-- Note that width & height are set to reduce layout shifts -->
       <div class="w-full max-h-[75%]  align-middle bg-gray-200 rounded-t-card ">
         <NuxtImg
           :src="imageSrc"
           :alt="alt"
+          width="300"
+          height="200"
           quality="80"
           sizes="sm:100vw md:100vw"
           format="webp"
           loading="lazy"
           fetchpriority="low"
-          class="w-full object-cover aspect-[4/3] h-full  transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
+          class="w-full object-cover aspect-[3/2] h-full  transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
         />
       </div>
 

@@ -1,3 +1,5 @@
+// layouts/default.vue
+
 <script setup lang="ts">
 import AppHeader from '~/components/layout/AppHeader.vue'
 import AppFooter from '~/components/layout/AppFooter.vue'
@@ -19,12 +21,20 @@ useHead({
   ],
   link: [
     { rel: 'canonical', href: 'https://tricolorscreen.se' },
+    // Preload tcs-wallpaper.webp image for eager loading
+    {
+      rel: 'preload',
+      as: 'image',
+      href: '/images/tcs-wallpaper.webp',
+      type: 'image/webp',
+      fetchpriority: 'low', // decorative → low priority
+    },
   ],
 })
 </script>
 
 <template>
-  <div>
+  <div class="min-h-[100svh] bg-tiled-logo flex flex-col">
     <!-- Skip to main content link for keyboard navigation -->
     <a
       href="#main-content"
@@ -33,7 +43,7 @@ useHead({
       Hoppa till huvudinnehåll
     </a>
 
-    <div class="min-h-screen bg-tiled-logo flex flex-col">
+    <div>
       <AppHeader />
       <main id="main-content" role="main" aria-label="Huvudinnehåll" tabindex="-1" class="flex-1">
         <NuxtPage />
@@ -57,12 +67,21 @@ useHead({
 }
 
 .bg-tiled-logo::before {
-  @apply absolute inset-0 bg-repeat opacity-30 -z-10;
+  position: absolute;
+  inset: 0;
   content: '';
-  background-image: image-set(
-    url('/assets/images/tcs-wallpaper.webp') type('image/webp'),
-    url('/assets/images/tcs-wallpaper.png') type('image/png')
-  );
-  background-size: 50%;
+  background-repeat: repeat;
+  opacity: 0.3;
+  z-index: -10;
+
+  /* WebP first, PNG fallback for older browsers */
+  background-image: url('/images/tcs-wallpaper.webp');
+  
+  /* fallback for browsers that don't support WebP */
+  @supports not (background-image: url('/images/tcs-wallpaper.webp')) {
+    background-image: url('/images/tcs-wallpaper.png');
+  }
+
+  background-size: 12.5%;
 }
 </style>
