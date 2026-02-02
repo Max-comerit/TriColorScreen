@@ -11,7 +11,7 @@ import NavBar from '~/components/layout/NavBar.vue'
 
 <template>
   <header class="min-h-[80px] bg-neutral-900 sticky top-0 z-50 shadow-[0_4px_10px_rgba(0,0,0,0.25)] shadow-black/50">
-    <div class="mx-auto max-w-full px-3 lg:px-5 flex items-center justify-between h-[80px]">
+    <div class="h-[80px] mx-auto max-w-full px-3 lg:px-5 flex items-center justify-between">
       <!-- Logo -->
       <NuxtLink to="/" aria-label="Gå till hemsida" class="logo-link">
         <picture>
