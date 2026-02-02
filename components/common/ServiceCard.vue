@@ -74,7 +74,6 @@ const textColorClass = computed(() => `text-${props.textColor}`)
           quality="80"
           sizes="100vw sm:50vw lg:33vw xl:25vw"
           densities="x1 x2"
-          format="webp"
           fit="cover"
           loading="lazy"
           fetchpriority="low"
