@@ -11,9 +11,7 @@
  */
 
 // ===== IMPORTS =====
-import LoadingSpinner from '~/components/common/LoadingSpinner.vue'
 import { CardType } from '~/types/CardTypes'
-import { useCardContent } from '~/composables/useCardContent'
 import type { IServiceCardContent, IReviewCardContent } from '~/types/CardContent'
 import ServiceCard from '~/components/common/ServiceCard.vue'
 import ReviewCard from '~/components/common/ReviewCard.vue'
@@ -21,15 +19,24 @@ import ReviewCard from '~/components/common/ReviewCard.vue'
 // ===== PROPS & EMITS =====
 
 interface Props {
-  src: string
+  /** Card content array (ServiceCard or ReviewCard content) */
+  cardContentArr: IServiceCardContent[] | IReviewCardContent[]
+  /** Card type to determine rendering (service or review) */
   type: CardType
+  /** Width of the grid (CSS value or pixel number) */
   width?: string | number
+  /** Height of the grid (CSS value or pixel number) */
   height?: string | number
+  /** Minimum item width for responsive grid */
   minItemWidth?: string | number
+  /** Gap between grid items */
   gap?: number
+  /** Aria label for accessibility */
   ariaLabel?: string
+  /** Optional section ID */
   sectionId?: string
 }
+
 const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   height: '100%',
@@ -38,22 +45,6 @@ const props = withDefaults(defineProps<Props>(), {
   ariaLabel: undefined,
   sectionId: undefined,
 })
-
-// ===== COMPOSABLES & STORES =====
-type CardTypeMap = {
-  [CardType.Service]: IServiceCardContent[]
-  [CardType.Review]: IReviewCardContent[]
-  // Add more types here as needed
-}
-
-function getCardContentComposable<T extends CardType>(type: T, src: string) {
-  return useCardContent<CardTypeMap[T]>(src)
-}
-
-const { cardContent, loading, error, loadOnVisible } = getCardContentComposable(props.type, props.src)
-
-// ===== STATE =====
-const sectionElement = ref<HTMLElement | null>(null)
 
 // ===== COMPUTED =====
 const gridStyle = computed(() => ({
@@ -65,16 +56,6 @@ const gridStyle = computed(() => ({
   minHeight: '300px',
 }))
 
-// ===== METHODS =====
-// (none needed)
-
-// ===== LIFECYCLE HOOKS =====
-onMounted(() => {
-  loadOnVisible(() => sectionElement.value, 0.1)
-})
-
-// ===== WATCHERS =====
-// (none needed)
 </script>
 
 <template>
@@ -85,26 +66,12 @@ onMounted(() => {
     :aria-label="ariaLabel"
     class="card-grid-section"
   >
-    <!-- Loading state with reserved height to prevent CLS -->
-    <div v-if="loading" class="flex justify-center items-center py-12 min-h-[500px]" role="status" aria-live="polite">
-      <LoadingSpinner type="page" />
-      <span class="sr-only">Laddar kort...</span>
-    </div>
-
-    <!-- Error state with reserved height -->
-    <div v-else-if="error" class="text-center py-12 min-h-[400px] flex items-center justify-center" role="alert" aria-live="assertive">
-      <div class="error-text text-lg font-medium text-center">
-        <p>Kunde inte ladda kort innehåll.</p>
-        <p>Vänligen försök igen senare.</p>
-      </div>
-    </div>
-
     <!-- Responsive grid container with auto-fill -->
     <div :style="gridStyle" class="card-grid">
       <!-- Render ServiceCard or ReviewCard based on type prop -->
       <template v-if="props.type === CardType.Service">
         <ServiceCard
-          v-for="(card, index) in cardContent as IServiceCardContent[]"
+          v-for="(card, index) in props.cardContentArr as IServiceCardContent[]"
           :key="card.title"
           :image-src="card.imageSrc"
           :title="card.title"
@@ -116,7 +83,7 @@ onMounted(() => {
       </template>
       <template v-else-if="props.type === CardType.Review">
         <ReviewCard
-          v-for="(card) in cardContent as IReviewCardContent[]"
+          v-for="(card) in props.cardContentArr as IReviewCardContent[]"
           :key="`${card.date}:${card.name}`"
           :review="card.review"
           :name="card.name"

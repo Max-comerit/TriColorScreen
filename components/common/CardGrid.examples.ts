@@ -7,12 +7,12 @@
  */
 
 /**
- * Example: Service cards with plain HTML
+ * Example: Service cards with imported data
  */
 export const ServiceCardGridExample = `
 <CardGrid
-  src="/data/index/service-categories.json"
-  type="service"
+  :data="serviceCategories"
+  :type="CardType.Service"
   :min-item-width="280"
   :gap="24"
   aria-label="Tjänstekategorier"
@@ -21,12 +21,12 @@ export const ServiceCardGridExample = `
 `
 
 /**
- * Example: Review cards with plain HTML
+ * Example: Review cards with imported data
  */
 export const ReviewCardGridExample = `
 <CardGrid
-  src="/data/index/reviews.json"
-  type="review"
+  :data="reviews"
+  :type="CardType.Review"
   :min-item-width="320"
   :gap="32"
   aria-label="Kundrecensioner"

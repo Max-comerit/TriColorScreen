@@ -23,6 +23,7 @@ interface Props {
   textColor?: string
   /** Navigation link for the card */
   link?: string
+  /** Alt text for the image */
   alt?: string
 }
 
@@ -70,6 +71,7 @@ const textColorClass = computed(() => `text-${props.textColor}`)
           :src="imageSrc"
           width="300"
           height="200"
+          format="webp"
           :alt="alt || title"
           quality="80"
           sizes="100vw sm:50vw lg:33vw xl:25vw"

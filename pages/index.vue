@@ -1,8 +1,10 @@
 // pages/index.vue
 
 <script setup lang="ts">
-// Index page
+// ===== IMPORTS =====
 import { CardType } from '~/types/CardTypes'
+import { serviceCategories } from '~/utils/data/index/serviceCategories'
+import { reviews } from '~/utils/data/index/reviews'
 import HeroImage from '~/components/common/HeroImage.vue'
 import BragBar from '~/components/features/BragBar.vue'
 import Section from '~/components/common/Section.vue'
@@ -44,7 +46,7 @@ useHead({
       >
         <!-- Service categories card grid -->
         <CardGrid
-          :src="'/data/index/service-categories.json'"
+          :card-content-arr="serviceCategories"
           :type="CardType.Service"
           :min-item-width="280"
           :gap="24"
@@ -59,7 +61,7 @@ useHead({
       >
         <!-- Review card grid -->
         <CardGrid
-          :src="'/data/index/reviews.json'"
+          :card-content-arr="reviews"
           :type="CardType.Review"
           :min-item-width="280"
           :gap="24"
