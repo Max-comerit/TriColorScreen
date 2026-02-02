@@ -70,13 +70,13 @@ const textColorClass = computed(() => `text-${props.textColor}`)
           :src="imageSrc"
           :alt="alt"
           width="300"
-          height="400"
+          height="200"
           quality="80"
           sizes="sm:100vw md:100vw"
           format="webp"
           loading="lazy"
           fetchpriority="low"
-          class="w-full object-cover aspect-[4/3] h-full  transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
+          class="w-full object-cover aspect-[3/2] h-full  transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
         />
       </div>
 
