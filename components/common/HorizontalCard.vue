@@ -24,17 +24,18 @@ interface Props {
   height?: string | number
   /** Tailwind background color class */
   backgroundColor?: string
-    /** Cursor style for the card */
-  cursor?: 
-    | 'auto'
-    | 'default'
-    | 'pointer'
-    | 'text'
-    | 'wait'
-    | 'not-allowed'
-    | 'grab'
-    | 'grabbing'
-    | string // allow custom CSS values if needed
+  /** Cursor style for the card */
+  cursor?:
+  | 'auto'
+  | 'default'
+  | 'pointer'
+  | 'text'
+  | 'wait'
+  | 'not-allowed'
+  | 'grab'
+  | 'grabbing'
+  | string // allow custom CSS values if needed
+  size?: 'fixed' | 'fit'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -44,6 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
   height: 'auto',
   backgroundColor: 'bg-primary-50',
   cursor: 'pointer',
+  size: 'fixed',
 })
 
 const emit = defineEmits<{
@@ -51,30 +53,31 @@ const emit = defineEmits<{
 }>()
 
 /** Computed style for width/height props */
-const cardStyle = computed(() => ({
-  width: typeof props.width === 'number' ? `${props.width}px` : props.width,
-  height: typeof props.height === 'number' ? `${props.height}px` : props.height,
-}))
+const cardStyle = computed(() => {
+  if (props.size === 'fit') return {}
+
+  return {
+    width: typeof props.width === 'number' ? `${props.width}px` : props.width,
+    height: typeof props.height === 'number' ? `${props.height}px` : props.height,
+  }
+})
+
+const sizeClass = computed(() =>
+  props.size === 'fit' ? 'w-fit h-fit max-w-[80vw]' : ''
+)
 
 /** Order classes so image can be shown first or second on wide screens */
 const imageOrderClass = computed(() => (props.imageFirst ? 'order-1 md:order-1' : 'order-1 md:order-2'))
-const contentOrderClass = computed(() => (props.imageFirst ? 'order-2 md:order-2' : 'order-2 sm:text-right md:order-1'))
+const contentOrderClass = computed(() => (props.imageFirst ? 'order-2 md:order-2' : 'order-2 md:text-right md:order-1'))
 
 </script>
 
 <template>
   <!-- Semantic article wrapper; focusable and keyboard accessible -->
   <article
-    class="group rounded-card shadow-drop overflow-hidden p-6 mx-auto"
-    :class="`${backgroundColor}`"
-    :style="{...cardStyle, cursor: cursor}"
-    tabindex="0"
-    role="button"
-    :aria-label="title"
-    @click="emit('click')"
-    @keydown.enter.prevent="emit('click')"
-    @keydown.space.prevent="emit('click')"
-  >
+    class="group rounded-card shadow-drop overflow-hidden p-6 mx-auto" :class="`${backgroundColor} ${sizeClass}`"
+    :style="{ ...cardStyle, cursor: cursor }" tabindex="0" role="button" :aria-label="title" @click="emit('click')"
+    @keydown.enter.prevent="emit('click')" @keydown.space.prevent="emit('click')">
     <!-- Title above image and content -->
     <h3 class="text-lg md:text-xl font-display font-medium mb-4 text-neutral-900 w-fit mx-auto my-0">
       {{ title }}
@@ -83,17 +86,15 @@ const contentOrderClass = computed(() => (props.imageFirst ? 'order-2 md:order-2
     <!-- Image and description row -->
     <div class="flex flex-col md:flex-row items-stretch gap-4 md:gap-6">
       <!-- Image container -->
-      <div :class="[imageOrderClass, 'w-full md:w-1/3 h-48 md:h-auto overflow-hidden rounded-card']">
+      <div
+        :class="[
+        imageOrderClass,
+        'w-full md:w-1/3 aspect-[4/3] md:aspect-auto overflow-hidden rounded-card'
+      ]">
         <NuxtImg
-          :src="imageSrc"
-          :alt="imageAlt || title"
-          class="w-full object-cover transition-transform duration-300 group-hover:scale-105 rounded-card"
-          format="webp"
-          sizes="100vw sm:50vw lg:33vw"
-          loading="lazy"
-          width="400"
-          height="300"
-        />
+          :src="imageSrc" :alt="imageAlt || title"
+          class="w-full object-cover transition-transform duration-300 group-hover:scale-105 rounded-card" format="webp"
+          sizes="100vw sm:50vw lg:33vw" loading="lazy" width="400" height="300" />
       </div>
 
       <!-- Content container -->

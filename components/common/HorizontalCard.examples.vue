@@ -13,8 +13,7 @@ const exampleData = [
     description: 'High-quality printing for apparel and promotional goods with fast turnaround and great colors.',
     backgroundColor: 'bg-primary-50',
     pointer: 'text',
-    width: '40%',
-    height: 250,
+    size: 'fit',
   },
   {
     title: 'Custom Embroidery',
@@ -22,6 +21,7 @@ const exampleData = [
     description: 'Precision embroidery on caps, shirts and patches for a professional finish.',
     backgroundColor: 'bg-secondary-50',
     imageFirst: false,
+    height:"100%",
   },
   {
     title: 'Graphic Production',
@@ -43,7 +43,6 @@ const exampleData = [
         :image-first="item.imageFirst"
         :cursor="item.pointer"
         :height="item.height"
-        :width="item.width"
       />
     </div>
   </div>
