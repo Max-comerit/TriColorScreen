@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { CardType } from '~/types/CardTypes'
+import { CardType } from '~/types/CardContent'
 import { serviceCategories } from '~/utils/data/index/serviceCategories'
 import { reviews } from '~/utils/data/index/reviews'
 import HeroImage from '~/components/common/HeroImage.vue'

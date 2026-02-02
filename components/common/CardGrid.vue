@@ -11,8 +11,7 @@
  */
 
 // ===== IMPORTS =====
-import { CardType } from '~/types/CardTypes'
-import type { IServiceCardContent, IReviewCardContent } from '~/types/CardContent'
+import type { CardType, IServiceCardContent, IReviewCardContent } from '~/types/CardContent'
 import ServiceCard from '~/components/common/ServiceCard.vue'
 import ReviewCard from '~/components/common/ReviewCard.vue'
 
