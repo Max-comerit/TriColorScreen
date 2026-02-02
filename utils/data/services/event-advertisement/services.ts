@@ -32,7 +32,7 @@ export const eventAdvertisementServices: IEventAdvertisementService[] = [
   },
   {
     title: 'Roll-Ups',
-    description: 'Fantastiskt lätt att bära med sig och ställa upp på mässan, evenemanget eller föreläsningen. Enkelsidig eller dubbelsidig. det finns även tillbehör som hyllor och broschyrhållare för en mer komplett minimonter.',
+    description: 'Fantastiskt lätt att bära med sig och ställa upp på mässan, evenemanget eller föreläsningen. Enkelsidig eller dubbelsidig, det finns även tillbehör som hyllor och broschyrhållare för en mer komplett minimonter.',
     imageSrc: '',
     alt: 'Roll-Ups',
   },

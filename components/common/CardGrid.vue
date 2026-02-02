@@ -11,7 +11,7 @@
  */
 
 // ===== IMPORTS =====
-import type { CardType, IServiceCardContent, IReviewCardContent } from '~/types/CardContent'
+import { CardType, type IServiceCardContent, type IReviewCardContent } from '~/types/CardContent'
 import ServiceCard from '~/components/common/ServiceCard.vue'
 import ReviewCard from '~/components/common/ReviewCard.vue'
 
@@ -38,7 +38,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   width: '100%',
-  height: '100%',
+  height: 'auto',
   minItemWidth: '200px',
   gap: 24,
   ariaLabel: undefined,
