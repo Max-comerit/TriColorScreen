@@ -12,6 +12,9 @@ const exampleData = [
     imageSrc: '/images/index/decoration-foiling.png',
     description: 'High-quality printing for apparel and promotional goods with fast turnaround and great colors.',
     backgroundColor: 'bg-primary-50',
+    pointer: 'text',
+    width: '40%',
+    height: 250,
   },
   {
     title: 'Custom Embroidery',
@@ -38,6 +41,9 @@ const exampleData = [
         :description="item.description"
         :background-color="item.backgroundColor"
         :image-first="item.imageFirst"
+        :cursor="item.pointer"
+        :height="item.height"
+        :width="item.width"
       />
     </div>
   </div>

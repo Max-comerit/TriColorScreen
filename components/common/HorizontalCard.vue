@@ -24,6 +24,17 @@ interface Props {
   height?: string | number
   /** Tailwind background color class */
   backgroundColor?: string
+    /** Cursor style for the card */
+  cursor?: 
+    | 'auto'
+    | 'default'
+    | 'pointer'
+    | 'text'
+    | 'wait'
+    | 'not-allowed'
+    | 'grab'
+    | 'grabbing'
+    | string // allow custom CSS values if needed
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,6 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
   width: '80%',
   height: 'auto',
   backgroundColor: 'bg-primary-50',
+  cursor: 'pointer',
 })
 
 const emit = defineEmits<{
@@ -46,16 +58,16 @@ const cardStyle = computed(() => ({
 
 /** Order classes so image can be shown first or second on wide screens */
 const imageOrderClass = computed(() => (props.imageFirst ? 'order-1 md:order-1' : 'order-1 md:order-2'))
-const contentOrderClass = computed(() => (props.imageFirst ? 'order-2 md:order-2' : 'order-2 text-right md:order-1'))
+const contentOrderClass = computed(() => (props.imageFirst ? 'order-2 md:order-2' : 'order-2 sm:text-right md:order-1'))
 
 </script>
 
 <template>
   <!-- Semantic article wrapper; focusable and keyboard accessible -->
   <article
-    class="group rounded-card shadow-drop overflow-hidden cursor-pointer p-6 mx-auto"
-    :class="backgroundColor"
-    :style="cardStyle"
+    class="group rounded-card shadow-drop overflow-hidden p-6 mx-auto"
+    :class="`${backgroundColor}`"
+    :style="{...cardStyle, cursor: cursor}"
     tabindex="0"
     role="button"
     :aria-label="title"
@@ -77,8 +89,10 @@ const contentOrderClass = computed(() => (props.imageFirst ? 'order-2 md:order-2
           :alt="imageAlt || title"
           class="w-full object-cover transition-transform duration-300 group-hover:scale-105 rounded-card"
           format="webp"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          sizes="100vw sm:50vw lg:33vw"
           loading="lazy"
+          width="400"
+          height="300"
         />
       </div>
 
@@ -91,7 +105,3 @@ const contentOrderClass = computed(() => (props.imageFirst ? 'order-2 md:order-2
     </div>
   </article>
 </template>
-
-<style scoped>
-/* Ensure the card uses theme font stacks and respects rounded clipping for the image */
-</style>
