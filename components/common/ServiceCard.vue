@@ -46,6 +46,14 @@ const cardStyle = computed(() => ({
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
 }))
 
+/** Computes the webp image source by replacing .png extension */
+const imageSrcWebp = computed(() => {
+  if (props.imageSrc.endsWith('.png')) {
+    return props.imageSrc.replace('.png', '.webp')
+  }
+  return props.imageSrc
+})
+
 /** Formats the text color prop into a Tailwind class name */
 const textColorClass = computed(() => `text-${props.textColor}`)
 </script>
@@ -66,19 +74,19 @@ const textColorClass = computed(() => `text-${props.textColor}`)
       <!-- Image container with zoom effect on hover --> 
       <!-- Note that width & height are set to reduce layout shifts -->
       <div class="w-full max-h-[75%] align-middle bg-gray-200 rounded-t-card overflow-hidden">
-        <NuxtImg
-          :src="imageSrc"
-          width="300"
-          height="200"
-          :alt="alt || title"
-          quality="80"
-          sizes="100vw sm:50vw lg:33vw xl:25vw"
-          densities="x1 x2"
-          fit="cover"
-          loading="lazy"
-          fetchpriority="low"
-          class="w-full object-cover transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
-        />
+        <picture>
+          <!-- WebP source for modern browsers -->
+          <source :srcset="imageSrcWebp" type="image/webp">
+          <!-- PNG fallback for older browsers -->
+          <img
+            :src="imageSrc"
+            :alt="alt || title"
+            width="300"
+            height="200"
+            loading="lazy"
+            class="w-full object-cover transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
+          />
+        </picture>
       </div>
 
       <!-- Text content section with title and description -->
