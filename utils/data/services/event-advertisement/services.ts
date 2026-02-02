@@ -4,14 +4,9 @@
  * Hardcoded services for event and advertisement category
  */
 
-interface IEventAdvertisementService {
-  title: string
-  description: string
-  imageSrc: string
-  alt: string
-}
+import type { IServiceCardContent } from '~/types/CardContent'
 
-export const eventAdvertisementServices: IEventAdvertisementService[] = [
+export const eventAdvertisementServices: IServiceCardContent[] = [
   {
     title: 'Skyltning Inomhus',
     description: 'Vi gör alltid en koll på plats där vi undersöker förutsättningarna för att kunna göra bästa val av material och infästningar.',

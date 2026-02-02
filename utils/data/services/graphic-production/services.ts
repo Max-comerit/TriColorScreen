@@ -4,14 +4,9 @@
  * Hardcoded services for graphic production category
  */
 
-interface IGraphicProductionService {
-  title: string
-  description: string
-  imageSrc: string
-  alt: string
-}
+import type { IServiceCardContent } from '~/types/CardContent'
 
-export const graphicProductionServices: IGraphicProductionService[] = [
+export const graphicProductionServices: IServiceCardContent[] = [
   {
     title: 'Logotyper',
     description: 'Har ni en idé eller ingen aning hur er logo ska se ut – Lugn! vi hjälper er.',

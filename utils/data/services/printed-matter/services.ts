@@ -4,14 +4,9 @@
  * Hardcoded services for printed matter category
  */
 
-interface IPrintedMatterService {
-  title: string
-  description: string
-  imageSrc: string
-  alt: string
-}
+import type { IServiceCardContent } from '~/types/CardContent'
 
-export const printedMatterServices: IPrintedMatterService[] = [
+export const printedMatterServices: IServiceCardContent[] = [
   {
     title: 'Kuvert',
     description: 'Kuvert för alla ändamål. Stick ut i mottagarens brevskörd med tryck på dina kuvert. Med fantasins hjälp är möjligheterna oändliga.',

@@ -4,14 +4,9 @@
  * Hardcoded services for decoration and foiling category
  */
 
-interface IDecorationFoilingService {
-  title: string
-  description: string
-  imageSrc: string
-  alt: string
-}
+import type { IServiceCardContent } from '~/types/CardContent'
 
-export const decorationFoilingServices: IDecorationFoilingService[] = [
+export const decorationFoilingServices: IServiceCardContent[] = [
   {
     title: 'Fönsterdekor',
     description: 'Fönsters primära syfte är visserligen att ge oss möjlighet att titta in eller ut genom dem. Men ibland kan det finnas anledningar att få blicken att stanna på rutan. Med hjälp av fönsterdekor kan du skapa insynsskydd till allt från konferensrum till sjukhuskorridorer. De kan fungera som solskydd eller användas till marknadsföring. Genom att exempelvis klistra upp logotyper, kampanjbudskap eller inramande dekorativa mönster på kontorets fönster kan du förstärka din kommunikation ytterligare. Eller varför inte klä in en hel glasfasad? Folieringen gör nämligen jobbet som inte en vepa i världen kan få till på grund av glasets monteringsbegränsningar. Våra fönsterdekaler fästs på insidan av fönstret och påverkas inte av väder och vind.',
