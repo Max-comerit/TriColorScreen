@@ -68,9 +68,9 @@ const textColorClass = computed(() => `text-${props.textColor}`)
       <div class="w-full max-h-[75%]  align-middle bg-gray-200 rounded-t-card ">
         <NuxtImg
           :src="imageSrc"
-          :alt="alt"
           width="300"
           height="200"
+          :alt="alt || title"
           quality="80"
           sizes="sm:100vw md:100vw"
           format="webp"
