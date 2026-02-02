@@ -20,8 +20,9 @@ interface ContentCacheEntry<T> {
 export function useContent<T>(cacheKey: string, url: string) {
   // Use useState for shared, reactive cache across all instances
   const cache = useState<ContentCacheEntry<T> | null>(`content_${cacheKey}`, () => null)
-  const loading = ref(false)
-  const error = ref<Error | null>(null)
+  // Share loading and error state to prevent duplicate simultaneous fetches
+  const loading = useState<boolean>(`${cacheKey}_loading`, () => false)
+  const error = useState<Error | null>(`${cacheKey}_error`, () => null)
 
   /**
    * Fetch content from URL and cache it indefinitely

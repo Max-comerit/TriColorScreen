@@ -77,6 +77,8 @@ export function useCardContent<T>(src: string) {
       }
     }
 
+    const listeners: Array<{ el: HTMLElement; listener: () => void; type: string }> = []
+
     // Handle both ref and getter function
     const getElement = () => {
       if (typeof element === 'function') {
@@ -92,10 +94,24 @@ export function useCardContent<T>(src: string) {
           el.addEventListener('mouseenter', load, { once: true })
           el.addEventListener('focus', load, { once: true })
           el.addEventListener('touchstart', load, { once: true, passive: true })
+          
+          listeners.push(
+            { el, listener: load, type: 'mouseenter' },
+            { el, listener: load, type: 'focus' },
+            { el, listener: load, type: 'touchstart' },
+          )
         }
       },
       { immediate: true },
     )
+
+    // Cleanup listeners on unmount
+    onUnmounted(() => {
+      listeners.forEach(({ el, listener, type }) => {
+        el.removeEventListener(type, listener)
+      })
+      listeners.length = 0
+    })
   }
 
   /**
