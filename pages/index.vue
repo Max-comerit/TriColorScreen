@@ -2,9 +2,11 @@
 
 <script setup lang="ts">
 // Index page
+import { CardType } from '~/types/CardTypes'
 import HeroImage from '~/components/common/HeroImage.vue'
 import BragBar from '~/components/features/BragBar.vue'
 import Section from '~/components/common/Section.vue'
+import CardGrid from '~/components/common/CardGrid.vue'
 
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
@@ -40,7 +42,14 @@ useHead({
         align="center"
         aria-label="Våra tjänster"
       >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
+        <!-- Service categories card grid -->
+        <CardGrid
+          :src="'/data/index/service-categories.json'"
+          :type="CardType.Service"
+          :min-item-width="280"
+          :gap="24"
+          aria-label="Tjänstekategorier"
+        />
       </Section>
       <Section 
         id="testimonials" 
@@ -48,7 +57,14 @@ useHead({
         align="center"
         aria-label="Kundrecensioner och omdömen"
       >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
+        <!-- Review card grid -->
+        <CardGrid
+          :src="'/data/index/reviews.json'"
+          :type="CardType.Review"
+          :min-item-width="280"
+          :gap="24"
+          aria-label="Kundrecensioner"
+        />
       </Section>
     </div>
   </div>
