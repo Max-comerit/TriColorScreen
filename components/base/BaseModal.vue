@@ -87,7 +87,7 @@ onMounted(() => {
         <header v-if="props.title">
           <h2
             id="modal-title"
-            class="m-0 text-lg font-semibold text-neutral-900"
+            class="m-0 text-lg md:text-xl lg:text-[22px] lg:leading-[30px] font-semibold text-neutral-900"
           >
             <strong>{{ props.title }}</strong>
           </h2>
