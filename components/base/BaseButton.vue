@@ -70,39 +70,70 @@ const sizeClasses: Record<Size, string> = {
   sm: 'w-[140px] h-[50px] text-sm',
   md: 'w-[170px] h-[60px] text-base',
   lg: 'w-[200px] h-[70px] text-lg',
-  fit: 'w-fit h-fit p-3 sm:text-sm md:text-base lg:text-lg min-h-[44px] min-w-[44px] shrink-0',
+  fit: 'w-fit h-fit p-3 text-sm sm:text-base md:text-lg lg:text-xl min-h-[44px] min-w-[44px] shrink-0',
 }
 
 /** Combine all computed classes and add flag for custom background colors */
-const buttonClasses = computed(() => [
-  baseClasses,
-  variantClasses[props.variant],
-  sizeClasses[props.size],
-  {
-    'has-custom-bg': !!props.backgroundColor,
-  },
-  {
-    'has-custom-color': !!props.color,
-  },
-])
+const buttonClasses = computed(() => {
+  const classes = [baseClasses]
+
+  // Only apply variant classes if not using custom background or color
+  const hasCustomBg = props.backgroundColor && props.backgroundColor.includes('-')
+  const hasCustomColor = props.color && props.color.includes('-')
+
+  if (!hasCustomBg && !hasCustomColor) {
+    classes.push(variantClasses[props.variant])
+  }
+
+  classes.push(sizeClasses[props.size])
+
+  // Add backgroundColor as Tailwind class if it looks like one
+  if (props.backgroundColor && props.backgroundColor.includes('-')) {
+    classes.push(props.backgroundColor)
+  } else if (props.backgroundColor) {
+    classes.push('has-custom-bg')
+  }
+
+  // Add backgroundColorHover as Tailwind class if it looks like one (for hover state)
+  // Note: For Tailwind hover classes, they should be passed with the hover: prefix
+  if (props.backgroundColorHover && props.backgroundColorHover.includes('-')) {
+    classes.push(props.backgroundColorHover)
+  }
+
+  // Add color as Tailwind class if it looks like one
+  if (props.color && props.color.includes('-')) {
+    classes.push(props.color)
+  } else if (props.color) {
+    classes.push('has-custom-color')
+  }
+
+  return classes
+})
 
 /**
- * Expose CSS variables for custom background colors
+ * Expose CSS variables for custom background colors (non-Tailwind values only)
  * Uses CSS custom properties to allow styling in the <style> block
- * --btn-bg: primary background color (if backgroundColor prop is set)
- * --btn-bg-hover: hover background color (if backgroundColorHover prop is set)
+ * --btn-bg: primary background color (if backgroundColor prop is a CSS value)
+ * --btn-bg-hover: hover background color (if backgroundColorHover prop is a CSS value)
  */
-const buttonStyle = computed(() => ({
-  ...(props.backgroundColor && {
-    '--btn-bg': props.backgroundColor,
-  }),
-  ...(props.backgroundColorHover && {
-    '--btn-bg-hover': props.backgroundColorHover,
-  }),
-  ...(props.color && {
-    '--btn-color': props.color,
-  }),
-}))
+const buttonStyle = computed(() => {
+  const style: Record<string, string> = {}
+
+  // Only use CSS variables if the values don't look like Tailwind classes
+  if (props.backgroundColor && !props.backgroundColor.includes('-')) {
+    style['--btn-bg'] = props.backgroundColor
+  }
+
+  if (props.backgroundColorHover && !props.backgroundColorHover.includes('-')) {
+    style['--btn-bg-hover'] = props.backgroundColorHover
+  }
+
+  if (props.color && !props.color.includes('-')) {
+    style['--btn-color'] = props.color
+  }
+
+  return style
+})
 
 /** Handle click event - prevents click when disabled or loading */
 function onClick(event: MouseEvent) {

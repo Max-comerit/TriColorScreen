@@ -1,7 +1,8 @@
 <script setup lang="ts">
-// Contact page
+// ===== IMPORTS =====
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
+import ConfirmDialog from '~/components/layout/ConfirmDialog.vue'
 
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
@@ -11,6 +12,65 @@ useHead({
       content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
     },
   ],
+})
+
+// ===== STATE =====
+const showConfirmDialog = ref(false)
+const hasFormChanges = ref(false)
+let nextRoute: string | null = null
+
+// ===== COMPOSABLES =====
+const router = useRouter()
+
+// ===== METHODS =====
+/**
+ * Handle confirm action when leaving page with form changes
+ */
+function handleConfirm(): void {
+  hasFormChanges.value = false // Reset before navigating to allow the guard to pass
+  showConfirmDialog.value = false
+  if (nextRoute) {
+    router.push(nextRoute)
+    nextRoute = null
+  }
+}
+
+/**
+ * Mark form as having changes
+ */
+function markFormAsChanged(): void {
+  hasFormChanges.value = true
+}
+
+/**
+ * Reset form changes state
+ */
+function resetFormChanges(): void {
+  hasFormChanges.value = false
+  nextRoute = null
+}
+
+// ===== LIFECYCLE HOOKS =====
+/**
+ * Setup page leave guard using beforeRouteLeave
+ */
+definePageMeta({
+  validate: async (route) => true,
+})
+
+onBeforeRouteLeave((to, from) => {
+  if (hasFormChanges.value) {
+    nextRoute = to.path
+    showConfirmDialog.value = true
+    return false
+  }
+})
+
+/**
+ * Initialize form state for testing
+ */
+onMounted(() => {
+  markFormAsChanged() // Mark form as changed for testing purposes
 })
 </script>
 
@@ -45,6 +105,19 @@ useHead({
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
       </Section>
     </div>
+
+    <!-- Navigation Guard: Confirm Dialog for unsaved form changes -->
+    <ConfirmDialog
+      v-model="showConfirmDialog"
+      title="Osparade ändringar"
+      cancel-label="Avbryt"
+      confirm-label="Fortsätt"
+      width="24rem"
+      @confirm="handleConfirm"
+    >
+      <p>Alla formulärdata kommer att gå förlorade om du fortsätter.</p>
+      <p>Är du säker på att du vill fortsätta?</p>
+    </ConfirmDialog>
   </div>
 </template>
 
