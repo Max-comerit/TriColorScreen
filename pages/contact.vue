@@ -55,10 +55,10 @@ function resetFormChanges(): void {
  * Setup page leave guard using beforeRouteLeave
  */
 definePageMeta({
-  validate: async (route) => true,
+  validate: async (_route) => true,
 })
 
-onBeforeRouteLeave((to, from) => {
+onBeforeRouteLeave((to, _from) => {
   if (hasFormChanges.value) {
     nextRoute = to.path
     showConfirmDialog.value = true
