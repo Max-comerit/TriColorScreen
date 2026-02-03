@@ -18,10 +18,11 @@ export interface Props {
   disabled?: boolean
   /** Show loading state with spinner - default: false */
   loading?: boolean
-  /** Optional custom background color (hex, rgb, var, etc.) */
+  /** Optional custom background color (hex, rgb, var, Tailwind CSS classes, etc.) */
   backgroundColor?: string
-  /** Optional custom background color on hover state */
+  /** Optional custom background color on hover state (hex, rgb, var, Tailwind CSS classes, etc.) */
   backgroundColorHover?: string
+  /** Optional custom text color (hex, rgb, var, Tailwind CSS classes, etc.) */
   color?: string
 }
 
