@@ -47,10 +47,10 @@ function markFormAsChanged(): void {
 /**
  * Reset form changes state
  */
-function resetFormChanges(): void {
-  hasFormChanges.value = false
-  nextRoute = null
-}
+// function resetFormChanges(): void {
+//   hasFormChanges.value = false
+//   nextRoute = null
+// }
 
 // ===== LIFECYCLE HOOKS =====
 /**
