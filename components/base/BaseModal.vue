@@ -117,9 +117,12 @@ watch(
       <!-- Modal Dialog -->
       <dialog
         open
+        role="dialog"
+        aria-modal="true"
         class="bg-white p-7 min-w-48 max-w-[calc(100vw_-_2rem)] rounded-modal shadow-drop relative"
         :style="{ width: props.width, height: props.height }"
         :aria-labelledby="props.title ? 'modal-title' : undefined"
+        aria-describedby="modal-body"
       >
         <!-- Close Button -->
         <button
@@ -141,12 +144,12 @@ watch(
         </header>
 
         <!-- Body Slot -->
-        <section class="py-5 text-neutral-700">
+        <section id="modal-body" class="py-5 text-neutral-700">
           <slot name="body" />
         </section>
 
         <!-- Footer Slot -->
-        <footer class="pt-5 flex flex-wrap justify-end gap-4 border-t border-neutral-200">
+        <footer class="pt-5 flex flex-wrap justify-end gap-4 border-t border-neutral-200" role="group" aria-label="Dialog actions">
           <slot name="footer" />
         </footer>
       </dialog>
