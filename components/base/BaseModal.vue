@@ -7,6 +7,9 @@
  * Uses v-model for controlling visibility and emits confirm event on OK.
  */
 
+// ===== IMPORTS =====
+import { watch, nextTick, onMounted, onUnmounted } from 'vue'
+
 // ===== TYPES =====
 /** Props for BaseModal component */
 interface Props {
@@ -42,44 +45,60 @@ function close(): void {
   emit('update:modelValue', false)
 }
 
+/**
+ * Handle keyboard navigation and events within modal
+ */
+function handleKeyDown(e: KeyboardEvent): void {
+  if (e.key === 'Escape') {
+    close()
+  }
+
+  // Focus trap: keep Tab navigation within the modal
+  const modalElement = document.querySelector('dialog[open]')
+  if (e.key === 'Tab' && modalElement) {
+    const focusableElements = modalElement.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )
+    const focusableArray = Array.from(focusableElements) as HTMLElement[]
+
+    if (focusableArray.length === 0) return
+
+    const activeElement = document.activeElement as HTMLElement
+    const currentIndex = focusableArray.indexOf(activeElement)
+
+    if (e.shiftKey) {
+      // Shift + Tab: move to previous element
+      const previousIndex = currentIndex <= 0 ? focusableArray.length - 1 : currentIndex - 1
+      focusableArray[previousIndex].focus()
+      e.preventDefault()
+    } else {
+      // Tab: move to next element
+      const nextIndex = currentIndex >= focusableArray.length - 1 ? 0 : currentIndex + 1
+      focusableArray[nextIndex].focus()
+      e.preventDefault()
+    }
+  }
+}
+
+/**
+ * Set focus to close button when modal opens
+ */
+function setInitialFocus(): void {
+  nextTick(() => {
+    const modalElement = document.querySelector('dialog[open]')
+    const closeButton = modalElement?.querySelector('button[aria-label="Close dialog"]') as HTMLElement
+    if (closeButton) {
+      closeButton.focus()
+    }
+  })
+}
+
 // ===== LIFECYCLE HOOKS =====
 /**
  * Setup keyboard support (ESC key) to close modal
  * and Tab key to manage focus within modal
  */
 onMounted(() => {
-  const handleKeyDown = (e: KeyboardEvent): void => {
-    if (e.key === 'Escape') {
-      close()
-    }
-
-    // Focus trap: keep Tab navigation within the modal
-    const modalElement = document.querySelector('dialog[open]')
-    if (e.key === 'Tab' && modalElement) {
-      const focusableElements = modalElement.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      )
-      const focusableArray = Array.from(focusableElements) as HTMLElement[]
-
-      if (focusableArray.length === 0) return
-
-      const activeElement = document.activeElement as HTMLElement
-      const currentIndex = focusableArray.indexOf(activeElement)
-
-      if (e.shiftKey) {
-        // Shift + Tab: move to previous element
-        const previousIndex = currentIndex <= 0 ? focusableArray.length - 1 : currentIndex - 1
-        focusableArray[previousIndex].focus()
-        e.preventDefault()
-      } else {
-        // Tab: move to next element
-        const nextIndex = currentIndex >= focusableArray.length - 1 ? 0 : currentIndex + 1
-        focusableArray[nextIndex].focus()
-        e.preventDefault()
-      }
-    }
-  }
-
   window.addEventListener('keydown', handleKeyDown)
 
   onUnmounted(() => {
@@ -87,6 +106,7 @@ onMounted(() => {
   })
 })
 
+// ===== WATCHERS =====
 /**
  * Set focus to first focusable element when modal opens
  */
@@ -94,13 +114,7 @@ watch(
   () => props.modelValue,
   (isOpen) => {
     if (isOpen) {
-      nextTick(() => {
-        const modalElement = document.querySelector('dialog[open]')
-        const closeButton = modalElement?.querySelector('button[aria-label="Close dialog"]') as HTMLElement
-        if (closeButton) {
-          closeButton.focus()
-        }
-      })
+      setInitialFocus()
     }
   }
 )
