@@ -1,8 +1,18 @@
+// pages/contact.vue
+
 <script setup lang="ts">
 // ===== IMPORTS =====
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import ConfirmDialog from '~/components/layout/ConfirmDialog.vue'
+
+// ===== STATE =====
+const showConfirmDialog = ref(false)
+const hasFormChanges = ref(false)
+let nextRoute: string | null = null
+
+// ===== COMPOSABLES =====
+const router = useRouter()
 
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
@@ -13,14 +23,6 @@ useHead({
     },
   ],
 })
-
-// ===== STATE =====
-const showConfirmDialog = ref(false)
-const hasFormChanges = ref(false)
-let nextRoute: string | null = null
-
-// ===== COMPOSABLES =====
-const router = useRouter()
 
 // ===== METHODS =====
 /**

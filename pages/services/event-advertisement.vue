@@ -1,8 +1,11 @@
+// pages/services/event-advertisement.vue
+
 <script setup lang="ts">
-// Event Advertisement page
+// ===== IMPORTS =====
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 
+// ===== COMPOSABLES =====
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
   meta: [

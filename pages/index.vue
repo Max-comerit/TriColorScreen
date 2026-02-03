@@ -10,6 +10,7 @@ import BragBar from '~/components/features/BragBar.vue'
 import Section from '~/components/common/Section.vue'
 import CardGrid from '~/components/common/CardGrid.vue'
 
+// ===== COMPOSABLES =====
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
   meta: [
