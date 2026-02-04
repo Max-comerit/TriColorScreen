@@ -39,6 +39,7 @@ useHead({
 
     <!-- Sections -->
     <div class="layout-container">
+      <!-- Service Categories -->
       <Section 
         id="services"
         title="Våra tjänster" 
@@ -50,10 +51,12 @@ useHead({
           :card-content-arr="serviceCategories"
           :type="CardType.Service"
           :min-item-width="280"
+          :same-item-height="true"
           :gap="24"
           aria-label="Tjänstekategorier"
         />
       </Section>
+      <!-- Reviews -->
       <Section 
         id="testimonials" 
         title="Omdömen" 
@@ -65,6 +68,7 @@ useHead({
           :card-content-arr="reviews"
           :type="CardType.Review"
           :min-item-width="280"
+          :same-item-height="true"
           :gap="24"
           aria-label="Kundrecensioner"
         />
