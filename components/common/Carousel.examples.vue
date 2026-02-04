@@ -43,7 +43,6 @@ const exampleData: IServiceCardContent[] = [
 
 function onCardClick(item: IServiceCardContent, index: number) {
   // This is just an example; in a real page you'd navigate or track analytics
-  // eslint-disable-next-line no-console
   console.log('Card clicked:', index, item.title)
 }
 </script>

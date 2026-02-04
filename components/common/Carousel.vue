@@ -169,8 +169,8 @@ watch(() => props.perPage, () => {
         <button
           class="btn-icon p-2 rounded-full bg-white shadow-sm disabled:opacity-50"
           :disabled="!props.loop && currentPage === 0"
-          @click="prev"
           aria-label="Previous slide"
+          @click="prev"
         >
           ◀
         </button>
@@ -183,8 +183,8 @@ watch(() => props.perPage, () => {
         <button
           class="btn-icon p-2 rounded-full bg-white shadow-sm disabled:opacity-50"
           :disabled="!props.loop && currentPage === maxPageIndex"
-          @click="next"
           aria-label="Next slide"
+          @click="next"
         >
           ▶
         </button>
@@ -250,8 +250,8 @@ watch(() => props.perPage, () => {
           :key="idx"
           class="w-2.5 h-2.5 rounded-full"
           :class="idx === currentPage ? 'bg-primary-600' : 'bg-gray-300'"
-          @click="goTo(idx)"
           :aria-current="idx === currentPage ? 'true' : undefined"
+          @click="goTo(idx)"
         />
       </div>
     </div>
