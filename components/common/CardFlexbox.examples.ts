@@ -2,12 +2,13 @@
  * CardFlexbox Component Examples
  *
  * @description Usage examples for the CardFlexbox component
- * demonstrating responsive flexbox layout with wrap support.
- * The flexbox automatically adjusts rows based on available space.
+ * demonstrating responsive row and column layouts with customizable
+ * alignment, widths, and gaps.
  */
 
 /**
- * Example: Service cards with imported data
+ * Example: Service cards with default layout
+ * @note Basic horizontal layout with cards wrapping on mobile
  */
 export const ServiceCardFlexboxExample = `
 <CardFlexbox
@@ -21,7 +22,8 @@ export const ServiceCardFlexboxExample = `
 `
 
 /**
- * Example: Review cards with imported data
+ * Example: Review cards with default layout
+ * @note Basic horizontal layout with cards wrapping on mobile
  */
 export const ReviewCardFlexboxExample = `
 <CardFlexbox
@@ -36,6 +38,7 @@ export const ReviewCardFlexboxExample = `
 
 /**
  * Example: Service cards with custom max width
+ * @note Demonstrates :max-item-width prop for wider cards on desktop
  */
 export const ServiceCardFlexboxCustomWidthExample = `
 <CardFlexbox
@@ -51,6 +54,7 @@ export const ServiceCardFlexboxCustomWidthExample = `
 
 /**
  * Example: Review cards with vertical layout
+ * @note Demonstrates direction="column" for full-width vertical stacking
  */
 export const ReviewCardFlexboxVerticalExample = `
 <CardFlexbox
@@ -66,6 +70,7 @@ export const ReviewCardFlexboxVerticalExample = `
 
 /**
  * Example: Service cards centered on row
+ * @note Demonstrates justify-content="center" for center alignment
  */
 export const ServiceCardFlexboxCenteredExample = `
 <CardFlexbox
@@ -81,6 +86,7 @@ export const ServiceCardFlexboxCenteredExample = `
 
 /**
  * Example: Review cards with space between layout
+ * @note Demonstrates justify-content="space-between" for distributed alignment
  */
 export const ReviewCardFlexboxSpaceBetweenExample = `
 <CardFlexbox
@@ -96,6 +102,7 @@ export const ReviewCardFlexboxSpaceBetweenExample = `
 
 /**
  * Example: Service cards with space around layout
+ * @note Demonstrates justify-content="space-around" for distributed alignment with edges
  */
 export const ServiceCardFlexboxSpaceAroundExample = `
 <CardFlexbox
