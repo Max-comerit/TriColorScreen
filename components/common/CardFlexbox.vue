@@ -132,38 +132,36 @@ const flexboxStyle = computed(() => ({
 /**
  * CardFlexbox Component Styles
  *
- * Uses CSS Flexbox for flexible row/column layout.
- * Follows WCAG AA standards and theme colors.
+ * Mobile-first responsive flexbox layout:
+ * - Base (mobile): both row and column directions use flexible sizing with minimum-width constraint
+ * - Tablet & Desktop (min-width: 640px): row applies max-width constraint; column allows content-based sizing
  */
 
 .card-flexbox {
   /* Flexbox styles applied via inline style for dynamic props */
   width: 100%;
+  max-width: 100%;
 }
 
-/* Row direction: constrain card widths */
-.card-flexbox.flex-row > * {
-  flex: 0 1 var(--max-item-width, 325px);
-  max-width: var(--max-item-width, 325px);
-}
-
-/* Column direction: full width, content-based height */
+/* Mobile-first: allow flexible sizing with minimum width constraint */
+.card-flexbox.flex-row > *,
 .card-flexbox.flex-col > * {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   width: 100%;
-  max-width: var(--max-item-width, 325px);
+  min-width: var(--min-item-width, 200px);
+  max-width: none;
 }
 
-@media (max-width: 639px) {
+/* Tablet & Desktop: constrain widths for better layout control */
+@media (min-width: 640px) {
   .card-flexbox.flex-row > * {
-    flex: 1 1 auto;
-    min-width: var(--min-item-width, 200px);
-    max-width: none;
+    flex: 0 1 var(--max-item-width, 325px);
+    max-width: var(--max-item-width, 325px);
   }
+
   .card-flexbox.flex-col > * {
-    flex: 1 1 auto;
-    width: 100%;
-    max-width: none;
+    flex: 0 1 auto;
+    max-width: var(--max-item-width, 325px);
   }
 }
 </style>
