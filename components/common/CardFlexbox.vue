@@ -98,7 +98,7 @@ const flexboxStyle = computed(() => ({
   <section
     :id="sectionId"
     :aria-label="ariaLabel"
-    class="card-flexbox-section"
+    class="w-full"
   >
     <!-- Flexbox container -->
     <div :class="flexboxClasses" :style="flexboxStyle" class="card-flexbox">
@@ -135,10 +135,6 @@ const flexboxStyle = computed(() => ({
  * Uses CSS Flexbox for flexible row/column layout.
  * Follows WCAG AA standards and theme colors.
  */
-
-.card-flexbox-section {
-  width: 100%;
-}
 
 .card-flexbox {
   /* Flexbox styles applied via inline style for dynamic props */

@@ -67,10 +67,10 @@ const gridStyle = computed(() => ({
     :id="sectionId"
     ref="sectionElement"
     :aria-label="ariaLabel"
-    class="card-grid-section"
+    class="w-full"
   >
     <!-- Responsive grid container with auto-fill -->
-    <div :style="gridStyle" :class="{ 'card-grid-same-height': props.sameItemHeight }" class="card-grid">
+    <div :style="gridStyle" :class="{ 'card-grid-same-height': props.sameItemHeight }" class="card-grid w-full">
       <!-- Render ServiceCard or ReviewCard based on type prop -->
       <template v-if="props.type === CardType.Service">
         <ServiceCard
@@ -96,26 +96,3 @@ const gridStyle = computed(() => ({
     </div>
   </section>
 </template>
-
-<style scoped>
-/**
- * CardGrid Component Styles
- * 
- * Uses CSS Grid auto-fill for responsive behavior.
- * Follows WCAG AA standards and theme colors.
- */
-
-.card-grid-section {
-  width: 100%;
-}
-
-.card-grid {
-  /* Grid styles applied via inline style for dynamic props */
-  width: 100%;
-}
-
-.error-text p {
-  @apply text-error;
-}
-
-</style>
