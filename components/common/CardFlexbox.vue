@@ -30,6 +30,8 @@ interface Props {
   height?: string | number
   /** Minimum item width for responsive sizing */
   minItemWidth?: string | number
+  /** Maximum item width for responsive sizing */
+  maxItemWidth?: string | number
   /** Gap between flex items */
   gap?: number
   /** Justify content alignment */
@@ -47,6 +49,7 @@ const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   height: 'auto',
   minItemWidth: '200px',
+  maxItemWidth: '325px',
   gap: 24,
   justifyContent: 'flex-start',
   alignItems: 'stretch',
@@ -86,6 +89,7 @@ const flexboxStyle = computed(() => ({
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
   gap: `${props.gap}px`,
   '--min-item-width': typeof props.minItemWidth === 'number' ? `${props.minItemWidth}px` : props.minItemWidth,
+  '--max-item-width': typeof props.maxItemWidth === 'number' ? `${props.maxItemWidth}px` : props.maxItemWidth,
 } as Record<string, string>))
 </script>
 
@@ -142,14 +146,14 @@ const flexboxStyle = computed(() => ({
 }
 
 .card-flexbox > * {
-  flex: 1 1 280px;
-  max-width: 325px;
+  flex: 0 1 var(--max-item-width, 325px);
+  max-width: var(--max-item-width, 325px);
 }
 
 @media (max-width: 639px) {
   .card-flexbox > * {
-    min-width: var(--min-item-width, 200px);
     flex: 1 1 auto;
+    min-width: var(--min-item-width, 200px);
     max-width: none;
   }
 }
