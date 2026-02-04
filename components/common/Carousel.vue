@@ -41,9 +41,11 @@ const emit = defineEmits<{
 /* -------------------------------------------------------------------------- */
 
 const startX = ref<number | null>(null)
-const deltaX = ref(0)
+const dragX = ref(0)
+const isDragging = ref(false)
 
-const SWIPE_THRESHOLD = 50 // px required to trigger a swipe
+const SWIPE_THRESHOLD = 60 // px
+const RUBBER_BAND_FACTOR = 0.35
 
 const currentPage = ref(0)
 
@@ -69,14 +71,17 @@ const carouselWidthStyle = computed(() =>
     : props.carouselWidth
 )
 
-/**
- * 🔑 CRITICAL FIX:
- * Always move exactly one viewport per page.
- * No percentages based on totalPages.
- */
-const trackStyle = computed(() => ({
-  transform: `translateX(-${currentPage.value * 100}%)`,
-}))
+const trackStyle = computed(() => {
+  const baseTranslate = -currentPage.value * 100
+  const dragTranslate = isDragging.value
+    ? (dragX.value / window.innerWidth) * 100
+    : 0
+
+  return {
+    transform: `translateX(calc(${baseTranslate}% + ${dragTranslate}%))`,
+    transition: isDragging.value ? 'none' : 'transform 0.5s ease',
+  }
+})
 
 /* -------------------------------------------------------------------------- */
 /* Methods                                                                     */
@@ -88,6 +93,10 @@ function next() {
     return
   }
   currentPage.value++
+}
+
+function applyRubberBand(distance: number) {
+  return distance * RUBBER_BAND_FACTOR
 }
 
 function prev() {
@@ -118,27 +127,40 @@ function onKeydown(e: KeyboardEvent) {
 }
 function onPointerDown(e: PointerEvent) {
   startX.value = e.clientX
-  deltaX.value = 0
+  dragX.value = 0
+  isDragging.value = true
 }
 
 function onPointerMove(e: PointerEvent) {
-  if (startX.value === null) return
-  deltaX.value = e.clientX - startX.value
+  if (!isDragging.value || startX.value === null) return
+
+  let delta = e.clientX - startX.value
+
+  // Rubber-band resistance at edges
+  if (
+    (currentPage.value === 0 && delta > 0) ||
+    (currentPage.value === maxPageIndex.value && delta < 0)
+  ) {
+    delta = applyRubberBand(delta)
+  }
+
+  dragX.value = delta
 }
 
 function onPointerUp() {
-  if (startX.value === null) return
+  if (!isDragging.value) return
 
-  if (Math.abs(deltaX.value) > SWIPE_THRESHOLD) {
-    if (deltaX.value < 0) {
+  if (Math.abs(dragX.value) > SWIPE_THRESHOLD) {
+    if (dragX.value < 0) {
       next()
     } else {
       prev()
     }
   }
 
+  dragX.value = 0
   startX.value = null
-  deltaX.value = 0
+  isDragging.value = false
 }
 
 
@@ -202,17 +224,16 @@ watch(() => props.perPage, () => {
   @pointercancel="onPointerUp"
   @pointerleave="onPointerUp"
 >
-
         <!-- Track -->
         <div
-          class="flex transition-transform duration-500 w-full"
+          class="flex transition-transform duration-500 w-full py-4"
           :style="trackStyle"
         >
           <!-- Pages -->
           <div
             v-for="page in totalPages"
             :key="page"
-            class="flex shrink-0 w-full"
+              class="flex gap-4 shrink-0 w-full px-4"
             :style="{ gap: `${props.gapPx}px` }"
           >
             <div
