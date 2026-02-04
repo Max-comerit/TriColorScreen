@@ -9,7 +9,7 @@
 
 // ===== IMPORTS =====
 import { watch, nextTick, onMounted, onUnmounted } from 'vue'
-import closeIcon from '~/assets/images/dialog/close-icon.svg?url'
+import CloseIcon from '~/assets/images/dialog/close-icon.svg?component'
 
 // ===== TYPES =====
 /** Props for BaseModal component */
@@ -145,7 +145,7 @@ watch(
           class="absolute top-2 right-4 p-2 sm:p-2 md:p-2 lg:p-2 border-none bg-transparent cursor-pointer text-neutral-500 hover:text-neutral-900 transition-colors w-11 h-11 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-12 lg:h-12 flex items-center justify-center"
           @click="close"
         >
-          <img :src="closeIcon" alt="" class="w-6 h-6 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-7 lg:h-7">
+          <CloseIcon class="w-6 h-6 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-7 lg:h-7" />
         </button>
 
         <!-- Header -->
