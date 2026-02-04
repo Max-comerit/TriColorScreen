@@ -1,14 +1,15 @@
 <script setup lang="ts">
 /**
- * EmblaCarousel Component
+ * EmblaCarousel Component (TS-safe)
  *
- * Uses Embla Carousel to display ServiceCard items with loop, arrows, dots, and responsive per-page.
+ * - ServiceCard items
+ * - Loop, arrows
+ * - Dots when ≤10 slides, scrollbar otherwise
  */
 
 import { ref, computed, onMounted } from 'vue'
-import EmblaCarousel from 'embla-carousel';
+import EmblaCarousel from 'embla-carousel'
 import type { EmblaCarouselType } from 'embla-carousel'
-
 import ServiceCard from './ServiceCard.vue'
 import type { IServiceCardContent } from '~/types/CardContent'
 
@@ -41,33 +42,40 @@ const embla = ref<EmblaCarouselType | null>(null)
 const selectedIndex = ref(0)
 const canScrollPrev = ref(false)
 const canScrollNext = ref(false)
+const scrollProgress = ref(0) // 0-1, for scrollbar
 
 // Computed
 const carouselWidth = computed(() =>
   typeof props.carouselWidth === 'number' ? `${props.carouselWidth}px` : props.carouselWidth ?? '100%'
 )
 
+const useScrollbar = computed(() => props.items.length > 15)
+
 // Initialize Embla
 onMounted(() => {
   if (!viewportRef.value) return
 
-embla.value = EmblaCarousel(viewportRef.value, {
-  loop: props.loop,
-  align: 'start',      // 'start' aligns slides left
-  skipSnaps: false,
-  dragFree: false      // allows free drag
-})
+  embla.value = EmblaCarousel(viewportRef.value, {
+    loop: props.loop,
+    align: 'start',
+    skipSnaps: false,
+    dragFree: false,
+  })
 
-  // Update state
-  const update = () => {
+  const updateState = () => {
     if (!embla.value) return
     selectedIndex.value = embla.value.selectedScrollSnap()
     canScrollPrev.value = embla.value.canScrollPrev()
     canScrollNext.value = embla.value.canScrollNext()
+
+    const snaps = embla.value.scrollSnapList()
+    const idx = embla.value.selectedScrollSnap()
+    scrollProgress.value = snaps.length > 1 ? idx / (snaps.length - 1) : 0
   }
 
-  embla.value.on('select', update)
-  embla.value.on('init', update)
+  embla.value.on('init', updateState)
+  embla.value.on('select', updateState)
+  embla.value.on('scroll', updateState)
 })
 
 // Navigation
@@ -87,10 +95,21 @@ function onCardClick(item: IServiceCardContent, index: number) {
   emit('card-click', item, index)
 }
 
+// Scrollbar handler
+function onScrollBarChange(event: Event) {
+  const input = event.target as HTMLInputElement
+  const progress = parseFloat(input.value)
+  scrollProgress.value = progress
+  if (!embla.value) return
+
+  const snaps = embla.value.scrollSnapList()
+  const targetIndex = Math.round(progress * (snaps.length - 1))
+  embla.value.scrollTo(targetIndex)
+}
 </script>
 
 <template>
-  <section class="relative" :style="{ maxWidth: carouselWidth }">
+  <section class="relative mx-auto" :style="{ maxWidth: carouselWidth }">
     <!-- Arrows -->
     <button
       v-if="props.showArrows"
@@ -135,16 +154,32 @@ function onCardClick(item: IServiceCardContent, index: number) {
       </div>
     </div>
 
-    <!-- Pagination Dots -->
-    <div v-if="props.showDots" class="mt-3 flex justify-center gap-2">
-      <button
-        v-for="(_, idx) in props.items.length"
-        :key="idx"
-        class="w-2.5 h-2.5 rounded-full"
-        :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
-        :aria-label="`Go to slide ${idx + 1}`"
-        @click="goTo(idx)"
-      />
+    <!-- Pagination -->
+    <div class="mt-3 flex justify-center gap-2">
+      <!-- Dots -->
+      <template v-if="!useScrollbar">
+        <button
+          v-for="(_, idx) in props.items.length"
+          :key="idx"
+          class="w-2.5 h-2.5 rounded-full"
+          :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
+          :aria-label="`Go to slide ${idx + 1}`"
+          @click="goTo(idx)"
+        />
+      </template>
+
+      <!-- Scrollbar -->
+      <template v-else>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.001"
+          class="w-full h-2 rounded-lg accent-primary-500"
+          :value="scrollProgress"
+          @input="onScrollBarChange"
+        />
+      </template>
     </div>
   </section>
 </template>

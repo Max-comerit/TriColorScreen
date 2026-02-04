@@ -12,7 +12,13 @@ import CardGrid from '~/components/common/CardGrid.vue'
 import Carousel from '~/components/common/Carousel.vue';
 import type { IServiceCardContent } from '~/types/CardContent';
 const exampleData: IServiceCardContent[] = [
+
   {
+    title: 'Decoration & Foiling',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'Special finishes including foiling, embossing and varnishes.',
+    link: '/services/decoration-foiling',
+  },  {
     title: 'Premium Screen Printing',
     imageSrc: '/images/index/decoration-foiling.png',
     description: 'High-quality printing for apparel and promotional goods with fast turnaround and great colors.',
@@ -47,7 +53,19 @@ const exampleData: IServiceCardContent[] = [
     imageSrc: '/images/index/decoration-foiling.png',
     description: 'Special finishes including foiling, embossing and varnishes.',
     link: '/services/decoration-foiling',
+  },  {
+    title: 'Premium Screen Printing',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'High-quality printing for apparel and promotional goods with fast turnaround and great colors.',
+    link: '/services/screen-printing-embroidery',
   },
+  {
+    title: 'Custom Embroidery',
+    imageSrc: '/images/index/printed-matter.png',
+    description: 'Precision embroidery on caps, shirts and patches for a professional finish.',
+    link: '/services/screen-printing-embroidery',
+  },
+  
 ]
 
 // ===== COMPOSABLES =====
