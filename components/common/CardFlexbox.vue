@@ -141,15 +141,28 @@ const flexboxStyle = computed(() => ({
   width: 100%;
 }
 
-.card-flexbox > * {
+/* Row direction: constrain card widths */
+.card-flexbox.flex-row > * {
   flex: 0 1 var(--max-item-width, 325px);
   max-width: var(--max-item-width, 325px);
 }
 
+/* Column direction: full width, content-based height */
+.card-flexbox.flex-col > * {
+  flex: 0 1 auto;
+  width: 100%;
+  max-width: var(--max-item-width, 325px);
+}
+
 @media (max-width: 639px) {
-  .card-flexbox > * {
+  .card-flexbox.flex-row > * {
     flex: 1 1 auto;
     min-width: var(--min-item-width, 200px);
+    max-width: none;
+  }
+  .card-flexbox.flex-col > * {
+    flex: 1 1 auto;
+    width: 100%;
     max-width: none;
   }
 }
