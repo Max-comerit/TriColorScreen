@@ -11,7 +11,7 @@ import Section from '~/components/common/Section.vue'
 import CardGrid from '~/components/common/CardGrid.vue'
 import Carousel from '~/components/common/Carousel.vue';
 import type { IServiceCardContent } from '~/types/CardContent';
-const exampleData: IServiceCardContent[] = [
+const exampleDataLong: IServiceCardContent[] = [
 
   {
     title: 'Decoration & Foiling',
@@ -65,7 +65,138 @@ const exampleData: IServiceCardContent[] = [
     description: 'Precision embroidery on caps, shirts and patches for a professional finish.',
     link: '/services/screen-printing-embroidery',
   },
+    {
+    title: 'Decoration & Foiling',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'Special finishes including foiling, embossing and varnishes.',
+    link: '/services/decoration-foiling',
+  },  {
+    title: 'Premium Screen Printing',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'High-quality printing for apparel and promotional goods with fast turnaround and great colors.',
+    link: '/services/screen-printing-embroidery',
+  },
+  {
+    title: 'Custom Embroidery',
+    imageSrc: '/images/index/printed-matter.png',
+    description: 'Precision embroidery on caps, shirts and patches for a professional finish.',
+    link: '/services/screen-printing-embroidery',
+  },
+  {
+    title: 'Graphic Production',
+    imageSrc: '/images/index/graphic-production.png',
+    description: 'From proposals to print-ready files and large format solutions.',
+    link: '/services/graphic-production',
+  },
+  {
+    title: 'Event Advertisement',
+    imageSrc: '/images/index/event-advertisement.png',
+    description: 'Large format prints and banners for events and conferences.',
+    link: '/services/event-advertisement',
+  },
+  {
+    title: 'Custom Printed Matter',
+    imageSrc: '/images/index/printed-matter.png',
+    description: 'Business cards, flyers and brochures with premium finishing options.',
+    link: '/services/printed-matter',
+  },
+  {
+    title: 'Decoration & Foiling',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'Special finishes including foiling, embossing and varnishes.',
+    link: '/services/decoration-foiling',
+  },  {
+    title: 'Premium Screen Printing',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'High-quality printing for apparel and promotional goods with fast turnaround and great colors.',
+    link: '/services/screen-printing-embroidery',
+  },
+  {
+    title: 'Custom Embroidery',
+    imageSrc: '/images/index/printed-matter.png',
+    description: 'Precision embroidery on caps, shirts and patches for a professional finish.',
+    link: '/services/screen-printing-embroidery',
+  },
+    {
+    title: 'Decoration & Foiling',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'Special finishes including foiling, embossing and varnishes.',
+    link: '/services/decoration-foiling',
+  },  {
+    title: 'Premium Screen Printing',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'High-quality printing for apparel and promotional goods with fast turnaround and great colors.',
+    link: '/services/screen-printing-embroidery',
+  },
+  {
+    title: 'Custom Embroidery',
+    imageSrc: '/images/index/printed-matter.png',
+    description: 'Precision embroidery on caps, shirts and patches for a professional finish.',
+    link: '/services/screen-printing-embroidery',
+  },
+  {
+    title: 'Graphic Production',
+    imageSrc: '/images/index/graphic-production.png',
+    description: 'From proposals to print-ready files and large format solutions.',
+    link: '/services/graphic-production',
+  },
+  {
+    title: 'Event Advertisement',
+    imageSrc: '/images/index/event-advertisement.png',
+    description: 'Large format prints and banners for events and conferences.',
+    link: '/services/event-advertisement',
+  },
+  {
+    title: 'Custom Printed Matter',
+    imageSrc: '/images/index/printed-matter.png',
+    description: 'Business cards, flyers and brochures with premium finishing options.',
+    link: '/services/printed-matter',
+  },
+  {
+    title: 'Decoration & Foiling',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'Special finishes including foiling, embossing and varnishes.',
+    link: '/services/decoration-foiling',
+  },  {
+    title: 'Premium Screen Printing',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'High-quality printing for apparel and promotional goods with fast turnaround and great colors.',
+    link: '/services/screen-printing-embroidery',
+  },
+  {
+    title: 'Custom Embroidery',
+    imageSrc: '/images/index/printed-matter.png',
+    description: 'Precision embroidery on caps, shirts and patches for a professional finish.',
+    link: '/services/screen-printing-embroidery',
+  },
   
+]
+const exampleData: IServiceCardContent[] = [
+
+  {
+    title: 'Decoration & Foiling',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'Special finishes including foiling, embossing and varnishes.',
+    link: '/services/decoration-foiling',
+  },  {
+    title: 'Premium Screen Printing',
+    imageSrc: '/images/index/decoration-foiling.png',
+    description: 'High-quality printing for apparel and promotional goods with fast turnaround and great colors.',
+    link: '/services/screen-printing-embroidery',
+  },
+  {
+    title: 'Custom Embroidery',
+    imageSrc: '/images/index/printed-matter.png',
+    description: 'Precision embroidery on caps, shirts and patches for a professional finish.',
+    link: '/services/screen-printing-embroidery',
+  },
+  {
+    title: 'Graphic Production',
+    imageSrc: '/images/index/graphic-production.png',
+    description: 'From proposals to print-ready files and large format solutions.',
+    link: '/services/graphic-production',
+  },
+
 ]
 
 // ===== COMPOSABLES =====
@@ -133,6 +264,14 @@ const perPage = useResponsivePerPage().perPage
       </Section>
       <Carousel
       :items="exampleData"
+      :per-page="perPage"
+      :gap-px="16"
+      :loop="true"
+
+
+    />
+          <Carousel
+      :items="exampleDataLong"
       :per-page="perPage"
       :gap-px="16"
       :loop="true"

@@ -66,7 +66,11 @@ const handleCardClick = () => {
   >
     <!-- Article wrapper for semantic content -->
     <article
+<<<<<<< HEAD
       class="flex flex-col p-5 overflow-hidden rounded-card shadow-drop transition-transform duration-200 hover:-translate-y-1"
+=======
+      class="group flex flex-col p-5 overflow-hidden rounded-card shadow-drop transition-transform duration-200 cursor-pointer"
+>>>>>>> 89cb319 (Removed hover effect on ServiceCard. Added dots and scroll bar example to index)
       :class="backgroundColor"
       :style="cardStyle"
     >
@@ -85,7 +89,7 @@ const handleCardClick = () => {
           fit="cover"
           loading="lazy"
           fetchpriority="low"
-          class="w-full object-cover transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
+          class="w-full object-cover transition-transform duration-300 overflow-hidden rounded-t-card"
         />
       </div>
 
