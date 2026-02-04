@@ -66,7 +66,7 @@ const aspectRatio = computed(() => {
       format="webp"
       fit="cover"
       quality="80"
-      sizes="sm:100vw md:100vw lg:100vw xl:100vw 1280px"
+      sizes="xl:100vw 1280px"
       densities="x1 x2"
       loading="eager"
       fetchpriority="high"
