@@ -42,8 +42,8 @@ const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   height: 'auto',
   minItemWidth: '200px',
-  gap: 24,
   sameItemHeight: true,
+  gap: 24,
   ariaLabel: undefined,
   sectionId: undefined,
 })

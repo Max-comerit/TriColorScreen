@@ -22,16 +22,14 @@ interface Props {
   cardContentArr: IServiceCardContent[] | IReviewCardContent[]
   /** Card type to determine rendering (service or review) */
   type: CardType
-  /** Flex direction: row (horizontal) or col (vertical) */
-  direction?: 'row' | 'col'
+  /** Flex direction: row (horizontal) or column (vertical) */
+  direction?: 'row' | 'column'
   /** Width of the flexbox (CSS value or pixel number) */
   width?: string | number
   /** Height of the flexbox (CSS value or pixel number) */
   height?: string | number
   /** Minimum item width for responsive sizing */
   minItemWidth?: string | number
-  /** Make all cards the same height (height of the tallest card) */
-  sameItemHeight?: boolean
   /** Gap between flex items */
   gap?: number
   /** Justify content alignment */
@@ -50,7 +48,6 @@ const props = withDefaults(defineProps<Props>(), {
   height: 'auto',
   minItemWidth: '200px',
   gap: 24,
-  sameItemHeight: true,
   justifyContent: 'flex-start',
   alignItems: 'stretch',
   ariaLabel: undefined,
@@ -59,7 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // ===== COMPUTED =====
 const flexboxClasses = computed(() => {
-  const direction = props.direction === 'col' ? 'flex-col' : 'flex-row'
+  const direction = props.direction === 'column' ? 'flex-col' : 'flex-row'
   
   const justifyMap: Record<string, string> = {
     'flex-start': 'justify-start',
@@ -81,7 +78,7 @@ const flexboxClasses = computed(() => {
   const justify = justifyMap[props.justifyContent || 'flex-start']
   const align = alignMap[props.alignItems || 'stretch']
   
-  return `flex flex-wrap ${direction} ${justify} ${align}`
+  return `flex flex-wrap justify-start ${direction} ${justify} ${align}`
 })
 
 const flexboxStyle = computed(() => ({
@@ -100,7 +97,7 @@ const flexboxStyle = computed(() => ({
     class="card-flexbox-section"
   >
     <!-- Flexbox container -->
-    <div :class="[flexboxClasses, { 'card-flexbox-same-height': props.sameItemHeight }]" :style="flexboxStyle" class="card-flexbox">
+    <div :class="flexboxClasses" :style="flexboxStyle" class="card-flexbox">
       <!-- Render ServiceCard or ReviewCard based on type prop -->
       <template v-if="props.type === CardType.Service">
         <ServiceCard
@@ -145,16 +142,8 @@ const flexboxStyle = computed(() => ({
 }
 
 .card-flexbox > * {
-  flex: 0 1 280px;
+  flex: 1 1 280px;
   max-width: 325px;
-}
-
-.card-flexbox-same-height {
-  align-items: stretch;
-}
-
-.card-flexbox-same-height > * {
-  aspect-ratio: 4 / 5;
 }
 
 @media (max-width: 639px) {
@@ -162,10 +151,6 @@ const flexboxStyle = computed(() => ({
     min-width: var(--min-item-width, 200px);
     flex: 1 1 auto;
     max-width: none;
-  }
-
-  .card-flexbox-same-height > * {
-    aspect-ratio: unset;
   }
 }
 </style>
