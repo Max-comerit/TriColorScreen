@@ -51,7 +51,6 @@ useHead({
           :card-content-arr="serviceCategories"
           :type="CardType.Service"
           :min-item-width="280"
-          :same-item-height="true"
           :gap="24"
           aria-label="Tjänstekategorier"
         />
@@ -68,7 +67,6 @@ useHead({
           :card-content-arr="reviews"
           :type="CardType.Review"
           :min-item-width="280"
-          :same-item-height="true"
           :gap="24"
           aria-label="Kundrecensioner"
         />
