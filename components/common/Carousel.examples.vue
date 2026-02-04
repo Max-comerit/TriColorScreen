@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Carousel from './Carousel.vue'
+import Carousel from './Carousel.old.vue'
 import type { IServiceCardContent } from '~/types/CardContent'
 
 const exampleData: IServiceCardContent[] = [
