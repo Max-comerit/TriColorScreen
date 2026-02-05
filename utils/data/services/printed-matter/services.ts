@@ -37,10 +37,4 @@ export const printedMatterServices: IServiceCardContent[] = [
     imageSrc: 'images/index/graphic-production.png',
     alt: 'Foldrar',
   },
-  {
-    title: 'Broschyrer',
-    description: 'När ni har lite mer att säga. Det är inte för inte som broschyren är en klassiker. Där står allt vad kunden behöver veta och snyggt presenterat är det också.',
-    imageSrc: 'images/index/screen-printing-embroidery.png',
-    alt: 'Broschyrer',
-  },
 ]

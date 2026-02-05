@@ -88,7 +88,7 @@ const carouselWidth = computed(() =>
   typeof props.carouselWidth === 'number' ? `${props.carouselWidth}px` : props.carouselWidth ?? '100%'
 )
 
-const useScrollbar = computed(() => props.items.length > 15)
+const useScrollbar = computed(() => props.items.length > 10) // Show scrollbar if more than 10 items, otherwise show dots
 
 // Initialize Embla
 onMounted(() => {
@@ -157,7 +157,10 @@ function onScrollBarChange(event: Event) {
 </script>
 
 <template>
-  <section class="relative mx-auto" :style="{ maxWidth: carouselWidth }">
+  <section
+  class="mx-auto flex flex-col md:relative md:block"
+  :style="{ maxWidth: carouselWidth }"
+>
     <!-- Embla viewport -->
     <div ref="viewportRef" class="overflow-hidden">
       <div class="flex">
@@ -166,35 +169,14 @@ function onScrollBarChange(event: Event) {
           :style="{ width: `${100 / props.perPage!}%`, padding: `${props.gapPx! / 2}px` }">
           <ServiceCard
           :image-src="item.imageSrc" :title="item.title" :description="item.description" :link="item.link"
-            :alt="item.alt" :background-color="'bg-white'" :text-color="'black'" @click="onCardClick(item, idx)" />
+            :alt="item.alt" :background-color="'bg-primary-50'" :text-color="'black'" @click="onCardClick(item, idx)" />
         </div>
       </div>
     </div>
-    <div class="relative flex items-center">
-      <div class="flex gap-3 my-2 pl-[8px]">
-        <!-- Arrows -->
-        <button
-            v-if="props.showArrows" class="
-            btn-icon
-            rounded-xl
-            border border-black
-            px-5 py-2
-            hover:bg-gray-100
-            touch-manipulation
-            select-none
-          " :disabled="!canScrollPrev" aria-label="Previous slide" @click="handleClick(scrollPrev)">
-          <LeftArrow />
-        </button>
+    <div class="relative flex flex-col gap-2 sm:gap-0 sm:flex-row items-center">
 
-        <button
-          v-if="props.showArrows"
-          class="btn-icon rounded-xl border border-black px-5 py-2 hover:bg-gray-100 text-center text-md touch-manipulation"
-          :disabled="!canScrollNext" aria-label="Next slide" @click="handleClick(scrollNext)">
-          <RightArrow />
-        </button>
-      </div>
       <!-- Pagination -->
-      <div class="absolute left-1/2 -translate-x-1/2 flex justify-center gap-2">
+      <div class="mt-2 sm:absolute left-1/2 sm:-translate-x-1/2 flex justify-center gap-2">
         <!-- Dots -->
         <template v-if="!useScrollbar">
           <button
@@ -209,7 +191,36 @@ function onScrollBarChange(event: Event) {
             :value="scrollProgress" @input="onScrollBarChange">
         </template>
       </div>
+      <!-- Arrows -->
+      <div class="flex gap-3 my-2 sm:pl-[8px]">
+        <button
+            v-if="props.showArrows" class="
+            btn-icon
+            rounded-xl
+            border border-black
+            px-8 py-3
+            hover:bg-gray-100
+            touch-manipulation
+            select-none
+          " :disabled="!canScrollPrev" aria-label="Previous slide" @click="handleClick(scrollPrev)">
+          <LeftArrow />
+        </button>
 
+        <button
+          v-if="props.showArrows"
+          class="
+          btn-icon 
+          rounded-xl 
+          border border-black 
+          px-8 py-3 
+          hover:bg-gray-100 
+          touch-manipulation
+          select-none
+          "
+          :disabled="!canScrollNext" aria-label="Next slide" @click="handleClick(scrollNext)">
+          <RightArrow />
+        </button>
+      </div>
     </div>
   </section>
 </template>
