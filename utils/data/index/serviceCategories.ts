@@ -8,18 +8,11 @@ import type { IServiceCardContent } from '~/types/CardContent'
 
 export const serviceCategories: IServiceCardContent[] = [
   {
-    title: 'Grafisk Produktion',
-    description: 'Grafisk Produktion Logotyp Trycksaker',
-    imageSrc: '/images/index/graphic-production.png',
-    alt: 'Grafisk Produktion',
-    link: '/services/graphic-production',
-  },
-  {
-    title: 'Dekoration & Foliering',
-    description: 'Dekor Foliering',
-    imageSrc: '/images/index/decoration-foiling.png',
-    alt: 'Dekoration & Foliering',
-    link: '/services/decoration-foiling',
+    title: 'Trycksaker',
+    description: 'Visitkort Foldrar Broschyrer Roll-Ups Skyltar Affischer Flyers Dekaler Menyer Gatupratare',
+    imageSrc: '/images/index/printed-matter.png',
+    alt: 'Trycksaker',
+    link: '/services/printed-matter',
   },
   {
     title: 'Screentryck / Brodyr',
@@ -38,7 +31,7 @@ export const serviceCategories: IServiceCardContent[] = [
   {
     title: 'Grafisk Produktion',
     description: 'Grafisk Produktion Logotyp Trycksaker',
-    imageSrc: '/images/index/grafisk-produktion.png',
+    imageSrc: '/images/index/graphic-production.png',
     alt: 'Grafisk Produktion',
     link: '/services/graphic-production',
   },
