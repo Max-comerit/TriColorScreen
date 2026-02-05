@@ -1,29 +1,64 @@
 <script setup lang="ts">
-/**
- * EmblaCarousel Component (TS-safe)
- *
- * - ServiceCard items
- * - Loop, arrows
- * - Dots when ≤10 slides, scrollbar otherwise
- */
-
-import { ref, computed, onMounted } from 'vue'
-import EmblaCarousel from 'embla-carousel'
-import type { EmblaCarouselType } from 'embla-carousel'
-import ServiceCard from './ServiceCard.vue'
 import type { IServiceCardContent } from '~/types/CardContent'
-import LeftArrow from '~/assets/images/icons/left-arrow.svg'
+import { ref, computed, onMounted } from 'vue' 
+import EmblaCarousel from 'embla-carousel' 
+import type { EmblaCarouselType } from 'embla-carousel' 
+import ServiceCard from './ServiceCard.vue' 
+import LeftArrow from '~/assets/images/icons/left-arrow.svg' 
 import RightArrow from '~/assets/images/icons/right-arrow.svg'
 
+/**
+ * EmblaCarousel Component
+ *
+ * @description A responsive, touch-friendly carousel built on Embla Carousel.
+ * Designed for displaying ServiceCard items with optional arrows, pagination dots,
+ * or a scrollbar for large item sets.
+ *
+ * Features:
+ * - Configurable items per page
+ * - Optional looping
+ * - Arrow navigation with debounce protection
+ * - Dots pagination for small datasets
+ * - Range-based scrollbar for large datasets
+ * - Emits card click events with item data
+ *
+ * @example
+ * <EmblaCarousel
+ *   :items="services"
+ *   :per-page="3"
+ *   :gap-px="16"
+ *   loop
+ *   show-arrows
+ *   show-dots
+ *   carousel-width="1200px"
+ *   @card-click="onServiceClick"
+ * />
+ */
+
+// ===== PROPS =====
 interface Props {
+  /** Array of service card content to display in the carousel */
   items: IServiceCardContent[]
+
+  /** Number of cards visible per page */
   perPage?: number
+
+  /** Gap between cards in pixels */
   gapPx?: number
+
+  /** Whether the carousel should loop infinitely */
   loop?: boolean
+
+  /** Whether navigation arrows should be displayed */
   showArrows?: boolean
+
+  /** Whether pagination dots should be displayed (overridden by scrollbar for large datasets) */
   showDots?: boolean
+
+  /** Maximum width of the carousel container (CSS value or pixel number) */
   carouselWidth?: string | number
 }
+
 
 const props = withDefaults(defineProps<Props>(), {
   perPage: 3,
