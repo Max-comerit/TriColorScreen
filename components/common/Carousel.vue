@@ -45,6 +45,8 @@ const selectedIndex = ref(0)
 const canScrollPrev = ref(false)
 const canScrollNext = ref(false)
 const scrollProgress = ref(0) // 0-1, for scrollbar
+let lastClick = 0
+const totalPages = Math.ceil(props.items.length / props.perPage)
 
 // Computed
 const carouselWidth = computed(() =>
@@ -81,12 +83,21 @@ onMounted(() => {
 })
 
 // Navigation
+
 function scrollPrev() {
   embla.value?.scrollPrev()
 }
 
 function scrollNext() {
   embla.value?.scrollNext()
+}
+
+
+function handleClick(fn: () => void) {
+  const now = performance.now()
+  if (now - lastClick < 50) return
+  lastClick = now
+  fn()
 }
 
 function goTo(index: number) {
@@ -119,44 +130,51 @@ function onScrollBarChange(event: Event) {
           v-for="(item, idx) in props.items" :key="idx" class="flex-shrink-0 box-border"
           :style="{ width: `${100 / props.perPage!}%`, padding: `${props.gapPx! / 2}px` }">
           <ServiceCard
-            :image-src="item.imageSrc" :title="item.title" :description="item.description" :link="item.link"
+          :image-src="item.imageSrc" :title="item.title" :description="item.description" :link="item.link"
             :alt="item.alt" :background-color="'bg-white'" :text-color="'black'" @click="onCardClick(item, idx)" />
         </div>
       </div>
     </div>
-    <div class="flex items-center align-middle ">
+    <div class="relative flex items-center">
       <div class="flex gap-3 my-2 pl-[8px]">
         <!-- Arrows -->
         <button
-          v-if="props.showArrows" class="btn-icon rounded-xl border border-black px-5 py-2 hover:bg-gray-100 text-center text-md" :disabled="!canScrollPrev" aria-label="Previous slide"
-          @click="scrollPrev"
-          >
+            v-if="props.showArrows" class="
+            btn-icon
+            rounded-xl
+            border border-black
+            px-5 py-2
+            hover:bg-gray-100
+            touch-manipulation
+            select-none
+          " :disabled="!canScrollPrev" aria-label="Previous slide" @click="handleClick(scrollPrev)">
           <LeftArrow />
         </button>
 
         <button
-          v-if="props.showArrows" class="btn-icon rounded-xl border border-black px-5 py-2 hover:bg-gray-100 text-center text-md" :disabled="!canScrollNext" aria-label="Next slide"
-          @click="scrollNext">
+          v-if="props.showArrows"
+          class="btn-icon rounded-xl border border-black px-5 py-2 hover:bg-gray-100 text-center text-md touch-manipulation"
+          :disabled="!canScrollNext" aria-label="Next slide" @click="handleClick(scrollNext)">
           <RightArrow />
         </button>
       </div>
       <!-- Pagination -->
-      <div class="flex justify-center gap-2 mx-auto">
+      <div class="absolute left-1/2 -translate-x-1/2 flex justify-center gap-2">
         <!-- Dots -->
         <template v-if="!useScrollbar">
           <button
-          v-for="(_, idx) in props.items.length" :key="idx" class="w-2.5 h-2.5 rounded-full"
-            :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'" :aria-label="`Go to slide ${idx + 1}`"
-            @click="goTo(idx)" />
+          v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full"
+            :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'" @click="goTo(idx)" />
         </template>
 
         <!-- Scrollbar -->
         <template v-else>
           <input
-            type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-full h-2 rounded-lg"
+            type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-48 h-2 rounded-lg"
             :value="scrollProgress" @input="onScrollBarChange">
         </template>
       </div>
+
     </div>
   </section>
 </template>
@@ -164,14 +182,14 @@ function onScrollBarChange(event: Event) {
 <style scoped>
 /* Chrome, Edge, Safari */
 .embla-scrollbar::-webkit-slider-runnable-track {
-  @apply bg-primary-400;
+  @apply bg-primary-300;
   height: 0.5rem;
   border-radius: 9999px;
 }
 
 /* Firefox */
 .embla-scrollbar::-moz-range-track {
-  @apply bg-primary-400;
+  @apply bg-primary-300;
   height: 0.5rem;
   border-radius: 9999px;
 }
@@ -182,7 +200,7 @@ function onScrollBarChange(event: Event) {
   appearance: none;
   height: 1rem;
   width: 1rem;
-  background-color: rgb(30 64 175);
+   @apply bg-primary-700;
   /* primary-800 */
   border-radius: 9999px;
   cursor: pointer;
@@ -193,8 +211,12 @@ function onScrollBarChange(event: Event) {
 .embla-scrollbar::-moz-range-thumb {
   height: 1rem;
   width: 1rem;
-  background-color: rgb(30 64 175);
+  @apply bg-primary-700;
   border-radius: 9999px;
   cursor: pointer;
 }
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
 </style>

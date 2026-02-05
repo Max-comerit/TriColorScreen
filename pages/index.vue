@@ -191,15 +191,24 @@ const exampleData: IServiceCardContent[] = [
     link: '/services/screen-printing-embroidery',
   },
   {
-    title: 'Graphic Production',
-    imageSrc: '/images/index/graphic-production.png',
-    description: 'From proposals to print-ready files and large format solutions.',
-    link: '/services/graphic-production',
+    title: 'Custom Embroidery',
+    imageSrc: '/images/index/printed-matter.png',
+    description: 'Precision embroidery on caps, shirts and patches for a professional finish.',
+    link: '/services/screen-printing-embroidery',
   },
-
+  {
+    title: 'Custom Embroidery',
+    imageSrc: '/images/index/printed-matter.png',
+    description: 'Precision embroidery on caps, shirts and patches for a professional finish.',
+    link: '/services/screen-printing-embroidery',
+  }
 ]
 
+<<<<<<< HEAD
 // ===== COMPOSABLES =====
+=======
+
+>>>>>>> 2626a53 (Added a debounce to mouse clicks to prevent extra dblclick events. Positioned slider/dots absoluted to center it in parent div)
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
   meta: [
