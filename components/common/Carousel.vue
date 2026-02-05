@@ -12,6 +12,8 @@ import EmblaCarousel from 'embla-carousel'
 import type { EmblaCarouselType } from 'embla-carousel'
 import ServiceCard from './ServiceCard.vue'
 import type { IServiceCardContent } from '~/types/CardContent'
+import LeftArrow from '~/assets/images/icons/left-arrow.svg'
+import RightArrow from '~/assets/images/icons/right-arrow.svg'
 
 interface Props {
   items: IServiceCardContent[]
@@ -58,7 +60,7 @@ onMounted(() => {
   embla.value = EmblaCarousel(viewportRef.value, {
     loop: props.loop,
     align: 'start',
-    skipSnaps: false,
+    skipSnaps: true,
     dragFree: false,
   })
 
@@ -110,76 +112,89 @@ function onScrollBarChange(event: Event) {
 
 <template>
   <section class="relative mx-auto" :style="{ maxWidth: carouselWidth }">
-    <!-- Arrows -->
-    <button
-      v-if="props.showArrows"
-      class="absolute left-0 top-1/2 -translate-y-1/2 z-10 btn-icon"
-      :disabled="!canScrollPrev"
-      aria-label="Previous slide"
-      @click="scrollPrev"
-    >
-      ◀
-    </button>
-
-    <button
-      v-if="props.showArrows"
-      class="absolute right-0 top-1/2 -translate-y-1/2 z-10 btn-icon"
-      :disabled="!canScrollNext"
-      aria-label="Next slide"
-      @click="scrollNext"
-    >
-      ▶
-    </button>
-
     <!-- Embla viewport -->
     <div ref="viewportRef" class="overflow-hidden">
-      <div class="flex gap-4">
+      <div class="flex">
         <div
-          v-for="(item, idx) in props.items"
-          :key="idx"
-          class="flex-shrink-0"
-          :style="{ width: `${100 / props.perPage!}%`, padding: `${props.gapPx! / 2}px` }"
-        >
+          v-for="(item, idx) in props.items" :key="idx" class="flex-shrink-0 box-border"
+          :style="{ width: `${100 / props.perPage!}%`, padding: `${props.gapPx! / 2}px` }">
           <ServiceCard
-            :image-src="item.imageSrc"
-            :title="item.title"
-            :description="item.description"
-            :link="item.link"
-            :alt="item.alt"
-            :background-color="'bg-white'"
-            :text-color="'black'"
-            @click="onCardClick(item, idx)"
-          />
+            :image-src="item.imageSrc" :title="item.title" :description="item.description" :link="item.link"
+            :alt="item.alt" :background-color="'bg-white'" :text-color="'black'" @click="onCardClick(item, idx)" />
         </div>
       </div>
     </div>
-
-    <!-- Pagination -->
-    <div class="mt-3 flex justify-center gap-2">
-      <!-- Dots -->
-      <template v-if="!useScrollbar">
+    <div class="flex items-center align-middle ">
+      <div class="flex gap-3 my-2 pl-[8px]">
+        <!-- Arrows -->
         <button
-          v-for="(_, idx) in props.items.length"
-          :key="idx"
-          class="w-2.5 h-2.5 rounded-full"
-          :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
-          :aria-label="`Go to slide ${idx + 1}`"
-          @click="goTo(idx)"
-        />
-      </template>
+          v-if="props.showArrows" class="btn-icon rounded-xl border border-black px-5 py-2 hover:bg-gray-100 text-center text-md" :disabled="!canScrollPrev" aria-label="Previous slide"
+          @click="scrollPrev"
+          >
+          <LeftArrow />
+        </button>
 
-      <!-- Scrollbar -->
-      <template v-else>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.001"
-          class="w-full h-2 rounded-lg accent-primary-500"
-          :value="scrollProgress"
-          @input="onScrollBarChange"
-        />
-      </template>
+        <button
+          v-if="props.showArrows" class="btn-icon rounded-xl border border-black px-5 py-2 hover:bg-gray-100 text-center text-md" :disabled="!canScrollNext" aria-label="Next slide"
+          @click="scrollNext">
+          <RightArrow />
+        </button>
+      </div>
+      <!-- Pagination -->
+      <div class="flex justify-center gap-2 mx-auto">
+        <!-- Dots -->
+        <template v-if="!useScrollbar">
+          <button
+          v-for="(_, idx) in props.items.length" :key="idx" class="w-2.5 h-2.5 rounded-full"
+            :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'" :aria-label="`Go to slide ${idx + 1}`"
+            @click="goTo(idx)" />
+        </template>
+
+        <!-- Scrollbar -->
+        <template v-else>
+          <input
+            type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-full h-2 rounded-lg"
+            :value="scrollProgress" @input="onScrollBarChange">
+        </template>
+      </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Chrome, Edge, Safari */
+.embla-scrollbar::-webkit-slider-runnable-track {
+  @apply bg-primary-400;
+  height: 0.5rem;
+  border-radius: 9999px;
+}
+
+/* Firefox */
+.embla-scrollbar::-moz-range-track {
+  @apply bg-primary-400;
+  height: 0.5rem;
+  border-radius: 9999px;
+}
+
+/* Thumb (optional, but usually needed) */
+.embla-scrollbar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 1rem;
+  width: 1rem;
+  background-color: rgb(30 64 175);
+  /* primary-800 */
+  border-radius: 9999px;
+  cursor: pointer;
+  margin-top: -0.25rem;
+  /* centers thumb on track */
+}
+
+.embla-scrollbar::-moz-range-thumb {
+  height: 1rem;
+  width: 1rem;
+  background-color: rgb(30 64 175);
+  border-radius: 9999px;
+  cursor: pointer;
+}
+</style>
