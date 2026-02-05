@@ -12,7 +12,7 @@ defineProps<Props>()
 
 <template>
   <article
-    class="w-full min-w-fit p-2 sm:p-4 transition-all duration-300
+    class="w-full min-w-fit p-3 sm:p-4 transition-all duration-300
            hover:bg-primary-800 flex items-center"
   >
     <div class="flex items-center gap-2 sm:gap-4">
