@@ -28,6 +28,8 @@ interface Props {
   height?: string | number
   /** Minimum item width for responsive grid */
   minItemWidth?: string | number
+  /** Make all cards the same height (height of the tallest card) */
+  sameItemHeight?: boolean
   /** Gap between grid items */
   gap?: number
   /** Aria label for accessibility */
@@ -40,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   height: 'auto',
   minItemWidth: '200px',
+  sameItemHeight: true,
   gap: 24,
   ariaLabel: undefined,
   sectionId: undefined,
@@ -49,6 +52,7 @@ const props = withDefaults(defineProps<Props>(), {
 const gridStyle = computed(() => ({
   display: 'grid',
   gridTemplateColumns: `repeat(auto-fill, minmax(${typeof props.minItemWidth === 'number' ? `${props.minItemWidth}px` : props.minItemWidth}, 1fr))`,
+  gridAutoRows: props.sameItemHeight ? '1fr' : 'auto',
   width: typeof props.width === 'number' ? `${props.width}px` : props.width,
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
   gap: `${props.gap}px`,
@@ -63,10 +67,10 @@ const gridStyle = computed(() => ({
     :id="sectionId"
     ref="sectionElement"
     :aria-label="ariaLabel"
-    class="card-grid-section"
+    class="w-full"
   >
     <!-- Responsive grid container with auto-fill -->
-    <div :style="gridStyle" class="card-grid">
+    <div :style="gridStyle" :class="{ 'card-grid-same-height': props.sameItemHeight }" class="card-grid w-full">
       <!-- Render ServiceCard or ReviewCard based on type prop -->
       <template v-if="props.type === CardType.Service">
         <ServiceCard
@@ -92,26 +96,3 @@ const gridStyle = computed(() => ({
     </div>
   </section>
 </template>
-
-<style scoped>
-/**
- * CardGrid Component Styles
- * 
- * Uses CSS Grid auto-fill for responsive behavior.
- * Follows WCAG AA standards and theme colors.
- */
-
-.card-grid-section {
-  width: 100%;
-}
-
-.card-grid {
-  /* Grid styles applied via inline style for dynamic props */
-  width: 100%;
-}
-
-.error-text p {
-  @apply text-error;
-}
-
-</style>

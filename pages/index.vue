@@ -39,6 +39,7 @@ useHead({
 
     <!-- Sections -->
     <div class="layout-container">
+      <!-- Service Categories -->
       <Section 
         id="services"
         title="Våra tjänster" 
@@ -54,6 +55,7 @@ useHead({
           aria-label="Tjänstekategorier"
         />
       </Section>
+      <!-- Reviews -->
       <Section 
         id="testimonials" 
         title="Omdömen" 
