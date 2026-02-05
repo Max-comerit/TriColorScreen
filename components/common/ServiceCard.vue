@@ -53,13 +53,12 @@ const textColorClass = computed(() => `text-${props.textColor}`)
 
 <template>
   <!-- Navigation link wrapper for the entire card -->
-  <NuxtLink :to="link">
+  <NuxtLink :to="link" class="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-card">
     <!-- Main card container with accessibility and interaction features -->
     <article
       class="group flex flex-col p-5 overflow-hidden rounded-card shadow-drop transition-transform duration-200 hover:-translate-y-1 focus-within:-translate-y-1 cursor-pointer"
       :class="backgroundColor"
       :style="cardStyle"
-      tabindex="0"
       @click="emit('click')"
       @keydown.enter.prevent="emit('click')"
       @keydown.space.prevent="emit('click')"
