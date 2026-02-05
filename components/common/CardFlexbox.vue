@@ -81,7 +81,7 @@ const flexboxClasses = computed(() => {
   const justify = justifyMap[props.justifyContent || 'flex-start']
   const align = alignMap[props.alignItems || 'stretch']
   
-  return `flex flex-wrap justify-start ${direction} ${justify} ${align}`
+  return `flex flex-wrap ${direction} ${justify} ${align}`
 })
 
 const flexboxStyle = computed(() => ({

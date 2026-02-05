@@ -114,7 +114,6 @@ const handleCardClick = () => {
     @keydown.enter.prevent="handleCardClick"
     @keydown.space.prevent="handleCardClick"
   >
-    <!-- Image container with zoom effect on hover --> 
     <!-- Note that width & height are set to reduce layout shifts -->
     <div class="w-full max-h-[75%] align-middle bg-gray-200 rounded-t-card overflow-hidden">
       <NuxtImg
