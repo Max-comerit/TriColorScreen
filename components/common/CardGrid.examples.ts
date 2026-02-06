@@ -11,8 +11,7 @@
  */
 export const ServiceCardGridExample = `
 <CardGrid
-  :data="serviceCategories"
-  :type="CardType.Service"
+  :card-content-arr="serviceCards"
   :min-item-width="280"
   :gap="24"
   aria-label="Tjänstekategorier"
@@ -25,8 +24,7 @@ export const ServiceCardGridExample = `
  */
 export const ReviewCardGridExample = `
 <CardGrid
-  :data="reviews"
-  :type="CardType.Review"
+  :card-content-arr="reviewCards"
   :min-item-width="320"
   :gap="32"
   aria-label="Kundrecensioner"

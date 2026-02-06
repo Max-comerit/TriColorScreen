@@ -11,7 +11,7 @@
 
 // ===== IMPORTS =====
 import { computed } from 'vue'
-import { CardType, type IServiceCardContent, type IReviewCardContent } from '~/types/CardContent'
+import type { CardItem } from '~/types/CardContent'
 import ServiceCard from '~/components/common/ServiceCard.vue'
 import ReviewCard from '~/components/common/ReviewCard.vue'
 
@@ -19,9 +19,7 @@ import ReviewCard from '~/components/common/ReviewCard.vue'
 
 interface Props {
   /** Card content array (ServiceCard or ReviewCard content) */
-  cardContentArr: IServiceCardContent[] | IReviewCardContent[]
-  /** Card type to determine rendering (service or review) */
-  type: CardType
+  cardContentArr: CardItem[]
   /** Flex direction: row (horizontal) or column (vertical) */
   direction?: 'row' | 'column'
   /** Width of the flexbox (CSS value or pixel number) */
@@ -102,26 +100,22 @@ const flexboxStyle = computed(() => ({
   >
     <!-- Flexbox container -->
     <div :class="flexboxClasses" :style="flexboxStyle" class="card-flexbox">
-      <!-- Render ServiceCard or ReviewCard based on type prop -->
-      <template v-if="props.type === CardType.Service">
+      <!-- Render ServiceCard or ReviewCard based on item type -->
+      <template v-for="(card, index) in props.cardContentArr" :key="card.type === 'service' ? card.data.title : `${card.data.date}:${card.data.name}`">
         <ServiceCard
-          v-for="(card, index) in props.cardContentArr as IServiceCardContent[]"
-          :key="card.title"
-          :image-src="card.imageSrc"
-          :title="card.title"
-          :description="card.description"
-          :link="card.link"
-          :alt="card.alt"
+          v-if="card.type === 'service'"
+          :image-src="card.data.imageSrc"
+          :title="card.data.title"
+          :description="card.data.description"
+          :link="card.data.link"
+          :alt="card.data.alt"
           :background-color="(index % 2 === 0 ? 'bg-primary-50' : 'bg-secondary-50') + ' sm:bg-primary-50'"
         />
-      </template>
-      <template v-else-if="props.type === CardType.Review">
         <ReviewCard
-          v-for="(card) in props.cardContentArr as IReviewCardContent[]"
-          :key="`${card.date}:${card.name}`"
-          :review="card.review"
-          :name="card.name"
-          :date="card.date"
+          v-else-if="card.type === 'review'"
+          :review="card.data.review"
+          :name="card.data.name"
+          :date="card.data.date"
         />
       </template>
     </div>

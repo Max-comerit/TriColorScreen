@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { CardType } from '~/types/CardContent'
+import type { CardItem, IServiceCardContent, IReviewCardContent } from '~/types/CardContent'
 import serviceCategories from '~/assets/json/index/serviceCategories.json'
 import reviews from '~/assets/json/index/reviews.json'
 import HeroImage from '~/components/common/HeroImage.vue'
@@ -20,6 +20,19 @@ useHead({
     },
   ],
 })
+
+// ===== STATE (ref/reactive) =====
+const serviceCategoriesData = ref<IServiceCardContent[]>(serviceCategories as IServiceCardContent[])
+const reviewsData = ref<IReviewCardContent[]>(reviews as IReviewCardContent[])
+
+// ===== COMPUTED =====
+const serviceCards = computed<CardItem[]>(() =>
+  serviceCategoriesData.value.map((item) => ({ type: 'service', data: item })),
+)
+
+const reviewCards = computed<CardItem[]>(() =>
+  reviewsData.value.map((item) => ({ type: 'review', data: item })),
+)
 
 </script>
 
@@ -49,8 +62,7 @@ useHead({
       >
         <!-- Service categories card grid -->
         <CardGrid
-          :card-content-arr="serviceCategories"
-          :type="CardType.Service"
+          :card-content-arr="serviceCards"
           :min-item-width="280"
           :gap="24"
           aria-label="Tjänstekategorier"
@@ -65,8 +77,7 @@ useHead({
       >
         <!-- Review card grid -->
         <CardGrid
-          :card-content-arr="reviews"
-          :type="CardType.Review"
+          :card-content-arr="reviewCards"
           :min-item-width="280"
           :gap="24"
           aria-label="Kundrecensioner"
