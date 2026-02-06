@@ -121,6 +121,10 @@ const totalPages = computed(() =>
   Math.ceil(props.items.length / props.perPage)
 )
 
+const selectedPage = computed(() =>
+  Math.floor(selectedIndex.value / props.perPage)
+)
+
 const useScrollbar = computed(() =>
   props.items.length > 10
 )
@@ -240,7 +244,7 @@ onMounted(() => {
           <template v-if="!useScrollbar">
             <span
               v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
-              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
+              :class="selectedPage === idx ? 'bg-primary-600' : 'bg-gray-300'"
               aria-hidden="true" />
           </template>
 
@@ -324,7 +328,7 @@ onMounted(() => {
           <template v-if="!useScrollbar">
             <span
               v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
-              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
+              :class="selectedPage === idx ? 'bg-primary-600' : 'bg-gray-300'"
               aria-hidden="true" />
           </template>
 
