@@ -80,7 +80,7 @@ onMounted(() => {
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/index/hero.png"
+      src="/images/contact/hero.png"
       title="Tricolor Screen"
       description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering"
       :width="1280"
@@ -92,7 +92,7 @@ onMounted(() => {
     <div class="layout-container">
       <Section 
         id="services" 
-        title="Title " 
+        title="Våra tjänster" 
         align="center"
         aria-label="Våra tjänster och lösningar"
       >
