@@ -68,7 +68,7 @@ const gridStyle = computed(() => ({
     class="w-full"
   >
     <!-- Responsive grid container with auto-fill -->
-    <div :style="gridStyle" :class="{ 'card-grid-same-height': props.sameItemHeight }" class="card-grid w-full">
+    <div :style="gridStyle" class="w-full">
       <!-- Render ServiceCard or ReviewCard based on item type -->
       <template v-for="(card, index) in props.cardContentArr" :key="card.type === 'service' ? card.data.title : `${card.data.date}:${card.data.name}`">
         <ServiceCard
