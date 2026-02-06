@@ -59,12 +59,25 @@ copies or substantial portions of the Software.
 // Props & Emits
 // ====================
 interface Props {
-  items: CarouselItem[]
+  /** Array of service card content to display in the carousel */
+  items: IServiceCardContent[]
+
+  /** Number of cards visible per page */
   perPage?: number
+
+  /** Gap between cards in pixels */
   gapPx?: number
+
+  /** Whether the carousel should loop infinitely */
   loop?: boolean
+
+  /** Whether navigation arrows should be displayed */
   showArrows?: boolean
+
+  /** Whether pagination dots should be displayed (overridden by scrollbar for large datasets) */
   showDots?: boolean
+
+  /** Maximum width of the carousel container (CSS value or pixel number) */
   carouselWidth?: string | number
 }
 
