@@ -60,7 +60,7 @@ copies or substantial portions of the Software.
 // ====================
 interface Props {
   /** Array of service card content to display in the carousel */
-  items: IServiceCardContent[]
+  items: CarouselItem[]
 
   /** Number of cards visible per page */
   perPage?: number
