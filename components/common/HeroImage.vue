@@ -98,7 +98,7 @@ const aspectRatio = computed(() => {
 /* Text Overlay - styles for the text container on the hero image */
 .overlay {
   @apply absolute bottom-0 left-0 p-4 pr-6 sm:p-6 sm:pr-8 lg:p-8 lg:pr-10;
-  @apply z-10 w-full sm:w-fit sm:rounded-tr-[30px] sm:max-w-[640px];
+  @apply z-10 w-full sm:w-fit sm:rounded-tr-[30px] sm:max-w-screen-md;
   @apply bg-neutral-900/70 sm:backdrop-blur-sm;
 }
 
