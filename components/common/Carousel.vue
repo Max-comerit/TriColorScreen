@@ -207,34 +207,33 @@ onMounted(() => {
     <!-- Embla viewport -->
     <div ref="viewportRef" class="overflow-hidden">
       <div class="flex">
-      <div
-        v-for="(item, idx) in props.items"
-        :key="idx"
-        class="flex-shrink-0 box-border"
-        :style="{ width: `${100 / props.perPage!}%`, padding: `${props.gapPx! / 2}px` }"
-      >
-        <!-- Service Card -->
-        <ServiceCard
-          v-if="item.type === 'service'"
-          :image-src="item.data.imageSrc"
-          :title="item.data.title"
-          :description="item.data.description"
-          :link="item.data.link"
-          :alt="item.data.alt"
-          background-color="bg-primary-50"
-          text-color="black"
-          @click="onCardClick(item, idx)"
-        />
+        <div
+          v-for="(item, idx) in props.items"
+          :key="idx"
+          class="flex-shrink-0 box-border"
+          :style="{ width: `${100 / props.perPage!}%`, padding: `${props.gapPx! / 2}px` }"
+        >
+          <!-- Service Card -->
+          <ServiceCard
+            v-if="item.type === 'service'"
+            :image-src="item.data.imageSrc"
+            :title="item.data.title"
+            :description="item.data.description"
+            :link="item.data.link"
+            :alt="item.data.alt"
+            background-color="bg-primary-50"
+            text-color="black"
+            @click="onCardClick(item, idx)"
+          />
 
-        <!-- Review Card -->
-        <ReviewCard
-          v-else-if="item.type === 'review'"
-          :review="item.data.review"
-          :name="item.data.name"
-          :date="item.data.date"
-        />
-      </div>
-
+          <!-- Review Card -->
+          <ReviewCard
+            v-else-if="item.type === 'review'"
+            :review="item.data.review"
+            :name="item.data.name"
+            :date="item.data.date"
+          />
+        </div>
       </div>
     </div>
     <div class="relative">
