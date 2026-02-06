@@ -134,11 +134,15 @@ const useScrollbar = computed(() =>
 // Methods
 // ====================
 function scrollPrev(): void {
-  embla.value?.scrollPrev()
+  for (let i = 0; i < props.perPage; i++) {
+    embla.value?.scrollPrev()
+  }
 }
 
 function scrollNext(): void {
-  embla.value?.scrollNext()
+  for (let i = 0; i < props.perPage; i++) {
+    embla.value?.scrollNext()
+  }
 }
 
 function handleClick(fn: () => void): void {
