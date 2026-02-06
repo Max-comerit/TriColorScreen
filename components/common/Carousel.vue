@@ -144,10 +144,6 @@ function handleClick(fn: () => void): void {
   fn()
 }
 
-function goTo(index: number): void {
-  embla.value?.scrollTo(index)
-}
-
 function onCardClick(item: CardItem, index: number): void {
   emit('card-click', item, index)
 }
