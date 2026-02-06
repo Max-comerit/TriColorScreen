@@ -4,7 +4,6 @@
 // Printed Matter page
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import {useResponsivePerPage} from '~/composables/useResponsivePerPage';
 
 // ===== COMPOSABLES =====
 useHead({
@@ -16,8 +15,6 @@ useHead({
     },
   ],
 })
-
-const perPage = useResponsivePerPage().perPage;
 
 </script>
 
@@ -40,8 +37,7 @@ const perPage = useResponsivePerPage().perPage;
         title="Våra tjänster" 
         align="center"
         aria-label="Våra tjänster och lösningar"
-      >
-      </Section>
+      />
       <Section 
         id="testimonials" 
         title="Omdömen" 

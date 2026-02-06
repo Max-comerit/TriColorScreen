@@ -6,7 +6,7 @@ import { ref, computed, onMounted } from 'vue'
 import EmblaCarousel from 'embla-carousel'
 import type { EmblaCarouselType } from 'embla-carousel'
 
-import type { CarouselItem } from '~/types/CarouselItem'
+import type { CardItem } from '~/types/CardContent'
 import ServiceCard from './ServiceCard.vue'
 import ReviewCard from './ReviewCard.vue'
 import LeftArrow from '~/assets/images/icons/left-arrow.svg'
@@ -60,7 +60,7 @@ copies or substantial portions of the Software.
 // ====================
 interface Props {
   /** Array of service card content to display in the carousel */
-  items: CarouselItem[]
+  items: CardItem[]
 
   /** Number of cards visible per page */
   perPage?: number
@@ -91,7 +91,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  (e: 'card-click', item: CarouselItem, index: number): void
+  (e: 'card-click', item: CardItem, index: number): void
 }>()
 
 // ====================
@@ -148,7 +148,7 @@ function goTo(index: number): void {
   embla.value?.scrollTo(index)
 }
 
-function onCardClick(item: CarouselItem, index: number): void {
+function onCardClick(item: CardItem, index: number): void {
   emit('card-click', item, index)
 }
 
