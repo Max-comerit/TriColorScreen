@@ -242,11 +242,10 @@ onMounted(() => {
         <div class="mt-2 flex justify-center gap-2">
           <!-- Dots -->
           <template v-if="!useScrollbar">
-            <button
-            v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full"
+            <span
+              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
               :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
-              :aria-label="`Item ${idx + 1}${selectedIndex === idx ? ' (current)' : ''}`"
-              @click="goTo(idx)" />
+              aria-hidden="true" />
           </template>
 
           <!-- Scrollbar -->
@@ -327,11 +326,10 @@ onMounted(() => {
         <div class="mt-2 sm:absolute left-1/2 sm:-translate-x-1/2 flex justify-center gap-2">
           <!-- Dots -->
           <template v-if="!useScrollbar">
-            <button
-            v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full"
+            <span
+              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
               :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
-              :aria-label="`Item ${idx + 1}${selectedIndex === idx ? ' (current)' : ''}`"
-              @click="goTo(idx)" />
+              aria-hidden="true" />
           </template>
 
           <!-- Scrollbar -->
