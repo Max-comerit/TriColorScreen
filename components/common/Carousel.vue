@@ -252,7 +252,7 @@ onMounted(() => {
           <template v-else>
             <input
               type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-48 h-2 rounded-lg"
-              :value="scrollProgress" @input="onScrollBarChange" aria-label="Carousel scrollbar">
+              :value="scrollProgress" aria-label="Carousel scrollbar" @input="onScrollBarChange">
           </template>
         </div>
         <!-- Arrows -->
@@ -336,7 +336,7 @@ onMounted(() => {
           <template v-else>
             <input
               type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-48 h-2 rounded-lg"
-              :value="scrollProgress" @input="onScrollBarChange" aria-label="Carousel scrollbar">
+              :value="scrollProgress" aria-label="Carousel scrollbar" @input="onScrollBarChange">
           </template>
         </div>
       </div>
