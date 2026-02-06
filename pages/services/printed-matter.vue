@@ -1,9 +1,12 @@
 // pages/services/printed-matter.vue
 
 <script setup lang="ts">
-// Printed Matter page
+// ===== IMPORTS =====
+import type { CardItem, IServiceCardContent } from '~/types/CardContent'
+import services from '~/assets/json/services/printed-matter/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
+import Carousel from '~/components/common/Carousel.vue'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -14,6 +17,32 @@ useHead({
       content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
     },
   ],
+})
+
+// ===== STATE (ref/reactive) =====
+const servicesData = ref<IServiceCardContent[]>(services as IServiceCardContent[])
+const itemsPerPage = ref(1)
+
+// ===== COMPUTED =====
+const serviceCards = computed<CardItem[]>(() =>
+  servicesData.value.map((item) => ({ type: 'service', data: item })),
+)
+
+// ===== LIFECYCLE HOOKS =====
+const updateItemsPerPage = () => {
+  const width = window.innerWidth
+  if (width >= 1024) itemsPerPage.value = 3
+  else if (width >= 640) itemsPerPage.value = 2
+  else itemsPerPage.value = 1
+}
+
+onMounted(() => {
+  updateItemsPerPage()
+  window.addEventListener('resize', updateItemsPerPage)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateItemsPerPage)
 })
 
 </script>
@@ -41,18 +70,21 @@ useHead({
     <!-- Sections -->
     <div class="layout-container">
       <Section 
-        id="services" 
-        title="Våra tjänster" 
+        id="printed-matter" 
+        title="Trycksaker" 
         align="center"
-        aria-label="Våra tjänster och lösningar"
-      />
-      <Section 
-        id="testimonials" 
-        title="Omdömen" 
-        align="center"
-        aria-label="Kundrecensioner och omdömen"
+        aria-label="Våra trycksaker"
       >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
+        <!-- Carousel view -->
+        <Carousel
+          :items="serviceCards"
+          :per-page="itemsPerPage"
+          :gap-px="16"
+          :loop="true"
+          show-arrows
+          show-dots
+          aria-label="Trycksaker"
+        />
       </Section>
     </div>
   </div>
