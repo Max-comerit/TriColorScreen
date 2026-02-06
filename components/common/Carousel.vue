@@ -244,14 +244,16 @@ onMounted(() => {
           <template v-if="!useScrollbar">
             <button
             v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full"
-              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'" @click="goTo(idx)" />
+              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
+              :aria-label="`Item ${idx + 1}${selectedIndex === idx ? ' (current)' : ''}`"
+              @click="goTo(idx)" />
           </template>
 
           <!-- Scrollbar -->
           <template v-else>
             <input
               type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-48 h-2 rounded-lg"
-              :value="scrollProgress" @input="onScrollBarChange">
+              :value="scrollProgress" @input="onScrollBarChange" aria-label="Carousel scrollbar">
           </template>
         </div>
         <!-- Arrows -->
@@ -327,14 +329,16 @@ onMounted(() => {
           <template v-if="!useScrollbar">
             <button
             v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full"
-              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'" @click="goTo(idx)" />
+              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
+              :aria-label="`Item ${idx + 1}${selectedIndex === idx ? ' (current)' : ''}`"
+              @click="goTo(idx)" />
           </template>
 
           <!-- Scrollbar -->
           <template v-else>
             <input
               type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-48 h-2 rounded-lg"
-              :value="scrollProgress" @input="onScrollBarChange">
+              :value="scrollProgress" @input="onScrollBarChange" aria-label="Carousel scrollbar">
           </template>
         </div>
       </div>
