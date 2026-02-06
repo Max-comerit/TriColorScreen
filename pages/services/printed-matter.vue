@@ -2,10 +2,8 @@
 
 <script setup lang="ts">
 // Printed Matter page
-import Carousel from '~/components/common/Carousel.vue';
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import { printedMatterServices } from '~/utils/data/services/printed-matter/services'
 import {useResponsivePerPage} from '~/composables/useResponsivePerPage';
 
 // ===== COMPOSABLES =====
@@ -43,14 +41,6 @@ const perPage = useResponsivePerPage().perPage;
         align="center"
         aria-label="Våra tjänster och lösningar"
       >
-      <Carousel 
-          :items="printedMatterServices"
-          aria-label="Tjänster karusell"
-          :loop="true"
-          :per-page="perPage"
-          :gap-px="16"
-
-        />
       </Section>
       <Section 
         id="testimonials" 
