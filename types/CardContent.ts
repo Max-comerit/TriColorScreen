@@ -36,3 +36,7 @@ export interface IReviewCardContent {
   /** Date of the review */
   date: string
 }
+
+export type CardItem =
+  | { type: 'service'; data: IServiceCardContent }
+  | { type: 'review'; data: IReviewCardContent }

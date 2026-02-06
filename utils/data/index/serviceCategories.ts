@@ -31,7 +31,7 @@ export const serviceCategories: IServiceCardContent[] = [
   {
     title: 'Grafisk Produktion',
     description: 'Grafisk Produktion Logotyp Trycksaker',
-    imageSrc: '/images/index/grafisk-produktion.png',
+    imageSrc: '/images/index/graphic-production.png',
     alt: 'Grafisk Produktion',
     link: '/services/graphic-production',
   },

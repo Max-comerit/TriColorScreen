@@ -85,7 +85,7 @@ const handleCardClick = () => {
           fit="cover"
           loading="lazy"
           fetchpriority="low"
-          class="w-full object-cover transition-transform duration-300 group-hover:scale-105 overflow-hidden rounded-t-card"
+          class="w-full object-cover transition-transform duration-300 overflow-hidden rounded-t-card"
         />
       </div>
 

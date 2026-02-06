@@ -24,5 +24,5 @@ export const printedMatterServices: IServiceCardContent[] = [
     description: 'När ni har lite mer att säga. Det är inte för inte som broschyren är en klassiker. Där står allt vad kunden behöver veta och snyggt presenterat är det också.',
     imageSrc: '',
     alt: 'Broschyrer',
-  },
+  }
 ]

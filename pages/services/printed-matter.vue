@@ -1,7 +1,7 @@
 // pages/services/printed-matter.vue
 
 <script setup lang="ts">
-// ===== IMPORTS =====
+// Printed Matter page
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 
@@ -15,6 +15,7 @@ useHead({
     },
   ],
 })
+
 </script>
 
 <template>
@@ -36,9 +37,7 @@ useHead({
         title="Våra tjänster" 
         align="center"
         aria-label="Våra tjänster och lösningar"
-      >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
-      </Section>
+      />
       <Section 
         id="testimonials" 
         title="Omdömen" 
