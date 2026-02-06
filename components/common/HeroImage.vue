@@ -53,8 +53,6 @@ const aspectRatio = computed(() => {
 <template>
   <section
     class="container-section"
-    role="img"
-    :aria-label="props.alt"
     :style="{ aspectRatio: aspectRatio }"
   >
     <!-- Hero Image -->
