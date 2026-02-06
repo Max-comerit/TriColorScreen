@@ -3,8 +3,8 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { CardType } from '~/types/CardContent'
-import { serviceCategories } from '~/utils/data/index/serviceCategories'
-import { reviews } from '~/utils/data/index/reviews'
+import serviceCategories from '~/assets/json/index/serviceCategories.json'
+import reviews from '~/assets/json/index/reviews.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import BragBar from '~/components/features/BragBar.vue'
 import Section from '~/components/common/Section.vue'

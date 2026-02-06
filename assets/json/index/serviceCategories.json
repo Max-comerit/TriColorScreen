@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Trycksaker",
+    "description": "Visitkort Foldrar Broschyrer Roll-Ups Skyltar Affischer Flyers Dekaler Menyer Gatupratare",
+    "imageSrc": "/images/index/printed-matter.png",
+    "alt": "Trycksaker",
+    "link": "/services/printed-matter"
+  },
+  {
+    "title": "Screentryck / Brodyr",
+    "description": "Textiltryck Transfertryck Profil/ Arbetskläder - Mössor Kepsar Pikétröjor Jackor T-shirts Skjortor Fleece",
+    "imageSrc": "/images/index/screen-printing-embroidery.png",
+    "alt": "Screentryck / Brodyr",
+    "link": "/services/screen-printing-embroidery"
+  },
+  {
+    "title": "Dekoration & Foliering",
+    "description": "Dekor Foliering",
+    "imageSrc": "/images/index/decoration-foiling.png",
+    "alt": "Dekoration & Foliering",
+    "link": "/services/decoration-foiling"
+  },
+  {
+    "title": "Grafisk Produktion",
+    "description": "Grafisk Produktion Logotyp Trycksaker",
+    "imageSrc": "/images/index/grafisk-produktion.png",
+    "alt": "Grafisk Produktion",
+    "link": "/services/graphic-production"
+  },
+  {
+    "title": "Event & Reklam",
+    "description": "Fasadvepor Banderoller Fönsterdekor",
+    "imageSrc": "/images/index/event-advertisement.png",
+    "alt": "Event & Reklam",
+    "link": "/services/event-advertisement"
+  }
+]
