@@ -243,9 +243,14 @@ onMounted(() => {
           <!-- Dots -->
           <template v-if="!useScrollbar">
             <span
-              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
+              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block cursor-pointer"
               :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
-              aria-hidden="true" />
+              role="button"
+              :aria-label="`Go to page ${idx + 1}`"
+              tabindex="0"
+              @click="goTo(idx)"
+              @keydown.enter="goTo(idx)"
+              @keydown.space.prevent="goTo(idx)" />
           </template>
 
           <!-- Scrollbar -->
@@ -327,9 +332,14 @@ onMounted(() => {
           <!-- Dots -->
           <template v-if="!useScrollbar">
             <span
-              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
+              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block cursor-pointer"
               :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
-              aria-hidden="true" />
+              role="button"
+              :aria-label="`Go to page ${idx + 1}`"
+              tabindex="0"
+              @click="goTo(idx)"
+              @keydown.enter="goTo(idx)"
+              @keydown.space.prevent="goTo(idx)" />
           </template>
 
           <!-- Scrollbar -->
