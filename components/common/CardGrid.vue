@@ -46,16 +46,36 @@ const props = withDefaults(defineProps<Props>(), {
   sectionId: undefined,
 })
 
+// ===== STATE =====
+const isMobile = ref(true)
+
 // ===== COMPUTED =====
 const gridStyle = computed(() => ({
   display: 'grid',
-  gridTemplateColumns: `repeat(auto-fill, minmax(${typeof props.minItemWidth === 'number' ? `${props.minItemWidth}px` : props.minItemWidth}, 1fr))`,
+  gridTemplateColumns: isMobile.value ? '1fr' : `repeat(auto-fill, minmax(${typeof props.minItemWidth === 'number' ? `${props.minItemWidth}px` : props.minItemWidth}, 1fr))`,
   gridAutoRows: props.sameItemHeight ? '1fr' : 'auto',
   width: typeof props.width === 'number' ? `${props.width}px` : props.width,
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
   gap: `${props.gap}px`,
   minHeight: '300px',
 }))
+
+// ===== LIFECYCLE HOOKS =====
+onMounted(() => {
+  // Check initial viewport width
+  const checkMobile = () => {
+    isMobile.value = window.innerWidth < 640 // Tailwind sm breakpoint
+  }
+
+  checkMobile()
+
+  // Listen for resize events
+  window.addEventListener('resize', checkMobile)
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', checkMobile)
+  })
+})
 
 </script>
 
