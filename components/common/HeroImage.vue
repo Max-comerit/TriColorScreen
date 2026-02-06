@@ -112,6 +112,6 @@ const aspectRatio = computed(() => {
 
 /* Description styles */
 .description {
-  @apply font-body font-medium text-base md:text-lg lg:text-xl text-white/90;
+  @apply mb-0 font-body font-medium text-base md:text-lg lg:text-xl text-white/90;
 }
 </style>
