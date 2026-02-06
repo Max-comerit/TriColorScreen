@@ -53,8 +53,6 @@ const aspectRatio = computed(() => {
 <template>
   <section
     class="container-section"
-    role="img"
-    :aria-label="props.alt"
     :style="{ aspectRatio: aspectRatio }"
   >
     <!-- Hero Image -->
@@ -99,19 +97,19 @@ const aspectRatio = computed(() => {
 
 /* Text Overlay - styles for the text container on the hero image */
 .overlay {
-  @apply absolute bottom-0 left-0 p-4 pr-6 md:p-6 md:pr-8 lg:p-8 lg:pr-10;
-  @apply z-10 w-full sm:w-fit sm:rounded-tr-[30px] max-w-3xl;
+  @apply absolute bottom-0 left-0 p-4 pr-6 sm:p-6 sm:pr-8 lg:p-8 lg:pr-10;
+  @apply z-10 w-full sm:w-fit sm:rounded-tr-[30px] sm:max-w-[640px];
   @apply bg-neutral-900/70 sm:backdrop-blur-sm;
 }
 
 /* Title styles */
 .title {
-  @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
+  @apply text-2xl sm:text-3xl lg:text-4xl;
   @apply font-display font-bold text-white mb-3 md:mb-4;
 }
 
 /* Description styles */
 .description {
-  @apply font-body font-medium text-base md:text-lg lg:text-xl text-white/90;
+  @apply mb-0 font-body font-medium text-base sm:text-lg lg:text-xl text-white/90;
 }
 </style>

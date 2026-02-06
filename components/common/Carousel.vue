@@ -144,10 +144,6 @@ function handleClick(fn: () => void): void {
   fn()
 }
 
-function goTo(index: number): void {
-  embla.value?.scrollTo(index)
-}
-
 function onCardClick(item: CardItem, index: number): void {
   emit('card-click', item, index)
 }
@@ -207,34 +203,33 @@ onMounted(() => {
     <!-- Embla viewport -->
     <div ref="viewportRef" class="overflow-hidden">
       <div class="flex">
-      <div
-        v-for="(item, idx) in props.items"
-        :key="idx"
-        class="flex-shrink-0 box-border"
-        :style="{ width: `${100 / props.perPage!}%`, padding: `${props.gapPx! / 2}px` }"
-      >
-        <!-- Service Card -->
-        <ServiceCard
-          v-if="item.type === 'service'"
-          :image-src="item.data.imageSrc"
-          :title="item.data.title"
-          :description="item.data.description"
-          :link="item.data.link"
-          :alt="item.data.alt"
-          background-color="bg-primary-50"
-          text-color="black"
-          @click="onCardClick(item, idx)"
-        />
+        <div
+          v-for="(item, idx) in props.items"
+          :key="idx"
+          class="flex-shrink-0 box-border"
+          :style="{ width: `${100 / props.perPage!}%`, padding: `${props.gapPx! / 2}px` }"
+        >
+          <!-- Service Card -->
+          <ServiceCard
+            v-if="item.type === 'service'"
+            :image-src="item.data.imageSrc"
+            :title="item.data.title"
+            :description="item.data.description"
+            :link="item.data.link"
+            :alt="item.data.alt"
+            background-color="bg-primary-50"
+            text-color="black"
+            @click="onCardClick(item, idx)"
+          />
 
-        <!-- Review Card -->
-        <ReviewCard
-          v-else-if="item.type === 'review'"
-          :review="item.data.review"
-          :name="item.data.name"
-          :date="item.data.date"
-        />
-      </div>
-
+          <!-- Review Card -->
+          <ReviewCard
+            v-else-if="item.type === 'review'"
+            :review="item.data.review"
+            :name="item.data.name"
+            :date="item.data.date"
+          />
+        </div>
       </div>
     </div>
     <div class="relative">
@@ -243,16 +238,17 @@ onMounted(() => {
         <div class="mt-2 flex justify-center gap-2">
           <!-- Dots -->
           <template v-if="!useScrollbar">
-            <button
-            v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full"
-              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'" @click="goTo(idx)" />
+            <span
+              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
+              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
+              aria-hidden="true" />
           </template>
 
           <!-- Scrollbar -->
           <template v-else>
             <input
               type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-48 h-2 rounded-lg"
-              :value="scrollProgress" @input="onScrollBarChange">
+              :value="scrollProgress" aria-label="Carousel scrollbar" @input="onScrollBarChange">
           </template>
         </div>
         <!-- Arrows -->
@@ -326,16 +322,17 @@ onMounted(() => {
         <div class="mt-2 sm:absolute left-1/2 sm:-translate-x-1/2 flex justify-center gap-2">
           <!-- Dots -->
           <template v-if="!useScrollbar">
-            <button
-            v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full"
-              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'" @click="goTo(idx)" />
+            <span
+              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
+              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
+              aria-hidden="true" />
           </template>
 
           <!-- Scrollbar -->
           <template v-else>
             <input
               type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-48 h-2 rounded-lg"
-              :value="scrollProgress" @input="onScrollBarChange">
+              :value="scrollProgress" aria-label="Carousel scrollbar" @input="onScrollBarChange">
           </template>
         </div>
       </div>

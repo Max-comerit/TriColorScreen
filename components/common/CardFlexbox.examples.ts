@@ -12,8 +12,7 @@
  */
 export const ServiceCardFlexboxExample = `
 <CardFlexbox
-  :card-content-arr="serviceCategories"
-  :type="CardType.Service"
+  :card-content-arr="serviceCards"
   :gap="24"
   aria-label="Tjänstekategorier"
   section-id="services"
@@ -27,8 +26,7 @@ export const ServiceCardFlexboxExample = `
  */
 export const ReviewCardFlexboxExample = `
 <CardFlexbox
-  :card-content-arr="reviews"
-  :type="CardType.Review"
+  :card-content-arr="reviewCards"
   :gap="24"
   aria-label="Kundrecensioner"
   section-id="reviews"
@@ -42,8 +40,7 @@ export const ReviewCardFlexboxExample = `
  */
 export const ServiceCardFlexboxCustomWidthExample = `
 <CardFlexbox
-  :card-content-arr="serviceCategories"
-  :type="CardType.Service"
+  :card-content-arr="serviceCards"
   :gap="24"
   :max-item-width="400"
   aria-label="Tjänstekategorier"
@@ -58,8 +55,7 @@ export const ServiceCardFlexboxCustomWidthExample = `
  */
 export const ReviewCardFlexboxVerticalExample = `
 <CardFlexbox
-  :card-content-arr="reviews"
-  :type="CardType.Review"
+  :card-content-arr="reviewCards"
   direction="column"
   :gap="24"
   aria-label="Kundrecensioner"
@@ -74,8 +70,7 @@ export const ReviewCardFlexboxVerticalExample = `
  */
 export const ServiceCardFlexboxCenteredExample = `
 <CardFlexbox
-  :card-content-arr="serviceCategories"
-  :type="CardType.Service"
+  :card-content-arr="serviceCards"
   :gap="24"
   justify-content="center"
   aria-label="Tjänstekategorier"
@@ -90,8 +85,7 @@ export const ServiceCardFlexboxCenteredExample = `
  */
 export const ReviewCardFlexboxSpaceBetweenExample = `
 <CardFlexbox
-  :card-content-arr="reviews"
-  :type="CardType.Review"
+  :card-content-arr="reviewCards"
   :gap="24"
   justify-content="space-between"
   aria-label="Kundrecensioner"
@@ -106,8 +100,7 @@ export const ReviewCardFlexboxSpaceBetweenExample = `
  */
 export const ServiceCardFlexboxSpaceAroundExample = `
 <CardFlexbox
-  :card-content-arr="serviceCategories"
-  :type="CardType.Service"
+  :card-content-arr="serviceCards"
   :gap="24"
   justify-content="space-around"
   aria-label="Tjänstekategorier"

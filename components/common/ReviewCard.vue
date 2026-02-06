@@ -24,7 +24,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   width: '100%',
-  height: 'auto',
+  height: '100%',
   backgroundColor: 'bg-accent-100',
 })
 

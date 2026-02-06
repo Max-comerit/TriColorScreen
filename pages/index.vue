@@ -2,13 +2,14 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { CardType } from '~/types/CardContent'
-import { serviceCategories } from '~/utils/data/index/serviceCategories'
-import { reviews } from '~/utils/data/index/reviews'
+import type { CardItem, IServiceCardContent, IReviewCardContent } from '~/types/CardContent'
+import serviceCategories from '~/assets/json/index/serviceCategories.json'
+import reviews from '~/assets/json/index/reviews.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import BragBar from '~/components/features/BragBar.vue'
 import Section from '~/components/common/Section.vue'
 import CardGrid from '~/components/common/CardGrid.vue'
+import Carousel from '~/components/common/Carousel.vue'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -20,6 +21,19 @@ useHead({
     },
   ],
 })
+
+// ===== STATE (ref/reactive) =====
+const serviceCategoriesData = ref<IServiceCardContent[]>(serviceCategories as IServiceCardContent[])
+const reviewsData = ref<IReviewCardContent[]>(reviews as IReviewCardContent[])
+
+// ===== COMPUTED =====
+const serviceCards = computed<CardItem[]>(() =>
+  serviceCategoriesData.value.map((item) => ({ type: 'service', data: item })),
+)
+
+const reviewCards = computed<CardItem[]>(() =>
+  reviewsData.value.map((item) => ({ type: 'review', data: item })),
+)
 
 </script>
 
@@ -49,8 +63,7 @@ useHead({
       >
         <!-- Service categories card grid -->
         <CardGrid
-          :card-content-arr="serviceCategories"
-          :type="CardType.Service"
+          :card-content-arr="serviceCards"
           :min-item-width="280"
           :gap="24"
           aria-label="Tjänstekategorier"
@@ -63,14 +76,28 @@ useHead({
         align="center"
         aria-label="Kundrecensioner och omdömen"
       >
-        <!-- Review card grid -->
-        <CardGrid
-          :card-content-arr="reviews"
-          :type="CardType.Review"
-          :min-item-width="280"
-          :gap="24"
-          aria-label="Kundrecensioner"
-        />
+        <!-- Mobile carousel view -->
+        <div class="sm:hidden">
+          <Carousel
+            :items="reviewCards"
+            :per-page="1"
+            :gap-px="16"
+            :loop="true"
+            show-arrows
+            show-dots
+            aria-label="Kundrecensioner"
+          />
+        </div>
+
+        <!-- Desktop grid view -->
+        <div class="hidden sm:block">
+          <CardGrid
+            :card-content-arr="reviewCards"
+            :min-item-width="280"
+            :gap="24"
+            aria-label="Kundrecensioner"
+          />
+        </div>
       </Section>
     </div>
   </div>
