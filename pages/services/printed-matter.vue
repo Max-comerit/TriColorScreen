@@ -21,7 +21,9 @@ useHead({
 })
 
 // ===== STATE (ref/reactive) =====
-const servicesData = ref<IServiceCardContent[]>(services as IServiceCardContent[])
+const servicesData = ref<IServiceCardContent[]>(
+  (services as IServiceCardContent[]).map(item => ({ ...item, maxLines: 8 }))
+)
 const itemsPerPage = ref(1)
 
 // ===== COMPUTED =====

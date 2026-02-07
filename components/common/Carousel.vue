@@ -236,6 +236,7 @@ onMounted(() => {
             :image-src="item.data.imageSrc"
             :title="item.data.title"
             :description="item.data.description"
+            :max-lines="item.data.maxLines"
             :link="item.data.link"
             :alt="item.data.alt"
             background-color="bg-primary-50"

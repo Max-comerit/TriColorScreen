@@ -497,6 +497,7 @@ const { data: services } = await useFetch('/api/services')
         :key="service.id"
         :title="service.name"
         :description="service.description"
+        :max-lines="10"
         :image-src="service.image"
       />
     </div>

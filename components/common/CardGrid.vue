@@ -96,6 +96,7 @@ onMounted(() => {
           :image-src="card.data.imageSrc"
           :title="card.data.title"
           :description="card.data.description"
+          :max-lines="card.data.maxLines"
           :link="card.data.link"
           :alt="card.data.alt"
           :background-color="(index % 2 === 0 ? 'bg-primary-50' : 'bg-secondary-50') + ' sm:bg-primary-50'"
