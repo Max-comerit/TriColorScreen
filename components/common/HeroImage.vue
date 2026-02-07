@@ -62,7 +62,6 @@ const aspectRatio = computed(() => {
       :width="props.width"
       :height="props.height"
       format="webp"
-      fit="cover"
       quality="80"
       sizes="xl:100vw 1280px"
       densities="x1 x2"
