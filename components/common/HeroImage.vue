@@ -43,7 +43,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // ===== COMPUTED =====
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const aspectRatio = computed(() => {
   // Prevent division by zero
   if (!props.width || !props.height) return 3 / 2
@@ -54,6 +53,7 @@ const aspectRatio = computed(() => {
 <template>
   <section
     class="container-section"
+    :style="{ aspectRatio: aspectRatio }"
   >
     <!-- Hero Image -->
     <NuxtImg
