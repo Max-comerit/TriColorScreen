@@ -92,7 +92,7 @@ const aspectRatio = computed(() => {
 
 /* Container - styles for the hero image section */
 .container-section {
-  @apply relative w-full min-h-[50svh] max-h-[80svh] overflow-hidden;
+  @apply relative bg-green-200 w-full min-h-[50svh] max-h-[80svh] overflow-hidden;
 }
 
 /* Ensure NuxtImg stretches properly on older Safari devices */
