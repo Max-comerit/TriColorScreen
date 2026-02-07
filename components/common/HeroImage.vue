@@ -43,17 +43,34 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // ===== COMPUTED =====
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const aspectRatio = computed(() => {
   // Prevent division by zero
   if (!props.width || !props.height) return 3 / 2
   return props.width / props.height
+})
+
+// ===== STATE =====
+const supportsAspectRatio = ref(false)
+
+// ===== METHODS =====
+const containerStyle = computed(() => {
+  if (supportsAspectRatio.value) {
+    return { aspectRatio: aspectRatio.value }
+  }
+  return {}
+})
+
+// ===== LIFECYCLE =====
+onMounted(() => {
+  // Feature detection for aspect-ratio support
+  supportsAspectRatio.value = CSS.supports('aspect-ratio', '1')
 })
 </script>
 
 <template>
   <section
     class="container-section"
+    :style="containerStyle"
   >
     <!-- Hero Image -->
     <NuxtImg
