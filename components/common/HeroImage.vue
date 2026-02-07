@@ -92,14 +92,13 @@ const aspectRatio = computed(() => {
 /* Container - styles for the hero image section */
 .container-section {
   position: relative;
-  width: 100%;
+  left: 0;
+  width: 100vw;
+  max-width: 100%;
   display: block;
-  min-height: 50vh;
-  max-height: 80vh;
+  min-height: 50svh;
+  max-height: 80svh;
   overflow: hidden;
-  /* Safari compatibility */
-  -webkit-flex-basis: auto;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background-color: #dcfce7;
 }
