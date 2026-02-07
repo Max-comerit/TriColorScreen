@@ -43,6 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // ===== COMPUTED =====
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const aspectRatio = computed(() => {
   // Prevent division by zero
   if (!props.width || !props.height) return 3 / 2
@@ -53,7 +54,6 @@ const aspectRatio = computed(() => {
 <template>
   <section
     class="container-section"
-    :style="{ aspectRatio: aspectRatio }"
   >
     <!-- Hero Image -->
     <NuxtImg
@@ -91,20 +91,7 @@ const aspectRatio = computed(() => {
 
 /* Container - styles for the hero image section */
 .container-section {
-  position: relative;
-  width: 100vw;
-  max-width: 100%;
-  display: block;
-  min-height: 50vh;
-  max-height: 80vh;
-  overflow: hidden;
-  background-color: #dcfce7; /* Temporary background color for debugging */
-  /* Safari compatibility */
-  -webkit-flex-basis: auto;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  margin-left: 0;
-  margin-right: 0;
+  @apply relative w-full min-h-[50svh] max-h-[80svh] overflow-hidden;
 }
 
 /* Text Overlay - styles for the text container on the hero image */
