@@ -125,7 +125,7 @@ const isVisible = (index: number): boolean => {
   const lowerBound = selectedIndex.value
   const upperBound = (selectedIndex.value + props.perPage) % props.items.length
 
-  return upperBound > lowerBound ? index >= lowerBound && index < upperBound : index >= lowerBound || index < upperBound
+  return upperBound == (lowerBound + props.perPage) ? index >= lowerBound && index < upperBound : index >= lowerBound || index < upperBound
 }
 
 const useScrollbar = computed(() =>
