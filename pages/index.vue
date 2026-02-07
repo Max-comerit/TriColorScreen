@@ -13,11 +13,27 @@ import Carousel from '~/components/common/Carousel.vue'
 
 // ===== COMPOSABLES =====
 useHead({
-  title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
+  title: 'Tricolor Screen - Reklam-, Profil- och Textiltryck | Brodyr | Bilfoliering | Grafisk Design',
   meta: [
     {
       name: 'description',
-      content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
+      content: 'Tricolor Screen erbjuder kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor, bilfoliering, grafisk produktion och eventreklam. 28 år av expertise.',
+    },
+    {
+      name: 'keywords',
+      content: 'reklam, profiltryck, textiltryck, brodyr, screentryck, bilfoliering, bildekor, trycksaker, visitkort, broschyrer, affischer, foldrar, dekaler, grafisk design, tryckeri Stockholm',
+    },
+    {
+      property: 'og:title',
+      content: 'Tricolor Screen - Professionella Trycklösningar för Företag',
+    },
+    {
+      property: 'og:description',
+      content: 'Kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper ditt företag att sticka ut!',
+    },
+    {
+      property: 'og:type',
+      content: 'website',
     },
   ],
 })

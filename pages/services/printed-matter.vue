@@ -11,11 +11,27 @@ import TextButton from '~/components/common/TextButton.vue'
 
 // ===== COMPOSABLES =====
 useHead({
-  title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
+  title: 'Professionell trycksaksproduktion | Foldrar, Broschyrer, Visitkort | Tricolor Screen',
   meta: [
     {
       name: 'description',
-      content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
+      content: 'Tricolor Screen erbjuder högkvalitativ trycksaksproduktion: foldrar, broschyrer, visitkort, affischer, etiketter, kuvert, klistermärken, menyer och dekaler. 28 år av expertis i tryckbranschen.',
+    },
+    {
+      name: 'keywords',
+      content: 'trycksaker, foldrar, broschyrer, visitkort, affischer, etiketter, kuvert, klistermärken, menyer, dekaler, tryckeri, profiltryck, reklammaterial',
+    },
+    {
+      property: 'og:title',
+      content: 'Professionell trycksaksproduktion - Foldrar, Broschyrer & Visitkort',
+    },
+    {
+      property: 'og:description',
+      content: 'Högkvalitativa trycksaker för alla ändamål. Från designkoncept till leverans - Tricolor Screen har löst allt sedan 1996.',
+    },
+    {
+      property: 'og:type',
+      content: 'website',
     },
   ],
 })
