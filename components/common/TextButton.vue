@@ -18,7 +18,7 @@ interface Props extends BaseButtonProps {
 withDefaults(defineProps<Props>(), {
   label: 'TextButton',
   variant: 'primary',
-  size: 'md',
+  size: 'responsive',
   disabled: false,
   loading: false,
   backgroundColor: undefined,
