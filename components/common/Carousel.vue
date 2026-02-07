@@ -128,16 +128,6 @@ const isVisible = (index: number): boolean => {
   return upperBound > lowerBound ? index >= lowerBound && index < upperBound : index >= lowerBound || index < upperBound
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const totalPages = computed(() =>
-  Math.ceil(props.items.length / props.perPage)
-)
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const selectedPage = computed(() =>
-  Math.floor(selectedIndex.value / props.perPage)
-)
-
 const useScrollbar = computed(() =>
   props.items.length > 10
 )
