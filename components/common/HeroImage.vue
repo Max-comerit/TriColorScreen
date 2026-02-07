@@ -91,9 +91,16 @@ const aspectRatio = computed(() => {
 
 /* Container - styles for the hero image section */
 .container-section {
-  @apply relative w-full min-h-[50svh] max-h-[80svh] overflow-hidden;
-  /* Ensure stretching on older Safari */
-  -webkit-flex-basis: 100%;
+  position: relative;
+  width: 100%;
+  display: block;
+  min-height: 50vh;
+  max-height: 80vh;
+  overflow: hidden;
+  /* Safari compatibility */
+  -webkit-flex-basis: auto;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* Text Overlay - styles for the text container on the hero image */
