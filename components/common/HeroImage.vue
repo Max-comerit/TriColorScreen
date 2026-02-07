@@ -93,7 +93,7 @@ const aspectRatio = computed(() => {
 .container-section {
   position: relative;
   left: 0;
-  width: 100vw;
+  width: 100%; /* <- use 100% instead of 100vw */
   max-width: 100%;
   display: block;
   min-height: 50svh;
