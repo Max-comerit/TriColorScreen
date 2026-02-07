@@ -7,6 +7,7 @@ import services from '~/assets/json/services/printed-matter/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import Carousel from '~/components/common/Carousel.vue'
+import TextButton from '~/components/common/TextButton.vue'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -85,6 +86,12 @@ onUnmounted(() => {
           show-dots
           aria-label="Trycksaker"
         />
+        <p class="mt-6 text-center"><strong>Är det något som saknas? Kontakta oss! vi trycker på alla sorters material för alla ändamål</strong></p>
+        <div class="flex justify-center">
+          <NuxtLink to="/contact" class="inline-block mt-4">
+              <TextButton>Kontakta Oss</TextButton>
+          </NuxtLink>
+        </div>
       </Section>
     </div>
   </div>
