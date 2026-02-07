@@ -63,11 +63,20 @@ const containerStyle = computed(() => {
 // ===== LIFECYCLE =====
 onMounted(() => {
   // Feature detection for aspect-ratio support
-  // Safari 15.x has broken aspect-ratio implementation, so exclude it
-  const isSafari15 = /Version\/15\.\d/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent)
-  const supportsAspectRatioFeature = CSS.supports('aspect-ratio', '1')
+  // Safari includes fixes in WebKit for aspect-ratio issues in version 16.3, so exclude versions below that
+  const safariMatch = navigator.userAgent.match(/Version\/(\d+)\.(\d+)/)
+  const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
   
-  supportsAspectRatio.value = supportsAspectRatioFeature && !isSafari15
+  let isSafariWithBug = false
+  if (safariMatch && isSafari) {
+    const majorVersion = parseInt(safariMatch[1])
+    const minorVersion = parseInt(safariMatch[2])
+    // Exclude Safari < 16.3
+    isSafariWithBug = majorVersion < 16 || (majorVersion === 16 && minorVersion < 3)
+  }
+  
+  const supportsAspectRatioFeature = CSS.supports('aspect-ratio', '1')
+  supportsAspectRatio.value = supportsAspectRatioFeature && !isSafariWithBug
 })
 </script>
 
