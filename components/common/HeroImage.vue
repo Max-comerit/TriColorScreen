@@ -101,6 +101,7 @@ const aspectRatio = computed(() => {
   -webkit-flex-basis: auto;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  background-color: #dcfce7;
 }
 
 /* Text Overlay - styles for the text container on the hero image */
