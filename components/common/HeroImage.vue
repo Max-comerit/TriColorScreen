@@ -95,6 +95,13 @@ const aspectRatio = computed(() => {
   @apply relative w-full min-h-[50svh] max-h-[80svh] overflow-hidden;
 }
 
+/* Ensure NuxtImg stretches properly on older Safari devices */
+.container-section :deep(img) {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 /* Text Overlay - styles for the text container on the hero image */
 .overlay {
   @apply absolute bottom-0 left-0 p-4 pr-6 sm:p-6 sm:pr-8 lg:p-8 lg:pr-10;
