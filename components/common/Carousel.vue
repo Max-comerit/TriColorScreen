@@ -117,10 +117,23 @@ const carouselWidth = computed(() =>
     : props.carouselWidth ?? '100%'
 )
 
+const totalItems = computed(() =>
+  props.items.length
+)
+
+const isVisible = (index: number): boolean => {
+  const lowerBound = selectedIndex.value
+  const upperBound = (selectedIndex.value + props.perPage) % props.items.length
+
+  return upperBound > lowerBound ? index >= lowerBound && index < upperBound : index >= lowerBound || index < upperBound
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const totalPages = computed(() =>
   Math.ceil(props.items.length / props.perPage)
 )
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const selectedPage = computed(() =>
   Math.floor(selectedIndex.value / props.perPage)
 )
@@ -247,8 +260,8 @@ onMounted(() => {
           <!-- Dots -->
           <template v-if="!useScrollbar">
             <span
-              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
-              :class="selectedPage === idx ? 'bg-primary-600' : 'bg-gray-300'"
+              v-for="(_, idx) in totalItems" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
+              :class="isVisible(idx) ? 'bg-primary-600' : 'bg-gray-300'"
               aria-hidden="true" />
           </template>
 
@@ -331,8 +344,8 @@ onMounted(() => {
           <!-- Dots -->
           <template v-if="!useScrollbar">
             <span
-              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
-              :class="selectedPage === idx ? 'bg-primary-600' : 'bg-gray-300'"
+              v-for="(_, idx) in totalItems" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
+              :class="isVisible(idx) ? 'bg-primary-600' : 'bg-gray-300'"
               aria-hidden="true" />
           </template>
 
