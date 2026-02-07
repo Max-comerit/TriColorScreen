@@ -92,15 +92,26 @@ const aspectRatio = computed(() => {
 /* Container - styles for the hero image section */
 .container-section {
   position: relative;
-  left: 0;
-  width: 100%; /* <- use 100% instead of 100vw */
+  width: 100%;
   max-width: 100%;
-  display: block;
+  overflow: hidden;
+  background-color: #dcfce7;
+  /* Optional min/max heights for viewport */
   min-height: 50svh;
   max-height: 80svh;
-  overflow: hidden;
   box-sizing: border-box;
-  background-color: #dcfce7;
+
+  /* Modern browsers: aspect ratio */
+  aspect-ratio: 1280 / 854; /* fallback to your default ratio */
+}
+
+/* Safari <15 fallback */
+@supports not (aspect-ratio: 1 / 1) {
+  .container-section::before {
+    content: "";
+    display: block;
+    padding-top: 66.875%; /* height / width * 100% -> 854/1280*100 */
+  }
 }
 
 /* Text Overlay - styles for the text container on the hero image */
