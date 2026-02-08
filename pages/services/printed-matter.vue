@@ -27,7 +27,7 @@ useHead({
     },
     {
       property: 'og:description',
-      content: 'Högkvalitativa trycksaker för alla ändamål. Från designkoncept till leverans - Tricolor Screen har löst allt sedan 1996.',
+      content: 'Högkvalitativa trycksaker för alla ändamål. Från designkoncept till leverans - Tricolor Screen har löst allt sedan 1998.',
     },
     {
       property: 'og:type',
