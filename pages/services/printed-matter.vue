@@ -107,8 +107,8 @@ onUnmounted(() => {
         <p class="mt-6 text-center"><strong>Är det något som saknas?</strong></p>
         <p class="text-center"><strong>Kontakta oss!</strong></p>
         <p class="text-center"><strong>Vi trycker på alla sorters material för alla ändamål.</strong></p>
-        <div class="flex justify-center">
-          <NuxtLink to="/contact" class="inline-block mt-4">
+        <div class="mt-6 flex justify-center">
+          <NuxtLink to="/contact" class="inline-block">
               <TextButton>Kontakta Oss</TextButton>
           </NuxtLink>
         </div>
