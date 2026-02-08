@@ -104,7 +104,9 @@ onUnmounted(() => {
           show-dots
           aria-label="Trycksaker"
         />
-        <p class="mt-6 text-center"><strong>Är det något som saknas? Kontakta oss! vi trycker på alla sorters material för alla ändamål</strong></p>
+        <p class="mt-6 text-center"><strong>Är det något som saknas?</strong></p>
+        <p class="text-center"><strong>Kontakta oss!</strong></p>
+        <p class="text-center"><strong>Vi trycker på alla sorters material för alla ändamål.</strong></p>
         <div class="flex justify-center">
           <NuxtLink to="/contact" class="inline-block mt-4">
               <TextButton>Kontakta Oss</TextButton>
