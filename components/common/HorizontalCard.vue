@@ -142,7 +142,7 @@ const handleCardClick = () => {
     </h3>
 
     <!-- Image and description row -->
-    <div class="flex flex-col md:flex-row items-stretch gap-4 md:gap-6">
+    <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
       <!-- Image container -->
       <div
         :class="[
@@ -183,7 +183,7 @@ const handleCardClick = () => {
     </h3>
 
     <!-- Image and description row -->
-    <div class="flex flex-col md:flex-row items-stretch gap-4 md:gap-6">
+    <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
       <!-- Image container -->
       <div
         :class="[
@@ -193,7 +193,7 @@ const handleCardClick = () => {
         <NuxtImg
           :src="imageSrc" 
           :alt="imageAlt || title"
-          class="w-full object-cover transition-transform duration-300 group-hover:scale-105" 
+          class="w-full object-cover transition-transform duration-300" 
           format="webp"
           sizes="100vw sm:50vw lg:33vw" 
           loading="lazy" 
