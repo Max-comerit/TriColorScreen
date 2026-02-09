@@ -32,3 +32,21 @@ export interface IReviewCardContent {
 export type CardItem =
   | { type: 'service'; data: IServiceCardContent }
   | { type: 'review'; data: IReviewCardContent }
+
+/**
+ * Horizontal Card Content Interface
+ */
+export interface IHorizontalCardContent {
+  /** Title text displayed on the horizontal card */
+  title: string
+  /** Image source URL for the horizontal card */
+  imageSrc: string
+  /** Description text on the horizontal card */
+  description: string
+  /** Maximum number of lines to display in description - default: 4 */
+  maxLines?: number
+  /** Alt text for the horizontal card image */
+  alt?: string
+  /** Navigation link for the horizontal card */
+  link?: string
+}
