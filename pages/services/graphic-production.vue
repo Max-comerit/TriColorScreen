@@ -12,11 +12,27 @@ import CardGrid from '~/components/common/CardGrid.vue'
 
 // ===== COMPOSABLES =====
 useHead({
-  title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
+  title: 'Design och Grafisk Produktion | Logotyper, Broschyrer, Visitkort | Tricolor Screen',
   meta: [
     {
       name: 'description',
-      content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
+      content: 'Tricolor Screen designar och producerar logotyper, broschyrer, folders, affischer, skyltar, rollups, banderoller, visitkort och presentationsmaterial. Vi fokuserar på rätt budskap och val av papper för din trycksak.',
+    },
+    {
+      name: 'keywords',
+      content: 'logotyper, broschyrer, folders, affischer, skyltar, rollups, banderoller, visitkort, kuvert, presentationsmaterial, menyer, grafisk design, trycksaker, varumärkesdesign',
+    },
+    {
+      property: 'og:title',
+      content: 'Design och Grafisk Produktion - Logotyper, Broschyrer & Visitkort',
+    },
+    {
+      property: 'og:description',
+      content: 'Vi designar logotyper, broschyrer, affischer och all sorts grafiska material. Från budskap till färdiga trycksaker med rätt papper och kommunikativ design.',
+    },
+    {
+      property: 'og:type',
+      content: 'website',
     },
   ],
 })
