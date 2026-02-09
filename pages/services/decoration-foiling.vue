@@ -1,16 +1,16 @@
-// pages/services/decoration-foiling.vue
-
 <script setup lang="ts">
 // ===== IMPORTS =====
 import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import HorizontalCard from '~/components/common/HorizontalCard.vue'
 import Section from '~/components/common/Section.vue'
-import type { CardItem, IServiceCardContent } from '~/types/CardContent'
+import type { CardItem, IHorizontalCardContent, IServiceCardContent } from '~/types/CardContent'
 import decorationFoilingServicesData from '~/assets/json/services/decoration-foiling/services.json'
 import horizontalCardsData from '~/assets/json/services/decoration-foiling/horizontal-cards.json'
 
-// ===== COMPOSABLES =====
+// ===== PROPS & EMITS =====
+
+// ===== COMPOSABLES & STORES =====
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
   meta: [
@@ -36,18 +36,11 @@ useHead({
     },
   ],
 })
+
 // ===== STATE =====
-type HorizontalCardContent = {
-  title: string
-  description: string
-  imageSrc: string
-  alt?: string
-}
-
 const decorationFoilingServices = decorationFoilingServicesData as IServiceCardContent[]
-const horizontalCards = horizontalCardsData as HorizontalCardContent[]
+const horizontalCards = horizontalCardsData as IHorizontalCardContent[]
 
-// Map to CardGrid's expected CardItem[] shape
 const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((service) => ({
   type: 'service',
   data: {
@@ -55,6 +48,14 @@ const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((servic
     maxLines: 26,
   },
 }))
+
+// ===== COMPUTED =====
+
+// ===== METHODS =====
+
+// ===== LIFECYCLE HOOKS =====
+
+// ===== WATCHERS =====
 
 </script>
 
@@ -112,7 +113,7 @@ const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((servic
           </p>
           <CardGrid
             :card-content-arr="decorationFoilingCards"
-            :min-item-width="240"
+            :min-item-width="280"
             :gap="24"
             aria-label="Tjänster inom foliering och bildekor"
             section-id="decoration-foiling-services"
