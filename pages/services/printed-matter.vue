@@ -8,6 +8,7 @@ import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import Carousel from '~/components/common/Carousel.vue'
 import TextButton from '~/components/common/TextButton.vue'
+import { useResponsivePerPage } from '~/composables/useResponsivePerPage'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -36,33 +37,19 @@ useHead({
   ],
 })
 
+const { perPage } = useResponsivePerPage()
+
 // ===== STATE (ref/reactive) =====
 const servicesData = ref<IServiceCardContent[]>(
   (services as IServiceCardContent[]).map(item => ({ ...item, maxLines: 8 }))
 )
-const itemsPerPage = ref(1)
 
 // ===== COMPUTED =====
 const serviceCards = computed<CardItem[]>(() =>
   servicesData.value.map((item) => ({ type: 'service', data: item })),
 )
 
-// ===== LIFECYCLE HOOKS =====
-const updateItemsPerPage = () => {
-  const width = window.innerWidth
-  if (width >= 1024) itemsPerPage.value = 3
-  else if (width >= 640) itemsPerPage.value = 2
-  else itemsPerPage.value = 1
-}
 
-onMounted(() => {
-  updateItemsPerPage()
-  window.addEventListener('resize', updateItemsPerPage)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', updateItemsPerPage)
-})
 
 </script>
 
@@ -97,7 +84,7 @@ onUnmounted(() => {
         <!-- Carousel view -->
         <Carousel
           :items="serviceCards"
-          :per-page="itemsPerPage"
+          :per-page="perPage"
           :gap-px="16"
           :loop="true"
           show-arrows

@@ -6,8 +6,8 @@ import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import HorizontalCard from '~/components/common/HorizontalCard.vue'
 import Section from '~/components/common/Section.vue'
-import { decorationFoilingServices, horizontalCards } from '~/utils/data/services/decoration-foiling/services'
-import type { CardItem } from '~/types/CardContent'
+import type { CardItem, IServiceCardContent } from '~/types/CardContent'
+import decorationFoilingData from '~/assets/json/services/decoration-foiling/services.json'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -19,7 +19,34 @@ useHead({
     },
   ],
 })
+// ===== STATE =====
+const decorationFoilingServices = (decorationFoilingData as {
+  'decoration-services': IServiceCardContent[]
+  'horizontal-cards': {
+    title: string
+    description: string
+    imageSrc: string
+    alt?: string
+  }[]
+})['decoration-services']
 
+const horizontalCards = (decorationFoilingData as {
+  'decoration-services': IServiceCardContent[]
+  'horizontal-cards': {
+    title: string
+    description: string
+    imageSrc: string
+    alt?: string
+  }[]
+})['horizontal-cards']
+
+const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((service) => ({
+  type: 'service',
+  data: {
+    ...service,
+    maxLines: 26,
+  },
+}))
 
 </script>
 
@@ -27,7 +54,7 @@ useHead({
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/services/decoration-foiling/car-decor.png"
+      src="/images/services/decoration-foiling/hero.png"
       title="Dekor & Foliering som lämnar avtryck"
       description="Foliering är det smarta sättet att få fram budskap på ytor som annars är  svårtillgängliga för marknadsföring, exempelvis på glas och karosser"
       :width="1280"
@@ -56,6 +83,7 @@ useHead({
             :image-alt="card.alt"
             :description="card.description"
             :image-first="index % 2 === 0 ? false : true"
+            text-color="black"
             size="fit"
             cursor="default"
           />
@@ -68,14 +96,14 @@ useHead({
         aria-label="Våra tjänster"
       >
         <div class="flex flex-col gap-6">
-          <p class="mx-auto max-w-4xl text-base leading-relaxed text-neutral-700">
+          <p class="mx-auto max-w-4xl text-base leading-relaxed">
             Vi på TriColorScreen hjälper dig som privatperson eller er som företag med olika typer av bildekor och
             fordonsdekor samt helfoliering i Stockholm. Välj bland mängder av utföranden såsom blank, matt, metallic,
             chrome, chrome delete, print med mera. Vi hjälper dig även med stripning, bildekor, dekaler och solfilm.
           </p>
           <CardGrid
-            :card-content-arr="decorationFoilingServices"
-            :min-item-width="260"
+            :card-content-arr="decorationFoilingCards"
+            :min-item-width="240"
             :gap="24"
             aria-label="Tjänster inom foliering och bildekor"
             section-id="decoration-foiling-services"
