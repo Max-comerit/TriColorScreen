@@ -20,7 +20,7 @@ useHead({
   ],
 })
 // ===== STATE =====
-const decorationFoilingServices = (decorationFoilingData as {
+type DecorationFoilingJson = {
   'decoration-services': IServiceCardContent[]
   'horizontal-cards': {
     title: string
@@ -28,18 +28,13 @@ const decorationFoilingServices = (decorationFoilingData as {
     imageSrc: string
     alt?: string
   }[]
-})['decoration-services']
+}
 
-const horizontalCards = (decorationFoilingData as {
-  'decoration-services': IServiceCardContent[]
-  'horizontal-cards': {
-    title: string
-    description: string
-    imageSrc: string
-    alt?: string
-  }[]
-})['horizontal-cards']
+const decorationFoilingContent = decorationFoilingData as DecorationFoilingJson
+const decorationFoilingServices = decorationFoilingContent['decoration-services']
+const horizontalCards = decorationFoilingContent['horizontal-cards']
 
+// Map to CardGrid's expected CardItem[] shape
 const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((service) => ({
   type: 'service',
   data: {
@@ -56,7 +51,7 @@ const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((servic
     <HeroImage 
       src="/images/services/decoration-foiling/hero.png"
       title="Dekor & Foliering som lämnar avtryck"
-      description="Foliering är det smarta sättet att få fram budskap på ytor som annars är  svårtillgängliga för marknadsföring, exempelvis på glas och karosser"
+      description="Foliering är det smarta sättet att få fram budskap på ytor som annars är svårtillgängliga för marknadsföring, exempelvis på glas och karosser"
       :width="1280"
       :height="854"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
@@ -71,23 +66,24 @@ const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((servic
     <div class="layout-container">
       <Section
         id="decoration-foiling"
+        title="Bildekor och helfoliering"
         align="center"
         aria-label="Bildekor och helfoliering"
       >
-        <div class="flex flex-col gap-6">
-          <HorizontalCard
-            v-for="(card, index) in horizontalCards"
-            :key="card.title"
-            :title="card.title"
-            :image-src="card.imageSrc"
-            :image-alt="card.alt"
-            :description="card.description"
-            :image-first="index % 2 === 0 ? false : true"
-            text-color="black"
-            size="fit"
-            cursor="default"
-          />
-        </div>
+        <ul class="flex flex-col gap-6" aria-label="Utvalda tjänster">
+          <li v-for="(card, index) in horizontalCards" :key="card.title">
+            <HorizontalCard
+              :title="card.title"
+              :image-src="card.imageSrc"
+              :image-alt="card.alt"
+              :description="card.description"
+              :image-first="index % 2 === 0 ? false : true"
+              text-color="black"
+              size="fit"
+              cursor="default"
+            />
+          </li>
+        </ul>
       </Section>
       <Section
         id="services"
@@ -96,7 +92,7 @@ const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((servic
         aria-label="Våra tjänster"
       >
         <div class="flex flex-col gap-6">
-          <p class="mx-auto max-w-4xl text-base leading-relaxed">
+          <p class="mx-auto max-w-4xl text-base leading-relaxed text-black">
             Vi på TriColorScreen hjälper dig som privatperson eller er som företag med olika typer av bildekor och
             fordonsdekor samt helfoliering i Stockholm. Välj bland mängder av utföranden såsom blank, matt, metallic,
             chrome, chrome delete, print med mera. Vi hjälper dig även med stripning, bildekor, dekaler och solfilm.
