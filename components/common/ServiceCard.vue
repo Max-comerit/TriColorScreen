@@ -65,13 +65,13 @@ const textColorClass = computed(() => `text-${props.textColor}`)
 
 /** Computes inline style for line clamping based on maxLines prop */
 const descriptionStyle = computed((): CSSProperties => {
-  const style: any = {
+  const style: Record<string, string | number> = {
     display: '-webkit-box',
     overflow: 'hidden',
   }
   style['-webkit-box-orient'] = 'vertical'
   style['-webkit-line-clamp'] = props.maxLines
-  return style
+  return style as CSSProperties
 })
 
 // ===== METHODS =====
