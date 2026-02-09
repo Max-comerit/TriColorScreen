@@ -7,7 +7,8 @@ import HeroImage from '~/components/common/HeroImage.vue'
 import HorizontalCard from '~/components/common/HorizontalCard.vue'
 import Section from '~/components/common/Section.vue'
 import type { CardItem, IServiceCardContent } from '~/types/CardContent'
-import decorationFoilingData from '~/assets/json/services/decoration-foiling/services.json'
+import decorationFoilingServicesData from '~/assets/json/services/decoration-foiling/services.json'
+import horizontalCardsData from '~/assets/json/services/decoration-foiling/horizontal-cards.json'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -17,22 +18,34 @@ useHead({
       name: 'description',
       content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
     },
+    {
+      property: 'og:title',
+      content: 'Dekor & foliering - Bildekor och helfoliering i Stockholm',
+    },
+    {
+      property: 'og:description',
+      content: 'Vi hjalper privatpersoner och foretag med bildekor, fordonsdekor och helfoliering i Stockholm.',
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:image',
+      content: '/images/services/decoration-foiling/hero.png',
+    },
   ],
 })
 // ===== STATE =====
-type DecorationFoilingJson = {
-  'decoration-services': IServiceCardContent[]
-  'horizontal-cards': {
-    title: string
-    description: string
-    imageSrc: string
-    alt?: string
-  }[]
+type HorizontalCardContent = {
+  title: string
+  description: string
+  imageSrc: string
+  alt?: string
 }
 
-const decorationFoilingContent = decorationFoilingData as DecorationFoilingJson
-const decorationFoilingServices = decorationFoilingContent['decoration-services']
-const horizontalCards = decorationFoilingContent['horizontal-cards']
+const decorationFoilingServices = decorationFoilingServicesData as IServiceCardContent[]
+const horizontalCards = horizontalCardsData as HorizontalCardContent[]
 
 // Map to CardGrid's expected CardItem[] shape
 const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((service) => ({
@@ -92,7 +105,7 @@ const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((servic
         aria-label="Våra tjänster"
       >
         <div class="flex flex-col gap-6">
-          <p class="mx-auto max-w-4xl text-base leading-relaxed text-black">
+          <p class="mx-auto max-w-4xl text-base leading-relaxed text-black text-lg">
             Vi på TriColorScreen hjälper dig som privatperson eller er som företag med olika typer av bildekor och
             fordonsdekor samt helfoliering i Stockholm. Välj bland mängder av utföranden såsom blank, matt, metallic,
             chrome, chrome delete, print med mera. Vi hjälper dig även med stripning, bildekor, dekaler och solfilm.

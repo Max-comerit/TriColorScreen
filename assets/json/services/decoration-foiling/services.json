@@ -1,6 +1,4 @@
-{
-
-"decoration-services": [
+[
   {
     "title": "Fönsterdekor",
     "description": "Fönsters primära syfte är visserligen att ge oss möjlighet att titta in eller ut genom dem. Men ibland kan det finnas anledningar att få blicken att stanna på rutan. Med hjälp av fönsterdekor kan du skapa insynsskydd till allt från konferensrum till sjukhuskorridorer. De kan fungera som solskydd eller användas till marknadsföring. Genom att exempelvis klistra upp logotyper, kampanjbudskap eller inramande dekorativa mönster på kontorets fönster kan du förstärka din kommunikation ytterligare. Eller varför inte klä in en hel glasfasad? Folieringen gör nämligen jobbet som inte en vepa i världen kan få till på grund av glasets monteringsbegränsningar. Våra fönsterdekaler fästs på insidan av fönstret och påverkas inte av väder och vind.",
@@ -19,17 +17,4 @@
     "imageSrc": "/images/services/decoration-foiling/car-wrapping.jpg",
     "alt": "Foliering av fordon"
   }
-],
-"horizontal-cards":  [{
-    "title": "Din go-to-lösning för bilfoliering",
-    "description": "Vi erbjuder professionell bilfoliering som ger din bil en unik och  eleganta look. Vi använder endast den senaste tekniken för att  säkerställa högsta kvalitet och ett perfekt resultat. Vi är  specialiserade på att erbjuda högkvalitativ bilfoliering som ger din bil en professionell look.",
-    "imageSrc": "/images/services/decoration-foiling/car-wrapping.jpg",
-    "alt": "Bilfoliering"
-  },
-  {
-    "title": "Vi kan foliering och dekor",
-    "description": "Men allt handlar inte om sälj. Då kan det handla om allt från en enstaka logotyp till att skapa dekaler med informativa instruktioner om  användning och säkerhetsrutiner på glas och karosser.",
-    "imageSrc": "/images/services/decoration-foiling/bar-decor.png",
-    "alt": "Bildekor"
-  }]
-}
+]
