@@ -2,10 +2,12 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import type { CardItem, IServiceCardContent } from '~/types/CardContent'
+import type { CardItem, IServiceCardContent, IHorizontalCardContent } from '~/types/CardContent'
+import horizontalCards from '~/assets/json/services/graphic-production/horizontal-cards.json'
 import services from '~/assets/json/services/graphic-production/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
+import HorizontalCard from '~/components/common/HorizontalCard.vue'
 import CardGrid from '~/components/common/CardGrid.vue'
 
 // ===== COMPOSABLES =====
@@ -21,6 +23,9 @@ useHead({
 
 // ===== STATE (ref/reactive) =====
 const servicesData = ref<IServiceCardContent[]>(services as IServiceCardContent[])
+const horizontalCardsData = ref<IHorizontalCardContent[]>(
+  (horizontalCards as IHorizontalCardContent[]).map(item => ({ ...item, maxLines: 12 }))
+)
 
 // ===== COMPUTED =====
 const serviceCards = computed<CardItem[]>(() =>
@@ -34,28 +39,38 @@ const serviceCards = computed<CardItem[]>(() =>
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/services/graphic-production/hero.png"
-      title="Tricolor Screen"
-      description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering"
+      title="Design och Grafisk Produktion"
+      description="Vi hjälper dig att designa din logotyp och allt annat som är kopplat till ditt varumärke på ett sätt som förför dina kunder."
       :width="1280"
       :height="854"
-      alt="Professional screen printing equipment and process at TriColor Screen workshop"
+      alt="Grafisk design och tryckmaterial med klistermärken, färgprover, klädmockups och varumärkesprofilering."
     />
 
     <!-- Sections -->
     <div class="layout-container">
       <Section 
-        id="services" 
-        title="Våra tjänster" 
-        align="center"
-        aria-label="Våra tjänster och lösningar"
-      >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
-      </Section>
-      <Section 
         id="graphic-production" 
-        title="Grafisk Produktion" 
+        title="Grafisk Produktion"
         align="center"
         aria-label="Grafisk Produktion"
+      >
+        <HorizontalCard
+          v-for="(card, index) in horizontalCardsData" 
+          :key="index"
+          :title="card.title"
+          :image-src="card.imageSrc"
+          :description="card.description"
+          :max-lines="card.maxLines"
+          :link="card.link"
+          size="fit"
+          class="mb-6"
+        />
+      </Section>
+      <Section 
+        id="graphic-production-services" 
+        title="Våra tjänster inom Design och Grafisk Produktion" 
+        align="center"
+        aria-label="Våra tjänster inom Design och Grafisk Produktion"
       >
         <!-- Service card grid -->
         <CardGrid

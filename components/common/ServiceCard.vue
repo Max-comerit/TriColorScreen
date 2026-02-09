@@ -56,12 +56,15 @@ const cardStyle = computed(() => ({
 const textColorClass = computed(() => `text-${props.textColor}`)
 
 /** Computes inline style for line clamping based on maxLines prop */
-const descriptionStyle = computed((): CSSProperties => ({
-  display: '-webkit-box',
-  WebkitLineClamp: props.maxLines,
-  WebkitBoxOrient: 'vertical',
-  overflow: 'hidden',
-}))
+const descriptionStyle = computed((): CSSProperties => {
+  const style: any = {
+    display: '-webkit-box',
+    overflow: 'hidden',
+  }
+  style['-webkit-box-orient'] = 'vertical'
+  style['-webkit-line-clamp'] = props.maxLines
+  return style
+})
 
 /** Handles card click when no link is provided */
 const handleCardClick = () => {
