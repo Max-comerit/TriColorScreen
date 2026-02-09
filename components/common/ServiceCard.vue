@@ -7,6 +7,7 @@ import { computed, type CSSProperties } from 'vue'
  * A reusable card for displaying a service with image, title and description.
  */
 
+// ===== PROPS & EMITS =====
 /** Props interface for ServiceCard component */
 interface Props {
   /** Image source URL for the service card */
@@ -46,6 +47,13 @@ const emit = defineEmits<{
   (e: 'click'): void
 }>()
 
+// ===== COMPOSABLES & STORES =====
+// (No composables or stores needed)
+
+// ===== STATE =====
+// (No additional state variables needed)
+
+// ===== COMPUTED =====
 /** Computes dynamic style object for card dimensions */
 const cardStyle = computed(() => ({
   width: typeof props.width === 'number' ? `${props.width}px` : props.width,
@@ -66,6 +74,7 @@ const descriptionStyle = computed((): CSSProperties => {
   return style
 })
 
+// ===== METHODS =====
 /** Handles card click when no link is provided */
 const handleCardClick = () => {
   emit('click')

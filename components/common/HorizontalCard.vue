@@ -9,6 +9,7 @@ import { computed, useAttrs, type CSSProperties } from 'vue'
  * - Emits a `click` event on activation (mouse/tap/keyboard)
  */
 
+// ===== PROPS & EMITS =====
 interface Props {
   /** Card title */
   title: string
@@ -44,15 +45,6 @@ interface Props {
   link?: string
 }
 
-const emit = defineEmits<{
-  (e: 'click'): void
-}>()
-
-/** Handles card click when no link is provided */
-const handleCardClick = () => {
-  emit('click')
-}
-
 const props = withDefaults(defineProps<Props>(), {
   imageFirst: true,
   imageAlt: undefined,
@@ -65,8 +57,17 @@ const props = withDefaults(defineProps<Props>(), {
   maxLines: 4,
 })
 
+const emit = defineEmits<{
+  (e: 'click'): void
+}>()
+
+// ===== COMPOSABLES & STORES =====
 const attrs = useAttrs()
 
+// ===== STATE =====
+// (No additional state variables needed)
+
+// ===== COMPUTED =====
 /** Computed style for width/height props */
 const cardStyle = computed(() => {
   if (props.size === 'fit') return {}
@@ -110,6 +111,12 @@ const linkArticleClass = computed(() => [
   sizeClass,
   attrs.class,
 ])
+
+// ===== METHODS =====
+/** Handles card click when no link is provided */
+const handleCardClick = () => {
+  emit('click')
+}
 
 </script>
 

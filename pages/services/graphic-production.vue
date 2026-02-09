@@ -10,7 +10,10 @@ import Section from '~/components/common/Section.vue'
 import HorizontalCard from '~/components/common/HorizontalCard.vue'
 import CardGrid from '~/components/common/CardGrid.vue'
 
-// ===== COMPOSABLES =====
+// ===== PROPS & EMITS =====
+// (Page component - no props/emits needed)
+
+// ===== COMPOSABLES & STORES =====
 useHead({
   title: 'Design och Grafisk Produktion | Logotyper, Broschyrer, Visitkort | Tricolor Screen',
   meta: [
@@ -47,6 +50,9 @@ const horizontalCardsData = ref<IHorizontalCardContent[]>(
 const serviceCards = computed<CardItem[]>(() =>
   servicesData.value.map((item) => ({ type: 'service', data: item })),
 )
+
+// ===== METHODS =====
+// (No additional methods needed)
 
 </script>
 
