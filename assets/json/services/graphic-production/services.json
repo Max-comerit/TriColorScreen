@@ -1,26 +1,26 @@
 [
   {
     "title": "Logotyper",
-    "description": "Har ni en idé eller ingen aning hur er logo ska se ut – Lugn! vi hjälper er.",
-    "imageSrc": "",
+    "description": "Har ni en idé eller ingen aning hur er logo ska se ut - Lugn! vi hjälper er.",
+    "imageSrc": "/images/services/graphic-production/logos.png",
     "alt": "Logotyper"
   },
   {
     "title": "Broschyrer / Folders / Affischer",
     "description": "Har ni en Logotyp och vill ha en folder med info kring ert företag? En affisch med info kring ett event?",
-    "imageSrc": "",
+    "imageSrc": "/images/services/graphic-production/folders.png",
     "alt": "Broschyrer / Folders / Affischer"
   },
   {
     "title": "Skyltar / Rollups / Banderoller",
-    "description": "Vi hjälper er att få till den där  alldeles speciella skylten för ert företag eller en kreativ rollup för  mässan!",
-    "imageSrc": "",
+    "description": "Vi hjälper er att få till den där alldeles speciella skylten för ert företag eller en kreativ rollup för mässan!",
+    "imageSrc": "/images/services/graphic-production/rollups.png",
     "alt": "Skyltar / Rollups / Banderoller"
   },
   {
     "title": "Visitkort / Kuvert / Presentationsmaterial / Menyer",
-    "description": "Vi har hjälp många  företag med all sorters Grafisk produktion inom alla element, har ni  frågor?",
-    "imageSrc": "",
+    "description": "Vi har hjälp många företag med all sorters Grafisk produktion inom alla element, har ni frågor?",
+    "imageSrc": "/images/services/graphic-production/business-cards.png",
     "alt": "Visitkort / Kuvert / Presentationsmaterial / Menyer"
   }
 ]

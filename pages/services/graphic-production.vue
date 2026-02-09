@@ -2,8 +2,11 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
+import type { CardItem, IServiceCardContent } from '~/types/CardContent'
+import services from '~/assets/json/services/graphic-production/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
+import CardGrid from '~/components/common/CardGrid.vue'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -15,6 +18,15 @@ useHead({
     },
   ],
 })
+
+// ===== STATE (ref/reactive) =====
+const servicesData = ref<IServiceCardContent[]>(services as IServiceCardContent[])
+
+// ===== COMPUTED =====
+const serviceCards = computed<CardItem[]>(() =>
+  servicesData.value.map((item) => ({ type: 'service', data: item })),
+)
+
 </script>
 
 <template>
@@ -40,12 +52,18 @@ useHead({
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
       </Section>
       <Section 
-        id="testimonials" 
-        title="Omdömen" 
+        id="graphic-production" 
+        title="Grafisk Produktion" 
         align="center"
-        aria-label="Kundrecensioner och omdömen"
+        aria-label="Grafisk Produktion"
       >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
+        <!-- Service card grid -->
+        <CardGrid
+          :card-content-arr="serviceCards"
+          :min-item-width="280"
+          :gap="24"
+          aria-label="Tjänstekategorier"
+        />
       </Section>
     </div>
   </div>
