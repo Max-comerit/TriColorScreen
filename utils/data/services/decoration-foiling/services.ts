@@ -1,0 +1,43 @@
+/**
+ * Decoration & Foiling Services Data
+ *
+ * Hardcoded services for decoration and foiling category
+ */
+
+import type { IServiceCardContent } from '~/types/CardContent'
+
+export const decorationFoilingServices: IServiceCardContent[] = [
+  {
+    title: 'Fönsterdekor',
+    description: 'Fönsters primära syfte är visserligen att ge oss möjlighet att titta in eller ut genom dem. Men ibland kan det finnas anledningar att få blicken att stanna på rutan. Med hjälp av fönsterdekor kan du skapa insynsskydd till allt från konferensrum till sjukhuskorridorer. De kan fungera som solskydd eller användas till marknadsföring. Genom att exempelvis klistra upp logotyper, kampanjbudskap eller inramande dekorativa mönster på kontorets fönster kan du förstärka din kommunikation ytterligare. Eller varför inte klä in en hel glasfasad? Folieringen gör nämligen jobbet som inte en vepa i världen kan få till på grund av glasets monteringsbegränsningar. Våra fönsterdekaler fästs på insidan av fönstret och påverkas inte av väder och vind.',
+    imageSrc: '',
+    alt: 'Fönsterdekor',
+  },
+  {
+    title: 'Bildekor',
+    description: 'Vi väljer dekormaterial efter ditt behov. Om du har koll på användningsområde så har vi kunskap om resten. Utbudet av skärfolier och printvinyler är nämligen stort.  Det går att få till en bred palett av färger och med olika egenskaper.  Dekoren kan vara transparent, hålad eller translucent och med rätt  belysning kan du dessutom addera fler effekter. Vi fixar allt från  temporära lösningar till de som håller flera år.',
+    imageSrc: '',
+    alt: 'Bildekor',
+  },
+  {
+    title: 'Foliering av fordon',
+    description: 'Vi på TriColorScreen hjälper dig som privatperson eller er som företag med olika typer av bildekor och fordonsdekor samt helfoliering i Stockholm. Välj bland mängder av utföranden såsom blank, matt, metallic, chrome, chrome delete, print med mera. Vi hjälper dig även med stripning, bildekor, dekaler och solfilm.',
+    imageSrc: '',
+    alt: 'Foliering av fordon',
+  },
+]
+
+export const horizontalCards = [
+  {
+    title: 'Din go-to-lösning för bilfoliering',
+    description: 'Vi erbjuder professionell bilfoliering som ger din bil en unik och  eleganta look. Vi använder endast den senaste tekniken för att  säkerställa högsta kvalitet och ett perfekt resultat. Vi är  specialiserade på att erbjuda högkvalitativ bilfoliering som ger din bil en professionell look.',
+    imageSrc: '/images/services/decoration-foiling/car-wrapping.jpg',
+    alt: 'Bilfoliering',
+  },
+  {
+    title: 'Vi kan foliering och dekor',
+    description: 'Men allt handlar inte om sälj. Då kan det handla om allt från en enstaka logotyp till att skapa dekaler med informativa instruktioner om  användning och säkerhetsrutiner på glas och karosser.',
+    imageSrc: '/images/services/decoration-foiling/bar-decor.png',
+    alt: 'Bildekor',
+  },
+]
