@@ -41,7 +41,9 @@ useHead({
 })
 
 // ===== STATE (ref/reactive) =====
-const servicesData = ref<IServiceCardContent[]>(services as IServiceCardContent[])
+const servicesData = ref<IServiceCardContent[]>(
+  (services as IServiceCardContent[]).map(item => ({ ...item, maxLines: 8 }))
+)
 const horizontalCardsData = ref<IHorizontalCardContent[]>(
   (horizontalCards as IHorizontalCardContent[]).map(item => ({ ...item, maxLines: 12 }))
 )
