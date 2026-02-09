@@ -78,7 +78,7 @@ const serviceCards = computed<CardItem[]>(() =>
       >
         <HorizontalCard
           v-for="(card, index) in horizontalCardsData" 
-          :key="index"
+          :key="`horizontal-card-${index}`"
           :title="card.title"
           :image-src="card.imageSrc"
           :description="card.description"
