@@ -9,6 +9,8 @@ export interface IServiceCardContent {
   title: string
   /** Description text displayed below the title */
   description: string
+  /** Maximum number of lines to display in description - default: 3 */
+  maxLines?: number
   /** Alt text for the service card image */
   alt?: string
   /** Navigation link for the service card */

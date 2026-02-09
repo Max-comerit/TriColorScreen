@@ -6,13 +6,13 @@ import LoadingSpinner from '../common/LoadingSpinner.vue'
 type Variant = 'primary' | 'secondary' | 'outline' | 'text'
 
 /** Available button size options */
-type Size = 'sm' | 'md' | 'lg' | 'fit'
+type Size = 'responsive' | 'sm' | 'md' | 'lg' | 'fit'
 
 /** Props for BaseButton component */
 export interface Props {
   /** Button style variant - default: 'primary' */
   variant?: Variant
-  /** Button size - default: 'md' */
+  /** Button size - default: 'responsive' */
   size?: Size
   /** Disable button interaction - default: false */
   disabled?: boolean
@@ -30,7 +30,7 @@ export type { Variant, Size }
 
 const props = withDefaults(defineProps<Props>(), {
   variant: 'primary',
-  size: 'md',
+  size: 'responsive',
   disabled: false,
   loading: false,
   backgroundColor: undefined,
@@ -68,6 +68,7 @@ const variantClasses: Record<Variant, string> = {
 
 /** Size-specific dimensions and typography */
 const sizeClasses: Record<Size, string> = {
+  responsive: 'w-[140px] h-[50px] text-sm sm:w-[170px] sm:h-[60px] sm:text-base lg:w-[200px] lg:h-[70px] lg:text-lg',
   sm: 'w-[140px] h-[50px] text-sm',
   md: 'w-[170px] h-[60px] text-base',
   lg: 'w-[200px] h-[70px] text-lg',

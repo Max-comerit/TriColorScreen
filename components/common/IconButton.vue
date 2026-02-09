@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   iconAlt: '',
   ariaLabel: undefined,
   variant: 'primary',
-  size: 'md',
+  size: 'responsive',
   disabled: false,
   loading: false,
   backgroundColor: undefined,

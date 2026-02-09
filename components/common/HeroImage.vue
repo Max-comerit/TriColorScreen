@@ -48,12 +48,42 @@ const aspectRatio = computed(() => {
   if (!props.width || !props.height) return 3 / 2
   return props.width / props.height
 })
+
+// ===== STATE =====
+const supportsAspectRatio = ref(false)
+
+// ===== METHODS =====
+const containerStyle = computed(() => {
+  if (supportsAspectRatio.value) {
+    return { aspectRatio: aspectRatio.value }
+  }
+  return {}
+})
+
+// ===== LIFECYCLE =====
+onMounted(() => {
+  // Feature detection for aspect-ratio support
+  // Safari includes fixes in WebKit for aspect-ratio issues in version 16.3, so exclude versions below that
+  const safariMatch = navigator.userAgent.match(/Version\/(\d+)\.(\d+)/)
+  const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
+  
+  let isSafariWithBug = false
+  if (safariMatch && isSafari) {
+    const majorVersion = parseInt(safariMatch[1])
+    const minorVersion = parseInt(safariMatch[2])
+    // Exclude Safari < 16.3
+    isSafariWithBug = majorVersion < 16 || (majorVersion === 16 && minorVersion < 3)
+  }
+  
+  const supportsAspectRatioFeature = CSS.supports('aspect-ratio', '1')
+  supportsAspectRatio.value = supportsAspectRatioFeature && !isSafariWithBug
+})
 </script>
 
 <template>
   <section
     class="container-section"
-    :style="{ aspectRatio: aspectRatio }"
+    :style="containerStyle"
   >
     <!-- Hero Image -->
     <NuxtImg
@@ -62,7 +92,6 @@ const aspectRatio = computed(() => {
       :width="props.width"
       :height="props.height"
       format="webp"
-      fit="cover"
       quality="80"
       sizes="xl:100vw 1280px"
       densities="x1 x2"
@@ -98,7 +127,7 @@ const aspectRatio = computed(() => {
 /* Text Overlay - styles for the text container on the hero image */
 .overlay {
   @apply absolute bottom-0 left-0 p-4 pr-6 sm:p-6 sm:pr-8 lg:p-8 lg:pr-10;
-  @apply z-10 w-full sm:w-fit sm:rounded-tr-[30px] sm:max-w-[640px];
+  @apply z-10 w-full sm:w-fit sm:rounded-tr-[30px] sm:max-w-screen-md;
   @apply bg-neutral-900/70 sm:backdrop-blur-sm;
 }
 

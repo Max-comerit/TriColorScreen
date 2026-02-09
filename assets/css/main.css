@@ -58,7 +58,6 @@
   /* Mobile-first: 16px base for better readability on small screens */
   p {
     @apply text-base md:text-lg lg:text-xl leading-relaxed text-layout-text-on-light;
-    @apply mb-4;
   }
 
   /* Note: Responsive typography is handled by Tailwind utilities in the base styles above */

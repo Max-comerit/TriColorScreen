@@ -117,9 +117,16 @@ const carouselWidth = computed(() =>
     : props.carouselWidth ?? '100%'
 )
 
-const totalPages = computed(() =>
-  Math.ceil(props.items.length / props.perPage)
+const totalItems = computed(() =>
+  props.items.length
 )
+
+const isVisible = (index: number): boolean => {
+  const lowerBound = selectedIndex.value
+  const upperBound = (selectedIndex.value + props.perPage) % props.items.length
+
+  return upperBound == (lowerBound + props.perPage) ? index >= lowerBound && index < upperBound : index >= lowerBound || index < upperBound
+}
 
 const useScrollbar = computed(() =>
   props.items.length > 10
@@ -130,11 +137,15 @@ const useScrollbar = computed(() =>
 // Methods
 // ====================
 function scrollPrev(): void {
-  embla.value?.scrollPrev()
+  for (let i = 0; i < props.perPage; i++) {
+    embla.value?.scrollPrev()
+  }
 }
 
 function scrollNext(): void {
-  embla.value?.scrollNext()
+  for (let i = 0; i < props.perPage; i++) {
+    embla.value?.scrollNext()
+  }
 }
 
 function handleClick(fn: () => void): void {
@@ -215,6 +226,7 @@ onMounted(() => {
             :image-src="item.data.imageSrc"
             :title="item.data.title"
             :description="item.data.description"
+            :max-lines="item.data.maxLines"
             :link="item.data.link"
             :alt="item.data.alt"
             background-color="bg-primary-50"
@@ -239,8 +251,8 @@ onMounted(() => {
           <!-- Dots -->
           <template v-if="!useScrollbar">
             <span
-              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
-              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
+              v-for="(_, idx) in totalItems" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
+              :class="isVisible(idx) ? 'bg-primary-600' : 'bg-gray-300'"
               aria-hidden="true" />
           </template>
 
@@ -323,8 +335,8 @@ onMounted(() => {
           <!-- Dots -->
           <template v-if="!useScrollbar">
             <span
-              v-for="(_, idx) in totalPages" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
-              :class="selectedIndex === idx ? 'bg-primary-600' : 'bg-gray-300'"
+              v-for="(_, idx) in totalItems" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
+              :class="isVisible(idx) ? 'bg-primary-600' : 'bg-gray-300'"
               aria-hidden="true" />
           </template>
 

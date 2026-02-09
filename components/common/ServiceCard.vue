@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed, type CSSProperties } from 'vue'
+
 /**
  * ServiceCard Component
  *
@@ -13,6 +15,8 @@ interface Props {
   title: string
   /** Description text displayed below the title */
   description: string
+  /** Maximum number of lines to display in description - default: 3 */
+  maxLines?: number
   /** Width of the card (CSS value or pixel number) */
   width?: string | number
   /** Height of the card (CSS value or pixel number) */
@@ -28,12 +32,13 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  maxLines: 3,
   width: '100%',
   height: '100%',
   backgroundColor: 'bg-primary-50',
   textColor: 'black',
   link: '',
-  alt: 'Service Image',
+  alt: 'Service Image'
 })
 
 /** Emits 'click' event when the card is clicked or activated via keyboard */
@@ -49,6 +54,14 @@ const cardStyle = computed(() => ({
 
 /** Formats the text color prop into a Tailwind class name */
 const textColorClass = computed(() => `text-${props.textColor}`)
+
+/** Computes inline style for line clamping based on maxLines prop */
+const descriptionStyle = computed((): CSSProperties => ({
+  display: '-webkit-box',
+  WebkitLineClamp: props.maxLines,
+  WebkitBoxOrient: 'vertical',
+  overflow: 'hidden',
+}))
 
 /** Handles card click when no link is provided */
 const handleCardClick = () => {
@@ -96,7 +109,7 @@ const handleCardClick = () => {
           {{ title }}
         </h3>
         <!-- Service description -->
-        <p :class="['text-sm leading-relaxed line-clamp-3', textColorClass]">
+        <p :class="['text-sm leading-relaxed', textColorClass]" :style="descriptionStyle">
           {{ description }}
         </p>
       </div>
@@ -139,7 +152,7 @@ const handleCardClick = () => {
         {{ title }}
       </h3>
       <!-- Service description -->
-      <p :class="['text-sm leading-relaxed line-clamp-3', textColorClass]">
+      <p :class="['text-sm leading-relaxed', textColorClass]" :style="descriptionStyle">
         {{ description }}
       </p>
     </div>

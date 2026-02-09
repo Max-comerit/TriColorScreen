@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   iconPosition: 'left',
   ariaLabel: undefined,
   variant: 'primary',
-  size: 'md',
+  size: 'responsive',
   disabled: false,
   loading: false,
   backgroundColor: undefined,
