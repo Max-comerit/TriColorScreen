@@ -29,6 +29,8 @@ interface Props {
   height?: string | number
   /** Tailwind background color class */
   backgroundColor?: string
+  /** Tailwind text color class for description */
+  textColor?: string
   /** Cursor style for the card */
   cursor?:
   | 'auto'
@@ -51,6 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   width: '80%',
   height: 'auto',
   backgroundColor: 'bg-primary-50',
+  textColor: 'text-neutral-700',
   cursor: 'default',
   size: 'fixed',
   link: '',
@@ -159,7 +162,7 @@ const handleCardClick = () => {
 
       <!-- Content container -->
       <div :class="[contentOrderClass, 'flex-1 flex flex-col justify-center']">
-        <p class="text-sm md:text-base text-neutral-700 leading-relaxed" :style="descriptionStyle">
+        <p class="text-sm md:text-base leading-relaxed " :class="props.textColor" :style="descriptionStyle">
           {{ description }}
         </p>
       </div>
@@ -200,7 +203,7 @@ const handleCardClick = () => {
 
       <!-- Content container -->
       <div :class="[contentOrderClass, 'flex-1 flex flex-col justify-center']">
-        <p class="text-sm md:text-base text-neutral-700 leading-relaxed" :style="descriptionStyle">
+        <p class="text-sm md:text-base leading-relaxed " :class="props.textColor" :style="descriptionStyle">
           {{ description }}
         </p>
       </div>
