@@ -64,17 +64,12 @@ const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((servic
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/services/decoration-foiling/hero.png"
-      title="Dekor & Foliering som lämnar avtryck"
+      title="Dekor & Foliering"
       description="Foliering är det smarta sättet att få fram budskap på ytor som annars är svårtillgängliga för marknadsföring, exempelvis på glas och karosser"
       :width="1280"
       :height="854"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
-    >
-      <template #title>
-        <span class="block">Dekor</span>
-        <span class="block">Foliering</span>
-      </template>
-    </HeroImage>
+    />
 
     <!-- Sections -->
     <div class="layout-container">

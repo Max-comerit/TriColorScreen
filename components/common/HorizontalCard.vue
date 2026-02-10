@@ -178,7 +178,7 @@ const handleCardClick = () => {
     :style="{ ...cardStyle, cursor: cursor }" tabindex="0" role="button" :aria-label="title" @click="handleCardClick"
     @keydown.enter.prevent="handleCardClick" @keydown.space.prevent="handleCardClick">
     <!-- Title above image and content -->
-    <h3 class="text-lg md:text-xl font-display font-medium mb-4 text-neutral-900 w-fit mx-auto my-0">
+    <h3 class="text-lg md:text-xl font-display font-semibold mb-4 text-neutral-900 w-fit mx-auto my-0">
       {{ title }}
     </h3>
 
