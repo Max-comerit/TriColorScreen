@@ -1,11 +1,16 @@
-// pages/services/decoration-foiling.vue
-
 <script setup lang="ts">
 // ===== IMPORTS =====
+import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
+import HorizontalCard from '~/components/common/HorizontalCard.vue'
 import Section from '~/components/common/Section.vue'
+import type { CardItem, IHorizontalCardContent, IServiceCardContent } from '~/types/CardContent'
+import decorationFoilingServicesData from '~/assets/json/services/decoration-foiling/services.json'
+import horizontalCardsData from '~/assets/json/services/decoration-foiling/horizontal-cards.json'
 
-// ===== COMPOSABLES =====
+// ===== PROPS & EMITS =====
+
+// ===== COMPOSABLES & STORES =====
 useHead({
   title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
   meta: [
@@ -13,8 +18,45 @@ useHead({
       name: 'description',
       content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
     },
+    {
+      property: 'og:title',
+      content: 'Dekor & foliering - Bildekor och helfoliering i Stockholm',
+    },
+    {
+      property: 'og:description',
+      content: 'Vi hjalper privatpersoner och foretag med bildekor, fordonsdekor och helfoliering i Stockholm.',
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:image',
+      content: '/images/services/decoration-foiling/hero.png',
+    },
   ],
 })
+
+// ===== STATE =====
+const decorationFoilingServices = decorationFoilingServicesData as IServiceCardContent[]
+const horizontalCards = horizontalCardsData as IHorizontalCardContent[]
+
+const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((service) => ({
+  type: 'service',
+  data: {
+    ...service,
+    maxLines: 26,
+  },
+}))
+
+// ===== COMPUTED =====
+
+// ===== METHODS =====
+
+// ===== LIFECYCLE HOOKS =====
+
+// ===== WATCHERS =====
+
 </script>
 
 <template>
@@ -22,8 +64,8 @@ useHead({
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/services/decoration-foiling/hero.png"
-      title="Tricolor Screen"
-      description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering"
+      title="Dekor & Foliering"
+      description="Foliering är det smarta sättet att få fram budskap på ytor som annars är svårtillgängliga för marknadsföring, exempelvis på glas och karosser"
       :width="1280"
       :height="854"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
@@ -31,21 +73,47 @@ useHead({
 
     <!-- Sections -->
     <div class="layout-container">
-      <Section 
-        id="services" 
-        title="Våra tjänster" 
+      <Section
+        id="decoration-foiling"
+        title="Bildekor och helfoliering"
         align="center"
-        aria-label="Våra tjänster och lösningar"
+        aria-label="Bildekor och helfoliering"
       >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
+        <ul class="flex flex-col gap-6" aria-label="Utvalda tjänster">
+          <li v-for="(card, index) in horizontalCards" :key="card.title">
+            <HorizontalCard
+              :title="card.title"
+              :image-src="card.imageSrc"
+              :image-alt="card.alt"
+              :description="card.description"
+              :image-first="index % 2 === 0 ? false : true"
+              text-color="black"
+              size="fit"
+              cursor="default"
+            />
+          </li>
+        </ul>
       </Section>
-      <Section 
-        id="testimonials" 
-        title="Omdömen" 
+      <Section
+        id="services"
+        title="Våra tjänster"
         align="center"
-        aria-label="Kundrecensioner och omdömen"
+        aria-label="Våra tjänster"
       >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
+        <div class="flex flex-col gap-6">
+          <p class="mx-auto max-w-4xl text-base leading-relaxed text-black text-lg">
+            Vi på TriColorScreen hjälper dig som privatperson eller er som företag med olika typer av bildekor och
+            fordonsdekor samt helfoliering i Stockholm. Välj bland mängder av utföranden såsom blank, matt, metallic,
+            chrome, chrome delete, print med mera. Vi hjälper dig även med stripning, bildekor, dekaler och solfilm.
+          </p>
+          <CardGrid
+            :card-content-arr="decorationFoilingCards"
+            :min-item-width="280"
+            :gap="24"
+            aria-label="Tjänster inom foliering och bildekor"
+            section-id="decoration-foiling-services"
+          />
+        </div>
       </Section>
     </div>
   </div>

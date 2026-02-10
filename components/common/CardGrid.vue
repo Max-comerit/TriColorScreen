@@ -52,7 +52,7 @@ const isMobile = ref(true)
 // ===== COMPUTED =====
 const gridStyle = computed(() => ({
   display: 'grid',
-  gridTemplateColumns: isMobile.value ? '1fr' : `repeat(auto-fill, minmax(${typeof props.minItemWidth === 'number' ? `${props.minItemWidth}px` : props.minItemWidth}, 1fr))`,
+  gridTemplateColumns: isMobile.value ? '1fr' : `repeat(auto-fit, minmax(${typeof props.minItemWidth === 'number' ? `${props.minItemWidth}px` : props.minItemWidth}, 1fr))`,
   gridAutoRows: props.sameItemHeight ? '1fr' : 'auto',
   width: typeof props.width === 'number' ? `${props.width}px` : props.width,
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
