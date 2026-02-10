@@ -1,5 +1,3 @@
-// pages/services/event-advertisement.vue
-
 <script setup lang="ts">
 // ===== IMPORTS =====
 import CardGrid from '~/components/common/CardGrid.vue'
@@ -99,7 +97,7 @@ const serviceCards = computed<CardItem[]>(() =>
         align="center"
         aria-label="Tricolorscreen får er att sticka ut på eventet!"
       >
-        <div class="items-center flex flex-col  gap-6">
+        <div class="items-center flex flex-col gap-6">
           <div class="w-full overflow-hidden rounded-card">
             <NuxtImg
               src="/images/services/event-advertisement/promo.jpg"
@@ -113,10 +111,10 @@ const serviceCards = computed<CardItem[]>(() =>
               class="h-full w-full object-cover"
             />
           </div>
-          <p class="font-semibold"> 20% Rabatt på er första event beställning! </p>
-              <NuxtLink to="/contact" class="inline-flex">
-                <TextButton>Kontakta oss</TextButton>
-              </NuxtLink>
+          <p class="font-semibold">20% Rabatt på er första event beställning!</p>
+          <NuxtLink to="/contact" class="inline-flex">
+            <TextButton>Kontakta oss</TextButton>
+          </NuxtLink>
         </div>
       </Section>
     </div>
