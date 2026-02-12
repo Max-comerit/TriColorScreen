@@ -50,7 +50,7 @@ const aspectRatio = computed(() => {
 })
 
 // ===== STATE =====
-const supportsAspectRatio = ref(false)
+const supportsAspectRatio = ref(true)
 
 // ===== METHODS =====
 const containerStyle = computed(() => {

@@ -35,6 +35,10 @@ useHead({
       property: 'og:type',
       content: 'website',
     },
+    {
+      property: 'og:image',
+      content: '/images/index/hero.jpg',
+    },
   ],
 })
 
@@ -57,7 +61,7 @@ const reviewCards = computed<CardItem[]>(() =>
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/index/hero.png"
+      src="/images/index/hero.jpg"
       title="Tricolor Screen"
       description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering"
       :width="1280"
