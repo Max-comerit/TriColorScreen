@@ -6,6 +6,8 @@ import AppHeader from '~/components/layout/AppHeader.vue'
 import AppFooter from '~/components/layout/AppFooter.vue'
 import BaseButton from '~/components/base/BaseButton.vue'
 import Section from '~/components/common/Section.vue'
+import { NuxtImg } from '#components'
+import errorImg from '~/assets/images/error.png'
 
 // ===== PROPS & EMITS =====
 interface Props {
@@ -92,10 +94,12 @@ function handleGoHome() {
         <!-- Error Card Content -->
         <div class="relative layout-container py-12 md:py-16 lg:py-20 w-full">
           <div class="max-w-2xl mx-auto p-4 sm:p-6 md:p-10 rounded-card border border-primary-100 bg-layout-body shadow-drop">
-            <img
-              src="/images/error.png"
+            <NuxtImg
+              :src="errorImg"
               alt="Illustration for felsida 404"
               class="w-full max-w-xl mx-auto mb-6 rounded-card object-cover"
+              format="webp"
+              sizes="100vw sm:70vw lg:50vw"
               loading="lazy"
               width="900"
               height="600"
