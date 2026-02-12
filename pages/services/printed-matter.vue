@@ -34,6 +34,10 @@ useHead({
       property: 'og:type',
       content: 'website',
     },
+    {
+      property: 'og:image',
+      content: '/images/services/printed-matter/hero.jpg',
+    },
   ],
 })
 
@@ -57,7 +61,7 @@ const serviceCards = computed<CardItem[]>(() =>
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/services/printed-matter/hero.png"
+      src="/images/services/printed-matter/hero.jpg"
       title="Designa produkter med eget tryck"
       :width="1280"
       :height="854"

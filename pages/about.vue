@@ -21,7 +21,7 @@ useHead({
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/about/hero.png"
+      src="/images/about/hero.jpg"
       title="Tricolor Screen"
       description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering"
       :width="1280"

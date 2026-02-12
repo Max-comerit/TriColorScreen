@@ -32,7 +32,7 @@ useHead({
     },
     {
       property: 'og:image',
-      content: '/images/services/decoration-foiling/hero.png',
+      content: '/images/services/decoration-foiling/hero.jpg',
     },
   ],
 })
@@ -63,7 +63,7 @@ const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((servic
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/services/decoration-foiling/hero.png"
+      src="/images/services/decoration-foiling/hero.jpg"
       title="Dekor & Foliering"
       description="Foliering är det smarta sättet att få fram budskap på ytor som annars är svårtillgängliga för marknadsföring, exempelvis på glas och karosser"
       :width="1280"
