@@ -4,8 +4,8 @@ import { computed } from 'vue'
 import type { NuxtError } from '#app'
 import AppHeader from '~/components/layout/AppHeader.vue'
 import AppFooter from '~/components/layout/AppFooter.vue'
-import BaseButton from '~/components/base/BaseButton.vue'
 import Section from '~/components/common/Section.vue'
+import TextButton from './components/common/TextButton.vue'
 
 // ===== PROPS & EMITS =====
 interface Props {
@@ -57,15 +57,6 @@ const description = computed(() =>
     ? 'Sidan du söker finns inte eller har flyttats.'
     : 'Ett oväntat fel inträffade. Försök igen eller gå tillbaka till startsidan.',
 )
-
-// ===== METHODS =====
-/**
- * Handle navigation back to home page
- * Clears the error boundary and redirects to home
- */
-function handleGoHome() {
-  clearError({ redirect: '/' })
-}
 </script>
 
 <template>
@@ -118,14 +109,14 @@ function handleGoHome() {
             <!-- Action Buttons -->
             <div class="mt-8 flex flex-wrap items-center gap-4">
               <!-- Back to Home Button -->
-              <BaseButton
-                variant="primary"
-                size="fit"
-                aria-label="Gå tillbaka till startsidan"
-                @click="handleGoHome"
-              >
-                Till Startsidan
-              </BaseButton>
+              <NuxtLink to="/" aria-label="Gå tillbaka till startsidan">
+                <TextButton
+                  variant="primary"
+                  size="fit"
+                >
+                  Till Startsidan
+                </TextButton>
+              </NuxtLink>
 
               <!-- Contact Link -->
               <NuxtLink
