@@ -134,24 +134,16 @@ onBeforeRouteLeave((to, _from) => {
         aria-label="Hitta oss på Tricolor Screen"
       >
         <figure class="flex flex-col items-center gap-2 mx-auto max-w-full">
-          <iframe 
-            src="https://www.openstreetmap.org/export/embed.html?bbox=18.11115235090256%2C59.3436875621138%2C18.1146714091301%2C59.344862330708644&layer=mapnik&marker=59.34427495149102%2C18.112911880016327"
-            frameborder="0" 
-            scrolling="no" 
-            marginheight="0" 
-            marginwidth="0"
-            class="w-full max-w-[350px] h-[227px] sm:max-w-[672px] sm:h-[436px] border border-neutral-900 rounded-card"
-          />
-          <figcaption class="text-base sm:text-lg lg:text-xl font-semibold text-neutral-700 text-center max-w-[600px]">
-            <a 
-              href="https://www.openstreetmap.org/?mlat=59.344274&mlon=18.112912&zoom=16" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="font-bold text-sm sm:text-base lg:text-lg text-neutral-700 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 rounded"
-            >
-              View Larger Map
-            </a>
-          </figcaption>
+          <div class="w-full max-w-2xl aspect-video border border-neutral-900 rounded-card overflow-hidden">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2034.3229615671016!2d18.110771677289637!3d59.344256609825635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465f82caa23991cb%3A0x93e6e807638dedc7!2s%C3%96regrundsgatan%2024%2C%20115%2059%20Stockholm!5e0!3m2!1ssv!2sse!4v1770815817256!5m2!1ssv!2sse"
+              style="border:0;" 
+              allowfullscreen="false" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade"
+              class="w-full h-full border border-neutral-900 rounded-card"
+            />
+          </div>
         </figure>
       </Section>
     </div>
