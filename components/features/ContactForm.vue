@@ -129,6 +129,7 @@ watch(isChanged, (newValue) => {
     method="POST"
     data-netlify="true"
     enctype="multipart/form-data"
+    netlify
     hidden
   >
     <input type="hidden" name="form-name" value="contact">

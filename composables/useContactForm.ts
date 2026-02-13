@@ -233,7 +233,7 @@ export function useContactForm() {
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
 
       // Submit to Netlify Forms
-      const response = await fetch('/', {
+      const response = await fetch('/?no-cache=1', {
         method: 'POST',
         headers: { Accept: 'application/json' },
         body: formDataToSubmit,
