@@ -124,7 +124,7 @@ onBeforeRouteLeave((to, _from) => {
             scrolling="no" 
             marginheight="0" 
             marginwidth="0"
-            class="w-full max-w-[672px] h-[436px] border border-neutral-900 rounded-card"
+            class="w-full max-w-[350px] h-[227px] sm:max-w-[672px] sm:h-[436px] border border-neutral-900 rounded-card"
           />
           <figcaption class="text-base sm:text-lg lg:text-xl font-semibold text-neutral-700 text-center max-w-[600px]">
             <a 
