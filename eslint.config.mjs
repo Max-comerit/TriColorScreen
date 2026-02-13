@@ -9,4 +9,11 @@ export default withNuxt({
     '@typescript-eslint/consistent-type-imports': 'error',
     '@typescript-eslint/no-explicit-any': 'warn',
   },
+},
+// Override: Allow textarea elements to have closing tags for Netlify Forms
+{
+  files: ['**/*.vue'],
+  rules: {
+    'vue/html-self-closing': 'off',
+  },
 })
