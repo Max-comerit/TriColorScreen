@@ -87,7 +87,7 @@ export function useContactForm() {
     customerType: undefined as unknown as 'person' | 'company',
     subject: '',
     message: '',
-    image: null,
+    image: null as File | null,
     gdprConsent: false,
   })
 
@@ -193,7 +193,7 @@ export function useContactForm() {
       customerType: undefined as unknown as 'person' | 'company',
       subject: '',
       message: '',
-      image: null,
+      image: null as File | null,
       gdprConsent: false,
     }
     initialFormData.value = JSON.parse(JSON.stringify(formData.value))
@@ -202,16 +202,7 @@ export function useContactForm() {
   }
 
   /**
-   * Generate CSRF token (placeholder - implement proper CSRF protection)
-   */
-  function generateCsrfToken(): string {
-    // TODO: Implement proper CSRF token generation
-    // This should be fetched from the server
-    return `csrf-${Date.now()}-${Math.random().toString(36).substring(7)}`
-  }
-
-  /**
-   * Submit form data
+   * Submit form data to Netlify Forms
    */
   async function submitForm(): Promise<boolean> {
     // Validate form before submission
@@ -223,14 +214,15 @@ export function useContactForm() {
       formState.value = 'submitting'
       clearErrors()
 
-      // Prepare form data for submission
+      // Prepare form data for Netlify submission
       const formDataToSubmit = new FormData()
+      formDataToSubmit.append('form-name', 'contact')
       formDataToSubmit.append('name', formData.value.name)
       formDataToSubmit.append('email', formData.value.email)
       if (formData.value.phone) {
         formDataToSubmit.append('phone', formData.value.phone)
       }
-      formDataToSubmit.append('customerType', formData.value.customerType)
+      formDataToSubmit.append('customer_type', formData.value.customerType)
       formDataToSubmit.append('subject', formData.value.subject)
       if (formData.value.message) {
         formDataToSubmit.append('message', formData.value.message)
@@ -238,20 +230,18 @@ export function useContactForm() {
       if (formData.value.image) {
         formDataToSubmit.append('image', formData.value.image)
       }
-      formDataToSubmit.append('gdprConsent', formData.value.gdprConsent.toString())
-      
-      // Add CSRF token
-      const csrfToken = generateCsrfToken()
-      formDataToSubmit.append('_csrf', csrfToken)
+      formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
 
-      // TODO: Replace with actual API endpoint
-      // const response = await $fetch('/api/contact', {
-      //   method: 'POST',
-      //   body: formDataToSubmit,
-      // })
+      // Submit to Netlify Forms
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formDataToSubmit,
+      })
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      if (!response.ok) {
+        throw new Error('Formuläret kunde inte skickas. Försök igen.')
+      }
 
       // Success
       formState.value = 'success'

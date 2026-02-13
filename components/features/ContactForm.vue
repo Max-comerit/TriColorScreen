@@ -123,13 +123,50 @@ watch(isChanged, (newValue) => {
 </script>
 
 <template>
+  <!-- ✅ Hidden static form for Netlify detection -->
+  <form
+    name="contact"
+    method="POST"
+    data-netlify="true"
+    enctype="multipart/form-data"
+    hidden
+  >
+    <input type="hidden" name="form-name" value="contact">
+    <input type="text" name="name">
+    <input type="email" name="email">
+    <input type="tel" name="phone">
+    <select name="customer_type">
+      <option>person</option>
+      <option>company</option>
+    </select>
+    <input type="text" name="subject">
+    <input type="file" name="image">
+    <textarea name="message"/>
+    <input type="checkbox" name="gdpr_consent">
+  </form>
+  <!-- ✅ Visible form -->
   <form 
+    name="contact"
+    method="POST"
+    action="/"
+    data-netlify="true"
+    data-netlify-honeypot="bot-field"
+    enctype="multipart/form-data"
     class="w-full max-w-2xl bg-primary-100 p-6 sm:p-8 rounded-card shadow-drop"
     aria-label="Kontaktformulär"
     @submit.prevent="handleSubmit"
   >
     <!-- Form Title -->
     <h3 class="sr-only">Kontaktformulär</h3>
+
+    <!-- Hidden fields for Netlify -->
+    <input type="hidden" name="form-name" value="contact">
+    <p class="sr-only">
+      <label>
+        Don't fill this out if you're human: 
+        <input name="bot-field" tabindex="-1" autocomplete="off">
+      </label>
+    </p>
 
     <div class="space-y-4 sm:space-y-5">
       <!-- Name Field -->
