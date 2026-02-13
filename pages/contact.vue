@@ -73,6 +73,22 @@ onBeforeRouteLeave((to, _from) => {
 
 <template>
   <div>
+    <!-- ✅ Hidden static form for Netlify form detection during build -->
+    <form name="contact" method="POST" data-netlify="true" enctype="multipart/form-data" netlify hidden>
+      <input type="hidden" name="form-name" value="contact">
+      <input type="text" name="name">
+      <input type="email" name="email">
+      <input type="tel" name="phone">
+      <select name="customer_type">
+        <option>person</option>
+        <option>company</option>
+      </select>
+      <input type="text" name="subject">
+      <input type="file" name="image">
+      <textarea name="message"></textarea>
+      <input type="checkbox" name="gdpr_consent">
+    </form>
+
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/contact/hero.jpg"
