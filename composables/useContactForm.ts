@@ -233,9 +233,9 @@ export function useContactForm() {
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
 
       // Submit to Netlify Forms
-      const response = await fetch('/?no-cache=1', {
+      // Note: Don't set Content-Type header - browser will set it correctly for multipart/form-data with boundary
+      const response = await fetch('/', {
         method: 'POST',
-        headers: { Accept: 'application/json' },
         body: formDataToSubmit,
       })
 
@@ -246,7 +246,7 @@ export function useContactForm() {
       // Success
       formState.value = 'success'
       initialFormData.value = JSON.parse(JSON.stringify(formData.value))
-      
+
       return true
     }
     catch (error) {
