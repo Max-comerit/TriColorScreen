@@ -57,6 +57,13 @@ const description = computed(() =>
     ? 'Sidan du söker finns inte eller har flyttats.'
     : 'Ett oväntat fel inträffade. Försök igen eller gå tillbaka till startsidan.',
 )
+
+/**
+ * Dynamic image source based on error type
+ * - 404: error.webp/png
+ * - Other: oops.webp/png
+ */
+const imageSrc = computed(() => isNotFound.value ? 'error' : 'oops')
 </script>
 
 <template>
@@ -83,18 +90,22 @@ const description = computed(() =>
         <!-- Error Card Content -->
         <div class="relative layout-container py-12 md:py-16 lg:py-20 w-full">
           <div class="max-w-2xl mx-auto p-4 sm:p-6 md:p-10 rounded-card border border-primary-100 bg-layout-body shadow-drop">
-          <picture>
-            <source srcset="/images/error.webp" type="image/webp" >
-            <img
-              src="/images/error.png"
-              alt="Illustration för felsida 404"
-              width="900"
-              height="600"
-              class="w-full max-w-xl mx-auto mb-6 rounded-card object-cover"
-              decoding="async"
-            >
-          </picture>
+            <picture>
+              <source :srcset="`/images/${imageSrc}.webp`" type="image/webp">
+              <img
+                :src="`/images/${imageSrc}.png`"
+                :alt="`Illustration för felsida ${statusCode}`"
+                width="900"
+                height="600"
+                class="w-full max-w-xl mx-auto mb-6 rounded-card object-cover"
+                decoding="async"
+              >
+            </picture>
 
+            <!-- Error Code Badge -->
+            <p class="text-sm font-semibold text-primary-700 text-center mb-2">
+              Fel {{ statusCode }}
+            </p>
 
             <!-- Error Title -->
             <h1 class="font-display text-layout-text-on-light">
