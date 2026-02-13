@@ -335,6 +335,7 @@ watch(isChanged, (newValue) => {
           :aria-invalid="!!getFieldError('image')"
           :aria-describedby="getFieldError('image') ? 'image-error' : undefined"
           class="sr-only"
+          tabindex="-1"
           :disabled="isSubmitting"
           @change="handleFileChange"
         >
