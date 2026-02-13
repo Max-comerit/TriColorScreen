@@ -234,7 +234,7 @@ export function useContactForm() {
 
       // Submit to Netlify Forms
       // Note: Don't set Content-Type header - browser will set it correctly for multipart/form-data with boundary
-      const response = await fetch('/', {
+      const response = await fetch('/contact/', {
         method: 'POST',
         body: formDataToSubmit,
       })

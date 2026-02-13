@@ -4,10 +4,13 @@
   publish = "dist/"
 
 # Redirect all non-file requests to index.html for SPA routing
+# Conditions ensure form submissions and existing files are not redirected
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  conditions = {Role = [""], Not = "POST"}
+  force = false
 
 # Cache settings for static assets
 [[headers]]
