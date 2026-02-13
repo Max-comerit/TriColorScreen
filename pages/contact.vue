@@ -131,7 +131,7 @@ onBeforeRouteLeave((to, _from) => {
               href="https://www.openstreetmap.org/?mlat=59.344274&mlon=18.112912&zoom=16" 
               target="_blank" 
               rel="noopener noreferrer"
-              class="text-primary-600 hover:text-primary-700 underline"
+              class="font-bold text-sm sm:text-base lg:text-lg text-neutral-700 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 rounded"
             >
               View Larger Map
             </a>
