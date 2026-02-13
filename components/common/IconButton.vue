@@ -31,6 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   backgroundColor: undefined,
   backgroundColorHover: undefined,
   color: undefined,
+  type: 'button',
 })
 
 /** Emitted when button is clicked */
@@ -61,14 +62,15 @@ const iconSize = computed(() => {
 
 <template>
   <BaseButton
-    :variant="variant"
-    :size="size"
-    :disabled="disabled"
-    :busy="busy"
-    :background-color="backgroundColor"
-    :background-color-hover="backgroundColorHover"
-    :color="color"
-    :aria-label="ariaLabel"
+    :type="props.type"
+    :variant="props.variant"
+    :size="props.size"
+    :disabled="props.disabled"
+    :busy="props.busy"
+    :background-color="props.backgroundColor"
+    :background-color-hover="props.backgroundColorHover"
+    :color="props.color"
+    :aria-label="props.ariaLabel"
     class="icon-button"
     @click="handleClick"
   >
@@ -76,9 +78,9 @@ const iconSize = computed(() => {
     <slot name="icon">
       <!-- Fallback to img element if iconSrc prop is provided -->
       <img
-        v-if="iconSrc"
-        :src="iconSrc"
-        :alt="iconAlt"
+        v-if="props.iconSrc"
+        :src="props.iconSrc"
+        :alt="props.iconAlt"
         :class="iconSize"
         class="icon-image"
         width="24"

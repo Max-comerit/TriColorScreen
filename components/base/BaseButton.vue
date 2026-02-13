@@ -28,6 +28,8 @@ export interface Props {
   backgroundColorHover?: string
   /** Optional custom text color (hex, rgb, var, Tailwind CSS classes, etc.) */
   color?: string
+  /** Button type attribute - default: 'button' */
+  type?: 'button' | 'submit' | 'reset'
 }
 
 export type { Variant, Size }
@@ -40,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
   backgroundColor: undefined,
   backgroundColorHover: undefined,
   color: undefined,
+  type: 'button',
 })
 
 /** Emitted when button is clicked */
@@ -149,7 +152,7 @@ function onClick(event: MouseEvent) {
   <!-- Main button element with conditional classes and styles -->
   <button
     v-bind="$attrs"
-    type="button"
+    :type="props.type"
     :disabled="isDisabled"
     :class="buttonClasses"
     :style="buttonStyle"

@@ -19,7 +19,7 @@ interface Props extends BaseButtonProps {
   label?: string
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   label: 'TextButton',
   variant: 'primary',
   size: 'responsive',
@@ -28,6 +28,7 @@ withDefaults(defineProps<Props>(), {
   backgroundColor: undefined,
   backgroundColorHover: undefined,
   color: undefined,
+  type: 'button',
 })
 
 /** Emitted when button is clicked */
@@ -43,18 +44,19 @@ const handleClick = (event: MouseEvent): void => {
 <template>
   <BaseButton
     v-bind="$attrs"
-    :variant="variant"
-    :size="size"
-    :disabled="disabled"
-    :busy="busy"
-    :background-color="backgroundColor"
-    :background-color-hover="backgroundColorHover"
-    :color="color"
+    :type="props.type"
+    :variant="props.variant"
+    :size="props.size"
+    :disabled="props.disabled"
+    :busy="props.busy"
+    :background-color="props.backgroundColor"
+    :background-color-hover="props.backgroundColorHover"
+    :color="props.color"
     @click="handleClick"
   >
     <!-- Use label slot if provided, otherwise use label prop -->
-    <span :class="{ 'px-3': size === 'fit' }">
-      <slot>{{ label }}</slot>
+    <span :class="{ 'px-3': props.size === 'fit' }">
+      <slot>{{ props.label }}</slot>
     </span>
   </BaseButton>
 </template>
