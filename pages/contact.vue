@@ -85,7 +85,7 @@ onMounted(() => {
       title="Kontakta Oss På TCS"
       :width="1280"
       :height="854"
-      alt="Kontakta Oss På Tricolor Screen"
+      alt="Kontakta oss på Tricolor Screen"
       :center="false"
     >
       <template #description>
@@ -101,19 +101,24 @@ onMounted(() => {
     <div class="layout-container">
       <Section 
         id="contact"
-        title="Kontakta Oss" 
+        title="Kontakta oss" 
         align="center"
-        aria-label="Kontakta Oss och Skicka Förfrågan"
+        aria-label="Kontakta oss och skicka förfrågan"
       >
-        <ContactPanel />
+        <div class="flex flex-col sm:flex-row justify-center sm:justify-around items-center sm:items-stretch gap-8">
+          <div class="max-w-full sm:max-w-[50%]">
+            <h3 class="text-center sm:text-left">Vad behöver ni hjälp med?</h3>
+            <p class="text-center sm:text-left">Bifoga en fil i  meddelandet med det motiv ni vill ha i tryck och ange i meddelandet  vilken tjänst ni vill använda er av - Logo / Text / Design / Bild / Bildekor etc i Bifoga fil så kontaktar vi er per omgående</p>
+          </div>
+          <ContactPanel />
+        </div>
       </Section>
       <Section 
         id="testimonials" 
-        title="Omdömen" 
+        title="Hitta oss" 
         align="center"
-        aria-label="Kundrecensioner och omdömen"
+        aria-label="Hitta oss på Tricolor Screen"
       >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
       </Section>
     </div>
 
