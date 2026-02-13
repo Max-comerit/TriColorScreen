@@ -29,16 +29,16 @@ const emit = defineEmits<{
     inner-border="sunken"
     @update:model-value="emit('update:modelValue', $event)"
   >
-    <div class="space-y-4 text-sm text-neutral-900">
+    <div class="space-y-4 text-base text-neutral-900">
       <section>
-        <h4 class="font-semibold text-base my-2">Personuppgiftsansvarig</h4>
+        <h3 class="font-semibold text-lg my-2">Personuppgiftsansvarig</h3>
         <p>
           Tricolor Screen är personuppgiftsansvarig för behandlingen av dina personuppgifter.
         </p>
       </section>
 
       <section>
-        <h4 class="font-semibold text-base mb-2">Vilka uppgifter samlar vi in?</h4>
+        <h3 class="font-semibold text-lg mb-2">Vilka uppgifter samlar vi in?</h3>
         <p class="mb-2">
           När du kontaktar oss via formuläret samlar vi in följande uppgifter:
         </p>
@@ -53,7 +53,7 @@ const emit = defineEmits<{
       </section>
 
       <section>
-        <h4 class="font-semibold text-base mb-2">Ändamål och rättslig grund</h4>
+        <h3 class="font-semibold text-lg mb-2">Ändamål och rättslig grund</h3>
         <p class="mb-2">
           Vi behandlar dina personuppgifter för att kunna svara på din förfrågan och tillhandahålla våra tjänster. 
           Den rättsliga grunden för behandlingen är:
@@ -66,7 +66,7 @@ const emit = defineEmits<{
       </section>
 
       <section>
-        <h4 class="font-semibold text-base mb-2">Hur länge sparar vi dina uppgifter?</h4>
+        <h3 class="font-semibold text-lg mb-2">Hur länge sparar vi dina uppgifter?</h3>
         <p>
           Vi sparar dina personuppgifter så länge det är nödvändigt för att fullgöra de ändamål som uppgifterna samlades in för. 
           Uppgifter kan sparas längre om det krävs enligt lag eller för att bevaka våra rättsliga intressen.
@@ -74,7 +74,7 @@ const emit = defineEmits<{
       </section>
 
       <section>
-        <h4 class="font-semibold text-base mb-2">Dina rättigheter</h4>
+        <h3 class="font-semibold text-lg mb-2">Dina rättigheter</h3>
         <p class="mb-2">
           Enligt dataskyddsförordningen (GDPR) har du följande rättigheter:
         </p>
@@ -90,7 +90,7 @@ const emit = defineEmits<{
       </section>
 
       <section>
-        <h4 class="font-semibold text-base mb-2">Delning av uppgifter</h4>
+        <h3 class="font-semibold text-lg mb-2">Delning av uppgifter</h3>
         <p>
           Vi delar inte dina personuppgifter med tredje part utan ditt samtycke, förutom när det krävs enligt lag 
           eller för att fullgöra våra åtaganden gentemot dig.
@@ -98,7 +98,7 @@ const emit = defineEmits<{
       </section>
 
       <section>
-        <h4 class="font-semibold text-base mb-2">Säkerhet</h4>
+        <h3 class="font-semibold text-lg mb-2">Säkerhet</h3>
         <p>
           Vi vidtar tekniska och organisatoriska säkerhetsåtgärder för att skydda dina personuppgifter mot 
           obehörig åtkomst, förlust, förstöring eller annan otillbörlig behandling.
@@ -106,7 +106,7 @@ const emit = defineEmits<{
       </section>
 
       <section>
-        <h4 class="font-semibold text-base mb-2">Kontakta oss</h4>
+        <h3 class="font-semibold text-lg mb-2">Kontakta oss</h3>
         <p>
           Om du har frågor om hur vi behandlar dina personuppgifter eller vill utöva dina rättigheter, 
           kontakta oss på den e-postadress eller det telefonnummer som finns på vår webbplats.
@@ -114,7 +114,7 @@ const emit = defineEmits<{
       </section>
 
       <section>
-        <h4 class="font-semibold text-base mb-2">Klagomål</h4>
+        <h3 class="font-semibold text-lg mb-2">Klagomål</h3>
         <p>
           Om du anser att vi behandlar dina personuppgifter på ett felaktigt sätt har du rätt att lämna klagomål 
           till Integritetsskyddsmyndigheten (IMY).
