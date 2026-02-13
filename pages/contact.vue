@@ -81,20 +81,28 @@ onMounted(() => {
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/contact/hero.jpg"
-      title="Tricolor Screen"
-      description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering"
+      title="Kontakta Oss På TCS"
       :width="1280"
       :height="854"
-      alt="Professional screen printing equipment and process at TriColor Screen workshop"
-    />
-
+      alt="Kontakta Oss På Tricolor Screen"
+      :center="false"
+    >
+      <template #description>
+        <p class="mb-0 font-body font-medium text-base sm:text-lg lg:text-xl text-white/90">
+          Fyll i formuläret nedan så återkommer vi så snart som möjligt.
+        </p>
+        <p class="mb-0 font-body font-medium text-base sm:text-lg lg:text-xl text-white/90">
+          Vi ser fram emot att höra från dig!
+        </p>
+      </template>
+    </HeroImage>
     <!-- Sections -->
     <div class="layout-container">
       <Section 
-        id="services" 
-        title="Våra tjänster" 
+        id="contact"
+        title="Kontakta Oss" 
         align="center"
-        aria-label="Våra tjänster och lösningar"
+        aria-label="Kontakta Oss och Skicka Förfrågan"
       >
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
       </Section>
