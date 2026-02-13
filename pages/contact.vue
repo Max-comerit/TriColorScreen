@@ -4,6 +4,7 @@
 // ===== IMPORTS =====
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
+import ContactPanel from '~/components/features/ContactPanel.vue'
 import ConfirmDialog from '~/components/layout/ConfirmDialog.vue'
 
 // ===== STATE =====
@@ -104,7 +105,7 @@ onMounted(() => {
         align="center"
         aria-label="Kontakta Oss och Skicka Förfrågan"
       >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
+        <ContactPanel />
       </Section>
       <Section 
         id="testimonials" 
