@@ -103,7 +103,7 @@ const imageSrc = computed(() => isNotFound.value ? 'error' : 'oops')
             </picture>
 
             <!-- Error Code Badge -->
-            <p class="text-sm font-semibold text-primary-700 text-center mb-2">
+            <p class="font-semibold text-primary-700 text-center mb-2">
               Felkod: {{ statusCode }}
             </p>
 
