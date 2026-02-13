@@ -232,9 +232,9 @@ export function useContactForm() {
       }
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
 
-      // Submit to Netlify Forms
+      // Submit to Netlify Forms at root (Netlify processes all forms at /)
       // Note: Don't set Content-Type header - browser will set it correctly for multipart/form-data with boundary
-      const response = await fetch('/contact/', {
+      const response = await fetch('/', {
         method: 'POST',
         body: formDataToSubmit,
       })

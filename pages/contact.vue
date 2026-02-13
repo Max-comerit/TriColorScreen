@@ -74,14 +74,14 @@ onBeforeRouteLeave((to, _from) => {
 <template>
   <div>
     <!-- ✅ Hidden static form for Netlify form detection during build -->
-    <form name="contact" method="POST" data-netlify="true" enctype="multipart/form-data" netlify hidden>
+    <form name="contact" method="POST" action="/" data-netlify="true" enctype="multipart/form-data" hidden>
       <input type="hidden" name="form-name" value="contact">
       <input type="text" name="name">
       <input type="email" name="email">
       <input type="tel" name="phone">
       <select name="customer_type">
-        <option>person</option>
-        <option>company</option>
+        <option value="person">person</option>
+        <option value="company">company</option>
       </select>
       <input type="text" name="subject">
       <input type="file" name="image">
