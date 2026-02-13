@@ -1,7 +1,7 @@
 # Netlify Build Configuration
 [build]
-  command = "npm run build"
-  publish = ".output/public"
+  command = "npm run generate"
+  publish = "dist/"
 
 # Redirect all non-file requests to index.html for SPA routing
 [[redirects]]
