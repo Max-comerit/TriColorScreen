@@ -136,7 +136,7 @@ watch(isChanged, (newValue) => {
       <div>
         <label 
           for="contact-name" 
-          class="block text-sm font-medium text-neutral-900 mb-1.5"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Namn <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
@@ -173,7 +173,7 @@ watch(isChanged, (newValue) => {
       <div>
         <label 
           for="contact-email" 
-          class="block text-sm font-medium text-neutral-900 mb-1.5"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           E-post <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
@@ -210,9 +210,9 @@ watch(isChanged, (newValue) => {
       <div>
         <label 
           for="contact-phone" 
-          class="block text-sm font-medium text-neutral-900 mb-1.5"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Telefon <span class="text-neutral-500 text-xs">(valfritt)</span>
+          Telefon <span class="text-neutral-500 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <input
           id="contact-phone"
@@ -247,7 +247,7 @@ watch(isChanged, (newValue) => {
       <div>
         <label 
           for="contact-customer-type" 
-          class="block text-sm font-medium text-neutral-900 mb-1.5"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Är ni? <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
@@ -286,7 +286,7 @@ watch(isChanged, (newValue) => {
       <div>
         <label 
           for="contact-subject" 
-          class="block text-sm font-medium text-neutral-900 mb-1.5"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Ämne <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
@@ -322,9 +322,9 @@ watch(isChanged, (newValue) => {
       <div>
         <label 
           for="contact-image" 
-          class="block text-sm font-medium text-neutral-900 mb-1.5"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ladda upp bild <span class="text-neutral-500 text-xs">(valfritt, max 5MB)</span>
+          Ladda upp bild <span class="text-neutral-500 text-xs sm:text-sm">(valfritt, max 5MB)</span>
         </label>
         <input
           id="contact-image"
@@ -366,9 +366,9 @@ watch(isChanged, (newValue) => {
       <div>
         <label 
           for="contact-message" 
-          class="block text-sm font-medium text-neutral-900 mb-1.5"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ditt meddelande <span class="text-neutral-500 text-xs">(valfritt)</span>
+          Ditt meddelande <span class="text-neutral-500 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <textarea
           id="contact-message"
@@ -415,7 +415,7 @@ watch(isChanged, (newValue) => {
           >
           <label 
             for="contact-gdpr" 
-            class="text-sm text-neutral-900 cursor-pointer"
+            class="text-sm sm:text-base text-neutral-900 cursor-pointer"
           >
             Jag godkänner behandling av mina personuppgifter enligt 
             <button
@@ -470,7 +470,7 @@ watch(isChanged, (newValue) => {
           size="fit"
           :disabled="isSubmitting"
           :loading="isSubmitting"
-          aria-label="Skicka kontaktformulär"
+          :aria-label="isSubmitting ? 'Skickar kontaktformulär' : 'Skicka kontaktformulär'"
         >
           {{ isSubmitting ? 'Skickar...' : 'Skicka' }}
         </TextButton>
