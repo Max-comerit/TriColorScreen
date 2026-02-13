@@ -5,6 +5,7 @@
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import ContactPanel from '~/components/features/ContactPanel.vue'
+import ContactForm from '~/components/features/ContactForm.vue'
 import ConfirmDialog from '~/components/layout/ConfirmDialog.vue'
 
 // ===== STATE =====
@@ -30,28 +31,28 @@ useHead({
  * Handle confirm action when leaving page with form changes
  */
 function handleConfirm(): void {
-  hasFormChanges.value = false // Reset before navigating to allow the guard to pass
+  const routeToNavigate = nextRoute
+  resetFormChanges() // Reset before navigating to allow the guard to pass
   showConfirmDialog.value = false
-  if (nextRoute) {
-    router.push(nextRoute)
-    nextRoute = null
+  if (routeToNavigate) {
+    router.push(routeToNavigate)
   }
 }
 
 /**
  * Mark form as having changes
  */
-function markFormAsChanged(): void {
-  hasFormChanges.value = true
+function markFormAsChanged(newValue: boolean): void {
+  hasFormChanges.value = newValue
 }
 
 /**
  * Reset form changes state
  */
-// function resetFormChanges(): void {
-//   hasFormChanges.value = false
-//   nextRoute = null
-// }
+function resetFormChanges(): void {
+  hasFormChanges.value = false
+  nextRoute = null
+}
 
 // ===== LIFECYCLE HOOKS =====
 /**
@@ -67,13 +68,6 @@ onBeforeRouteLeave((to, _from) => {
     showConfirmDialog.value = true
     return false
   }
-})
-
-/**
- * Initialize form state for testing
- */
-onMounted(() => {
-  markFormAsChanged() // Mark form as changed for testing purposes
 })
 </script>
 
@@ -105,13 +99,17 @@ onMounted(() => {
         align="center"
         aria-label="Kontakta oss och skicka förfrågan"
       >
-        <div class="flex flex-col sm:flex-row justify-center sm:justify-around items-center sm:items-stretch gap-8">
-          <div class="max-w-full sm:max-w-[50%]">
-            <h3 class="text-center sm:text-left">Vad behöver ni hjälp med?</h3>
-            <p class="text-center sm:text-left">Bifoga en fil i  meddelandet med det motiv ni vill ha i tryck och ange i meddelandet  vilken tjänst ni vill använda er av - Logo / Text / Design / Bild / Bildekor etc i Bifoga fil så kontaktar vi er per omgående</p>
+        <div class="flex flex-col justify-center items-center gap-12">
+          <div class="flex flex-col lg:flex-row justify-center lg:justify-around items-center lg:mb-8 lg:items-stretch gap-8">
+            <div class="max-w-full sm:max-w-[50%]">
+              <h3 class="text-center sm:text-left">Vad behöver ni hjälp med?</h3>
+              <p class="text-center sm:text-left">Bifoga en fil i  meddelandet med det motiv ni vill ha i tryck och ange i meddelandet  vilken tjänst ni vill använda er av - Logo / Text / Design / Bild / Bildekor etc i Bifoga fil så kontaktar vi er per omgående</p>
+            </div>
+            <ContactPanel />
           </div>
-          <ContactPanel />
+          <ContactForm @changed="markFormAsChanged" />
         </div>
+
       </Section>
       <Section 
         id="testimonials" 
@@ -119,6 +117,7 @@ onMounted(() => {
         align="center"
         aria-label="Hitta oss på Tricolor Screen"
       >
+      <p class="text-center">Add map here</p>
       </Section>
     </div>
 
