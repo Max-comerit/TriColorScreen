@@ -404,7 +404,7 @@ watch(isChanged, (newValue) => {
           :disabled="isSubmitting"
           @blur="handleBlur('message')"
           @input="handleInput('message')"
-        ></textarea>
+        />
         <p
           v-if="getFieldError('message')"
           id="message-error"

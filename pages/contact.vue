@@ -85,7 +85,7 @@ onBeforeRouteLeave((to, _from) => {
       </select>
       <input type="text" name="subject">
       <input type="file" name="image">
-      <textarea name="message"></textarea>
+      <textarea name="message"/>
       <input type="checkbox" name="gdpr_consent">
     </form>
 
