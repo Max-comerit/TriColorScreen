@@ -118,8 +118,8 @@ onBeforeRouteLeave((to, _from) => {
         <div class="flex flex-col justify-center items-center gap-12">
           <div class="flex flex-col lg:flex-row justify-center lg:justify-around items-center lg:mb-8 lg:items-stretch gap-8">
             <div class="max-w-full sm:max-w-[50%]">
-              <h3 class="text-center sm:text-left">Vad behöver ni hjälp med?</h3>
-              <p class="text-center sm:text-left">Bifoga en fil i  meddelandet med det motiv ni vill ha i tryck och ange i meddelandet  vilken tjänst ni vill använda er av - Logo / Text / Design / Bild / Bildekor etc i Bifoga fil så kontaktar vi er per omgående</p>
+              <h3 class="text-center lg:text-left">Vad behöver ni hjälp med?</h3>
+              <p class="text-center lg:text-left">Bifoga en fil i  meddelandet med det motiv ni vill ha i tryck och ange i meddelandet  vilken tjänst ni vill använda er av - Logo / Text / Design / Bild / Bildekor etc i Bifoga fil så kontaktar vi er per omgående</p>
             </div>
             <ContactPanel />
           </div>
