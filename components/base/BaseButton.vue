@@ -16,8 +16,8 @@ export interface Props {
   size?: Size
   /** Disable button interaction - default: false */
   disabled?: boolean
-  /** Show loading state with spinner - default: false */
-  loading?: boolean
+  /** Show busy state with spinner (loading or sending) - default: false */
+  busy?: boolean
   /** Optional custom background color (hex, rgb, var, Tailwind CSS classes, etc.) */
   backgroundColor?: string
   /** Optional custom background color on hover state (hex, rgb, var, Tailwind CSS classes, etc.) */
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: 'primary',
   size: 'responsive',
   disabled: false,
-  loading: false,
+  busy: false,
   backgroundColor: undefined,
   backgroundColorHover: undefined,
   color: undefined,
@@ -46,8 +46,8 @@ const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
 }>()
 
-/** Disable button when either disabled prop is true or loading is true */
-const isDisabled = computed(() => props.disabled || props.loading)
+/** Disable button when either disabled prop is true or busy is true */
+const isDisabled = computed(() => props.disabled || props.busy)
 
 /** Base button classes shared across all variants */
 const baseClasses =
@@ -137,7 +137,7 @@ const buttonStyle = computed(() => {
   return style
 })
 
-/** Handle click event - prevents click when disabled or loading */
+/** Handle click event - prevents click when disabled or busy */
 function onClick(event: MouseEvent) {
   if (isDisabled.value) return
   emit('click', event)
@@ -152,13 +152,13 @@ function onClick(event: MouseEvent) {
     :disabled="isDisabled"
     :class="buttonClasses"
     :style="buttonStyle"
-    :aria-busy="props.loading"
+    :aria-busy="props.busy"
     @click="onClick"
   >
-    <!-- Loading state: Show spinner and loading indicator -->
-    <span v-if="props.loading" class="flex items-center gap-2">
+    <!-- Busy state: Show spinner and content -->
+    <span v-if="props.busy" class="flex items-center gap-2">
       <LoadingSpinner />
-      <span class="sr-only">Loading</span>
+      <slot />
     </span>
 
     <!-- Default state: Render slot content -->

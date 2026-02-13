@@ -79,10 +79,10 @@ export const disabledExample = `
 `
 
 /**
- * Example 8: Loading state
+ * Example 8: Busy state
  */
-export const loadingExample = `
-<TextButton label="Save" :loading="isLoading" />
+export const busyExample = `
+<TextButton label="Save" :busy="isLoading" />
 `
 
 /**
@@ -184,9 +184,9 @@ export const buttonGroupExample = `
 `
 
 /**
- * Example 16: Conditional loading state
+ * Example 16: Conditional busy state
  */
-export const conditionalLoadingExample = `
+export const conditionalBusyExample = `
 <script setup lang="ts">
 const isSubmitting = ref(false)
 
@@ -203,7 +203,7 @@ const handleSubmit = async () => {
 <template>
   <TextButton 
     label="Submit"
-    :loading="isSubmitting"
+    :busy="isSubmitting"
     @click="handleSubmit"
   />
 </template>
@@ -271,7 +271,7 @@ const handleReset = () => {
         label="Submit"
         variant="primary"
         :disabled="!isValid"
-        :loading="isSubmitting"
+        :busy="isSubmitting"
         type="submit"
       />
     </div>

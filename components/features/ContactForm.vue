@@ -469,7 +469,7 @@ watch(isChanged, (newValue) => {
           variant="primary"
           size="fit"
           :disabled="isSubmitting"
-          :loading="isSubmitting"
+          :busy="isSubmitting"
           :aria-label="isSubmitting ? 'Skickar kontaktformulär' : 'Skicka kontaktformulär'"
         >
           {{ isSubmitting ? 'Skickar...' : 'Skicka' }}

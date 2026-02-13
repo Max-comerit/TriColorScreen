@@ -169,7 +169,7 @@ const isSending = ref(false)
     icon-src="/assets/images/footer/email-icon.svg"
     icon-alt="Email"
     aria-label="Send email"
-    :loading="isSending"
+    :busy="isSending"
   />
 </template>
 `
@@ -540,7 +540,7 @@ const sendEmail = async () => {
     icon-src="/assets/images/footer/email-icon.svg"
     icon-alt="Email"
     aria-label="Send contact email"
-    :loading="isSending"
+    :busy="isSending"
     @click="sendEmail"
   />
 </template>

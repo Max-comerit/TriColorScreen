@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: 'primary',
   size: 'responsive',
   disabled: false,
-  loading: false,
+  busy: false,
   backgroundColor: undefined,
   backgroundColorHover: undefined,
   color: undefined,
@@ -74,7 +74,7 @@ const iconSize = computed(() => {
     :variant="variant"
     :size="size"
     :disabled="disabled"
-    :loading="loading"
+    :busy="busy"
     :background-color="backgroundColor"
     :background-color-hover="backgroundColorHover"
     :color="color"
