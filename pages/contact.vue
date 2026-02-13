@@ -117,7 +117,26 @@ onBeforeRouteLeave((to, _from) => {
         align="center"
         aria-label="Hitta oss på Tricolor Screen"
       >
-      <p class="text-center">Add map here</p>
+        <figure class="flex flex-col items-center gap-2 mx-auto max-w-full">
+          <iframe 
+            src="https://www.openstreetmap.org/export/embed.html?bbox=18.11115235090256%2C59.3436875621138%2C18.1146714091301%2C59.344862330708644&layer=mapnik&marker=59.34427495149102%2C18.112911880016327"
+            frameborder="0" 
+            scrolling="no" 
+            marginheight="0" 
+            marginwidth="0"
+            class="w-full max-w-[672px] h-[436px] border border-neutral-900 rounded-card"
+          />
+          <figcaption class="text-base sm:text-lg lg:text-xl font-semibold text-neutral-700 text-center max-w-[600px]">
+            <a 
+              href="https://www.openstreetmap.org/?mlat=59.344274&mlon=18.112912&zoom=16" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="text-primary-600 hover:text-primary-700 underline"
+            >
+              View Larger Map
+            </a>
+          </figcaption>
+        </figure>
       </Section>
     </div>
 
