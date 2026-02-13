@@ -66,25 +66,27 @@ function handleKeyDown(e: KeyboardEvent): void {
   const modalElement = document.querySelector('dialog[open]')
   if (e.key === 'Tab' && modalElement) {
     const focusableElements = modalElement.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])'
     )
     const focusableArray = Array.from(focusableElements) as HTMLElement[]
 
     if (focusableArray.length === 0) return
 
-    const activeElement = document.activeElement as HTMLElement
-    const currentIndex = focusableArray.indexOf(activeElement)
+    const firstElement = focusableArray[0]
+    const lastElement = focusableArray[focusableArray.length - 1]
 
     if (e.shiftKey) {
-      // Shift + Tab: move to previous element
-      const previousIndex = currentIndex <= 0 ? focusableArray.length - 1 : currentIndex - 1
-      focusableArray[previousIndex].focus()
-      e.preventDefault()
+      // Shift + Tab: if on first element, go to last
+      if (document.activeElement === firstElement) {
+        lastElement.focus()
+        e.preventDefault()
+      }
     } else {
-      // Tab: move to next element
-      const nextIndex = currentIndex >= focusableArray.length - 1 ? 0 : currentIndex + 1
-      focusableArray[nextIndex].focus()
-      e.preventDefault()
+      // Tab: if on last element, go to first
+      if (document.activeElement === lastElement) {
+        firstElement.focus()
+        e.preventDefault()
+      }
     }
   }
 }

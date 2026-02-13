@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { computed, useAttrs } from 'vue'
+import { computed } from 'vue'
 import LoadingSpinner from '../common/LoadingSpinner.vue'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 /** Available button style variants */
 type Variant = 'primary' | 'secondary' | 'outline' | 'text'
@@ -37,9 +41,6 @@ const props = withDefaults(defineProps<Props>(), {
   backgroundColorHover: undefined,
   color: undefined,
 })
-
-/** Passthrough attributes (aria-label, aria-describedby, etc.) */
-const attrs = useAttrs()
 
 /** Emitted when button is clicked */
 const emit = defineEmits<{
@@ -147,8 +148,8 @@ function onClick(event: MouseEvent) {
 <template>
   <!-- Main button element with conditional classes and styles -->
   <button
+    v-bind="$attrs"
     type="button"
-    v-bind="attrs"
     :disabled="isDisabled"
     :class="buttonClasses"
     :style="buttonStyle"

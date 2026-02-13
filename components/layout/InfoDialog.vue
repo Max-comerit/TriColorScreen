@@ -78,7 +78,6 @@ function handleOk(): void {
         :background-color-hover="'hover:bg-primary-700'"
         :color="'text-white'"
         size="fit"
-        role="button"
         :aria-label="props.okLabel"
         @click="handleOk"
       />

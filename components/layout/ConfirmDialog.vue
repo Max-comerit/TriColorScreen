@@ -84,7 +84,6 @@ function handleConfirm(): void {
         :background-color-hover="'hover:bg-neutral-200'"
         :color ="'text-neutral-900'"
         size="fit"
-        role="button"
         :aria-label="props.cancelLabel"
         @click="handleCancel"
       />
@@ -94,7 +93,6 @@ function handleConfirm(): void {
         :background-color-hover="'hover:bg-primary-700'"
         :color="'text-white'"
         size="fit"
-        role="button"
         :aria-label="props.confirmLabel"
         @click="handleConfirm"
       />

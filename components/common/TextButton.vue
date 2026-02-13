@@ -9,6 +9,10 @@
 // ===== IMPORTS =====
 import BaseButton, { type Props as BaseButtonProps } from '../base/BaseButton.vue'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 /** Props for TextButton component */
 interface Props extends BaseButtonProps {
   /** Button label text - default: 'TextButton' */
@@ -38,6 +42,7 @@ const handleClick = (event: MouseEvent): void => {
 
 <template>
   <BaseButton
+    v-bind="$attrs"
     :variant="variant"
     :size="size"
     :disabled="disabled"
