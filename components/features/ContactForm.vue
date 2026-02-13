@@ -138,7 +138,7 @@ watch(isChanged, (newValue) => {
           for="contact-name" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Namn <span class="text-error" aria-label="obligatoriskt fält">*</span>
+          Ditt namn <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
         <input
           id="contact-name"
@@ -175,7 +175,7 @@ watch(isChanged, (newValue) => {
           for="contact-email" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          E-post <span class="text-error" aria-label="obligatoriskt fält">*</span>
+          Din e-post <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
         <input
           id="contact-email"
