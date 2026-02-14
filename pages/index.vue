@@ -63,7 +63,7 @@ const reviewCards = computed<CardItem[]>(() =>
     <HeroImage 
       src="/images/index/hero.jpg"
       title="Tricolor Screen"
-      description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering"
+      description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering."
       :width="1280"
       :height="854"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
