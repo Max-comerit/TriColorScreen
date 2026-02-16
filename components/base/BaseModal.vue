@@ -46,12 +46,47 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>()
 
+// ===== STATE =====
+const modalBodyRef = ref<HTMLElement | null>(null)
+
 // ===== METHODS =====
 /**
  * Close modal by emitting update:modelValue event
  */
 function close(): void {
   emit('update:modelValue', false)
+}
+
+/**
+ * Handle wheel scroll to prevent scroll propagation at boundaries
+ */
+function handleWheelScroll(e: WheelEvent): void {
+  const element = modalBodyRef.value
+  if (!element) return
+
+  const isAtTop = element.scrollTop === 0
+  const isAtBottom = element.scrollHeight - element.scrollTop - element.clientHeight < 1
+
+  // Prevent scrolling parent if at top and scrolling up, or at bottom and scrolling down
+  if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+    e.preventDefault()
+  }
+}
+
+/**
+ * Handle touch scroll to prevent scroll propagation at boundaries
+ */
+function handleTouchScroll(e: TouchEvent): void {
+  const element = modalBodyRef.value
+  if (!element) return
+
+  const isAtTop = element.scrollTop === 0
+  const isAtBottom = element.scrollHeight - element.scrollTop - element.clientHeight < 1
+
+  // Prevent scrolling parent at boundaries
+  if (isAtTop || isAtBottom) {
+    e.preventDefault()
+  }
 }
 
 /**
@@ -152,7 +187,7 @@ watch(
         <!-- Close (X) Button -->
         <button
           aria-label="Close dialog"
-          class="absolute top-2 right-4 p-2 sm:p-2 md:p-2 lg:p-2 border-none bg-transparent cursor-pointer text-neutral-500 hover:text-neutral-900 transition-colors w-11 h-11 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-12 lg:h-12 flex items-center justify-center"
+          class="absolute top-2 right-4 p-2 border-none bg-transparent cursor-pointer text-neutral-500 hover:text-neutral-900 transition-colors w-11 h-11 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-12 lg:h-12 flex items-center justify-center"
           @click="close"
         >
           <CloseIcon class="w-6 h-6 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-7 lg:h-7" />
@@ -170,6 +205,7 @@ watch(
 
         <!-- Body Slot -->
         <section 
+          ref="modalBodyRef"
           id="modal-body" 
           class="pb-5 text-neutral-700 flex-grow overflow-y-auto min-h-0"
           :class="[
@@ -177,6 +213,8 @@ watch(
               ? 'border border-neutral-300 p-5 shadow-[inset_2px_2px_3px_rgba(0,0,0,0.2)] bg-neutral-50'
               : '',
           ]"
+          @wheel="handleWheelScroll"
+          @touchmove="handleTouchScroll"
         >
           <slot name="body" />
         </section>
