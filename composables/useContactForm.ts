@@ -27,7 +27,7 @@ export const contactFormSchema = z.object({
     .min(1, 'E-post är obligatoriskt'),
   phone: z
     .string()
-    .regex(/^(\(?\+46\)?[\s-]?)?(\(?\d{1,4}\)?[\s-]?)?\d[\d\s-]{5,10}$/, 'Ange ett giltigt svenskt telefonnummer')
+    .regex(/^(\+\d{1,3})?[\s]*-?[\s]*(\(?\d{1,4}\)?)?[\s]*-?[\s]*\d[\d\s-]{5,14}$/, 'Ange ett giltigt telefonnummer')
     .optional()
     .or(z.literal('')),
   customerType: z
