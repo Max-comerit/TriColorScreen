@@ -144,7 +144,7 @@ export const iconTextButtonExamples = {
         ariaLabel: 'Normal state button',
         size: 'md' as const,
         disabled: false,
-        loading: false,
+        busy: false,
       },
       {
         iconSrc: '/assets/images/footer/email-icon.svg',
@@ -153,7 +153,7 @@ export const iconTextButtonExamples = {
         ariaLabel: 'Disabled button',
         size: 'md' as const,
         disabled: true,
-        loading: false,
+        busy: false,
       },
       {
         iconSrc: '/assets/images/footer/email-icon.svg',
@@ -162,7 +162,7 @@ export const iconTextButtonExamples = {
         ariaLabel: 'Loading button',
         size: 'md' as const,
         disabled: false,
-        loading: true,
+        busy: true,
       },
     ],
   },

@@ -4,6 +4,8 @@
 // ===== IMPORTS =====
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
+import ContactPanel from '~/components/features/ContactPanel.vue'
+import ContactForm from '~/components/features/ContactForm.vue'
 import ConfirmDialog from '~/components/layout/ConfirmDialog.vue'
 
 // ===== STATE =====
@@ -29,28 +31,28 @@ useHead({
  * Handle confirm action when leaving page with form changes
  */
 function handleConfirm(): void {
-  hasFormChanges.value = false // Reset before navigating to allow the guard to pass
+  const routeToNavigate = nextRoute
+  resetFormChanges() // Reset before navigating to allow the guard to pass
   showConfirmDialog.value = false
-  if (nextRoute) {
-    router.push(nextRoute)
-    nextRoute = null
+  if (routeToNavigate) {
+    router.push(routeToNavigate)
   }
 }
 
 /**
  * Mark form as having changes
  */
-function markFormAsChanged(): void {
-  hasFormChanges.value = true
+function markFormAsChanged(newValue: boolean): void {
+  hasFormChanges.value = newValue
 }
 
 /**
  * Reset form changes state
  */
-// function resetFormChanges(): void {
-//   hasFormChanges.value = false
-//   nextRoute = null
-// }
+function resetFormChanges(): void {
+  hasFormChanges.value = false
+  nextRoute = null
+}
 
 // ===== LIFECYCLE HOOKS =====
 /**
@@ -67,44 +69,83 @@ onBeforeRouteLeave((to, _from) => {
     return false
   }
 })
-
-/**
- * Initialize form state for testing
- */
-onMounted(() => {
-  markFormAsChanged() // Mark form as changed for testing purposes
-})
 </script>
 
 <template>
   <div>
+    <!-- ✅ Hidden static form for Netlify form detection during build -->
+    <form name="contact" method="POST" action="/" data-netlify="true" enctype="multipart/form-data" hidden>
+      <input type="hidden" name="form-name" value="contact">
+      <input type="text" name="name">
+      <input type="email" name="email">
+      <input type="tel" name="phone">
+      <select name="customer_type">
+        <option value="person">person</option>
+        <option value="company">company</option>
+      </select>
+      <input type="text" name="subject">
+      <input type="file" name="image">
+      <textarea name="message"/>
+      <input type="checkbox" name="gdpr_consent">
+    </form>
+
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/contact/hero.jpg"
-      title="Tricolor Screen"
-      description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering"
+      title="Kontakta Oss På TCS"
       :width="1280"
       :height="854"
-      alt="Professional screen printing equipment and process at TriColor Screen workshop"
-    />
-
+      alt="Kontakta oss på Tricolor Screen"
+      :center="false"
+    >
+      <template #description>
+        <p class="mb-0 font-body font-medium text-base sm:text-lg lg:text-xl text-white/90">
+          Fyll i formuläret nedan så återkommer vi så snart som möjligt.
+        </p>
+        <p class="mb-0 font-body font-medium text-base sm:text-lg lg:text-xl text-white/90">
+          Vi ser fram emot att höra från dig!
+        </p>
+      </template>
+    </HeroImage>
     <!-- Sections -->
     <div class="layout-container">
       <Section 
-        id="services" 
-        title="Våra tjänster" 
+        id="contact"
+        title="Kontakta oss" 
         align="center"
-        aria-label="Våra tjänster och lösningar"
+        aria-label="Kontakta oss och skicka förfrågan"
       >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
+        <div class="flex flex-col justify-center items-center gap-12">
+          <div class="flex flex-col lg:flex-row justify-center lg:justify-around items-center lg:mb-8 lg:items-stretch gap-8">
+            <div class="max-w-full sm:max-w-[50%]">
+              <h3 class="text-center lg:text-left">Vad behöver ni hjälp med?</h3>
+              <p class="text-center lg:text-left">Bifoga en fil i meddelandet med det motiv ni vill ha i tryck och ange vilken tjänst ni vill använda - Logo / Text / Design / Bild / Bildekor etc. Så kontaktar vi er omgående.</p>
+            </div>
+            <ContactPanel />
+          </div>
+          <ContactForm @changed="markFormAsChanged" />
+        </div>
+
       </Section>
       <Section 
         id="testimonials" 
-        title="Omdömen" 
+        title="Hitta oss" 
         align="center"
-        aria-label="Kundrecensioner och omdömen"
+        aria-label="Hitta oss på Tricolor Screen"
       >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
+        <figure class="flex flex-col items-center gap-2 mx-auto max-w-full">
+          <div class="w-full max-w-2xl aspect-video border border-neutral-900 rounded-card overflow-hidden">
+            <iframe 
+              title="Google Maps - Tricolor Screen location"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2034.3229615671016!2d18.110771677289637!3d59.344256609825635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465f82caa3b3dbe7%3A0xed88aaff18ddd6f3!2sTricolor%20Screen!5e0!3m2!1ssv!2sse!4v1770820576918!5m2!1ssv!2sse"
+              style="border:0;" 
+              allowfullscreen="false" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade"
+              class="w-full h-full border border-neutral-900 rounded-card"
+            />
+          </div>
+        </figure>
       </Section>
     </div>
 

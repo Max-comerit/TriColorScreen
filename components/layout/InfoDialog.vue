@@ -1,63 +1,56 @@
 <script setup lang="ts">
 /**
- * ConfirmDialog Component
+ * InfoDialog Component
  *
- * @description A confirmation dialog that extends BaseModal with
- * Cancel and OK buttons in the footer. Perfect for confirming actions.
+ * @description An information dialog that extends BaseModal with
+ * a single OK button in the footer. Perfect for displaying information.
  */
 
 // ===== IMPORTS =====
 import BaseModal from '~/components/base/BaseModal.vue'
+import type { InnerBorderStyle } from '~/components/base/BaseModal.vue'
 import TextButton from '../common/TextButton.vue'
 
 // ===== TYPES =====
-/** Props for ConfirmDialog component */
+/** Props for InfoDialog component */
 interface Props {
   /** Controls modal visibility via v-model */
   modelValue: boolean
   /** Title displayed in modal header */
   title?: string
-  /** Label for cancel button - default: 'Cancel' */
-  cancelLabel?: string
-  /** Label for confirm button - default: 'OK' */
-  confirmLabel?: string
-  /** Close modal when clicking backdrop - default: false */
+  /** Label for OK button - default: 'OK' */
+  okLabel?: string
+  /** Close modal when clicking backdrop - default: true */
   closeOnBackdrop?: boolean
   /** Width of the modal */
   width?: string
   /** Height of the modal */
   height?: string
+  /** Inner border style for body - default: 'none' */
+  innerBorder?: InnerBorderStyle
 }
 
 // ===== PROPS & EMITS =====
 const props = withDefaults(defineProps<Props>(), {
   title: undefined,
-  cancelLabel: 'Cancel',
-  confirmLabel: 'OK',
-  closeOnBackdrop: false,
+  okLabel: 'OK',
+  closeOnBackdrop: true,
   width: undefined,
   height: undefined,
+  innerBorder: 'none',
 })
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
-  (e: 'confirm' | 'cancel'): void
+  (e: 'close'): void
 }>()
 
 // ===== METHODS =====
 /**
- * Handle cancel button click
+ * Handle OK button click
  */
-function handleCancel(): void {
-  emit('cancel')
-  emit('update:modelValue', false)
-}
-
-/**
- * Handle confirm button click
- */
-function handleConfirm(): void {
-  emit('confirm')
+function handleOk(): void {
+  emit('close')
   emit('update:modelValue', false)
 }
 </script>
@@ -69,6 +62,7 @@ function handleConfirm(): void {
     :close-on-backdrop="props.closeOnBackdrop"
     :width="props.width"
     :height="props.height"
+    :inner-border="props.innerBorder"
     @update:model-value="$emit('update:modelValue', $event)"
   >
     <!-- Body slot: Pass through to BaseModal -->
@@ -76,25 +70,16 @@ function handleConfirm(): void {
       <slot />
     </template>
 
-    <!-- Footer with Cancel and OK buttons -->
+    <!-- Footer with OK button -->
     <template #footer>
       <TextButton
-        :label="props.cancelLabel"
-        :background-color="'bg-neutral-100'"
-        :background-color-hover="'hover:bg-neutral-200'"
-        :color ="'text-neutral-900'"
-        size="fit"
-        :aria-label="props.cancelLabel"
-        @click="handleCancel"
-      />
-      <TextButton
-        :label="props.confirmLabel"
+        :label="props.okLabel"
         :background-color="'bg-primary-600'"
         :background-color-hover="'hover:bg-primary-700'"
         :color="'text-white'"
         size="fit"
-        :aria-label="props.confirmLabel"
-        @click="handleConfirm"
+        :aria-label="props.okLabel"
+        @click="handleOk"
       />
     </template>
   </BaseModal>
