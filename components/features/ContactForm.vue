@@ -6,6 +6,7 @@ import { useContactForm } from '~/composables/useContactForm'
 import type { ContactFormData } from '~/composables/useContactForm'
 import TextButton from '~/components/common/TextButton.vue'
 import GdprDialog from '~/components/features/GdprDialog.vue'
+import CloseIcon from '~/assets/images/dialog/close-icon.svg?component'
 
 // ===== EMITS =====
 const emit = defineEmits<{
@@ -75,6 +76,18 @@ function handleFileChange(event: Event): void {
  */
 function triggerFileInput(): void {
   fileInputRef.value?.click()
+}
+
+/**
+ * Clear selected file
+ */
+function handleClearFile(): void {
+  if (fileInputRef.value) {
+    fileInputRef.value.value = ''
+  }
+  formData.value.image = null
+  fileInputLabel.value = 'Ingen fil vald'
+  clearFieldError('image')
 }
 
 /**
@@ -357,7 +370,7 @@ watch(isChanged, (newValue) => {
         >
         <button
           type="button"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed text-left bg-white"
+          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed text-left bg-white flex items-center justify-between"
           :class="[
             getFieldError('image')
               ? 'border-error focus:ring-error'
@@ -368,6 +381,16 @@ watch(isChanged, (newValue) => {
           @click="triggerFileInput"
         >
           <span class="text-neutral-700">{{ fileInputLabel }}</span>
+          <button
+            v-if="fileInputLabel !== 'Ingen fil vald'"
+            type="button"
+            class="ml-2 p-1 text-neutral-500 hover:text-error focus:outline-none focus:ring-2 focus:ring-error rounded transition-colors"
+            :aria-label="'Rensa vald fil: ' + fileInputLabel"
+            :disabled="isSubmitting"
+            @click.stop="handleClearFile"
+          >
+            <CloseIcon class="w-5 h-5" />
+          </button>
         </button>
         <p
           v-if="getFieldError('image')"
