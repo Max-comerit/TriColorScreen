@@ -23,7 +23,7 @@ const emit = defineEmits<{
   <InfoDialog
     :model-value="modelValue"
     title="Integritetspolicy och GDPR"
-    ok-label="Jag förstår"
+    ok-label="Stäng"
     width="40rem"
     height="75svh"
     inner-border="sunken"
