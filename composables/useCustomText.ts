@@ -89,6 +89,19 @@ export function useCustomText() {
           withConnection: true,
           actionHandler: controlsUtils.rotationWithSnapping,
         }),
+        resize: new Control({
+          x: -0.5,
+          y: 0,
+          cursorStyle: 'resize',
+          render: (ctx, left, top) => {
+            const size = 24
+            const img = new Image()
+            img.src = '/images/custom-design/resize.svg'
+            ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
+          },
+          withConnection: true,
+          actionHandler: controlsUtils.changeObjectWidth,
+        }),
     }})
 
     canvas.add(textbox)
