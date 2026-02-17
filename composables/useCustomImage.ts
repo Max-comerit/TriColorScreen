@@ -87,6 +87,11 @@ export function useCustomImage() {
       // Clear default controls
       image.controls = {}
 
+      // Add a blue dashed border for better visibility when selected
+      image.stroke = 'blue'
+      image.strokeWidth = 1
+      image.strokeDashArray = [5, 5] // Dashed border for better visibility
+      
       // Add custom control for delete
       image.controls.deleteControl = new Control({
         x: 0.5,
