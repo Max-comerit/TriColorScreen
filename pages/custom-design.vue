@@ -5,6 +5,7 @@
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
+import { ref } from 'vue'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -17,11 +18,34 @@ useHead({
   ],
 })
 
+// ===== STATE =====
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
 // ===== METHODS =====
 
 function uploadImage(): void {
-  // Placeholder for image upload functionality
-  alert('Image upload functionality is not implemented yet.')
+  // Trigger file input dialog
+  fileInputRef.value?.click()
+}
+
+function handleImageSelected(event: Event): void {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+
+  if (!file) return
+
+  // Validate that it's an image
+  if (!file.type.startsWith('image/')) {
+    alert('Please select an image file.')
+    return
+  }
+
+  // TODO: Implement actual upload logic
+  console.log('Selected image:', file.name, file.type, file.size)
+  alert(`Image selected: ${file.name}`)
+
+  // Reset input so same file can be selected again
+  input.value = ''
 }
 
 function addText(): void {
@@ -34,6 +58,15 @@ function addText(): void {
 
 <template>
   <div>
+    <!-- Hidden file input for image selection -->
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept="image/*"
+      class="hidden"
+      @change="handleImageSelected"
+    >
+
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/custom-design/hero.jpg"
