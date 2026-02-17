@@ -1,10 +1,13 @@
 // composables/useCustomImage.ts
 
 import type { Canvas } from 'fabric'
-import { FabricImage, Control, util } from 'fabric'
+import { FabricImage, Control, util, controlsUtils } from 'fabric'
 
 // Preload the trash can icon once
 let trashCanImage: HTMLImageElement | null = null
+let resizeImage: HTMLImageElement | null = null
+let zoomImage: HTMLImageElement | null = null
+let rotateImage: HTMLImageElement | null = null
 
 function getTrashCanImage(): HTMLImageElement {
   if (!trashCanImage) {
@@ -12,6 +15,30 @@ function getTrashCanImage(): HTMLImageElement {
     trashCanImage.src = '/images/custom-design/trash-can.svg'
   }
   return trashCanImage
+}
+
+function getResizeImage(): HTMLImageElement {
+  if (!resizeImage) {
+    resizeImage = new Image()
+    resizeImage.src = '/images/custom-design/resize.svg'
+  }
+  return resizeImage
+}
+
+function getZoomImage(): HTMLImageElement {
+  if (!zoomImage) {
+    zoomImage = new Image()
+    zoomImage.src = '/images/custom-design/zoom.svg'
+  }
+  return zoomImage
+}
+
+function getRotateImage(): HTMLImageElement {
+  if (!rotateImage) {
+    rotateImage = new Image()
+    rotateImage.src = '/images/custom-design/rotate.svg'
+  }
+  return rotateImage
 }
 
 export function useCustomImage() {
@@ -47,14 +74,7 @@ export function useCustomImage() {
       // Load the image using Fabric.js
       const image = await FabricImage.fromURL(dataUrl)
 
-      image.controls.scaleControl = new Control({
-        x: 0.5,
-        y: 0.5,
-        offsetX: 0,
-        offsetY: 0,
-        cursorStyle: 'nwse-resize',
-      })
-
+      // Add custom control for delete
       image.controls.deleteControl = new Control({
         x: 0.5,
         y: -0.5,
@@ -86,6 +106,85 @@ export function useCustomImage() {
           return true
         },
       })
+
+      // Add custom control for rotation
+      image.controls.rotateControl = new Control({
+        x: 0,
+        y: -0.75,
+        offsetX: 0,
+        offsetY: 0,
+        cursorStyle: 'grab',
+        render: (ctx, left, top, _styleOverride, fabricObject) => {
+          const size = 24
+          const img = getRotateImage()
+          ctx.save()
+          ctx.translate(left, top)
+          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
+          ctx.fillStyle = 'white'
+          ctx.beginPath()
+          ctx.arc(0, 0, 3*size / 4, 0, Math.PI * 2)
+          ctx.fill()
+          if (img.complete) {
+            ctx.drawImage(img, -size / 2, -size / 2, size, size)
+          }
+          ctx.restore()
+        },
+        actionHandler: controlsUtils.rotationWithSnapping,
+      })
+
+      // Add custom control for resize
+      image.controls.resizeControl = new Control({
+        x: 0.5,
+        y: 0.5,
+        offsetX: 0,
+        offsetY: 0,
+        cursorStyle: 'nwse-resize',
+        render: (ctx, left, top, _styleOverride, fabricObject) => {
+          const size = 24
+          const img = getResizeImage()
+          ctx.save()
+          ctx.translate(left, top)
+          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
+          ctx.fillStyle = 'white'
+          ctx.beginPath()
+          ctx.arc(0, 0, 3*size / 4, 0, Math.PI * 2)
+          ctx.fill()
+          if (img.complete) {
+            ctx.rotate(util.degreesToRadians(45))
+            ctx.drawImage(img, -size / 2, -size / 2, size, size)
+          }
+          ctx.restore()
+        },
+        withConnection: true,
+        actionHandler: controlsUtils.scalingEqually,
+      })
+
+      // Add custom control for zoom
+      image.controls.zoomControl = new Control({
+        x: -0.5,
+        y: -0.5,
+        offsetX: 0,
+        offsetY: 0,
+        cursorStyle: 'zoom-in',
+        render: (ctx, left, top, _styleOverride, fabricObject) => {
+          const size = 24
+          const img = getZoomImage()
+          ctx.save()
+          ctx.translate(left, top)
+          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
+          ctx.fillStyle = 'white'
+          ctx.beginPath()
+          ctx.arc(0, 0, 3*size / 4, 0, Math.PI * 2)
+          ctx.fill()
+          if (img.complete) {
+            ctx.rotate(util.degreesToRadians(90))
+            ctx.drawImage(img, -size / 2, -size / 2, size, size)
+          }
+          ctx.restore()
+        },
+        actionHandler: controlsUtils.scalingEqually,
+      })
+
 
       // Configure the image
       image.selectable = true

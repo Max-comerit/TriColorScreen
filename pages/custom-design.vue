@@ -97,6 +97,11 @@ async function handleImageSelected(event: Event): Promise<void> {
   input.value = ''
 }
 
+function addText(): void {
+  // Placeholder for add text functionality
+  alert('Add text functionality is not implemented yet.')
+}
+
 </script>
 
 <template>
