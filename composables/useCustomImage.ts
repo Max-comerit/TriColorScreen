@@ -100,6 +100,9 @@ export function useCustomImage() {
 
       // Add a blue dashed border for better visibility when selected
       setSelectedBorder(image, true)
+
+      // Disable caching to ensure controls are always rendered
+      image.objectCaching = false
       
       // Add custom control for delete
       image.controls.deleteControl = new Control({
