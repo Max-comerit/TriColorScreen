@@ -79,6 +79,12 @@ export function useCustomImage() {
       // Clear default controls
       image.controls = {}
 
+      // Configure the image
+      image.selectable = true
+      image.hasControls = true
+      image.hasBorders = true
+      image.scaleToWidth(100) // Default size, can be adjusted
+
       // Add a blue dashed border for better visibility when selected
       setSelectedBorder(image, true)
 
@@ -203,12 +209,6 @@ export function useCustomImage() {
         withConnection: true,
         actionHandler: controlsUtils.scalingEqually,
       })
-
-      // Configure the image
-      image.selectable = true
-      image.hasControls = true
-      image.hasBorders = true
-      image.scaleToWidth(100) // Default size, can be adjusted
 
       // Center the image on the canvas
       canvas.centerObject(image)
