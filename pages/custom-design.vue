@@ -3,6 +3,7 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { Canvas, FabricImage } from 'fabric'
+import type { Canvas as CanvasType } from 'fabric'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
@@ -11,6 +12,7 @@ import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
 import { ref, onMounted } from 'vue'
+import TextboxControls from '~/components/features/TextboxControls.vue'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -48,22 +50,17 @@ const { addTextToCanvas } = useCustomText()
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
-let canvas: Canvas | null = null
+// Use InstanceType to get the runtime type, not the nominal type
+const canvas = ref<InstanceType<typeof Canvas> | null>(null)
 
-// ===== LIFECYCLE HOOKS =====W
+// ===== LIFECYCLE HOOKS =====
 onMounted(async () => {
   await nextTick()
   const el = document.getElementById('shirt-canvas') as HTMLCanvasElement
 
-  // Validate element exists and is a canvas
-  if (!(el instanceof HTMLCanvasElement)) {
-    console.error('Canvas element not found')
-    return
-  }
-
-  canvas = new Canvas(el, { selection: true })
-  canvas.setDimensions({ width: 800, height: 800 })
-  canvas.enablePointerEvents = true
+  canvas.value = new Canvas(el, { selection: true })
+  canvas.value.setDimensions({ width: 800, height: 800 })
+  canvas.value.enablePointerEvents = true
 
   // Load background
   const bg = await FabricImage.fromURL('/images/custom-design/t-shirt-front.png')
@@ -72,8 +69,10 @@ onMounted(async () => {
   bg.selectable = false
   bg.evented = false
   bg.set({ originX: 'center', originY: 'center', left: 400, top: 400 })
-  canvas.backgroundImage = bg
-  canvas.requestRenderAll()
+  canvas.value.backgroundImage = bg
+  canvas.value.requestRenderAll()
+
+  
 })
 
 
@@ -86,7 +85,7 @@ async function handleImageSelected(event: Event): Promise<void> {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
 
-  if (!file || !canvas) return
+  if (!file || !canvas.value) return
 
   // Validate that it's an image
   if (!file.type.startsWith('image/')) {
@@ -95,7 +94,7 @@ async function handleImageSelected(event: Event): Promise<void> {
   }
 
   try {
-    await addImageToCanvas(canvas as Canvas, file)
+    await addImageToCanvas(canvas.value as Canvas, file)
   } catch (error) {
     alert('Failed to add image. Please try again.')
     console.error('Error adding image:', error)
@@ -106,7 +105,8 @@ async function handleImageSelected(event: Event): Promise<void> {
 }
 
 function addText() {
-  addTextToCanvas(canvas)
+  if (!canvas.value) return
+  addTextToCanvas(canvas.value)
 }
 
 </script>
@@ -164,8 +164,10 @@ function addText() {
               </template>
             </IconButton>
           </div>
+           <TextboxControls :canvas="(canvas as CanvasType | null)" />
         </div>
-        
+       
+
       </Section>
     </div>
   </div>

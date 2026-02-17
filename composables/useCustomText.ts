@@ -1,6 +1,13 @@
 // composables/useCustomText.ts
-import { Textbox, Control, controlsUtils } from 'fabric'
-import type { Canvas } from 'fabric'
+import { Textbox, Control, controlsUtils, FabricImage } from 'fabric'
+
+interface FabricCanvasLike {
+  add: (object: Textbox) => void
+  centerObject: (object: Textbox) => void
+  setActiveObject: (object: Textbox) => void
+  requestRenderAll: () => void
+  getWidth: () => number
+}
 
 export interface AddTextOptions {
   text?: string
@@ -24,7 +31,7 @@ export function useCustomText() {
   /**
    * Adds a textbox to a Fabric canvas (accepts a Vue Ref<Canvas | null>).
    */
-    function addTextToCanvas(canvas: Canvas | null, options: AddTextOptions = {}): Textbox | null {
+    function addTextToCanvas(canvas: FabricCanvasLike | null, options: AddTextOptions = {}): Textbox | null {
     if (!canvas) return null
 
     const text = options.text ?? DEFAULT_TEXT
