@@ -1,5 +1,5 @@
 // composables/useCustomText.ts
-import { Textbox } from 'fabric'
+import { Textbox, Control, controlsUtils } from 'fabric'
 import type { Canvas } from 'fabric'
 
 export interface AddTextOptions {
@@ -43,8 +43,53 @@ export function useCustomText() {
       fill,
       textAlign,
       editable: true,
-
-    })
+      controls: {
+        scaleIcon: new Control({
+          x: 0.5,
+          y: 0.5,
+          render: (ctx, left, top) => {
+          const size = 24
+          const img = new Image()
+          img.src = '/images/custom-design/zoom.svg'
+          ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
+          },
+          cursorStyle: 'nwse-resize',
+          actionHandler: controlsUtils.scalingEqually,
+        }),
+        deleteIcon: new Control({
+          x: 0.5,
+          y: -0.5,
+          cursorStyle: 'pointer',
+          render: (ctx, left, top) => {
+            const size = 24
+            const img = new Image()
+            img.src = '/images/custom-design/trash-can.svg'
+            ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
+          },
+          mouseUpHandler: (eventData, transform) => {          
+            const target = transform?.target
+            if (target) {
+              const canvas = target.canvas
+              canvas?.remove(target)
+              canvas?.requestRenderAll()
+            }
+          }
+        }),
+        rotateIcon: new Control({
+          x: 0,
+          y: -0.5,
+          offsetY: -50,
+          cursorStyle: 'pointer',
+          render: (ctx, left, top) => {
+            const size = 24
+            const img = new Image()
+            img.src = '/images/custom-design/rotate.svg'
+            ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
+          },
+          withConnection: true,
+          actionHandler: controlsUtils.rotationWithSnapping,
+        }),
+    }})
 
     canvas.add(textbox)
     canvas.centerObject(textbox)
