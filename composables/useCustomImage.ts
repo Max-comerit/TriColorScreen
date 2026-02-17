@@ -48,6 +48,17 @@ function getRotateImage(): HTMLImageElement {
   return rotateImage
 }
 
+function setSelectedBorder(image: FabricImage, selected: boolean = true) {
+  if (selected) {
+    image.stroke = 'blue'
+    image.strokeWidth = 1
+    image.strokeDashArray = [5, 5]
+  } else {
+    image.stroke = null
+    image.strokeWidth = 0
+  }
+}
+
 export function useCustomImage() {
   /**
    * Add a custom image to the canvas from a File object
@@ -88,9 +99,7 @@ export function useCustomImage() {
       image.controls = {}
 
       // Add a blue dashed border for better visibility when selected
-      image.stroke = 'blue'
-      image.strokeWidth = 1
-      image.strokeDashArray = [5, 5] // Dashed border for better visibility
+      setSelectedBorder(image, true)
       
       // Add custom control for delete
       image.controls.deleteControl = new Control({
@@ -214,7 +223,7 @@ export function useCustomImage() {
       // Configure the image
       image.selectable = true
       image.hasControls = true
-      image.hasBorders = false
+      image.hasBorders = true
       image.scaleToWidth(200) // Default size, can be adjusted
 
       // Center the image on the canvas
@@ -225,6 +234,16 @@ export function useCustomImage() {
 
       // Set as active object so user can immediately manipulate it
       canvas.setActiveObject(image)
+
+      // Handle selection state for border visibility
+      const handleSelection = () => {
+        setSelectedBorder(image, canvas.getActiveObject() === image)
+        canvas.requestRenderAll()
+      }
+
+      canvas.on('selection:updated', handleSelection)
+      canvas.on('selection:created', handleSelection)
+      canvas.on('selection:cleared', handleSelection)
 
       // Render the canvas
       canvas.renderAll()
