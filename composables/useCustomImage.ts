@@ -208,7 +208,7 @@ export function useCustomImage() {
       image.selectable = true
       image.hasControls = true
       image.hasBorders = true
-      image.scaleToWidth(200) // Default size, can be adjusted
+      image.scaleToWidth(100) // Default size, can be adjusted
 
       // Center the image on the canvas
       canvas.centerObject(image)
