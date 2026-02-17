@@ -1,7 +1,18 @@
 // composables/useCustomImage.ts
 
 import type { Canvas } from 'fabric'
-import { FabricImage } from 'fabric'
+import { FabricImage, Control, util } from 'fabric'
+
+// Preload the trash can icon once
+let trashCanImage: HTMLImageElement | null = null
+
+function getTrashCanImage(): HTMLImageElement {
+  if (!trashCanImage) {
+    trashCanImage = new Image()
+    trashCanImage.src = '/images/custom-design/trash-can.svg'
+  }
+  return trashCanImage
+}
 
 export function useCustomImage() {
   /**
@@ -34,25 +45,67 @@ export function useCustomImage() {
       })
 
       // Load the image using Fabric.js
-      const img = await FabricImage.fromURL(dataUrl)
+      const image = await FabricImage.fromURL(dataUrl)
+
+      image.controls.scaleControl = new Control({
+        x: 0.5,
+        y: 0.5,
+        offsetX: 0,
+        offsetY: 0,
+        cursorStyle: 'nwse-resize',
+      })
+
+      image.controls.deleteControl = new Control({
+        x: 0.5,
+        y: -0.5,
+        offsetX: 0,
+        offsetY: 0,
+        cursorStyle: 'pointer',
+        render: (ctx, left, top, _styleOverride, fabricObject) => {          
+          const size = 24
+          const img = getTrashCanImage()
+          ctx.save()
+          ctx.translate(left, top)
+          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
+          ctx.fillStyle = 'red'
+          ctx.beginPath()
+          ctx.arc(0, 0, 3*size / 4, 0, Math.PI * 2)
+          ctx.fill()
+          if (img.complete) {
+            ctx.drawImage(img, -size / 2, -size / 2, size, size)
+          }
+          ctx.restore()
+        },
+        mouseUpHandler: (_eventData: unknown, transform: any): boolean => {
+          const target = transform?.target
+          if (target) {
+            const canvas = target.canvas
+            canvas?.remove(target)
+            canvas?.requestRenderAll()
+          }
+          return true
+        },
+      })
 
       // Configure the image
-      img.selectable = true
-      img.scaleToWidth(200) // Default size, can be adjusted
+      image.selectable = true
+      image.hasControls = true
+      image.hasBorders = false
+      image.scaleToWidth(200) // Default size, can be adjusted
 
       // Center the image on the canvas
-      canvas.centerObject(img)
+      canvas.centerObject(image)
 
       // Add to canvas (on top of existing layers)
-      canvas.add(img)
+      canvas.add(image)
 
       // Set as active object so user can immediately manipulate it
-      canvas.setActiveObject(img)
+      canvas.setActiveObject(image)
 
       // Render the canvas
       canvas.renderAll()
 
-      return img
+      return image
     } catch (error) {
       console.error('Failed to add image to canvas:', error)
       throw error
