@@ -25,14 +25,6 @@ function getResizeImage(): HTMLImageElement {
   return resizeImage
 }
 
-function getZoomImage(): HTMLImageElement {
-  if (!zoomImage) {
-    zoomImage = new Image()
-    zoomImage.src = '/images/custom-design/zoom.svg'
-  }
-  return zoomImage
-}
-
 function getRotateImage(): HTMLImageElement {
   if (!rotateImage) {
     rotateImage = new Image()
@@ -158,33 +150,6 @@ export function useCustomImage() {
         withConnection: true,
         actionHandler: controlsUtils.scalingEqually,
       })
-
-      // Add custom control for zoom
-      image.controls.zoomControl = new Control({
-        x: -0.5,
-        y: -0.5,
-        offsetX: 0,
-        offsetY: 0,
-        cursorStyle: 'zoom-in',
-        render: (ctx, left, top, _styleOverride, fabricObject) => {
-          const size = 24
-          const img = getZoomImage()
-          ctx.save()
-          ctx.translate(left, top)
-          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
-          ctx.fillStyle = 'white'
-          ctx.beginPath()
-          ctx.arc(0, 0, 3*size / 4, 0, Math.PI * 2)
-          ctx.fill()
-          if (img.complete) {
-            ctx.rotate(util.degreesToRadians(90))
-            ctx.drawImage(img, -size / 2, -size / 2, size, size)
-          }
-          ctx.restore()
-        },
-        actionHandler: controlsUtils.scalingEqually,
-      })
-
 
       // Configure the image
       image.selectable = true
