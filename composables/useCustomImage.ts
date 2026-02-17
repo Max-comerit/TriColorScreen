@@ -7,11 +7,17 @@ import { FabricImage, Control, util, controlsUtils } from 'fabric'
 let trashCanImage: HTMLImageElement | null = null
 let resizeImage: HTMLImageElement | null = null
 let rotateImage: HTMLImageElement | null = null
+let canvasInstance: Canvas | null = null
 
 function getTrashCanImage(): HTMLImageElement {
   if (!trashCanImage) {
     trashCanImage = new Image()
     trashCanImage.src = '/images/custom-design/trash-can.svg'
+    trashCanImage.onload = () => {
+      if (canvasInstance) {
+        canvasInstance.requestRenderAll()
+      }
+    }
   }
   return trashCanImage
 }
@@ -20,6 +26,11 @@ function getResizeImage(): HTMLImageElement {
   if (!resizeImage) {
     resizeImage = new Image()
     resizeImage.src = '/images/custom-design/resize.svg'
+    resizeImage.onload = () => {
+      if (canvasInstance) {
+        canvasInstance.requestRenderAll()
+      }
+    }
   }
   return resizeImage
 }
@@ -28,6 +39,11 @@ function getRotateImage(): HTMLImageElement {
   if (!rotateImage) {
     rotateImage = new Image()
     rotateImage.src = '/images/custom-design/rotate.svg'
+    rotateImage.onload = () => {
+      if (canvasInstance) {
+        canvasInstance.requestRenderAll()
+      }
+    }
   }
   return rotateImage
 }
@@ -64,6 +80,9 @@ export function useCustomImage() {
 
       // Load the image using Fabric.js
       const image = await FabricImage.fromURL(dataUrl)
+
+      // Store canvas instance for icon re-rendering
+      canvasInstance = canvas
 
       // Clear default controls
       image.controls = {}
