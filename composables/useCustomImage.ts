@@ -136,7 +136,7 @@ export function useCustomImage() {
           ctx.restore()
         },
         mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
-          const target = transform?.target
+          const target = transform?.target as FabricImage | undefined
           if (target) {
             const canvas = target.canvas
             canvas?.remove(target)
