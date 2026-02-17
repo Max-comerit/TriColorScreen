@@ -9,6 +9,7 @@ import IconButton from '~/components/common/IconButton.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import { useCustomImage } from '~/composables/useCustomImage'
+import { useCustomText } from '~/composables/useCustomText'
 import { ref, onMounted } from 'vue'
 
 // ===== COMPOSABLES =====
@@ -43,6 +44,7 @@ useHead({
 })
 
 const { addImageToCanvas } = useCustomImage()
+const { addTextToCanvas } = useCustomText()
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
@@ -103,9 +105,8 @@ async function handleImageSelected(event: Event): Promise<void> {
   input.value = ''
 }
 
-function addText(): void {
-  // Placeholder for add text functionality
-  alert('Add text functionality is not implemented yet.')
+function addText() {
+  addTextToCanvas(canvas)
 }
 
 </script>
