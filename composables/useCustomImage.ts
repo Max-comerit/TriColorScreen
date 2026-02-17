@@ -65,6 +65,9 @@ export function useCustomImage() {
       // Load the image using Fabric.js
       const image = await FabricImage.fromURL(dataUrl)
 
+      // Clear default controls
+      image.controls = {}
+
       // Add custom control for delete
       image.controls.deleteControl = new Control({
         x: 0.5,
