@@ -43,7 +43,7 @@ export const useNavigationStore = defineStore('navigation', {
           { label: 'EVENT & MÄSSOR', href: '/services/event-advertisement' },
         ],
       },
-      // { label: 'DESIGNA SJÄLV', href: '/custom-design' },
+      { label: 'DESIGNA SJÄLV', href: '/custom-design' },
       { label: 'OM OSS', href: '/about' },
       { label: 'KONTAKT', href: '/contact' },
     ],
