@@ -8,6 +8,7 @@ import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
+import { useCustomText } from '~/composables/useCustomText'
 import { ref, onMounted } from 'vue'
 
 // ===== COMPOSABLES =====
@@ -41,30 +42,32 @@ useHead({
   ],
 })
 
+const { addTextToCanvas } = useCustomText()
+
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
-const canvas = ref<Canvas | null>(null)
+let canvas: Canvas | null = null
 
-// ===== LIFECYCLE HOOKS =====
-onMounted(() => {
-  canvas.value = new Canvas('shirt-canvas')
-  loadFabricBackgroundImage('/images/custom-design/t-shirt-front.png', 800, 800)
+// ===== LIFECYCLE HOOKS =====W
+onMounted(async () => {
+  await nextTick()
+  const el = document.getElementById('shirt-canvas') as HTMLCanvasElement
+
+  canvas = new Canvas(el, { selection: true })
+  canvas.setDimensions({ width: 800, height: 800 })
+  canvas.enablePointerEvents = true
+
+  // Load background
+  const bg = await FabricImage.fromURL('/images/custom-design/t-shirt-front.png')
+  bg.scaleToWidth(800)
+  bg.scaleToHeight(800)
+  bg.selectable = false
+  bg.evented = false
+  bg.set({ originX: 'center', originY: 'center', left: 400, top: 400 })
+  canvas.backgroundImage = bg
+  canvas.requestRenderAll()
 })
 
-// ===== METHODS =====
-
-async function loadFabricBackgroundImage(imagePath: string, width: number, height: number): Promise<void> {
-  try {
-    const img = await FabricImage.fromURL(imagePath)
-    img.scaleToWidth(width)
-    img.scaleToHeight(height)
-    img.selectable = false
-    canvas.value?.centerObject(img)
-    canvas.value?.insertAt(0, img)
-  } catch (error) {
-    console.error('Failed to load image:', error)
-  }
-}
 
 function uploadImage(): void {
   // Trigger file input dialog
@@ -91,9 +94,8 @@ function handleImageSelected(event: Event): void {
   input.value = ''
 }
 
-function addText(): void {
-  // Placeholder for add text functionality
-  alert('Add text functionality is not implemented yet.')
+function addText() {
+  addTextToCanvas(canvas)
 }
 
 </script>
@@ -128,7 +130,7 @@ function addText(): void {
         aria-label="Design Verktyg"
       >
         <div class="designer flex gap-4 items-center justify-center">
-          <canvas id="shirt-canvas" width="800" height="800" class="relative mx-auto w-[800px] h-[800px] border border-black rounded-card overflow-hidden"/>
+          <canvas id="shirt-canvas" width="800" height="800" class="relative mx-auto border border-black rounded-card overflow-hidden"/>
           <div class="flex flex-col gap-3">
             <IconButton
               aria-label="Upload image design"
