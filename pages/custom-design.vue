@@ -3,7 +3,6 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { Canvas, FabricImage } from 'fabric'
-import type { Canvas as CanvasType } from 'fabric'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
@@ -50,17 +49,16 @@ const { addTextToCanvas } = useCustomText()
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
-// Use InstanceType to get the runtime type, not the nominal type
-const canvas = ref<InstanceType<typeof Canvas> | null>(null)
+let canvas: Canvas | null = null
 
-// ===== LIFECYCLE HOOKS =====
+// ===== LIFECYCLE HOOKS =====W
 onMounted(async () => {
   await nextTick()
   const el = document.getElementById('shirt-canvas') as HTMLCanvasElement
 
-  canvas.value = new Canvas(el, { selection: true })
-  canvas.value.setDimensions({ width: 800, height: 800 })
-  canvas.value.enablePointerEvents = true
+  canvas = new Canvas(el, { selection: true })
+  canvas.setDimensions({ width: 800, height: 800 })
+  canvas.enablePointerEvents = true
 
   // Load background
   const bg = await FabricImage.fromURL('/images/custom-design/t-shirt-front.png')
@@ -69,10 +67,8 @@ onMounted(async () => {
   bg.selectable = false
   bg.evented = false
   bg.set({ originX: 'center', originY: 'center', left: 400, top: 400 })
-  canvas.value.backgroundImage = bg
-  canvas.value.requestRenderAll()
-
-  
+  canvas.backgroundImage = bg
+  canvas.requestRenderAll()
 })
 
 
@@ -105,8 +101,7 @@ async function handleImageSelected(event: Event): Promise<void> {
 }
 
 function addText() {
-  if (!canvas.value) return
-  addTextToCanvas(canvas.value)
+  addTextToCanvas(canvas)
 }
 
 </script>
@@ -164,12 +159,9 @@ function addText() {
               </template>
             </IconButton>
           </div>
-           <TextboxControls :canvas="(canvas as CanvasType | null)" />
         </div>
-       
-
+        <TextboxControls :canvas="canvas" />
       </Section>
     </div>
   </div>
 </template>
-

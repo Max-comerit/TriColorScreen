@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { Canvas, Textbox } from 'fabric'
-import { ref, watch, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 interface Props {
   canvas: Canvas | null
 }
-
-
 
 const props = defineProps<Props>()
 
@@ -23,10 +21,9 @@ let attachedCanvas: Canvas | null = null
 /* -----------------------------
    Selection Handling
 ------------------------------ */
-
 function updateFromSelection(e: { selected?: unknown[] }) {
   const obj = e.selected?.[0]
-  if (obj && typeof obj === 'object' && obj !== null && 'type' in obj && obj.type === 'textbox') {
+  if (obj && typeof obj === 'object' && 'type' in obj && obj.type === 'textbox') {
     activeTextbox.value = obj as Textbox
     syncFromTextbox()
   } else {
@@ -37,6 +34,7 @@ function updateFromSelection(e: { selected?: unknown[] }) {
 function clearSelection() {
   activeTextbox.value = null
 }
+
 function attach(canvas: Canvas) {
   canvas.on('selection:created', updateFromSelection)
   canvas.on('selection:updated', updateFromSelection)
@@ -49,23 +47,12 @@ function detach(canvas: Canvas) {
   canvas.off('selection:cleared', clearSelection)
 }
 
-watch(
-  () => props.canvas,
-  (newCanvas) => {
-    // Remove old listeners
-    if (attachedCanvas) {
-      detach(attachedCanvas)
-      attachedCanvas = null
-    }
-
-    // Attach to new canvas
-    if (newCanvas) {
-      attach(newCanvas)
-      attachedCanvas = newCanvas
-    }
-  },
-  { immediate: true }
-)
+onMounted(() => {
+  if (props.canvas) {
+    attach(props.canvas)
+    attachedCanvas = props.canvas
+  }
+})
 
 onUnmounted(() => {
   if (attachedCanvas) detach(attachedCanvas)
@@ -74,7 +61,6 @@ onUnmounted(() => {
 /* -----------------------------
    Sync State
 ------------------------------ */
-
 function syncFromTextbox() {
   if (!activeTextbox.value) return
 
@@ -87,10 +73,8 @@ function syncFromTextbox() {
 /* -----------------------------
    Update Helper
 ------------------------------ */
-
 function applyUpdate() {
   if (!props.canvas || !activeTextbox.value) return
-
   activeTextbox.value.initDimensions()
   activeTextbox.value.setCoords()
   props.canvas.requestRenderAll()
@@ -99,7 +83,6 @@ function applyUpdate() {
 /* -----------------------------
    Controls
 ------------------------------ */
-
 function updateFontFamily() {
   if (!activeTextbox.value) return
   activeTextbox.value.set('fontFamily', fontFamily.value)
@@ -115,10 +98,8 @@ function toggleBold() {
 
 function cycleAlignment() {
   if (!activeTextbox.value) return
-
   const order: Array<'left' | 'center' | 'right'> = ['left', 'center', 'right']
   const next = order[(order.indexOf(textAlign.value) + 1) % order.length]
-
   textAlign.value = next
   activeTextbox.value.set('textAlign', next)
   applyUpdate()
@@ -130,6 +111,7 @@ function updateColor() {
   applyUpdate()
 }
 </script>
+
 
 <template>
   <div
