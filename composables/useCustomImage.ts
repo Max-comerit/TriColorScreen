@@ -2,6 +2,9 @@
 
 import type { Canvas } from 'fabric'
 import { FabricImage, Control, util, controlsUtils } from 'fabric'
+import resizeIcon from '@/assets/images/custom-design/resize.svg?url'
+import rotateIcon from '@/assets/images/custom-design/rotate.svg?url'
+import trashCanIcon from '@/assets/images/custom-design/trash-can.svg?url'
 
 // Preload the trash can icon once
 let trashCanImage: HTMLImageElement | null = null
@@ -12,7 +15,7 @@ let canvasInstance: Canvas | null = null
 function getTrashCanImage(): HTMLImageElement {
   if (!trashCanImage) {
     trashCanImage = new Image()
-    trashCanImage.src = '/images/custom-design/trash-can.svg'
+    trashCanImage.src = trashCanIcon
     trashCanImage.onload = () => {
       if (canvasInstance) {
         canvasInstance.requestRenderAll()
@@ -25,7 +28,7 @@ function getTrashCanImage(): HTMLImageElement {
 function getResizeImage(): HTMLImageElement {
   if (!resizeImage) {
     resizeImage = new Image()
-    resizeImage.src = '/images/custom-design/resize.svg'
+    resizeImage.src = resizeIcon
     resizeImage.onload = () => {
       if (canvasInstance) {
         canvasInstance.requestRenderAll()
@@ -38,7 +41,7 @@ function getResizeImage(): HTMLImageElement {
 function getRotateImage(): HTMLImageElement {
   if (!rotateImage) {
     rotateImage = new Image()
-    rotateImage.src = '/images/custom-design/rotate.svg'
+    rotateImage.src = rotateIcon
     rotateImage.onload = () => {
       if (canvasInstance) {
         canvasInstance.requestRenderAll()
