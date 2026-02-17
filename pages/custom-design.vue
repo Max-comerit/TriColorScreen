@@ -8,7 +8,7 @@ import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
-import { useCustomText } from '~/composables/useCustomText'
+import { useCustomImage } from '~/composables/useCustomImage'
 import { ref, onMounted } from 'vue'
 
 // ===== COMPOSABLES =====
@@ -42,7 +42,7 @@ useHead({
   ],
 })
 
-const { addTextToCanvas } = useCustomText()
+const { addImageToCanvas } = useCustomImage()
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
@@ -74,11 +74,11 @@ function uploadImage(): void {
   fileInputRef.value?.click()
 }
 
-function handleImageSelected(event: Event): void {
+async function handleImageSelected(event: Event): Promise<void> {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
 
-  if (!file) return
+  if (!file || !canvas) return
 
   // Validate that it's an image
   if (!file.type.startsWith('image/')) {
@@ -86,16 +86,15 @@ function handleImageSelected(event: Event): void {
     return
   }
 
-  // TODO: Implement actual upload logic
-  console.log('Selected image:', file.name, file.type, file.size)
-  alert(`Image selected: ${file.name}`)
+  try {
+    await addImageToCanvas(canvas as Canvas, file)
+  } catch (error) {
+    alert('Failed to add image. Please try again.')
+    console.error('Error adding image:', error)
+  }
 
   // Reset input so same file can be selected again
   input.value = ''
-}
-
-function addText() {
-  addTextToCanvas(canvas)
 }
 
 </script>
