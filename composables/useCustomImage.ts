@@ -10,49 +10,26 @@ interface Transform {
   target?: unknown
 }
 
-// Preload the trash can icon once
-let trashCanImage: HTMLImageElement | null = null
-let resizeImage: HTMLImageElement | null = null
-let rotateImage: HTMLImageElement | null = null
-let canvasInstance: Canvas | null = null
+// Create images on client side only to avoid SSR issues
+const trashCanImage = typeof window !== 'undefined' ? new Image() : null
+const resizeImage = typeof window !== 'undefined' ? new Image() : null
+const rotateImage = typeof window !== 'undefined' ? new Image() : null
+
+// Set image sources immediately on client
+if (trashCanImage) trashCanImage.src = trashCanIcon
+if (resizeImage) resizeImage.src = resizeIcon
+if (rotateImage) rotateImage.src = rotateIcon
 
 function getTrashCanImage(): HTMLImageElement {
-  if (!trashCanImage) {
-    trashCanImage = new Image()
-    trashCanImage.src = trashCanIcon
-    trashCanImage.onload = () => {
-      if (canvasInstance) {
-        canvasInstance.requestRenderAll()
-      }
-    }
-  }
-  return trashCanImage
+  return trashCanImage!
 }
 
 function getResizeImage(): HTMLImageElement {
-  if (!resizeImage) {
-    resizeImage = new Image()
-    resizeImage.src = resizeIcon
-    resizeImage.onload = () => {
-      if (canvasInstance) {
-        canvasInstance.requestRenderAll()
-      }
-    }
-  }
-  return resizeImage
+  return resizeImage!
 }
 
 function getRotateImage(): HTMLImageElement {
-  if (!rotateImage) {
-    rotateImage = new Image()
-    rotateImage.src = rotateIcon
-    rotateImage.onload = () => {
-      if (canvasInstance) {
-        canvasInstance.requestRenderAll()
-      }
-    }
-  }
-  return rotateImage
+  return rotateImage!
 }
 
 function setSelectedBorder(image: FabricImage, selected: boolean = true) {
@@ -98,9 +75,6 @@ export function useCustomImage() {
 
       // Load the image using Fabric.js
       const image = await FabricImage.fromURL(dataUrl)
-
-      // Store canvas instance for icon re-rendering
-      canvasInstance = canvas
 
       // Clear default controls
       image.controls = {}
