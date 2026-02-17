@@ -108,7 +108,7 @@ export function useCustomImage() {
         x: 0,
         y: -0.75,
         offsetX: 0,
-        offsetY: 0,
+        offsetY: -50,
         sizeX: 36,
         sizeY: 36,
         cursorStyle: 'grab',
@@ -128,6 +128,7 @@ export function useCustomImage() {
           ctx.restore()
         },
         actionHandler: controlsUtils.rotationWithSnapping,
+        withConnection: true,
       })
 
       // Add custom control for resize
