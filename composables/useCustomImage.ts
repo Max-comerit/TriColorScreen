@@ -206,7 +206,7 @@ export function useCustomImage() {
           }
           ctx.restore()
         },
-        withConnection: true,
+        withConnection: false,
         actionHandler: controlsUtils.scalingEqually,
       })
 
