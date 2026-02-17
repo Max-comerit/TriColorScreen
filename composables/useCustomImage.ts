@@ -6,7 +6,6 @@ import { FabricImage, Control, util, controlsUtils } from 'fabric'
 // Preload the trash can icon once
 let trashCanImage: HTMLImageElement | null = null
 let resizeImage: HTMLImageElement | null = null
-let zoomImage: HTMLImageElement | null = null
 let rotateImage: HTMLImageElement | null = null
 
 function getTrashCanImage(): HTMLImageElement {
