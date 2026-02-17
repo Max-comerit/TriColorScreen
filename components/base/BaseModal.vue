@@ -48,6 +48,7 @@ const emit = defineEmits<{
 
 // ===== STATE =====
 const modalBodyRef = ref<HTMLElement | null>(null)
+const touchStartY = ref<number>(0)
 
 // ===== METHODS =====
 /**
@@ -74,17 +75,27 @@ function handleWheelScroll(e: WheelEvent): void {
 }
 
 /**
- * Handle touch scroll to prevent scroll propagation at boundaries
+ * Handle touch start to track initial Y position
  */
-function handleTouchScroll(e: TouchEvent): void {
+function handleTouchStart(e: TouchEvent): void {
+  touchStartY.value = e.touches[0].clientY
+}
+
+/**
+ * Handle touch move to prevent scroll propagation at boundaries
+ */
+function handleTouchMove(e: TouchEvent): void {
   const element = modalBodyRef.value
   if (!element) return
+
+  const touchY = e.touches[0].clientY
+  const deltaY = touchStartY.value - touchY // Positive = scrolling down, negative = scrolling up
 
   const isAtTop = element.scrollTop === 0
   const isAtBottom = element.scrollHeight - element.scrollTop - element.clientHeight < 1
 
-  // Prevent scrolling parent at boundaries
-  if (isAtTop || isAtBottom) {
+  // Prevent scrolling parent if at top and scrolling up, or at bottom and scrolling down
+  if ((isAtTop && deltaY < 0) || (isAtBottom && deltaY > 0)) {
     e.preventDefault()
   }
 }
@@ -214,7 +225,8 @@ watch(
               : '',
           ]"
           @wheel="handleWheelScroll"
-          @touchmove="handleTouchScroll"
+          @touchstart="handleTouchStart"
+          @touchmove="handleTouchMove"
         >
           <slot name="body" />
         </section>
