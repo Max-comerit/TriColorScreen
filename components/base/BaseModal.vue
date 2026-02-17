@@ -216,8 +216,8 @@ watch(
 
         <!-- Body Slot -->
         <section 
-          ref="modalBodyRef"
           id="modal-body" 
+          ref="modalBodyRef"
           class="pb-5 text-neutral-700 flex-grow overflow-y-auto min-h-0"
           :class="[
             props.innerBorder === 'sunken'
