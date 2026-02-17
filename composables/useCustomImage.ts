@@ -6,6 +6,10 @@ import resizeIcon from '@/assets/images/custom-design/resize.svg?url'
 import rotateIcon from '@/assets/images/custom-design/rotate.svg?url'
 import trashCanIcon from '@/assets/images/custom-design/trash-can.svg?url'
 
+interface Transform {
+  target?: unknown
+}
+
 // Preload the trash can icon once
 let trashCanImage: HTMLImageElement | null = null
 let resizeImage: HTMLImageElement | null = null
@@ -131,7 +135,7 @@ export function useCustomImage() {
           }
           ctx.restore()
         },
-        mouseUpHandler: (_eventData: unknown, transform: any): boolean => {
+        mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
           const target = transform?.target
           if (target) {
             const canvas = target.canvas
