@@ -6,6 +6,8 @@ import { Canvas, FabricImage } from 'fabric'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
+import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
+import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import { ref, onMounted } from 'vue'
 
 // ===== COMPOSABLES =====
@@ -129,22 +131,25 @@ function addText(): void {
           <canvas id="shirt-canvas" width="800" height="800" class="relative mx-auto w-[800px] h-[800px] border border-black rounded-card overflow-hidden"/>
           <div class="flex flex-col gap-3">
             <IconButton
-              icon-src="/images/custom-design/image-icon.svg"
-              icon-alt="Image"
               aria-label="Upload image design"
               variant="primary"
               size="fit"
               @click="uploadImage()"
-            />
+            >
+              <template #icon>
+                <ImageIcon class="!w-6 !h-6" />
+              </template>
+            </IconButton>
             <IconButton
-              icon-src="/images/custom-design/text-icon.svg"
-              icon-alt="Text"
               aria-label="Add text design"
               variant="primary"
               size="fit"
               @click="addText()"
-
-            />
+            >
+              <template #icon>
+                <TextIcon class="!w-6 !h-6" />
+              </template>
+            </IconButton>
           </div>
         </div>
         
