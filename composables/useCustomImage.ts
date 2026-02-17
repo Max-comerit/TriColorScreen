@@ -72,8 +72,10 @@ export function useCustomImage() {
       image.controls.deleteControl = new Control({
         x: 0.5,
         y: -0.5,
-        offsetX: 0,
-        offsetY: 0,
+        offsetX: 12,
+        offsetY: -12,
+        sizeX: 36,
+        sizeY: 36,
         cursorStyle: 'pointer',
         render: (ctx, left, top, _styleOverride, fabricObject) => {          
           const size = 24
@@ -107,6 +109,8 @@ export function useCustomImage() {
         y: -0.75,
         offsetX: 0,
         offsetY: 0,
+        sizeX: 36,
+        sizeY: 36,
         cursorStyle: 'grab',
         render: (ctx, left, top, _styleOverride, fabricObject) => {
           const size = 24
@@ -130,8 +134,10 @@ export function useCustomImage() {
       image.controls.resizeControl = new Control({
         x: 0.5,
         y: 0.5,
-        offsetX: 0,
-        offsetY: 0,
+        offsetX: 12,
+        offsetY: 12,
+        sizeX: 36,
+        sizeY: 36,
         cursorStyle: 'nwse-resize',
         render: (ctx, left, top, _styleOverride, fabricObject) => {
           const size = 24
