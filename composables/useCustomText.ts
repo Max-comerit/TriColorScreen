@@ -1,5 +1,11 @@
 // composables/useCustomText.ts
-import { Textbox, Control, controlsUtils, FabricImage } from 'fabric'
+import { Textbox, Control, controlsUtils } from 'fabric'
+import {
+  createResizeControlRender,
+  createRotateControlRender,
+  createTrashControlRender,
+} from '@/utils/customControlRenders'
+import { getResizeImage, getRotateImage, getTrashCanImage } from '@/utils/customImageIcons'
 
 interface FabricCanvasLike {
   add: (object: Textbox) => void
@@ -49,17 +55,15 @@ export function useCustomText() {
       fontWeight,
       fill,
       textAlign,
+      borderColor: 'blue',
+      borderScaleFactor: 1,
+      borderDashArray: [5, 5],
       editable: true,
       controls: {
         scaleIcon: new Control({
           x: 0.5,
           y: 0.5,
-          render: (ctx, left, top) => {
-          const size = 24
-          const img = new Image()
-          img.src = '/images/custom-design/zoom.svg'
-          ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
-          },
+          render: createResizeControlRender(getResizeImage()),
           cursorStyle: 'nwse-resize',
           actionHandler: controlsUtils.scalingEqually,
         }),
@@ -67,12 +71,7 @@ export function useCustomText() {
           x: 0.5,
           y: -0.5,
           cursorStyle: 'pointer',
-          render: (ctx, left, top) => {
-            const size = 24
-            const img = new Image()
-            img.src = '/images/custom-design/trash-can.svg'
-            ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
-          },
+          render: createTrashControlRender(getTrashCanImage()),
           mouseUpHandler: (eventData, transform) => {          
             const target = transform?.target
             if (target) {
@@ -86,13 +85,8 @@ export function useCustomText() {
           x: 0,
           y: -0.5,
           offsetY: -50,
-          cursorStyle: 'pointer',
-          render: (ctx, left, top) => {
-            const size = 24
-            const img = new Image()
-            img.src = '/images/custom-design/rotate.svg'
-            ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
-          },
+          cursorStyle: 'grab',
+          render: createRotateControlRender(getRotateImage()),
           withConnection: true,
           actionHandler: controlsUtils.rotationWithSnapping,
         }),
@@ -102,28 +96,33 @@ export function useCustomText() {
           cursorStyle: 'resize',
           render: (ctx, left, top) => {
             const size = 24
-            const img = new Image()
-            img.src = '/images/custom-design/resize.svg'
-            ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
+            const img = getResizeImage()
+            ctx.save()
+                ctx.translate(left, top)
+                ctx.fillStyle = 'white'
+                ctx.beginPath()
+                ctx.arc(0, 0, (3 * size) / 4, 0, Math.PI * 2)
+                ctx.fill()
+
+                if (img.complete) {
+                  ctx.drawImage(img, -size / 2, -size / 2, size, size)
+                }
+
+            ctx.restore()
+
           },
           withConnection: true,
           actionHandler: controlsUtils.changeObjectWidth,
         }),
     }})
 
+    
+
     canvas.add(textbox)
     canvas.centerObject(textbox)
     canvas.setActiveObject(textbox)
     canvas.requestRenderAll()
-
-    setTimeout(() => {
-      if (textbox.enterEditing) {
-        textbox.enterEditing()
-        textbox.selectAll()
-        canvas.requestRenderAll()
-      }
-    }, 0)
-
+    
     return textbox
   }
 

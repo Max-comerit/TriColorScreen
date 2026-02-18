@@ -1,36 +1,19 @@
 // composables/useCustomImage.ts
 
 import type { Canvas } from 'fabric'
-import { FabricImage, Control, util, controlsUtils } from 'fabric'
-import resizeIcon from '@/assets/images/custom-design/resize.svg?url'
-import rotateIcon from '@/assets/images/custom-design/rotate.svg?url'
-import trashCanIcon from '@/assets/images/custom-design/trash-can.svg?url'
+import { FabricImage, Control, controlsUtils } from 'fabric'
+import {
+  createResizeControlRender,
+  createRotateControlRender,
+  createTrashControlRender,
+} from '@/utils/customControlRenders'
+import { getResizeImage, getRotateImage, getTrashCanImage } from '@/utils/customImageIcons'
 
 interface Transform {
   target?: unknown
 }
 
-// Create images on client side only to avoid SSR issues
-const trashCanImage = typeof window !== 'undefined' ? new Image() : null
-const resizeImage = typeof window !== 'undefined' ? new Image() : null
-const rotateImage = typeof window !== 'undefined' ? new Image() : null
 
-// Set image sources immediately on client
-if (trashCanImage) trashCanImage.src = trashCanIcon
-if (resizeImage) resizeImage.src = resizeIcon
-if (rotateImage) rotateImage.src = rotateIcon
-
-function getTrashCanImage(): HTMLImageElement {
-  return trashCanImage!
-}
-
-function getResizeImage(): HTMLImageElement {
-  return resizeImage!
-}
-
-function getRotateImage(): HTMLImageElement {
-  return rotateImage!
-}
 
 export function useCustomImage() {
   /**
@@ -81,7 +64,7 @@ export function useCustomImage() {
 
       // Disable caching to ensure controls are always rendered
       image.objectCaching = false
-      
+
       // Add custom control for delete
       image.controls.deleteControl = new Control({
         x: 0.5,
@@ -91,21 +74,7 @@ export function useCustomImage() {
         sizeX: 36,
         sizeY: 36,
         cursorStyle: 'pointer',
-        render: (ctx, left, top, _styleOverride, fabricObject) => {          
-          const size = 24
-          const img = getTrashCanImage()
-          ctx.save()
-          ctx.translate(left, top)
-          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
-          ctx.fillStyle = 'red'
-          ctx.beginPath()
-          ctx.arc(0, 0, 3*size / 4, 0, Math.PI * 2)
-          ctx.fill()
-          if (img.complete) {
-            ctx.drawImage(img, -size / 2, -size / 2, size, size)
-          }
-          ctx.restore()
-        },
+        render: createTrashControlRender(getTrashCanImage()),
         mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
           const target = transform?.target as FabricImage | undefined
           if (target) {
@@ -126,21 +95,7 @@ export function useCustomImage() {
         sizeX: 36,
         sizeY: 36,
         cursorStyle: 'grab',
-        render: (ctx, left, top, _styleOverride, fabricObject) => {
-          const size = 24
-          const img = getRotateImage()
-          ctx.save()
-          ctx.translate(left, top)
-          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
-          ctx.fillStyle = 'white'
-          ctx.beginPath()
-          ctx.arc(0, 0, 3*size / 4, 0, Math.PI * 2)
-          ctx.fill()
-          if (img.complete) {
-            ctx.drawImage(img, -size / 2, -size / 2, size, size)
-          }
-          ctx.restore()
-        },
+        render: createRotateControlRender(getRotateImage()),
         actionHandler: controlsUtils.rotationWithSnapping,
         withConnection: true,
       })
@@ -154,22 +109,7 @@ export function useCustomImage() {
         sizeX: 36,
         sizeY: 36,
         cursorStyle: 'nwse-resize',
-        render: (ctx, left, top, _styleOverride, fabricObject) => {
-          const size = 24
-          const img = getResizeImage()
-          ctx.save()
-          ctx.translate(left, top)
-          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
-          ctx.fillStyle = 'white'
-          ctx.beginPath()
-          ctx.arc(0, 0, 3*size / 4, 0, Math.PI * 2)
-          ctx.fill()
-          if (img.complete) {
-            ctx.rotate(util.degreesToRadians(45))
-            ctx.drawImage(img, -size / 2, -size / 2, size, size)
-          }
-          ctx.restore()
-        },
+        render: createResizeControlRender(getResizeImage()),
         withConnection: false,
         actionHandler: controlsUtils.scalingEqually,
       })

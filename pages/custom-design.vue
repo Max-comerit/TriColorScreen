@@ -12,6 +12,12 @@ import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
 import { ref, shallowRef, onMounted } from 'vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
+import {
+  createRotateControlRender,
+  createTrashControlRender,
+} from '@/utils/customControlRenders'
+import { getRotateImage, getTrashCanImage } from '@/utils/customImageIcons'
+
 
 // ===== COMPOSABLES =====
 useHead({
@@ -66,12 +72,7 @@ onMounted(async () => {
       x: 0.5,
       y: -0.5,
       cursorStyle: 'pointer',
-      render: (ctx, left, top) => {
-        const size = 24
-        const img = new Image()
-        img.src = '/images/custom-design/trash-can.svg'
-        ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
-      },
+        render: createTrashControlRender(getTrashCanImage()),
       mouseUpHandler: (_eventData, transform) => {
         const target = transform?.target as ActiveSelection | undefined
         if (target) {
@@ -89,28 +90,21 @@ onMounted(async () => {
       y: -0.5,
       offsetY: -50,
       cursorStyle: 'pointer',
-      render: (ctx, left, top) => {
-        const size = 24
-        const img = new Image()
-        img.src = '/images/custom-design/rotate.svg'
-        ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
-      },
+      render: createRotateControlRender(getRotateImage()),
       withConnection: true,
       actionHandler: controlsUtils.rotationWithSnapping,
     }),
-    scaleIcon: new Control({
+    resizeIcon: new Control({
       x: 0.5,
       y: 0.5,
       cursorStyle: 'nwse-resize',
-      render: (ctx, left, top) => {
-        const size = 24
-        const img = new Image()
-        img.src = '/images/custom-design/zoom.svg'
-        ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
-      },
+      render: createResizeControlRender(getResizeImage()),
       actionHandler: controlsUtils.scalingEqually,
     }),
   }
+  ActiveSelection.ownDefaults.borderColor = 'blue'
+  ActiveSelection.ownDefaults.borderScaleFactor = 1
+  ActiveSelection.ownDefaults.borderDashArray = [5, 5]
 
   // Load background
   const bg = await FabricImage.fromURL('/images/custom-design/t-shirt-front.png')
