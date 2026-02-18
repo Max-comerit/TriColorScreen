@@ -124,89 +124,91 @@ const handleCardClick = () => {
 </script>
 
 <template>
-  <!-- Link variant - semantic <a> tag for navigation -->
-  <NuxtLink
-    v-if="link"
-    :key="`link-${link}`"
-    :to="link"
-    class="group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-card"
-  >
-    <!-- Article wrapper for semantic content -->
-    <article
-      :class="linkArticleClass"
-      :style="cardStyle"
+  <div class="h-full w-full">
+    <!-- Link variant - semantic <a> tag for navigation -->
+    <NuxtLink
+      v-if="link"
+      :key="`link-${link}`"
+      :to="link"
+      class="group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-card h-full block"
     >
-    <!-- Title above image and content -->
-    <h3 class="text-lg md:text-xl font-display font-medium mb-4 text-neutral-900 w-fit mx-auto my-0">
-      {{ title }}
-    </h3>
+      <!-- Article wrapper for semantic content -->
+      <article
+        :class="linkArticleClass"
+        :style="cardStyle"
+      >
+        <!-- Title above image and content -->
+        <h3 class="text-lg md:text-xl font-display font-medium mb-4 text-neutral-900 w-fit mx-auto my-0">
+          {{ title }}
+        </h3>
 
-    <!-- Image and description row -->
-    <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
-      <!-- Image container -->
-      <div
-        :class="[
-        imageOrderClass,
-        'w-full md:w-1/3 aspect-[4/3] md:aspect-auto overflow-hidden rounded-card'
-      ]">
-        <NuxtImg
-          :src="imageSrc" 
-          :alt="imageAlt || title"
-          class="w-full object-cover transition-transform duration-300 group-hover:scale-105" 
-          format="webp"
-          sizes="100vw sm:50vw lg:33vw" 
-          loading="lazy" 
-          width="400" 
-          height="300" />
-      </div>
+        <!-- Image and description row -->
+        <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+          <!-- Image container -->
+          <div
+            :class="[
+            imageOrderClass,
+            'w-full md:w-1/3 aspect-[4/3] md:aspect-auto overflow-hidden rounded-card'
+          ]">
+            <NuxtImg
+              :src="imageSrc" 
+              :alt="imageAlt || title"
+              class="w-full object-cover transition-transform duration-300 group-hover:scale-105" 
+              format="webp"
+              sizes="100vw sm:50vw lg:33vw" 
+              loading="lazy" 
+              width="400" 
+              height="300" />
+          </div>
 
-      <!-- Content container -->
-      <div :class="[contentOrderClass, 'flex-1 flex flex-col justify-center']">
-        <p class="text-sm md:text-base leading-relaxed " :class="props.textColor" :style="descriptionStyle">
-          {{ description }}
-        </p>
+          <!-- Content container -->
+          <div :class="[contentOrderClass, 'flex-1 flex flex-col justify-center']">
+            <p class="text-sm md:text-base leading-relaxed " :class="props.textColor" :style="descriptionStyle">
+              {{ description }}
+            </p>
+          </div>
+        </div>
+      </article>
+    </NuxtLink>
+
+    <!-- Article variant - semantic <article> for standalone content -->
+    <article
+      v-else
+      :key="`article-${title}`"
+      :class="articleClass"
+      :style="{ ...cardStyle, cursor: cursor }" tabindex="0" role="button" :aria-label="title" @click="handleCardClick"
+      @keydown.enter.prevent="handleCardClick" @keydown.space.prevent="handleCardClick">
+      <!-- Title above image and content -->
+      <h3 class="text-lg md:text-xl font-display font-semibold mb-4 text-neutral-900 w-fit mx-auto my-0">
+        {{ title }}
+      </h3>
+
+      <!-- Image and description row -->
+      <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+        <!-- Image container -->
+        <div
+          :class="[
+          imageOrderClass,
+          'w-full md:w-1/3 aspect-[4/3] md:aspect-auto overflow-hidden rounded-card'
+        ]">
+          <NuxtImg
+            :src="imageSrc" 
+            :alt="imageAlt || title"
+            class="w-full object-cover transition-transform duration-300" 
+            format="webp"
+            sizes="100vw sm:50vw lg:33vw" 
+            loading="lazy" 
+            width="400" 
+            height="300" />
+        </div>
+
+        <!-- Content container -->
+        <div :class="[contentOrderClass, 'flex-1 flex flex-col justify-center']">
+          <p class="text-sm md:text-base leading-relaxed " :class="props.textColor" :style="descriptionStyle">
+            {{ description }}
+          </p>
+        </div>
       </div>
-    </div>
     </article>
-  </NuxtLink>
-
-  <!-- Article variant - semantic <article> for standalone content -->
-  <article
-    v-else
-    :key="`article-${title}`"
-    :class="articleClass"
-    :style="{ ...cardStyle, cursor: cursor }" tabindex="0" role="button" :aria-label="title" @click="handleCardClick"
-    @keydown.enter.prevent="handleCardClick" @keydown.space.prevent="handleCardClick">
-    <!-- Title above image and content -->
-    <h3 class="text-lg md:text-xl font-display font-semibold mb-4 text-neutral-900 w-fit mx-auto my-0">
-      {{ title }}
-    </h3>
-
-    <!-- Image and description row -->
-    <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
-      <!-- Image container -->
-      <div
-        :class="[
-        imageOrderClass,
-        'w-full md:w-1/3 aspect-[4/3] md:aspect-auto overflow-hidden rounded-card'
-      ]">
-        <NuxtImg
-          :src="imageSrc" 
-          :alt="imageAlt || title"
-          class="w-full object-cover transition-transform duration-300" 
-          format="webp"
-          sizes="100vw sm:50vw lg:33vw" 
-          loading="lazy" 
-          width="400" 
-          height="300" />
-      </div>
-
-      <!-- Content container -->
-      <div :class="[contentOrderClass, 'flex-1 flex flex-col justify-center']">
-        <p class="text-sm md:text-base leading-relaxed " :class="props.textColor" :style="descriptionStyle">
-          {{ description }}
-        </p>
-      </div>
-    </div>
-  </article>
+  </div>
 </template>
