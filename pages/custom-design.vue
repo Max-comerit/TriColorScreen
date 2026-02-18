@@ -177,7 +177,7 @@ function addText(): void {
     <HeroImage 
       src="/images/custom-design/hero.jpg"
       title="Designa produkter med eget tryck"
-      description="Skapa unika trikåprodukter med vårt designverktyg. Uppladera dina bilder, lägg till egen text och se resultatet innan produktion."
+      description="Skapa unika textilprodukter med vårt design verktyg. Ladda upp dina bilder, lägg till egen text och se resultatet innan produktion."
       :width="1280"
       :height="854"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
