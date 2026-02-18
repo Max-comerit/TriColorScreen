@@ -1,0 +1,201 @@
+// composables/useCustomImage.ts
+
+import type { Canvas } from 'fabric'
+import { FabricImage, Control, util, controlsUtils } from 'fabric'
+import resizeIcon from '@/assets/images/custom-design/resize.svg?url'
+import rotateIcon from '@/assets/images/custom-design/rotate.svg?url'
+import trashCanIcon from '@/assets/images/custom-design/trash-can.svg?url'
+
+interface Transform {
+  target?: unknown
+}
+
+// Create images on client side only to avoid SSR issues
+const trashCanImage = typeof window !== 'undefined' ? new Image() : null
+const resizeImage = typeof window !== 'undefined' ? new Image() : null
+const rotateImage = typeof window !== 'undefined' ? new Image() : null
+
+// Set image sources immediately on client
+if (trashCanImage) trashCanImage.src = trashCanIcon
+if (resizeImage) resizeImage.src = resizeIcon
+if (rotateImage) rotateImage.src = rotateIcon
+
+function getTrashCanImage(): HTMLImageElement {
+  return trashCanImage!
+}
+
+function getResizeImage(): HTMLImageElement {
+  return resizeImage!
+}
+
+function getRotateImage(): HTMLImageElement {
+  return rotateImage!
+}
+
+export function useCustomImage() {
+  /**
+   * Add a custom image to the canvas from a File object
+   * Images are selectable, draggable, and have a delete button
+   * @param canvas - The Fabric.js canvas instance
+   * @param file - The image file to add
+   */
+  async function addImageToCanvas(canvas: Canvas | null, file: File): Promise<FabricImage | null> {
+    if (!canvas) {
+      console.error('Canvas is not initialized')
+      return null
+    }
+
+    try {
+      // Read the file as a data URL
+      const reader = new FileReader()
+
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        reader.onload = (e) => {
+          const result = e.target?.result
+          if (typeof result === 'string') {
+            resolve(result)
+          } else {
+            reject(new Error('Failed to read file as data URL'))
+          }
+        }
+        reader.onerror = () => reject(new Error('File reading error'))
+        reader.readAsDataURL(file)
+      })
+
+      // Load the image using Fabric.js
+      const image = await FabricImage.fromURL(dataUrl)
+
+      // Clear default controls
+      image.controls = {}
+
+      // Configure the image
+      image.selectable = true
+      image.hasControls = true
+      image.hasBorders = true
+      image.scaleToWidth(100) // Default size, can be adjusted
+
+      // Add a blue dashed border for better visibility when selected
+      image.borderColor = 'blue'
+      image.borderScaleFactor = 1
+      image.borderDashArray = [5, 5]
+
+      // Disable caching to ensure controls are always rendered
+      image.objectCaching = false
+      
+      // Add custom control for delete
+      image.controls.deleteControl = new Control({
+        x: 0.5,
+        y: -0.5,
+        offsetX: 12,
+        offsetY: -12,
+        sizeX: 36,
+        sizeY: 36,
+        cursorStyle: 'pointer',
+        render: (ctx, left, top, _styleOverride, fabricObject) => {          
+          const size = 24
+          const img = getTrashCanImage()
+          ctx.save()
+          ctx.translate(left, top)
+          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
+          ctx.fillStyle = 'red'
+          ctx.beginPath()
+          ctx.arc(0, 0, 3*size / 4, 0, Math.PI * 2)
+          ctx.fill()
+          if (img.complete) {
+            ctx.drawImage(img, -size / 2, -size / 2, size, size)
+          }
+          ctx.restore()
+        },
+        mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
+          const target = transform?.target as FabricImage | undefined
+          if (target) {
+            const canvas = target.canvas
+            canvas?.remove(target)
+            canvas?.requestRenderAll()
+          }
+          return true
+        },
+      })
+
+      // Add custom control for rotation
+      image.controls.rotateControl = new Control({
+        x: 0,
+        y: -0.5,
+        offsetX: 0,
+        offsetY: -50,
+        sizeX: 36,
+        sizeY: 36,
+        cursorStyle: 'grab',
+        render: (ctx, left, top, _styleOverride, fabricObject) => {
+          const size = 24
+          const img = getRotateImage()
+          ctx.save()
+          ctx.translate(left, top)
+          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
+          ctx.fillStyle = 'white'
+          ctx.beginPath()
+          ctx.arc(0, 0, 3*size / 4, 0, Math.PI * 2)
+          ctx.fill()
+          if (img.complete) {
+            ctx.drawImage(img, -size / 2, -size / 2, size, size)
+          }
+          ctx.restore()
+        },
+        actionHandler: controlsUtils.rotationWithSnapping,
+        withConnection: true,
+      })
+
+      // Add custom control for resize
+      image.controls.resizeControl = new Control({
+        x: 0.5,
+        y: 0.5,
+        offsetX: 12,
+        offsetY: 12,
+        sizeX: 36,
+        sizeY: 36,
+        cursorStyle: 'nwse-resize',
+        render: (ctx, left, top, _styleOverride, fabricObject) => {
+          const size = 24
+          const img = getResizeImage()
+          ctx.save()
+          ctx.translate(left, top)
+          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
+          ctx.fillStyle = 'white'
+          ctx.beginPath()
+          ctx.arc(0, 0, 3*size / 4, 0, Math.PI * 2)
+          ctx.fill()
+          if (img.complete) {
+            ctx.rotate(util.degreesToRadians(45))
+            ctx.drawImage(img, -size / 2, -size / 2, size, size)
+          }
+          ctx.restore()
+        },
+        withConnection: false,
+        actionHandler: controlsUtils.scalingEqually,
+      })
+
+      // Center the image on the canvas
+      canvas.centerObject(image)
+
+      // Add to canvas (on top of existing layers)
+      canvas.add(image)
+
+      // Set as active object so user can immediately manipulate it
+      canvas.setActiveObject(image)
+
+      // Render the canvas
+      canvas.renderAll()
+
+      return image
+    } catch (error) {
+      console.error('Failed to add image to canvas:', error)
+      throw error
+    }
+  }
+
+  return {
+    addImageToCanvas,
+  }
+}
+
+

@@ -10,7 +10,8 @@
     "postinstall": "nuxi prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "security:audit": "npm audit --audit-level=high"
+    "audit": "audit-ci --fail-level high --allowlist GHSA-2g4f-4pwh-qvx6",
+    "security:audit": "audit-ci --fail-level high --allowlist GHSA-2g4f-4pwh-qvx6"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.12.1",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.14.0",
+    "audit-ci": "^7.1.0",
     "eslint": "^9.39.2",
     "lint-staged": "^16.2.7",
     "vite-svg-loader": "^5.1.0"

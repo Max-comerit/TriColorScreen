@@ -62,3 +62,6 @@ TriColorScreen/
 ├── CODING_STANDARDS.md     # Project Coding Standard
 └── README.md               # This file
 ```
+
+### Misc
+Dev-only Ajv warnings from ESLint are safe to ignore. CI audit ignores them.

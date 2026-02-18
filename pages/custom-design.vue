@@ -8,6 +8,7 @@ import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
+import { useCustomImage } from '~/composables/useCustomImage'
 import { ref, onMounted } from 'vue'
 
 // ===== COMPOSABLES =====
@@ -41,41 +42,49 @@ useHead({
   ],
 })
 
+const { addImageToCanvas } = useCustomImage()
+
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
-const canvas = ref<Canvas | null>(null)
+let canvas: Canvas | null = null
 
-// ===== LIFECYCLE HOOKS =====
-onMounted(() => {
-  canvas.value = new Canvas('shirt-canvas')
-  loadFabricBackgroundImage('/images/custom-design/t-shirt-front.png', 800, 800)
+// ===== LIFECYCLE HOOKS =====W
+onMounted(async () => {
+  await nextTick()
+  const el = document.getElementById('shirt-canvas') as HTMLCanvasElement
+
+  // Validate element exists and is a canvas
+  if (!(el instanceof HTMLCanvasElement)) {
+    console.error('Canvas element not found')
+    return
+  }
+
+  canvas = new Canvas(el, { selection: true })
+  canvas.setDimensions({ width: 800, height: 800 })
+  canvas.enablePointerEvents = true
+
+  // Load background
+  const bg = await FabricImage.fromURL('/images/custom-design/t-shirt-front.png')
+  bg.scaleToWidth(800)
+  bg.scaleToHeight(800)
+  bg.selectable = false
+  bg.evented = false
+  bg.set({ originX: 'center', originY: 'center', left: 400, top: 400 })
+  canvas.backgroundImage = bg
+  canvas.requestRenderAll()
 })
 
-// ===== METHODS =====
-
-async function loadFabricBackgroundImage(imagePath: string, width: number, height: number): Promise<void> {
-  try {
-    const img = await FabricImage.fromURL(imagePath)
-    img.scaleToWidth(width)
-    img.scaleToHeight(height)
-    img.selectable = false
-    canvas.value?.centerObject(img)
-    canvas.value?.insertAt(0, img)
-  } catch (error) {
-    console.error('Failed to load image:', error)
-  }
-}
 
 function uploadImage(): void {
   // Trigger file input dialog
   fileInputRef.value?.click()
 }
 
-function handleImageSelected(event: Event): void {
+async function handleImageSelected(event: Event): Promise<void> {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
 
-  if (!file) return
+  if (!file || !canvas) return
 
   // Validate that it's an image
   if (!file.type.startsWith('image/')) {
@@ -83,9 +92,12 @@ function handleImageSelected(event: Event): void {
     return
   }
 
-  // TODO: Implement actual upload logic
-  console.log('Selected image:', file.name, file.type, file.size)
-  alert(`Image selected: ${file.name}`)
+  try {
+    await addImageToCanvas(canvas as Canvas, file)
+  } catch (error) {
+    alert('Failed to add image. Please try again.')
+    console.error('Error adding image:', error)
+  }
 
   // Reset input so same file can be selected again
   input.value = ''
@@ -104,7 +116,7 @@ function addText(): void {
     <input
       ref="fileInputRef"
       type="file"
-      accept="image/*"
+      accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
       class="hidden"
       @change="handleImageSelected"
     >
@@ -113,7 +125,7 @@ function addText(): void {
     <HeroImage 
       src="/images/custom-design/hero.jpg"
       title="Designa produkter med eget tryck"
-      description="Skapa unika trikåprodukter med vårt designverktyg. Uppladera dina bilder, lägg till egen text och se resultatet innan produktion. Vi erbjuder professionell tillverkning av tryckt textiltryck och brodyr på t-shirts, kepsar, arbetskläder och andra trikåprodukter."
+      description="Skapa unika trikåprodukter med vårt designverktyg. Uppladera dina bilder, lägg till egen text och se resultatet innan produktion."
       :width="1280"
       :height="854"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
@@ -128,7 +140,7 @@ function addText(): void {
         aria-label="Design Verktyg"
       >
         <div class="designer flex gap-4 items-center justify-center">
-          <canvas id="shirt-canvas" width="800" height="800" class="relative mx-auto w-[800px] h-[800px] border border-black rounded-card overflow-hidden"/>
+          <canvas id="shirt-canvas" width="800" height="800" class="relative mx-auto border border-black rounded-card overflow-hidden"/>
           <div class="flex flex-col gap-3">
             <IconButton
               aria-label="Upload image design"
