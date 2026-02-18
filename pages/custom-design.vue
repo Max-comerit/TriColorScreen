@@ -126,7 +126,6 @@ function rescaleCanvas(newSize: number): void {
   canvas.requestRenderAll()
 }
 
-
 function uploadImage(): void {
   // Trigger file input dialog
   fileInputRef.value?.click()
@@ -218,7 +217,6 @@ function addText(): void {
             </IconButton>
           </div>
         </div>
-        
       </Section>
     </div>
   </div>
