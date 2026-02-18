@@ -53,6 +53,12 @@ onMounted(async () => {
   await nextTick()
   const el = document.getElementById('shirt-canvas') as HTMLCanvasElement
 
+  // Validate element exists and is a canvas
+  if (!(el instanceof HTMLCanvasElement)) {
+    console.error('Canvas element not found')
+    return
+  }
+
   canvas = new Canvas(el, { selection: true })
   canvas.setDimensions({ width: 800, height: 800 })
   canvas.enablePointerEvents = true

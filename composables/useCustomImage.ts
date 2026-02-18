@@ -129,40 +129,13 @@ export function useCustomImage() {
       // Add custom control for rotation
       image.controls.rotateControl = new Control({
         x: 0,
-        y: -0.75,
+        y: -0.5,
         offsetX: 0,
         offsetY: -50,
         sizeX: 36,
         sizeY: 36,
         cursorStyle: 'grab',
         render: (ctx, left, top, _styleOverride, fabricObject) => {
-          // Draw connection line from top-center to control
-          ctx.save()
-          ctx.lineWidth = 2
-          ctx.strokeStyle = '#000000'
-          ctx.beginPath()
-          
-          // Calculate top-center position of the object
-          const angleRad = util.degreesToRadians(fabricObject.angle || 0)
-          const halfHeight = (fabricObject.height * fabricObject.scaleY) / 2
-          
-          // Object's center position
-          const centerX = fabricObject.left
-          const centerY = fabricObject.top
-          
-          // Calculate top-center point considering rotation
-          // In local coordinates, top-center is at (0, -halfHeight)
-          // Apply rotation transformation
-          const topCenterX = centerX + Math.sin(angleRad) * halfHeight
-          const topCenterY = centerY - Math.cos(angleRad) * halfHeight
-          
-          // Draw line from top-center to control position
-          ctx.moveTo(topCenterX, topCenterY)
-          ctx.lineTo(left, top)
-          ctx.stroke()
-          ctx.restore()
-          
-          // Draw the control icon
           const size = 24
           const img = getRotateImage()
           ctx.save()
