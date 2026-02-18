@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { Canvas, FabricImage } from 'fabric'
+import { Canvas, FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
@@ -10,7 +10,7 @@ import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
-import { ref, onMounted } from 'vue'
+import { ref, shallowRef, onMounted } from 'vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
 
 // ===== COMPOSABLES =====
@@ -49,16 +49,68 @@ const { addTextToCanvas } = useCustomText()
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
-let canvas: Canvas | null = null
+const canvas = shallowRef<Canvas | null>(null)
 
 // ===== LIFECYCLE HOOKS =====W
 onMounted(async () => {
   await nextTick()
   const el = document.getElementById('shirt-canvas') as HTMLCanvasElement
 
-  canvas = new Canvas(el, { selection: true })
-  canvas.setDimensions({ width: 800, height: 800 })
-  canvas.enablePointerEvents = true
+  canvas.value = new Canvas(el, { selection: true })
+  canvas.value.setDimensions({ width: 800, height: 800 })
+  canvas.value.enablePointerEvents = true
+
+  // Configure ActiveSelection controls (box-select / multi-select)
+  ActiveSelection.ownDefaults.controls = {
+    deleteIcon: new Control({
+      x: 0.5,
+      y: -0.5,
+      cursorStyle: 'pointer',
+      render: (ctx, left, top) => {
+        const size = 24
+        const img = new Image()
+        img.src = '/images/custom-design/trash-can.svg'
+        ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
+      },
+      mouseUpHandler: (_eventData, transform) => {
+        const target = transform?.target as ActiveSelection | undefined
+        if (target) {
+          const c = target.canvas
+          if (c) {
+            target.getObjects().forEach(obj => c.remove(obj))
+            c.discardActiveObject()
+            c.requestRenderAll()
+          }
+        }
+      },
+    }),
+    rotateIcon: new Control({
+      x: 0,
+      y: -0.5,
+      offsetY: -50,
+      cursorStyle: 'pointer',
+      render: (ctx, left, top) => {
+        const size = 24
+        const img = new Image()
+        img.src = '/images/custom-design/rotate.svg'
+        ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
+      },
+      withConnection: true,
+      actionHandler: controlsUtils.rotationWithSnapping,
+    }),
+    scaleIcon: new Control({
+      x: 0.5,
+      y: 0.5,
+      cursorStyle: 'nwse-resize',
+      render: (ctx, left, top) => {
+        const size = 24
+        const img = new Image()
+        img.src = '/images/custom-design/zoom.svg'
+        ctx.drawImage(img, left - size / 2, top - size / 2, size, size)
+      },
+      actionHandler: controlsUtils.scalingEqually,
+    }),
+  }
 
   // Load background
   const bg = await FabricImage.fromURL('/images/custom-design/t-shirt-front.png')
@@ -67,8 +119,8 @@ onMounted(async () => {
   bg.selectable = false
   bg.evented = false
   bg.set({ originX: 'center', originY: 'center', left: 400, top: 400 })
-  canvas.backgroundImage = bg
-  canvas.requestRenderAll()
+  canvas.value.backgroundImage = bg
+  canvas.value.requestRenderAll()
 })
 
 
@@ -101,7 +153,7 @@ async function handleImageSelected(event: Event): Promise<void> {
 }
 
 function addText() {
-  addTextToCanvas(canvas)
+  addTextToCanvas(canvas.value)
 }
 
 </script>
