@@ -9,7 +9,7 @@ import IconButton from '~/components/common/IconButton.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import { useCustomImage } from '~/composables/useCustomImage'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -46,33 +46,85 @@ const { addImageToCanvas } = useCustomImage()
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
+const canvasWrapperRef = ref<HTMLDivElement | null>(null)
 let canvas: Canvas | null = null
+let resizeObserver: ResizeObserver | null = null
+let currentCanvasSize = 0
 
-// ===== LIFECYCLE HOOKS =====W
+// ===== LIFECYCLE HOOKS =====
 onMounted(async () => {
   await nextTick()
   const el = document.getElementById('shirt-canvas') as HTMLCanvasElement
+  const wrapper = canvasWrapperRef.value
 
   // Validate element exists and is a canvas
-  if (!(el instanceof HTMLCanvasElement)) {
+  if (!(el instanceof HTMLCanvasElement) || !wrapper) {
     console.error('Canvas element not found')
     return
   }
 
+  // Observe the wrapper div — CSS controls its size, we sync Fabric to it
+  resizeObserver = new ResizeObserver((entries) => {
+    const size = Math.ceil(entries[0].contentRect.width)
+    if (size <= 0) return
+    if (!canvas) {
+      initializeCanvas(el, size)
+    } else {
+      rescaleCanvas(size)
+    }
+  })
+  resizeObserver.observe(wrapper)
+})
+
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect()
+})
+
+async function initializeCanvas(el: HTMLCanvasElement, size: number): Promise<void> {
+  currentCanvasSize = size
   canvas = new Canvas(el, { selection: true })
-  canvas.setDimensions({ width: 800, height: 800 })
+  canvas.setDimensions({ width: size, height: size })
   canvas.enablePointerEvents = true
 
   // Load background
   const bg = await FabricImage.fromURL('/images/custom-design/t-shirt-front.png')
-  bg.scaleToWidth(800)
-  bg.scaleToHeight(800)
+  bg.scaleToWidth(size)
+  bg.scaleToHeight(size)
   bg.selectable = false
   bg.evented = false
-  bg.set({ originX: 'center', originY: 'center', left: 400, top: 400 })
+  bg.set({ originX: 'center', originY: 'center', left: size / 2, top: size / 2 })
   canvas.backgroundImage = bg
   canvas.requestRenderAll()
-})
+}
+
+function rescaleCanvas(newSize: number): void {
+  if (!canvas || currentCanvasSize <= 0) return
+  const ratio = newSize / currentCanvasSize
+  currentCanvasSize = newSize
+
+  canvas.setDimensions({ width: newSize, height: newSize })
+
+  // Rescale background image
+  const bg = canvas.backgroundImage as FabricImage | undefined
+  if (bg) {
+    bg.scaleToWidth(newSize)
+    bg.scaleToHeight(newSize)
+    bg.set({ left: newSize / 2, top: newSize / 2 })
+  }
+
+  // Proportionally rescale and reposition all objects
+  canvas.getObjects().forEach((obj) => {
+    obj.set({
+      left: (obj.left ?? 0) * ratio,
+      top: (obj.top ?? 0) * ratio,
+      scaleX: (obj.scaleX ?? 1) * ratio,
+      scaleY: (obj.scaleY ?? 1) * ratio,
+    })
+    obj.setCoords()
+  })
+
+  canvas.requestRenderAll()
+}
 
 
 function uploadImage(): void {
@@ -139,9 +191,11 @@ function addText(): void {
         align="center"
         aria-label="Design Verktyg"
       >
-        <div class="designer flex gap-4 items-center justify-center">
-          <canvas id="shirt-canvas" width="800" height="800" class="relative mx-auto border border-black rounded-card overflow-hidden"/>
-          <div class="flex flex-col gap-3">
+        <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
+          <div ref="canvasWrapperRef" class="flex-1 w-full min-w-[350px] aspect-square">
+            <canvas id="shirt-canvas" class="block border border-black rounded-card overflow-hidden"/>
+          </div>
+          <div class="flex flex-row sm:flex-col justify-center gap-3">
             <IconButton
               aria-label="Upload image design"
               variant="primary"
