@@ -86,8 +86,13 @@ async function initializeCanvas(el: HTMLCanvasElement, size: number): Promise<vo
   canvas.setDimensions({ width: size, height: size })
   canvas.enablePointerEvents = true
 
-  // Load background
-  const bg = await FabricImage.fromURL('/images/custom-design/t-shirt-front.png')
+  await loadBackground('/images/custom-design/t-shirt-front.png', size)
+}
+
+async function loadBackground(url: string, size: number = currentCanvasSize): Promise<void> {
+  if (!canvas) return
+
+  const bg = await FabricImage.fromURL(url)
   bg.scaleToWidth(size)
   bg.scaleToHeight(size)
   bg.selectable = false
