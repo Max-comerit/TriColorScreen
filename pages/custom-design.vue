@@ -116,7 +116,7 @@ function addText(): void {
     <input
       ref="fileInputRef"
       type="file"
-      accept="image/*"
+      accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
       class="hidden"
       @change="handleImageSelected"
     >
