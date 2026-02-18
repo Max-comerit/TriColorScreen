@@ -18,6 +18,7 @@ const hasSelection = computed(() => selectedTextboxes.value.length > 0)
 // Local state — synced from the first selected textbox
 const fontFamily = ref('sans-serif')
 const isBold = ref(false)
+const isItalic = ref(false)
 const textAlign = ref<'left' | 'center' | 'right'>('left')
 const fill = ref('#000000')
 
@@ -88,6 +89,7 @@ function syncFromFirst() {
 
   fontFamily.value = first.fontFamily ?? 'sans-serif'
   isBold.value = first.fontWeight === 'bold' || first.fontWeight === 700
+  isItalic.value = first.fontStyle === 'italic'
   textAlign.value = (first.textAlign as 'left' | 'center' | 'right') ?? 'left'
   fill.value = (first.fill as string) ?? '#000000'
 }
@@ -117,6 +119,11 @@ function toggleBold() {
   applyToAll(tb => tb.set('fontWeight', isBold.value ? 'bold' : 'normal'))
 }
 
+function toggleItalic() {
+  isItalic.value = !isItalic.value
+  applyToAll(tb => tb.set('fontStyle', isItalic.value ? 'italic' : 'normal'))
+}
+
 function cycleAlignment() {
   const order: Array<'left' | 'center' | 'right'> = ['left', 'center', 'right']
   const next = order[(order.indexOf(textAlign.value) + 1) % order.length]
@@ -137,11 +144,19 @@ function updateColor() {
   >
     <!-- Font Family -->
     <select v-model="fontFamily" @change="updateFontFamily">
-      <option>sans-serif</option>
-      <option>serif</option>
-      <option>monospace</option>
-      <option>cursive</option>
-      <option>fantasy</option>
+      <option value="sans-serif">Sans-Serif</option>
+      <option value="Arial, sans-serif">Arial</option>
+      <option value="'Helvetica Neue', Helvetica, sans-serif">Helvetica</option>
+      <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+      <option value="serif">Serif</option>
+      <option value="'Times New Roman', Times, serif">Times New Roman</option>
+      <option value="Georgia, serif">Georgia</option>
+      <option value="'Palatino Linotype', Palatino, serif">Palatino</option>
+      <option value="monospace">Monospace</option>
+      <option value="'Courier New', Courier, monospace">Courier New</option>
+      <option value="cursive">Cursive</option>
+      <option value="'Comic Sans MS', cursive">Comic Sans</option>
+      <option value="Impact, fantasy">Impact</option>
     </select>
 
     <!-- Bold -->
@@ -153,9 +168,36 @@ function updateColor() {
       B
     </button>
 
+    <!-- Italic -->
+    <button
+      :class="{ active: isItalic }"
+      title="Italic"
+      class="italic-btn"
+      @click="toggleItalic"
+    >
+      I
+    </button>
+
     <!-- Alignment Cycle -->
-    <button title="Text Alignment" @click="cycleAlignment">
-      {{ textAlign === 'left' ? 'L' : textAlign === 'center' ? 'C' : 'R' }}
+    <button title="Text Alignment" class="align-btn" @click="cycleAlignment">
+      <!-- Align Left -->
+      <svg v-if="textAlign === 'left'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="15" y2="12" />
+        <line x1="3" y1="18" x2="18" y2="18" />
+      </svg>
+      <!-- Align Center -->
+      <svg v-else-if="textAlign === 'center'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="6" y1="12" x2="18" y2="12" />
+        <line x1="4" y1="18" x2="20" y2="18" />
+      </svg>
+      <!-- Align Right -->
+      <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="9" y1="12" x2="21" y2="12" />
+        <line x1="6" y1="18" x2="21" y2="18" />
+      </svg>
     </button>
 
     <!-- Color -->
@@ -193,6 +235,17 @@ function updateColor() {
   cursor: pointer;
   border-radius: 4px;
   font-weight: bold;
+}
+
+.italic-btn {
+  font-style: italic;
+}
+
+.align-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
 }
 
 .toolbar button.active {
