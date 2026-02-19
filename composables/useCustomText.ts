@@ -27,7 +27,7 @@ export interface AddTextOptions {
 
 const DEFAULT_TEXT = 'Min text'
 const DEFAULT_FONT_SIZE = 36
-const DEFAULT_FONT_FAMILY = 'sans-serif'
+const DEFAULT_FONT_FAMILY = "'Inter', sans-serif"
 const DEFAULT_FONT_WEIGHT = 600
 const DEFAULT_FILL = '#111111'
 const DEFAULT_TEXT_ALIGN: AddTextOptions['textAlign'] = 'center'

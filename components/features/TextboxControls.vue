@@ -16,7 +16,7 @@ const selectedTextboxes = shallowRef<Textbox[]>([])
 const hasSelection = computed(() => selectedTextboxes.value.length > 0)
 
 // Local state — synced from the first selected textbox
-const fontFamily = ref('sans-serif')
+const fontFamily = ref("'Inter', sans-serif")
 const isBold = ref(false)
 const isItalic = ref(false)
 const textAlign = ref<'left' | 'center' | 'right'>('left')
@@ -149,6 +149,7 @@ function updateText() {
     class="toolbar w-fit mx-auto mt-4"
   >
     <label class="text-input">
+      <span class="text-label">Text</span>
       <input
         v-model="textValue"
         type="text"
@@ -159,19 +160,24 @@ function updateText() {
 
     <!-- Font Family -->
     <select v-model="fontFamily" class="p-1" @change="updateFontFamily">
-      <option value="sans-serif">Sans-Serif</option>
-      <option value="Arial, sans-serif">Arial</option>
-      <option value="'Helvetica Neue', Helvetica, sans-serif">Helvetica</option>
-      <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
-      <option value="serif">Serif</option>
-      <option value="'Times New Roman', Times, serif">Times New Roman</option>
-      <option value="Georgia, serif">Georgia</option>
-      <option value="'Palatino Linotype', Palatino, serif">Palatino</option>
-      <option value="monospace">Monospace</option>
-      <option value="'Courier New', Courier, monospace">Courier New</option>
-      <option value="cursive">Cursive</option>
-      <option value="'Comic Sans MS', cursive">Comic Sans</option>
-      <option value="Impact, fantasy">Impact</option>
+      <optgroup label="Sans-Serif">
+        <option value="'Inter', sans-serif">Inter</option>
+        <option value="'Open Sans', sans-serif">Open Sans</option>
+        <option value="'Roboto', sans-serif">Roboto</option>
+      </optgroup>
+      <optgroup label="Serif">
+        <option value="'Merriweather', serif">Merriweather</option>
+        <option value="'Playfair Display', serif">Playfair Display</option>
+        <option value="'PT Serif', serif">PT Serif</option>
+      </optgroup>
+      <optgroup label="Script">
+        <option value="'Dancing Script', cursive">Dancing Script</option>
+        <option value="'Pacifico', cursive">Pacifico</option>
+      </optgroup>
+      <optgroup label="Display">
+        <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
+        <option value="'Oswald', sans-serif">Oswald</option>
+      </optgroup>
     </select>
 
     <!-- Bold -->
