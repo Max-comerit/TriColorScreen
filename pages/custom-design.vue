@@ -12,6 +12,7 @@ import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import TextButton from '~/components/common/TextButton.vue'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
+import { useCanvasExport } from '~/composables/useCanvasExport'
 import { ref, shallowRef, onMounted, onBeforeUnmount } from 'vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
 import {
@@ -53,6 +54,7 @@ useHead({
 
 const { addImageToCanvas } = useCustomImage()
 const { addTextToCanvas } = useCustomText()
+const { exportMergedImage, exportImageObjects } = useCanvasExport()
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
@@ -224,67 +226,34 @@ function downloadFile(dataURL: string, filename: string): void {
     link.click()
 }
 
-async function exportCanvasMergedImage(): Promise<string> {
-  if (!canvas.value) throw new Error('Canvas is not ready')
-
-  const htmlCanvas = canvas.value.getElement() as HTMLCanvasElement
-
-  // Prefer native toBlob — avoids base64 overhead, supported in Safari 11+
-  if (typeof htmlCanvas.toBlob === 'function') {
-    return new Promise((resolve, reject) => {
-      htmlCanvas.toBlob((blob) => {
-        if (!blob) { reject(new Error('toBlob returned null')); return }
-        resolve(URL.createObjectURL(blob))
-      }, 'image/png')
-    })
+async function downloadCanvasImages(): Promise<void> {
+  if (!canvas.value) {
+    alert('Canvas not initialized')
+    console.error('Error downloading canvas: Canvas is not initialized')
+    return
   }
 
-  // Fallback for older browsers: dataURL
-  return canvas.value.toDataURL({ format: 'png', multiplier: 1 })
-}
-
-async function exportCanvasImageObjects(): Promise<string[]> {
-  if (!canvas.value) throw new Error('Canvas is not ready')
-
-  const imageObjects = canvas.value.getObjects().filter(obj => obj instanceof FabricImage)
-
-  return Promise.all(imageObjects.map((obj) => {
-    const objCanvas = obj.toCanvasElement()
-
-    if (typeof objCanvas.toBlob === 'function') {
-      return new Promise<string>((resolve, reject) => {
-        objCanvas.toBlob((blob) => {
-          if (!blob) { reject(new Error('toBlob returned null')); return }
-          resolve(URL.createObjectURL(blob))
-        }, 'image/png')
-      })
-    }
-
-    // Fallback for older browsers
-    return Promise.resolve(objCanvas.toDataURL('image/png'))
-  }))
-}
-
-async function downloadCanvasImages(): Promise<void> {
   try {
     const id = nanoid(10)
     const [mergedUrl, imageUrls] = await Promise.all([
-      exportCanvasMergedImage(),
-      exportCanvasImageObjects(),
+      exportMergedImage(canvas.value),
+      exportImageObjects(canvas.value),
     ])
 
+    // Download merged image first
     downloadFile(mergedUrl, `design-${id}.png`)
     URL.revokeObjectURL(mergedUrl)
 
-    // Stagger image downloads slightly so browsers don't block them
+    // Download individual layer images
     imageUrls.forEach((url, index) => {
+      // Stagger image downloads slightly so browsers don't block them
       setTimeout(() => {
         downloadFile(url, `design-${id}-image-${index + 1}.png`)
         URL.revokeObjectURL(url)
       }, (index + 1) * 200)
     })
   } catch (error) {
-    alert('Failed to download design')
+    alert('Failed to download design images')
     console.error('Error downloading canvas:', error)
   }
 }
