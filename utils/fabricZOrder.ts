@@ -19,31 +19,3 @@ export function toggleObjectZOrder(target: FabricObject, canvas: Canvas): void {
   }
   canvas.requestRenderAll()
 }
-
-/**
- * Toggles the z-order of multiple Fabric objects.
- * If all objects are at the top, sends them all to the back. Otherwise, brings them all to the front.
- * 
- * @param targets - Array of Fabric objects to toggle
- * @param canvas - The Fabric canvas instance
- */
-export function toggleMultipleObjectsZOrder(targets: FabricObject[], canvas: Canvas): void {
-  const objects = canvas.getObjects()
-  const topIndex = objects.length - 1
-  
-  // Check if all selected objects are at the top
-  const allAtTop = targets.every(obj => {
-    const currentIndex = objects.indexOf(obj)
-    return currentIndex >= topIndex - targets.length + 1
-  })
-  
-  // Toggle: if all at top, send to back; otherwise bring to front
-  targets.forEach(obj => {
-    if (allAtTop) {
-      canvas.sendObjectToBack(obj)
-    } else {
-      canvas.bringObjectToFront(obj)
-    }
-  })
-  canvas.requestRenderAll()
-}
