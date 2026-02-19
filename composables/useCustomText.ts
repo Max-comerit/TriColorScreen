@@ -66,6 +66,8 @@ export function useCustomText() {
           y: -0.5,
           offsetX: -12,
           offsetY: -12,
+          sizeX: 36,
+          sizeY: 36,
           cursorStyle: 'pointer',
           render: createBringToFrontControlRender(getBringToFrontImage()),
           mouseUpHandler: (eventData, transform) => {
