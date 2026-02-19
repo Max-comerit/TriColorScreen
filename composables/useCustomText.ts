@@ -1,5 +1,5 @@
 // composables/useCustomText.ts
-import { Textbox, Control, controlsUtils } from 'fabric'
+import { Textbox, Control, controlsUtils, util } from 'fabric'
 import {
   createResizeControlRender,
   createRotateControlRender,
@@ -93,13 +93,14 @@ export function useCustomText() {
         resize: new Control({
           x: -0.5,
           y: 0,
-          cursorStyle: 'resize',
-          render: (ctx, left, top) => {
+          cursorStyle: 'ew-resize',
+          render: (ctx, left, top, _styleOverride, fabricObject) => {
             const size = 24
             const img = getResizeImage()
             ctx.save()
                 ctx.translate(left, top)
                 ctx.fillStyle = 'white'
+                ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
                 ctx.beginPath()
                 ctx.arc(0, 0, (3 * size) / 4, 0, Math.PI * 2)
                 ctx.fill()
