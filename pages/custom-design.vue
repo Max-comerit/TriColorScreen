@@ -247,7 +247,7 @@ function addText() {
         aria-label="Design Verktyg"
       >
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
-          <div ref="canvasWrapperRef" class="flex-1 w-full min-w-[350px] aspect-square">
+          <div ref="canvasWrapperRef" class="flex-1 w-full min-w-[350px] max-w-[800px] aspect-square">
             <canvas id="shirt-canvas" class="block border border-black rounded-card overflow-hidden"/>
           </div>
           <div class="flex flex-row sm:flex-col justify-center gap-3">
