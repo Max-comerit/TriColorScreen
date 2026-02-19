@@ -56,16 +56,27 @@ function clearSelection() {
   selectedTextboxes.value = []
 }
 
+function handleTextChanged(e: { target?: unknown }) {
+  const target = e.target
+  if (isTextbox(target) && selectedTextboxes.value.includes(target)) {
+    textValue.value = target.text ?? ''
+  }
+}
+
 function attach(canvas: Canvas) {
   canvas.on('selection:created', updateFromSelection)
   canvas.on('selection:updated', updateFromSelection)
   canvas.on('selection:cleared', clearSelection)
+  canvas.on('text:changed', handleTextChanged)
+  canvas.on('object:modified', updateFromSelection)
 }
 
 function detach(canvas: Canvas) {
   canvas.off('selection:created', updateFromSelection)
   canvas.off('selection:updated', updateFromSelection)
   canvas.off('selection:cleared', clearSelection)
+  canvas.off('text:changed', handleTextChanged)
+  canvas.off('object:modified', updateFromSelection)
 }
 
 function syncFromFirst() {
