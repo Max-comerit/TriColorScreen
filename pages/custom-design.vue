@@ -2,14 +2,21 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { Canvas, FabricImage } from 'fabric'
+import { Canvas, FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import { useCustomImage } from '~/composables/useCustomImage'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useCustomText } from '~/composables/useCustomText'
+import { ref, shallowRef, onMounted } from 'vue'
+import TextboxControls from '~/components/features/TextboxControls.vue'
+import {
+  createRotateControlRender,
+  createTrashControlRender,
+} from '@/utils/customControlRenders'
+import { getRotateImage, getTrashCanImage } from '@/utils/customImageIcons'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -43,11 +50,12 @@ useHead({
 })
 
 const { addImageToCanvas } = useCustomImage()
+const { addTextToCanvas } = useCustomText()
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
+const canvas = shallowRef<Canvas | null>(null)
 const canvasWrapperRef = ref<HTMLDivElement | null>(null)
-let canvas: Canvas | null = null
 let resizeObserver: ResizeObserver | null = null
 let currentCanvasSize = 0
 
@@ -57,17 +65,61 @@ onMounted(async () => {
   const el = document.getElementById('shirt-canvas') as HTMLCanvasElement
   const wrapper = canvasWrapperRef.value
 
-  // Validate element exists and is a canvas
+    // Validate element exists and is a canvas
   if (!(el instanceof HTMLCanvasElement) || !wrapper) {
     console.error('Canvas element not found')
     return
   }
 
+  // Configure ActiveSelection controls (box-select / multi-select)
+  ActiveSelection.ownDefaults.controls = {
+    deleteIcon: new Control({
+      x: 0.5,
+      y: -0.5,
+      offsetX: 12,
+      offsetY: -12,
+      cursorStyle: 'pointer',
+        render: createTrashControlRender(getTrashCanImage()),
+      mouseUpHandler: (_eventData, transform) => {
+        const target = transform?.target as ActiveSelection | undefined
+        if (target) {
+          const c = target.canvas
+          if (c) {
+            target.getObjects().forEach(obj => c.remove(obj))
+            c.discardActiveObject()
+            c.requestRenderAll()
+          }
+        }
+      },
+    }),
+    rotateIcon: new Control({
+      x: 0,
+      y: -0.5,
+      offsetY: -50,
+      cursorStyle: 'pointer',
+      render: createRotateControlRender(getRotateImage()),
+      withConnection: true,
+      actionHandler: controlsUtils.rotationWithSnapping,
+    }),
+    resizeIcon: new Control({
+      x: 0.5,
+      y: 0.5,
+      offsetX: 12,
+      offsetY: 12,
+      cursorStyle: 'nwse-resize',
+      render: createResizeControlRender(getResizeImage()),
+      actionHandler: controlsUtils.scalingEqually,
+    }),
+  }
+  ActiveSelection.ownDefaults.borderColor = 'blue'
+  ActiveSelection.ownDefaults.borderScaleFactor = 1
+  ActiveSelection.ownDefaults.borderDashArray = [5, 5]
+
   // Observe the wrapper div — CSS controls its size, we sync Fabric to it
   resizeObserver = new ResizeObserver((entries) => {
     const size = Math.ceil(entries[0].contentRect.width)
     if (size <= 0) return
-    if (!canvas) {
+    if (!canvas.value) {
       initializeCanvas(el, size)
     } else {
       rescaleCanvas(size)
@@ -82,15 +134,15 @@ onBeforeUnmount(() => {
 
 async function initializeCanvas(el: HTMLCanvasElement, size: number): Promise<void> {
   currentCanvasSize = size
-  canvas = new Canvas(el, { selection: true })
-  canvas.setDimensions({ width: size, height: size })
-  canvas.enablePointerEvents = true
+  canvas.value = new Canvas(el, { selection: true })
+  canvas.value.setDimensions({ width: size, height: size })
+  canvas.value.enablePointerEvents = true
 
   await loadBackground('/images/custom-design/t-shirt-front.png', size)
 }
 
 async function loadBackground(url: string, size: number = currentCanvasSize): Promise<void> {
-  if (!canvas) return
+  if (!canvas.value) return
 
   const bg = await FabricImage.fromURL(url)
   bg.scaleToWidth(size)
@@ -98,19 +150,19 @@ async function loadBackground(url: string, size: number = currentCanvasSize): Pr
   bg.selectable = false
   bg.evented = false
   bg.set({ originX: 'center', originY: 'center', left: size / 2, top: size / 2 })
-  canvas.backgroundImage = bg
-  canvas.requestRenderAll()
+  canvas.value.backgroundImage = bg
+  canvas.value.requestRenderAll()
 }
 
 function rescaleCanvas(newSize: number): void {
-  if (!canvas || currentCanvasSize <= 0) return
+  if (!canvas.value || currentCanvasSize <= 0) return
   const ratio = newSize / currentCanvasSize
   currentCanvasSize = newSize
 
-  canvas.setDimensions({ width: newSize, height: newSize })
+  canvas.value.setDimensions({ width: newSize, height: newSize })
 
   // Rescale background image
-  const bg = canvas.backgroundImage as FabricImage | undefined
+  const bg = canvas.value.backgroundImage as FabricImage | undefined
   if (bg) {
     bg.scaleToWidth(newSize)
     bg.scaleToHeight(newSize)
@@ -118,7 +170,7 @@ function rescaleCanvas(newSize: number): void {
   }
 
   // Proportionally rescale and reposition all objects
-  canvas.getObjects().forEach((obj) => {
+  canvas.value.getObjects().forEach((obj) => {
     obj.set({
       left: (obj.left ?? 0) * ratio,
       top: (obj.top ?? 0) * ratio,
@@ -128,7 +180,7 @@ function rescaleCanvas(newSize: number): void {
     obj.setCoords()
   })
 
-  canvas.requestRenderAll()
+  canvas.value.requestRenderAll()
 }
 
 function uploadImage(): void {
@@ -140,7 +192,7 @@ async function handleImageSelected(event: Event): Promise<void> {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
 
-  if (!file || !canvas) return
+  if (!file || !canvas.value) return
 
   // Validate that it's an image
   if (!file.type.startsWith('image/')) {
@@ -149,7 +201,7 @@ async function handleImageSelected(event: Event): Promise<void> {
   }
 
   try {
-    await addImageToCanvas(canvas as Canvas, file)
+    await addImageToCanvas(canvas.value as Canvas, file)
   } catch (error) {
     alert('Failed to add image. Please try again.')
     console.error('Error adding image:', error)
@@ -159,9 +211,8 @@ async function handleImageSelected(event: Event): Promise<void> {
   input.value = ''
 }
 
-function addText(): void {
-  // Placeholder for add text functionality
-  alert('Add text functionality is not implemented yet.')
+function addText() {
+  addTextToCanvas(canvas.value)
 }
 
 </script>
@@ -196,7 +247,7 @@ function addText(): void {
         aria-label="Design Verktyg"
       >
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
-          <div ref="canvasWrapperRef" class="flex-1 w-full min-w-[350px] aspect-square">
+          <div ref="canvasWrapperRef" class="flex-1 w-full min-w-[350px] max-w-[800px] aspect-square">
             <canvas id="shirt-canvas" class="block border border-black rounded-card overflow-hidden"/>
           </div>
           <div class="flex flex-row sm:flex-col justify-center gap-3">
@@ -222,8 +273,8 @@ function addText(): void {
             </IconButton>
           </div>
         </div>
+        <TextboxControls :canvas="canvas" />
       </Section>
     </div>
   </div>
 </template>
-

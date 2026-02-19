@@ -1,8 +1,8 @@
 /**
  * Font Loading Optimization
  * 
- * Uses font-display: swap to prevent FOIT (Flash of Invisible Text)
- * and reduce Cumulative Layout Shift (CLS) during font loading.
+ * Google Fonts are loaded via <link> tags in nuxt.config.ts for better performance
+ * and proper preconnect/preloading.
  */
 
 /* Apply font-display: swap to all font faces */
