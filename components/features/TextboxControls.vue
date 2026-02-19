@@ -21,6 +21,7 @@ const isBold = ref(false)
 const isItalic = ref(false)
 const textAlign = ref<'left' | 'center' | 'right'>('left')
 const fill = ref('#000000')
+const textValue = ref('')
 
 let attachedCanvas: Canvas | null = null
 
@@ -92,6 +93,7 @@ function syncFromFirst() {
   isItalic.value = first.fontStyle === 'italic'
   textAlign.value = (first.textAlign as 'left' | 'center' | 'right') ?? 'left'
   fill.value = (first.fill as string) ?? '#000000'
+  textValue.value = first.text ?? ''
 }
 
 /* -----------------------------
@@ -134,16 +136,29 @@ function cycleAlignment() {
 function updateColor() {
   applyToAll(tb => tb.set('fill', fill.value))
 }
+
+function updateText() {
+  applyToAll(tb => tb.set('text', textValue.value))
+}
 </script>
 
 
 <template>
   <div
     v-if="hasSelection"
-    class="toolbar"
+    class="toolbar w-fit mx-auto mt-4"
   >
+    <label class="text-input">
+      <input
+        v-model="textValue"
+        type="text"
+        autocomplete="off"
+        @input="updateText"
+      >
+    </label>
+
     <!-- Font Family -->
-    <select v-model="fontFamily" @change="updateFontFamily">
+    <select v-model="fontFamily" @change="updateFontFamily" class="p-1">
       <option value="sans-serif">Sans-Serif</option>
       <option value="Arial, sans-serif">Arial</option>
       <option value="'Helvetica Neue', Helvetica, sans-serif">Helvetica</option>
@@ -222,6 +237,25 @@ function updateColor() {
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
+.text-input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.text-label {
+  font-size: 12px;
+  color: #444;
+}
+
+.text-input input {
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 180px;
+}
+
 .toolbar select,
 .toolbar button,
 .toolbar input[type="color"] {
@@ -254,7 +288,4 @@ function updateColor() {
   border-color: #222;
 }
 
-.toolbar button:hover {
-  background: #eee;
-}
 </style>
