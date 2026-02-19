@@ -3,14 +3,17 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { Canvas, FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
+import { nanoid } from 'nanoid'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
+import TextButton from '~/components/common/TextButton.vue'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
-import { ref, shallowRef, onMounted } from 'vue'
+import { useCanvasExport } from '~/composables/useCanvasExport'
+import { ref, shallowRef, onMounted, onBeforeUnmount } from 'vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
 import {
   createRotateControlRender,
@@ -51,6 +54,7 @@ useHead({
 
 const { addImageToCanvas } = useCustomImage()
 const { addTextToCanvas } = useCustomText()
+const { exportMergedImage, exportImageObjects } = useCanvasExport()
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
@@ -215,6 +219,45 @@ function addText() {
   addTextToCanvas(canvas.value)
 }
 
+function downloadFile(dataURL: string, filename: string): void {
+    const link = document.createElement('a')
+    link.href = dataURL
+    link.download = filename
+    link.click()
+}
+
+async function downloadCanvasImages(): Promise<void> {
+  if (!canvas.value) {
+    alert('Canvas not initialized')
+    console.error('Error downloading canvas: Canvas is not initialized')
+    return
+  }
+
+  try {
+    const id = nanoid(10)
+    const [mergedUrl, imageUrls] = await Promise.all([
+      exportMergedImage(canvas.value),
+      exportImageObjects(canvas.value),
+    ])
+
+    // Download merged image first
+    downloadFile(mergedUrl, `design-${id}.png`)
+    URL.revokeObjectURL(mergedUrl)
+
+    // Download individual layer images
+    imageUrls.forEach((url, index) => {
+      // Stagger image downloads slightly so browsers don't block them
+      setTimeout(() => {
+        downloadFile(url, `design-${id}-image-${index + 1}.png`)
+        URL.revokeObjectURL(url)
+      }, (index + 1) * 200)
+    })
+  } catch (error) {
+    alert('Failed to download design images')
+    console.error('Error downloading canvas:', error)
+  }
+}
+
 </script>
 
 <template>
@@ -274,6 +317,9 @@ function addText() {
           </div>
         </div>
         <TextboxControls :canvas="canvas" />
+        <div class="mt-24 flex justify-center gap-4">
+          <TextButton @click="downloadCanvasImages">Begär Offert</TextButton>
+        </div>
       </Section>
     </div>
   </div>
