@@ -224,74 +224,69 @@ function downloadFile(dataURL: string, filename: string): void {
     link.click()
 }
 
-function downloadCanvasMerged(id: string): void {
-  if (!canvas.value) {
-    alert('Canvas is not ready')
-    return
+async function exportCanvasMergedImage(): Promise<string> {
+  if (!canvas.value) throw new Error('Canvas is not ready')
+
+  const htmlCanvas = canvas.value.getElement() as HTMLCanvasElement
+
+  // Prefer native toBlob — avoids base64 overhead, supported in Safari 11+
+  if (typeof htmlCanvas.toBlob === 'function') {
+    return new Promise((resolve, reject) => {
+      htmlCanvas.toBlob((blob) => {
+        if (!blob) { reject(new Error('toBlob returned null')); return }
+        resolve(URL.createObjectURL(blob))
+      }, 'image/png')
+    })
   }
 
-  try {
-    const filename = `design-${id}.png`
-    const htmlCanvas = canvas.value.getElement() as HTMLCanvasElement
+  // Fallback for older browsers: dataURL
+  return canvas.value.toDataURL({ format: 'png', multiplier: 1 })
+}
 
-    // Prefer native toBlob — avoids base64 overhead, supported in Safari 11+
-    if (typeof htmlCanvas.toBlob === 'function') {
-      htmlCanvas.toBlob((blob) => {
-        if (!blob) return
-        const url = URL.createObjectURL(blob)
-        downloadFile(url, filename)
-        URL.revokeObjectURL(url)
-      }, 'image/png')
-      return
+async function exportCanvasImageObjects(): Promise<string[]> {
+  if (!canvas.value) throw new Error('Canvas is not ready')
+
+  const imageObjects = canvas.value.getObjects().filter(obj => obj instanceof FabricImage)
+
+  return Promise.all(imageObjects.map((obj) => {
+    const objCanvas = obj.toCanvasElement()
+
+    if (typeof objCanvas.toBlob === 'function') {
+      return new Promise<string>((resolve, reject) => {
+        objCanvas.toBlob((blob) => {
+          if (!blob) { reject(new Error('toBlob returned null')); return }
+          resolve(URL.createObjectURL(blob))
+        }, 'image/png')
+      })
     }
 
-    // Fallback for older browsers: dataURL
-    const dataURL = canvas.value.toDataURL({ format: 'png', multiplier: 1 })
-    downloadFile(dataURL, filename)
+    // Fallback for older browsers
+    return Promise.resolve(objCanvas.toDataURL('image/png'))
+  }))
+}
+
+async function downloadCanvasImages(): Promise<void> {
+  try {
+    const id = nanoid(10)
+    const [mergedUrl, imageUrls] = await Promise.all([
+      exportCanvasMergedImage(),
+      exportCanvasImageObjects(),
+    ])
+
+    downloadFile(mergedUrl, `design-${id}.png`)
+    URL.revokeObjectURL(mergedUrl)
+
+    // Stagger image downloads slightly so browsers don't block them
+    imageUrls.forEach((url, index) => {
+      setTimeout(() => {
+        downloadFile(url, `design-${id}-image-${index + 1}.png`)
+        URL.revokeObjectURL(url)
+      }, (index + 1) * 200)
+    })
   } catch (error) {
     alert('Failed to download design')
     console.error('Error downloading canvas:', error)
   }
-}
-
-function downloadCanvasImagesIndividually(id: string): void {
-  if (!canvas.value) return
-
-  try {
-    let imageIndex = 1
-    canvas.value.getObjects().forEach((obj, index) => {
-      if (!(obj instanceof FabricImage)) return
-
-      const objCanvas = obj.toCanvasElement()
-      const filename = `design-${id}-image-${imageIndex++}.png`
-
-      // Stagger downloads slightly so browsers don't block them
-      setTimeout(() => {
-        if (typeof objCanvas.toBlob === 'function') {
-          objCanvas.toBlob((blob) => {
-            if (!blob) return
-            const url = URL.createObjectURL(blob)
-            downloadFile(url, filename)
-            URL.revokeObjectURL(url)
-          }, 'image/png')
-          return
-        }
-
-        // Fallback for older browsers
-        const dataURL = objCanvas.toDataURL('image/png')
-        downloadFile(dataURL, filename)
-      }, index * 200)
-    })
-  } catch (error) {
-    alert('Failed to download images')
-    console.error('Error downloading canvas images:', error)
-  }
-}
-
-function downloadCanvasImages(): void {
-  const id = nanoid(10)
-  downloadCanvasMerged(id)
-  downloadCanvasImagesIndividually(id)
 }
 
 </script>
