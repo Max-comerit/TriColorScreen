@@ -42,6 +42,11 @@ const props = withDefaults(defineProps<Props>(), {
   alt: 'Hero banner image',
 })
 
+// ===== STATE =====
+// Start true (matches server render); corrected on mount for old Safari.
+// CSS.supports() does not read layout geometry so causes no forced reflow.
+const supportsAspectRatio = ref(true)
+
 // ===== COMPUTED =====
 const aspectRatio = computed(() => {
   // Prevent division by zero
@@ -49,10 +54,10 @@ const aspectRatio = computed(() => {
   return props.width / props.height
 })
 
-// ===== STATE =====
-// Start true (matches server render); corrected on mount for old Safari.
-// CSS.supports() does not read layout geometry so causes no forced reflow.
-const supportsAspectRatio = ref(true)
+// ===== METHODS =====
+const containerStyle = computed(() =>
+  supportsAspectRatio.value ? { aspectRatio: aspectRatio.value } : {}
+)
 
 // ===== LIFECYCLE =====
 onMounted(() => {
@@ -67,10 +72,6 @@ onMounted(() => {
   if (hasBug) supportsAspectRatio.value = false
 })
 
-// ===== METHODS =====
-const containerStyle = computed(() =>
-  supportsAspectRatio.value ? { aspectRatio: aspectRatio.value } : {}
-)
 </script>
 
 <template>
