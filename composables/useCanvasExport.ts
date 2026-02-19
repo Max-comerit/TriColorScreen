@@ -5,6 +5,9 @@ import { FabricImage } from 'fabric'
 export function useCanvasExport() {
   async function exportMergedImage(canvas: Canvas): Promise<string> {
     const htmlCanvas = canvas.getElement() as HTMLCanvasElement
+    
+    canvas.discardActiveObject()
+    canvas.renderAll() // Ensure canvas is fully rendered before export
 
     if (typeof htmlCanvas.toBlob === 'function') {
       return new Promise((resolve, reject) => {
