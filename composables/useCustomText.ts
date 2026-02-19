@@ -4,8 +4,10 @@ import {
   createResizeControlRender,
   createRotateControlRender,
   createTrashControlRender,
+  createBringToFrontControlRender,
 } from '@/utils/customControlRenders'
-import { getResizeImage, getRotateImage, getTrashCanImage } from '@/utils/customImageIcons'
+import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
+import { toggleObjectZOrder } from '@/utils/fabricZOrder'
 
 interface FabricCanvasLike {
   add: (object: Textbox) => void
@@ -60,11 +62,29 @@ export function useCustomText() {
       borderDashArray: [5, 5],
       editable: true,
       controls: {
+        bringToFrontIcon: new Control({
+          x: -0.5,
+          y: -0.5,
+          offsetX: -12,
+          offsetY: -12,
+          sizeX: 36,
+          sizeY: 36,
+          cursorStyle: 'pointer',
+          render: createBringToFrontControlRender(getBringToFrontImage()),
+          mouseUpHandler: (eventData, transform) => {
+            const target = transform?.target
+            if (target && target.canvas) {
+              toggleObjectZOrder(target, target.canvas)
+            }
+          }
+        }),
         scaleIcon: new Control({
           x: 0.5,
           y: 0.5,
           offsetX: 12,
           offsetY: 12,
+          sizeX: 36,
+          sizeY: 36,
           render: createResizeControlRender(getResizeImage()),
           cursorStyle: 'nwse-resize',
           actionHandler: controlsUtils.scalingEqually,
@@ -74,6 +94,8 @@ export function useCustomText() {
           y: -0.5,
           offsetX: 12,
           offsetY: -12,
+          sizeX: 36,
+          sizeY: 36,
           cursorStyle: 'pointer',
           render: createTrashControlRender(getTrashCanImage()),
           mouseUpHandler: (eventData, transform) => {          
@@ -96,9 +118,12 @@ export function useCustomText() {
         }),
         resize: new Control({
           x: -0.5,
-          y: 0,
+          y: 0.5,
           cursorStyle: 'ew-resize',
-          offsetX: -18,
+          offsetX: -12,
+          offsetY: 12,
+          sizeX: 36,
+          sizeY: 36,
           render: (ctx, left, top, _styleOverride, fabricObject) => {
             const size = 24
             const img = getResizeImage()
@@ -120,6 +145,7 @@ export function useCustomText() {
           withConnection: true,
           actionHandler: controlsUtils.changeObjectWidth,
         }),
+        
     }})
 
     
