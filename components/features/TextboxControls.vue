@@ -144,7 +144,6 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-2 p-3 sm:p-2 bg-white border border-gray-300 rounded-lg shadow-md">
       <!-- Text Input - Full width on mobile, flexible on larger screens -->
       <label class="flex items-center gap-2 flex-1 min-w-0">
-        <span class="text-xs text-gray-600 hidden sm:inline whitespace-nowrap">Text</span>
         <input
           v-model="textValue"
           type="text"
