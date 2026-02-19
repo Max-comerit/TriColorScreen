@@ -9,6 +9,7 @@ import {
   createBringToFrontControlRender,
 } from '@/utils/customControlRenders'
 import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
+import { toggleObjectZOrder } from '@/utils/fabricZOrder'
 
 interface Transform {
   target?: unknown
@@ -79,18 +80,7 @@ export function useCustomImage() {
         mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
           const target = transform?.target as FabricImage | undefined
           if (target && target.canvas) {
-            const canvas = target.canvas
-            const objects = canvas.getObjects()
-            const currentIndex = objects.indexOf(target)
-            const topIndex = objects.length - 1
-            
-            // Toggle: if already at front, send to back; otherwise bring to front
-            if (currentIndex === topIndex) {
-              canvas.sendObjectToBack(target)
-            } else {
-              canvas.bringObjectToFront(target)
-            }
-            canvas.requestRenderAll()
+            toggleObjectZOrder(target, target.canvas)
           }
           return true
         },

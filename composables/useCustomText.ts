@@ -7,6 +7,7 @@ import {
   createBringToFrontControlRender,
 } from '@/utils/customControlRenders'
 import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
+import { toggleObjectZOrder } from '@/utils/fabricZOrder'
 
 interface FabricCanvasLike {
   add: (object: Textbox) => void
@@ -73,18 +74,7 @@ export function useCustomText() {
           mouseUpHandler: (eventData, transform) => {
             const target = transform?.target
             if (target && target.canvas) {
-              const canvas = target.canvas
-              const objects = canvas.getObjects()
-              const currentIndex = objects.indexOf(target)
-              const topIndex = objects.length - 1
-              
-              // Toggle: if already at front, send to back; otherwise bring to front
-              if (currentIndex === topIndex) {
-                canvas.sendObjectToBack(target)
-              } else {
-                canvas.bringObjectToFront(target)
-              }
-              canvas.requestRenderAll()
+              toggleObjectZOrder(target, target.canvas)
             }
           }
         }),

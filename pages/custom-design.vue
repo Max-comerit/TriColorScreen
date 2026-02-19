@@ -18,6 +18,7 @@ import {
   createBringToFrontControlRender,
 } from '@/utils/customControlRenders'
 import { getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
+import { toggleMultipleObjectsZOrder } from '@/utils/fabricZOrder'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -109,25 +110,8 @@ onMounted(async () => {
         if (target) {
           const c = target.canvas
           if (c) {
-            const objects = c.getObjects()
             const selectedObjects = target.getObjects()
-            
-            // Check if all selected objects are at the top
-            const allAtTop = selectedObjects.every(obj => {
-              const currentIndex = objects.indexOf(obj)
-              const topIndex = objects.length - 1
-              return currentIndex >= topIndex - selectedObjects.length + 1
-            })
-            
-            // Toggle: if all at top, send to back; otherwise bring to front
-            selectedObjects.forEach(obj => {
-              if (allAtTop) {
-                c.sendObjectToBack(obj)
-              } else {
-                c.bringObjectToFront(obj)
-              }
-            })
-            c.requestRenderAll()
+            toggleMultipleObjectsZOrder(selectedObjects, c)
           }
         }
       },
