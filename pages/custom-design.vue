@@ -76,6 +76,8 @@ onMounted(async () => {
     deleteIcon: new Control({
       x: 0.5,
       y: -0.5,
+      offsetX: 12,
+      offsetY: -12,
       cursorStyle: 'pointer',
         render: createTrashControlRender(getTrashCanImage()),
       mouseUpHandler: (_eventData, transform) => {
@@ -102,6 +104,8 @@ onMounted(async () => {
     resizeIcon: new Control({
       x: 0.5,
       y: 0.5,
+      offsetX: 12,
+      offsetY: 12,
       cursorStyle: 'nwse-resize',
       render: createResizeControlRender(getResizeImage()),
       actionHandler: controlsUtils.scalingEqually,
