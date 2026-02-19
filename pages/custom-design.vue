@@ -18,7 +18,6 @@ import {
 } from '@/utils/customControlRenders'
 import { getRotateImage, getTrashCanImage } from '@/utils/customImageIcons'
 
-
 // ===== COMPOSABLES =====
 useHead({
   title: 'Designa eget tryck på t-shirts och kepsar | Custom Design Tool | Tricolor Screen',
@@ -56,15 +55,21 @@ const { addTextToCanvas } = useCustomText()
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const canvas = shallowRef<Canvas | null>(null)
+const canvasWrapperRef = ref<HTMLDivElement | null>(null)
+let resizeObserver: ResizeObserver | null = null
+let currentCanvasSize = 0
 
-// ===== LIFECYCLE HOOKS =====W
+// ===== LIFECYCLE HOOKS =====
 onMounted(async () => {
   await nextTick()
   const el = document.getElementById('shirt-canvas') as HTMLCanvasElement
+  const wrapper = canvasWrapperRef.value
 
-  canvas.value = new Canvas(el, { selection: true })
-  canvas.value.setDimensions({ width: 800, height: 800 })
-  canvas.value.enablePointerEvents = true
+    // Validate element exists and is a canvas
+  if (!(el instanceof HTMLCanvasElement) || !wrapper) {
+    console.error('Canvas element not found')
+    return
+  }
 
   // Configure ActiveSelection controls (box-select / multi-select)
   ActiveSelection.ownDefaults.controls = {
@@ -106,17 +111,73 @@ onMounted(async () => {
   ActiveSelection.ownDefaults.borderScaleFactor = 1
   ActiveSelection.ownDefaults.borderDashArray = [5, 5]
 
-  // Load background
-  const bg = await FabricImage.fromURL('/images/custom-design/t-shirt-front.png')
-  bg.scaleToWidth(800)
-  bg.scaleToHeight(800)
-  bg.selectable = false
-  bg.evented = false
-  bg.set({ originX: 'center', originY: 'center', left: 400, top: 400 })
-  canvas.value.backgroundImage = bg
-  canvas.value.requestRenderAll()
+  // Observe the wrapper div — CSS controls its size, we sync Fabric to it
+  resizeObserver = new ResizeObserver((entries) => {
+    const size = Math.ceil(entries[0].contentRect.width)
+    if (size <= 0) return
+    if (!canvas.value) {
+      initializeCanvas(el, size)
+    } else {
+      rescaleCanvas(size)
+    }
+  })
+  resizeObserver.observe(wrapper)
 })
 
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect()
+})
+
+async function initializeCanvas(el: HTMLCanvasElement, size: number): Promise<void> {
+  currentCanvasSize = size
+  canvas.value = new Canvas(el, { selection: true })
+  canvas.value.setDimensions({ width: size, height: size })
+  canvas.value.enablePointerEvents = true
+
+  await loadBackground('/images/custom-design/t-shirt-front.png', size)
+}
+
+async function loadBackground(url: string, size: number = currentCanvasSize): Promise<void> {
+  if (!canvas.value) return
+
+  const bg = await FabricImage.fromURL(url)
+  bg.scaleToWidth(size)
+  bg.scaleToHeight(size)
+  bg.selectable = false
+  bg.evented = false
+  bg.set({ originX: 'center', originY: 'center', left: size / 2, top: size / 2 })
+  canvas.value.backgroundImage = bg
+  canvas.value.requestRenderAll()
+}
+
+function rescaleCanvas(newSize: number): void {
+  if (!canvas.value || currentCanvasSize <= 0) return
+  const ratio = newSize / currentCanvasSize
+  currentCanvasSize = newSize
+
+  canvas.value.setDimensions({ width: newSize, height: newSize })
+
+  // Rescale background image
+  const bg = canvas.value.backgroundImage as FabricImage | undefined
+  if (bg) {
+    bg.scaleToWidth(newSize)
+    bg.scaleToHeight(newSize)
+    bg.set({ left: newSize / 2, top: newSize / 2 })
+  }
+
+  // Proportionally rescale and reposition all objects
+  canvas.value.getObjects().forEach((obj) => {
+    obj.set({
+      left: (obj.left ?? 0) * ratio,
+      top: (obj.top ?? 0) * ratio,
+      scaleX: (obj.scaleX ?? 1) * ratio,
+      scaleY: (obj.scaleY ?? 1) * ratio,
+    })
+    obj.setCoords()
+  })
+
+  canvas.value.requestRenderAll()
+}
 
 function uploadImage(): void {
   // Trigger file input dialog
@@ -167,7 +228,7 @@ function addText() {
     <HeroImage 
       src="/images/custom-design/hero.jpg"
       title="Designa produkter med eget tryck"
-      description="Skapa unika trikåprodukter med vårt designverktyg. Uppladera dina bilder, lägg till egen text och se resultatet innan produktion."
+      description="Skapa unika textilprodukter med vårt design verktyg. Ladda upp dina bilder, lägg till egen text och se resultatet innan produktion."
       :width="1280"
       :height="854"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
@@ -181,9 +242,11 @@ function addText() {
         align="center"
         aria-label="Design Verktyg"
       >
-        <div class="designer flex gap-4 items-center justify-center">
-          <canvas id="shirt-canvas" width="800" height="800" class="relative mx-auto border border-black rounded-card overflow-hidden"/>
-          <div class="flex flex-col gap-3">
+        <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
+          <div ref="canvasWrapperRef" class="flex-1 w-full min-w-[350px] aspect-square">
+            <canvas id="shirt-canvas" class="block border border-black rounded-card overflow-hidden"/>
+          </div>
+          <div class="flex flex-row sm:flex-col justify-center gap-3">
             <IconButton
               aria-label="Upload image design"
               variant="primary"

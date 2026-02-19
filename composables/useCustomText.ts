@@ -63,6 +63,8 @@ export function useCustomText() {
         scaleIcon: new Control({
           x: 0.5,
           y: 0.5,
+          offsetX: 12,
+          offsetY: 12,
           render: createResizeControlRender(getResizeImage()),
           cursorStyle: 'nwse-resize',
           actionHandler: controlsUtils.scalingEqually,
@@ -70,6 +72,8 @@ export function useCustomText() {
         deleteIcon: new Control({
           x: 0.5,
           y: -0.5,
+          offsetX: 12,
+          offsetY: -12,
           cursorStyle: 'pointer',
           render: createTrashControlRender(getTrashCanImage()),
           mouseUpHandler: (eventData, transform) => {          
@@ -94,6 +98,7 @@ export function useCustomText() {
           x: -0.5,
           y: 0,
           cursorStyle: 'ew-resize',
+          offsetX: -18,
           render: (ctx, left, top, _styleOverride, fabricObject) => {
             const size = 24
             const img = getResizeImage()
