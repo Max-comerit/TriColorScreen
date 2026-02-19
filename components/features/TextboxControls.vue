@@ -158,7 +158,7 @@ function updateText() {
     </label>
 
     <!-- Font Family -->
-    <select v-model="fontFamily" @change="updateFontFamily" class="p-1">
+    <select v-model="fontFamily" class="p-1" @change="updateFontFamily">
       <option value="sans-serif">Sans-Serif</option>
       <option value="Arial, sans-serif">Arial</option>
       <option value="'Helvetica Neue', Helvetica, sans-serif">Helvetica</option>
