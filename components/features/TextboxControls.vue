@@ -1,21 +1,21 @@
 <script setup lang="ts">
+// 1. Imports
 import type { Canvas, Textbox } from 'fabric'
 import { ActiveSelection } from 'fabric'
 import { ref, shallowRef, computed, watch, onUnmounted } from 'vue'
 
+// 2. Props & Emits
 interface Props {
   canvas: Canvas | null
 }
 
 const props = defineProps<Props>()
 
-// All currently selected textboxes (1 for single select, N for multi)
+// 3. Composables & Stores
+// (none)
+
+// 4. State (ref/reactive)
 const selectedTextboxes = shallowRef<Textbox[]>([])
-
-// Toolbar is visible when at least one textbox is selected
-const hasSelection = computed(() => selectedTextboxes.value.length > 0)
-
-// Local state — synced from the first selected textbox
 const fontFamily = ref("'Inter', sans-serif")
 const isBold = ref(false)
 const isItalic = ref(false)
@@ -25,9 +25,10 @@ const textValue = ref('')
 
 let attachedCanvas: Canvas | null = null
 
-/* -----------------------------
-   Selection Handling
------------------------------- */
+// 5. Computed
+const hasSelection = computed(() => selectedTextboxes.value.length > 0)
+
+// 6. Methods
 function isTextbox(obj: unknown): obj is Textbox {
   return !!obj && typeof obj === 'object' && 'type' in obj && (obj as { type: string }).type === 'textbox'
 }
@@ -37,12 +38,10 @@ function getTextboxesFromSelection(): Textbox[] {
   const active = props.canvas.getActiveObject()
   if (!active) return []
 
-  // Multi-selection: ActiveSelection contains objects
   if (active instanceof ActiveSelection) {
     return (active.getObjects() as unknown[]).filter(isTextbox) as Textbox[]
   }
 
-  // Single textbox
   if (isTextbox(active)) return [active]
 
   return []
@@ -69,21 +68,6 @@ function detach(canvas: Canvas) {
   canvas.off('selection:cleared', clearSelection)
 }
 
-watch(() => props.canvas, (newCanvas, oldCanvas) => {
-  if (oldCanvas) detach(oldCanvas)
-  if (newCanvas) {
-    attach(newCanvas)
-    attachedCanvas = newCanvas
-  }
-}, { immediate: true })
-
-onUnmounted(() => {
-  if (attachedCanvas) detach(attachedCanvas)
-})
-
-/* -----------------------------
-   Sync State (from first textbox)
------------------------------- */
 function syncFromFirst() {
   const first = selectedTextboxes.value[0]
   if (!first) return
@@ -96,9 +80,6 @@ function syncFromFirst() {
   textValue.value = first.text ?? ''
 }
 
-/* -----------------------------
-   Update Helper (apply to all selected textboxes)
------------------------------- */
 function applyToAll(updater: (tb: Textbox) => void) {
   if (!props.canvas || selectedTextboxes.value.length === 0) return
   for (const tb of selectedTextboxes.value) {
@@ -109,9 +90,6 @@ function applyToAll(updater: (tb: Textbox) => void) {
   props.canvas.requestRenderAll()
 }
 
-/* -----------------------------
-   Controls
------------------------------- */
 function updateFontFamily() {
   applyToAll(tb => tb.set('fontFamily', fontFamily.value))
 }
@@ -140,6 +118,20 @@ function updateColor() {
 function updateText() {
   applyToAll(tb => tb.set('text', textValue.value))
 }
+
+// 7. Lifecycle hooks
+onUnmounted(() => {
+  if (attachedCanvas) detach(attachedCanvas)
+})
+
+// 8. Watchers
+watch(() => props.canvas, (newCanvas, oldCanvas) => {
+  if (oldCanvas) detach(oldCanvas)
+  if (newCanvas) {
+    attach(newCanvas)
+    attachedCanvas = newCanvas
+  }
+}, { immediate: true })
 </script>
 
 
