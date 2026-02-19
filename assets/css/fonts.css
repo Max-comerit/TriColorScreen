@@ -1,11 +1,9 @@
 /**
  * Font Loading Optimization
  * 
- * Uses font-display: swap to prevent FOIT (Flash of Invisible Text)
- * and reduce Cumulative Layout Shift (CLS) during font loading.
+ * Google Fonts are loaded via <link> tags in nuxt.config.ts for better performance
+ * and proper preconnect/preloading.
  */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Open+Sans:wght@400;700&family=Roboto:wght@400;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&family=PT+Serif:wght@400;700&family=Dancing+Script:wght@400;700&family=Pacifico&family=Bebas+Neue&family=Oswald:wght@400;700&display=swap');
 
 /* Apply font-display: swap to all font faces */
 @font-face {

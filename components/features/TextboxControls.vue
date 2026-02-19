@@ -286,4 +286,44 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
   border-color: #222;
 }
 
+/* Font preview in select options */
+.toolbar select option[value*="Inter"] {
+  font-family: 'Inter', sans-serif;
+}
+
+.toolbar select option[value*="Open Sans"] {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.toolbar select option[value*="Roboto"] {
+  font-family: 'Roboto', sans-serif;
+}
+
+.toolbar select option[value*="Merriweather"] {
+  font-family: 'Merriweather', serif;
+}
+
+.toolbar select option[value*="Playfair Display"] {
+  font-family: 'Playfair Display', serif;
+}
+
+.toolbar select option[value*="PT Serif"] {
+  font-family: 'PT Serif', serif;
+}
+
+.toolbar select option[value*="Dancing Script"] {
+  font-family: 'Dancing Script', cursive;
+}
+
+.toolbar select option[value*="Pacifico"] {
+  font-family: 'Pacifico', cursive;
+}
+
+.toolbar select option[value*="Bebas Neue"] {
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+.toolbar select option[value*="Oswald"] {
+  font-family: 'Oswald', sans-serif;
+}
 </style>
