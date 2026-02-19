@@ -10,8 +10,8 @@
     "postinstall": "nuxi prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "audit": "audit-ci --fail-level high --allowlist GHSA-2g4f-4pwh-qvx6",
-    "security:audit": "audit-ci --fail-level high --allowlist GHSA-2g4f-4pwh-qvx6"
+    "audit": "audit-ci --fail-level moderate --allowlist GHSA-2g4f-4pwh-qvx6",
+    "security:audit": "audit-ci --fail-level moderate --allowlist GHSA-2g4f-4pwh-qvx6"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.12.1",
@@ -20,6 +20,7 @@
     "@pinia/nuxt": "^0.11.3",
     "embla-carousel-vue": "^8.6.0",
     "fabric": "^7.1.0",
+    "nanoid": "^5.1.6",
     "nuxt": "^3.20.2",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",

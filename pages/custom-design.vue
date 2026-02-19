@@ -3,14 +3,16 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { Canvas, FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
+import { nanoid } from 'nanoid'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
+import TextButton from '~/components/common/TextButton.vue'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
-import { ref, shallowRef, onMounted } from 'vue'
+import { ref, shallowRef, onMounted, onBeforeUnmount } from 'vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
 import {
   createRotateControlRender,
@@ -215,6 +217,83 @@ function addText() {
   addTextToCanvas(canvas.value)
 }
 
+function downloadFile(dataURL: string, filename: string): void {
+    const link = document.createElement('a')
+    link.href = dataURL
+    link.download = filename
+    link.click()
+}
+
+function downloadCanvasMerged(id: string): void {
+  if (!canvas.value) {
+    alert('Canvas is not ready')
+    return
+  }
+
+  try {
+    const filename = `design-${id}.png`
+    const htmlCanvas = canvas.value.getElement() as HTMLCanvasElement
+
+    // Prefer native toBlob — avoids base64 overhead, supported in Safari 11+
+    if (typeof htmlCanvas.toBlob === 'function') {
+      htmlCanvas.toBlob((blob) => {
+        if (!blob) return
+        const url = URL.createObjectURL(blob)
+        downloadFile(url, filename)
+        URL.revokeObjectURL(url)
+      }, 'image/png')
+      return
+    }
+
+    // Fallback for older browsers: dataURL
+    const dataURL = canvas.value.toDataURL({ format: 'png', multiplier: 1 })
+    downloadFile(dataURL, filename)
+  } catch (error) {
+    alert('Failed to download design')
+    console.error('Error downloading canvas:', error)
+  }
+}
+
+function downloadCanvasImagesIndividually(id: string): void {
+  if (!canvas.value) return
+
+  try {
+    let imageIndex = 1
+    canvas.value.getObjects().forEach((obj, index) => {
+      if (!(obj instanceof FabricImage)) return
+
+      const objCanvas = obj.toCanvasElement()
+      const filename = `design-${id}-image-${imageIndex++}.png`
+
+      // Stagger downloads slightly so browsers don't block them
+      setTimeout(() => {
+        if (typeof objCanvas.toBlob === 'function') {
+          objCanvas.toBlob((blob) => {
+            if (!blob) return
+            const url = URL.createObjectURL(blob)
+            downloadFile(url, filename)
+            URL.revokeObjectURL(url)
+          }, 'image/png')
+          return
+        }
+
+        // Fallback for older browsers
+        const dataURL = objCanvas.toDataURL('image/png')
+        downloadFile(dataURL, filename)
+      }, index * 200)
+    })
+  } catch (error) {
+    alert('Failed to download images')
+    console.error('Error downloading canvas images:', error)
+  }
+}
+
+function downloadCanvasImages(): void {
+  const id = nanoid(10)
+  downloadCanvasMerged(id)
+  downloadCanvasImagesIndividually(id)
+}
+
 </script>
 
 <template>
@@ -274,6 +353,9 @@ function addText() {
           </div>
         </div>
         <TextboxControls :canvas="canvas" />
+        <div class="mt-24 flex justify-center gap-4">
+          <TextButton @click="downloadCanvasImages">Begär Offert</TextButton>
+        </div>
       </Section>
     </div>
   </div>
