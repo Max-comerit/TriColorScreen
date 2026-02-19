@@ -70,10 +70,19 @@ export function useCustomText() {
           render: createBringToFrontControlRender(getBringToFrontImage()),
           mouseUpHandler: (eventData, transform) => {
             const target = transform?.target
-            if (target) {
+            if (target && target.canvas) {
               const canvas = target.canvas
-              canvas?.bringObjectToFront(target)
-              canvas?.requestRenderAll()
+              const objects = canvas.getObjects()
+              const currentIndex = objects.indexOf(target)
+              const topIndex = objects.length - 1
+              
+              // Toggle: if already at front, send to back; otherwise bring to front
+              if (currentIndex === topIndex) {
+                canvas.sendObjectToBack(target)
+              } else {
+                canvas.bringObjectToFront(target)
+              }
+              canvas.requestRenderAll()
             }
           }
         }),
@@ -82,6 +91,8 @@ export function useCustomText() {
           y: 0.5,
           offsetX: 12,
           offsetY: 12,
+          sizeX: 36,
+          sizeY: 36,
           render: createResizeControlRender(getResizeImage()),
           cursorStyle: 'nwse-resize',
           actionHandler: controlsUtils.scalingEqually,
@@ -91,6 +102,8 @@ export function useCustomText() {
           y: -0.5,
           offsetX: 12,
           offsetY: -12,
+          sizeX: 36,
+          sizeY: 36,
           cursorStyle: 'pointer',
           render: createTrashControlRender(getTrashCanImage()),
           mouseUpHandler: (eventData, transform) => {          
@@ -117,6 +130,8 @@ export function useCustomText() {
           cursorStyle: 'ew-resize',
           offsetX: -12,
           offsetY: 12,
+          sizeX: 36,
+          sizeY: 36,
           render: (ctx, left, top, _styleOverride, fabricObject) => {
             const size = 24
             const img = getResizeImage()

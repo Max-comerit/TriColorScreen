@@ -78,10 +78,19 @@ export function useCustomImage() {
         render: createBringToFrontControlRender(getBringToFrontImage()),
         mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
           const target = transform?.target as FabricImage | undefined
-          if (target) {
+          if (target && target.canvas) {
             const canvas = target.canvas
-            canvas?.bringObjectToFront(target)
-            canvas?.requestRenderAll()
+            const objects = canvas.getObjects()
+            const currentIndex = objects.indexOf(target)
+            const topIndex = objects.length - 1
+            
+            // Toggle: if already at front, send to back; otherwise bring to front
+            if (currentIndex === topIndex) {
+              canvas.sendObjectToBack(target)
+            } else {
+              canvas.bringObjectToFront(target)
+            }
+            canvas.requestRenderAll()
           }
           return true
         },

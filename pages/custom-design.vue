@@ -79,6 +79,8 @@ onMounted(async () => {
       y: -0.5,
       offsetX: 12,
       offsetY: -12,
+      sizeX: 36,
+      sizeY: 36,
       cursorStyle: 'pointer',
         render: createTrashControlRender(getTrashCanImage()),
       mouseUpHandler: (_eventData, transform) => {
@@ -98,6 +100,8 @@ onMounted(async () => {
       y: -0.5,
       offsetX: -12,
       offsetY: -12,
+      sizeX: 36,
+      sizeY: 36,
       cursorStyle: 'pointer',
       render: createBringToFrontControlRender(getBringToFrontImage()),
       mouseUpHandler: (_eventData, transform) => {
@@ -105,8 +109,23 @@ onMounted(async () => {
         if (target) {
           const c = target.canvas
           if (c) {
-            target.getObjects().forEach(obj => {
-              c.bringObjectToFront(obj)
+            const objects = c.getObjects()
+            const selectedObjects = target.getObjects()
+            
+            // Check if all selected objects are at the top
+            const allAtTop = selectedObjects.every(obj => {
+              const currentIndex = objects.indexOf(obj)
+              const topIndex = objects.length - 1
+              return currentIndex >= topIndex - selectedObjects.length + 1
+            })
+            
+            // Toggle: if all at top, send to back; otherwise bring to front
+            selectedObjects.forEach(obj => {
+              if (allAtTop) {
+                c.sendObjectToBack(obj)
+              } else {
+                c.bringObjectToFront(obj)
+              }
             })
             c.requestRenderAll()
           }
@@ -117,6 +136,8 @@ onMounted(async () => {
       x: 0,
       y: -0.5,
       offsetY: -50,
+      sizeX: 36,
+      sizeY: 36,
       cursorStyle: 'pointer',
       render: createRotateControlRender(getRotateImage()),
       withConnection: true,
@@ -127,6 +148,8 @@ onMounted(async () => {
       y: 0.5,
       offsetX: 12,
       offsetY: 12,
+      sizeX: 36,
+      sizeY: 36,
       cursorStyle: 'nwse-resize',
       render: createResizeControlRender(getResizeImage()),
       actionHandler: controlsUtils.scalingEqually,
