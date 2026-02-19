@@ -4,8 +4,9 @@ import {
   createResizeControlRender,
   createRotateControlRender,
   createTrashControlRender,
+  createBringToFrontControlRender,
 } from '@/utils/customControlRenders'
-import { getResizeImage, getRotateImage, getTrashCanImage } from '@/utils/customImageIcons'
+import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
 
 interface FabricCanvasLike {
   add: (object: Textbox) => void
@@ -60,6 +61,22 @@ export function useCustomText() {
       borderDashArray: [5, 5],
       editable: true,
       controls: {
+        bringToFrontIcon: new Control({
+          x: -0.5,
+          y: -0.5,
+          offsetX: -12,
+          offsetY: -12,
+          cursorStyle: 'pointer',
+          render: createBringToFrontControlRender(getBringToFrontImage()),
+          mouseUpHandler: (eventData, transform) => {
+            const target = transform?.target
+            if (target) {
+              const canvas = target.canvas
+              canvas?.bringObjectToFront(target)
+              canvas?.requestRenderAll()
+            }
+          }
+        }),
         scaleIcon: new Control({
           x: 0.5,
           y: 0.5,
@@ -96,9 +113,10 @@ export function useCustomText() {
         }),
         resize: new Control({
           x: -0.5,
-          y: 0,
+          y: 0.5,
           cursorStyle: 'ew-resize',
-          offsetX: -18,
+          offsetX: -12,
+          offsetY: 12,
           render: (ctx, left, top, _styleOverride, fabricObject) => {
             const size = 24
             const img = getResizeImage()
@@ -120,6 +138,7 @@ export function useCustomText() {
           withConnection: true,
           actionHandler: controlsUtils.changeObjectWidth,
         }),
+        
     }})
 
     

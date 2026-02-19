@@ -6,8 +6,9 @@ import {
   createResizeControlRender,
   createRotateControlRender,
   createTrashControlRender,
+  createBringToFrontControlRender,
 } from '@/utils/customControlRenders'
-import { getResizeImage, getRotateImage, getTrashCanImage } from '@/utils/customImageIcons'
+import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
 
 interface Transform {
   target?: unknown
@@ -64,6 +65,27 @@ export function useCustomImage() {
 
       // Disable caching to ensure controls are always rendered
       image.objectCaching = false
+
+      // Add custom control for bring to front
+      image.controls.bringToFrontControl = new Control({
+        x: -0.5,
+        y: -0.5,
+        offsetX: -12,
+        offsetY: -12,
+        sizeX: 36,
+        sizeY: 36,
+        cursorStyle: 'pointer',
+        render: createBringToFrontControlRender(getBringToFrontImage()),
+        mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
+          const target = transform?.target as FabricImage | undefined
+          if (target) {
+            const canvas = target.canvas
+            canvas?.bringObjectToFront(target)
+            canvas?.requestRenderAll()
+          }
+          return true
+        },
+      })
 
       // Add custom control for delete
       image.controls.deleteControl = new Control({

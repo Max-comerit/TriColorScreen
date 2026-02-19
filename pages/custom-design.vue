@@ -15,8 +15,9 @@ import TextboxControls from '~/components/features/TextboxControls.vue'
 import {
   createRotateControlRender,
   createTrashControlRender,
+  createBringToFrontControlRender,
 } from '@/utils/customControlRenders'
-import { getRotateImage, getTrashCanImage } from '@/utils/customImageIcons'
+import { getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -87,6 +88,26 @@ onMounted(async () => {
           if (c) {
             target.getObjects().forEach(obj => c.remove(obj))
             c.discardActiveObject()
+            c.requestRenderAll()
+          }
+        }
+      },
+    }),
+    bringToFrontIcon: new Control({
+      x: -0.5,
+      y: -0.5,
+      offsetX: -12,
+      offsetY: -12,
+      cursorStyle: 'pointer',
+      render: createBringToFrontControlRender(getBringToFrontImage()),
+      mouseUpHandler: (_eventData, transform) => {
+        const target = transform?.target as ActiveSelection | undefined
+        if (target) {
+          const c = target.canvas
+          if (c) {
+            target.getObjects().forEach(obj => {
+              c.bringObjectToFront(obj)
+            })
             c.requestRenderAll()
           }
         }
