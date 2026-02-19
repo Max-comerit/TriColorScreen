@@ -49,35 +49,24 @@ const aspectRatio = computed(() => {
   return props.width / props.height
 })
 
-// ===== STATE =====
-const supportsAspectRatio = ref(true)
+// Evaluated once synchronously during setup (not in onMounted) so there is no
+// post-mount reactive update that would trigger a forced reflow.
+// Safari < 16.3 (released March 2023) had an aspect-ratio bug in flex/grid containers.
+const supportsAspectRatio = (() => {
+  if (!import.meta.client) return true // SSR: assume support, matches most clients
+  const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
+  if (!isSafari) return CSS.supports('aspect-ratio', '1')
+  const m = navigator.userAgent.match(/Version\/(\d+)\.(\d+)/)
+  if (!m) return true
+  const [major, minor] = [parseInt(m[1]), parseInt(m[2])]
+  const hasBug = major < 16 || (major === 16 && minor < 3)
+  return !hasBug && CSS.supports('aspect-ratio', '1')
+})()
 
 // ===== METHODS =====
-const containerStyle = computed(() => {
-  if (supportsAspectRatio.value) {
-    return { aspectRatio: aspectRatio.value }
-  }
-  return {}
-})
-
-// ===== LIFECYCLE =====
-onMounted(() => {
-  // Feature detection for aspect-ratio support
-  // Safari includes fixes in WebKit for aspect-ratio issues in version 16.3, so exclude versions below that
-  const safariMatch = navigator.userAgent.match(/Version\/(\d+)\.(\d+)/)
-  const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
-  
-  let isSafariWithBug = false
-  if (safariMatch && isSafari) {
-    const majorVersion = parseInt(safariMatch[1])
-    const minorVersion = parseInt(safariMatch[2])
-    // Exclude Safari < 16.3
-    isSafariWithBug = majorVersion < 16 || (majorVersion === 16 && minorVersion < 3)
-  }
-  
-  const supportsAspectRatioFeature = CSS.supports('aspect-ratio', '1')
-  supportsAspectRatio.value = supportsAspectRatioFeature && !isSafariWithBug
-})
+const containerStyle = computed(() =>
+  supportsAspectRatio ? { aspectRatio: aspectRatio.value } : {}
+)
 </script>
 
 <template>
