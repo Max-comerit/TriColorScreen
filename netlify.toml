@@ -3,13 +3,9 @@
   command = "npm run generate"
   publish = "dist/"
 
-# Redirect all non-file requests to index.html for SPA routing
-# Status 200 redirects don't affect POST requests (Netlify Forms)
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
+# Note: No SPA catch-all redirect — this is SSG (nuxt generate).
+# All routes are pre-rendered to their own index.html files.
+# Unknown routes correctly return 404 via Nuxt's error page.
 
 # Cache settings for static assets
 # More specific rules must come BEFORE the catch-all /_nuxt/** rule.
