@@ -49,23 +49,27 @@ const aspectRatio = computed(() => {
   return props.width / props.height
 })
 
-// Evaluated once synchronously during setup (not in onMounted) so there is no
-// post-mount reactive update that would trigger a forced reflow.
-// Safari < 16.3 (released March 2023) had an aspect-ratio bug in flex/grid containers.
-const supportsAspectRatio = (() => {
-  if (!import.meta.client) return true // SSR: assume support, matches most clients
+// ===== STATE =====
+// Start true (matches server render); corrected on mount for old Safari.
+// CSS.supports() does not read layout geometry so causes no forced reflow.
+const supportsAspectRatio = ref(true)
+
+// ===== LIFECYCLE =====
+onMounted(() => {
+  // Safari < 16.3 (March 2023) has an aspect-ratio bug in flex/grid containers.
   const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
-  if (!isSafari) return CSS.supports('aspect-ratio', '1')
+  if (!isSafari) return // non-Safari: keep true, no DOM update needed
+
   const m = navigator.userAgent.match(/Version\/(\d+)\.(\d+)/)
-  if (!m) return true
+  if (!m) return
   const [major, minor] = [parseInt(m[1]), parseInt(m[2])]
   const hasBug = major < 16 || (major === 16 && minor < 3)
-  return !hasBug && CSS.supports('aspect-ratio', '1')
-})()
+  if (hasBug) supportsAspectRatio.value = false
+})
 
 // ===== METHODS =====
 const containerStyle = computed(() =>
-  supportsAspectRatio ? { aspectRatio: aspectRatio.value } : {}
+  supportsAspectRatio.value ? { aspectRatio: aspectRatio.value } : {}
 )
 </script>
 
