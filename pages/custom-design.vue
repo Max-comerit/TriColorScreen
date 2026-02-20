@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
+import '~/assets/css/custom-design-fonts.css'
 import { Canvas, FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
 import { nanoid } from 'nanoid'
 import HeroImage from '~/components/common/HeroImage.vue'

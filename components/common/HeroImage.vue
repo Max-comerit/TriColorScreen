@@ -42,6 +42,11 @@ const props = withDefaults(defineProps<Props>(), {
   alt: 'Hero banner image',
 })
 
+// ===== STATE =====
+// Start true (matches server render); corrected on mount for old Safari.
+// CSS.supports() does not read layout geometry so causes no forced reflow.
+const supportsAspectRatio = ref(true)
+
 // ===== COMPUTED =====
 const aspectRatio = computed(() => {
   // Prevent division by zero
@@ -49,35 +54,24 @@ const aspectRatio = computed(() => {
   return props.width / props.height
 })
 
-// ===== STATE =====
-const supportsAspectRatio = ref(true)
-
 // ===== METHODS =====
-const containerStyle = computed(() => {
-  if (supportsAspectRatio.value) {
-    return { aspectRatio: aspectRatio.value }
-  }
-  return {}
-})
+const containerStyle = computed(() =>
+  supportsAspectRatio.value ? { aspectRatio: aspectRatio.value } : {}
+)
 
 // ===== LIFECYCLE =====
 onMounted(() => {
-  // Feature detection for aspect-ratio support
-  // Safari includes fixes in WebKit for aspect-ratio issues in version 16.3, so exclude versions below that
-  const safariMatch = navigator.userAgent.match(/Version\/(\d+)\.(\d+)/)
+  // Safari < 16.3 (March 2023) has an aspect-ratio bug in flex/grid containers.
   const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
-  
-  let isSafariWithBug = false
-  if (safariMatch && isSafari) {
-    const majorVersion = parseInt(safariMatch[1])
-    const minorVersion = parseInt(safariMatch[2])
-    // Exclude Safari < 16.3
-    isSafariWithBug = majorVersion < 16 || (majorVersion === 16 && minorVersion < 3)
-  }
-  
-  const supportsAspectRatioFeature = CSS.supports('aspect-ratio', '1')
-  supportsAspectRatio.value = supportsAspectRatioFeature && !isSafariWithBug
+  if (!isSafari) return // non-Safari: keep true, no DOM update needed
+
+  const m = navigator.userAgent.match(/Version\/(\d+)\.(\d+)/)
+  if (!m) return
+  const [major, minor] = [parseInt(m[1]), parseInt(m[2])]
+  const hasBug = major < 16 || (major === 16 && minor < 3)
+  if (hasBug) supportsAspectRatio.value = false
 })
+
 </script>
 
 <template>

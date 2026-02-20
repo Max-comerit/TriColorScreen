@@ -178,30 +178,38 @@ function onScrollBarChange(event: Event): void {
 onMounted(() => {
   if (!viewportRef.value) return
 
-  embla.value = EmblaCarousel(viewportRef.value, {
-    loop: props.loop,
-    align: 'start',
-    skipSnaps: true,
-    dragFree: false,
+  // Defer Embla init to after the browser commits the initial paint.
+  // EmblaCarousel reads offsetWidth/getBoundingClientRect internally;
+  // wrapping in rAF ensures no pending style invalidation exists at that point,
+  // avoiding a forced reflow on page load.
+  requestAnimationFrame(() => {
+    if (!viewportRef.value) return
+
+    embla.value = EmblaCarousel(viewportRef.value, {
+      loop: props.loop,
+      align: 'start',
+      skipSnaps: true,
+      dragFree: false,
+    })
+
+    const updateState = (): void => {
+      if (!embla.value) return
+
+      selectedIndex.value = embla.value.selectedScrollSnap()
+      canScrollPrev.value = embla.value.canScrollPrev()
+      canScrollNext.value = embla.value.canScrollNext()
+
+      const snaps = embla.value.scrollSnapList()
+      const idx = embla.value.selectedScrollSnap()
+      scrollProgress.value = snaps.length > 1
+        ? idx / (snaps.length - 1)
+        : 0
+    }
+
+    embla.value.on('init', updateState)
+    embla.value.on('select', updateState)
+    embla.value.on('scroll', updateState)
   })
-
-  const updateState = (): void => {
-    if (!embla.value) return
-
-    selectedIndex.value = embla.value.selectedScrollSnap()
-    canScrollPrev.value = embla.value.canScrollPrev()
-    canScrollNext.value = embla.value.canScrollNext()
-
-    const snaps = embla.value.scrollSnapList()
-    const idx = embla.value.selectedScrollSnap()
-    scrollProgress.value = snaps.length > 1
-      ? idx / (snaps.length - 1)
-      : 0
-  }
-
-  embla.value.on('init', updateState)
-  embla.value.on('select', updateState)
-  embla.value.on('scroll', updateState)
 })
 
 </script>

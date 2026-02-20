@@ -46,36 +46,15 @@ const props = withDefaults(defineProps<Props>(), {
   sectionId: undefined,
 })
 
-// ===== STATE =====
-const isMobile = ref(true)
-
 // ===== COMPUTED =====
 const gridStyle = computed(() => ({
-  display: 'grid',
-  gridTemplateColumns: isMobile.value ? '1fr' : `repeat(auto-fit, minmax(${typeof props.minItemWidth === 'number' ? `${props.minItemWidth}px` : props.minItemWidth}, 1fr))`,
+  '--min-col-width': typeof props.minItemWidth === 'number' ? `${props.minItemWidth}px` : props.minItemWidth,
   gridAutoRows: props.sameItemHeight ? '1fr' : 'auto',
   width: typeof props.width === 'number' ? `${props.width}px` : props.width,
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
   gap: `${props.gap}px`,
   minHeight: '300px',
 }))
-
-// ===== LIFECYCLE HOOKS =====
-onMounted(() => {
-  // Check initial viewport width
-  const checkMobile = () => {
-    isMobile.value = window.innerWidth < 640 // Tailwind sm breakpoint
-  }
-
-  checkMobile()
-
-  // Listen for resize events
-  window.addEventListener('resize', checkMobile)
-
-  onBeforeUnmount(() => {
-    window.removeEventListener('resize', checkMobile)
-  })
-})
 
 </script>
 
@@ -88,7 +67,7 @@ onMounted(() => {
     class="w-full"
   >
     <!-- Responsive grid container with auto-fill -->
-    <div :style="gridStyle" class="w-full">
+    <div :style="gridStyle" class="card-grid w-full">
       <!-- Render ServiceCard or ReviewCard based on item type -->
       <template v-for="(card, index) in props.cardContentArr" :key="card.type === 'service' ? card.data.title : `${card.data.date}:${card.data.name}`">
         <ServiceCard
@@ -111,3 +90,16 @@ onMounted(() => {
     </div>
   </section>
 </template>
+
+<style scoped>
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(var(--min-col-width), 1fr));
+  }
+}
+</style>
