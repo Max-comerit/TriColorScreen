@@ -5,17 +5,19 @@
 import '~/assets/css/custom-design-fonts.css'
 import { Canvas, FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
 import { nanoid } from 'nanoid'
+import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
+import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
-import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
-import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import TextButton from '~/components/common/TextButton.vue'
+import TextboxControls from '~/components/features/TextboxControls.vue'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
 import { useCanvasExport } from '~/composables/useCanvasExport'
+import { useCanvasRescale } from '~/composables/useCanvasRescale'
+import { useCanvasStore } from '@/stores/canvasStore'
 import { ref, shallowRef, onMounted, onBeforeUnmount } from 'vue'
-import TextboxControls from '~/components/features/TextboxControls.vue'
 import {
   createRotateControlRender,
   createTrashControlRender,
@@ -56,6 +58,8 @@ useHead({
 const { addImageToCanvas } = useCustomImage()
 const { addTextToCanvas } = useCustomText()
 const { exportMergedImage, exportImageObjects } = useCanvasExport()
+const { rescaleObjects } = useCanvasRescale()
+const canvasStore = useCanvasStore()
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
@@ -141,15 +145,34 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
+  if(canvas.value) {
+    // Save state before leaving page
+    canvasStore.save(canvas.value, currentCanvasSize)
+    // Cleanup (important)
+    canvas.value.dispose()
+  }
 })
 
 async function initializeCanvas(el: HTMLCanvasElement, size: number): Promise<void> {
   currentCanvasSize = size
   canvas.value = new Canvas(el, { selection: true })
+  if(!canvas.value) {
+    console.error('Failed to initialize Fabric canvas')
+    return
+  }
   canvas.value.setDimensions({ width: size, height: size })
   canvas.value.enablePointerEvents = true
 
   await loadBackground('/images/custom-design/t-shirt-front.png', size)
+
+  // Restore previous state, rescaling objects if the viewport size changed
+  await canvasStore.restore(canvas.value, size)
+
+  // Watch for canvas changes and save state
+  canvas.value.on('object:added', () => canvasStore.save(canvas.value!, currentCanvasSize))
+  canvas.value.on('object:modified', () => canvasStore.save(canvas.value!, currentCanvasSize))
+  canvas.value.on('object:removed', () => canvasStore.save(canvas.value!, currentCanvasSize))
+
 }
 
 async function loadBackground(url: string, size: number = currentCanvasSize): Promise<void> {
@@ -181,16 +204,7 @@ function rescaleCanvas(newSize: number): void {
   }
 
   // Proportionally rescale and reposition all objects
-  canvas.value.getObjects().forEach((obj) => {
-    obj.set({
-      left: (obj.left ?? 0) * ratio,
-      top: (obj.top ?? 0) * ratio,
-      scaleX: (obj.scaleX ?? 1) * ratio,
-      scaleY: (obj.scaleY ?? 1) * ratio,
-    })
-    obj.setCoords()
-  })
-
+  rescaleObjects(canvas.value, ratio)
   canvas.value.requestRenderAll()
 }
 
