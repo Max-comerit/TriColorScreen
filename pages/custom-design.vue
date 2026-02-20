@@ -18,6 +18,7 @@ import { useCanvasExport } from '~/composables/useCanvasExport'
 import { useCanvasRescale } from '~/composables/useCanvasRescale'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { ref, shallowRef, onMounted, onBeforeUnmount } from 'vue'
+import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
 import {
   createRotateControlRender,
   createTrashControlRender,
@@ -310,6 +311,7 @@ async function downloadCanvasImages(): Promise<void> {
         align="center"
         aria-label="Design Verktyg"
       >
+        <BackgroundSelector :canvas="canvas" />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
           <div ref="canvasWrapperRef" class="flex-1 w-full min-w-[350px] max-w-[800px] aspect-square">
             <canvas id="shirt-canvas" class="block border border-black rounded-card overflow-hidden"/>
