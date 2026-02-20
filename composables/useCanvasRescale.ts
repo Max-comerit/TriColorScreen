@@ -1,3 +1,5 @@
+// composables/useCanvasRescale.ts
+
 import type { Canvas, FabricImage } from 'fabric'
 
 /**
