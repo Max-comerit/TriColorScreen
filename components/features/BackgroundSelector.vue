@@ -1,56 +1,81 @@
 <script setup lang="ts">
 // 1. Imports
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import type { Canvas } from 'fabric'
 import { FabricImage } from 'fabric'
 import { storeToRefs } from 'pinia'
-import { useCanvasStore } from '@/stores/canvasStore'
+import { useCanvasStore, type CanvasSide } from '@/stores/canvasStore'
 
 // 2. Props & Emits
 interface Props {
   canvas: Canvas | null
-  currentBackgroundUrl?: string
+  side: CanvasSide
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits<{
-  backgroundChanged: [url: string]
+  sideChanged: [side: CanvasSide]
 }>()
 
 // 3. Composables & Stores
 const canvasStore = useCanvasStore()
-const { backgroundSelection, customBackgroundDataUrl } = storeToRefs(canvasStore)
+const { front, back } = storeToRefs(canvasStore)
 
 // 4. State
 const CUSTOM_OPTION_ID = 'custom'
 
-const backgrounds = [
-  {
-    id: 'tshirt',
-    label: 'T-Shirt',
-    url: '/images/custom-design/t-shirt-front.png',
-  },
-  {
-    id: 'baseball-cap',
-    label: 'Baseball Keps',
-    url: '/images/custom-design/baseball-cap-front.png',
-  },
-  {
-    id: 'jacket',
-    label: 'Jacka',
-    url: '/images/custom-design/jacket-front.png',
-  },
+const backgroundOptionsBySide = {
+  front: [
+    {
+      id: 'tshirt',
+      label: 'T-Shirt',
+      url: '/images/custom-design/t-shirt-front.png',
+    },
+    {
+      id: 'baseball-cap',
+      label: 'Baseball Keps',
+      url: '/images/custom-design/baseball-cap-front.png',
+    },
+    {
+      id: 'jacket',
+      label: 'Jacka',
+      url: '/images/custom-design/jacket-front.png',
+    },
+  ],
+  back: [
+    {
+      id: 'tshirt',
+      label: 'T-Shirt',
+      url: '/images/custom-design/t-shirt-back.png',
+    },
+    {
+      id: 'baseball-cap',
+      label: 'Baseball Keps',
+      url: '/images/custom-design/baseball-cap-back.png',
+    },
+    {
+      id: 'jacket',
+      label: 'Jacka',
+      url: '/images/custom-design/jacket-back.png',
+    },
+  ],
+} satisfies Record<CanvasSide, Array<{ id: string; label: string; url: string }>>
+
+const customFileInputRef = ref<HTMLInputElement | null>(null)
+
+const sideState = computed(() => (props.side === 'front' ? front.value : back.value))
+
+const backgroundOptions = computed(() => [
+  ...backgroundOptionsBySide[props.side],
   {
     id: CUSTOM_OPTION_ID,
     label: 'Egen Produkt',
     url: CUSTOM_OPTION_ID,
   },
-]
-
-const customFileInputRef = ref<HTMLInputElement | null>(null)
+])
 
 const selectedBackground = computed({
-  get: () => props.currentBackgroundUrl || backgroundSelection.value || backgrounds[0].url,
+  get: () => sideState.value.backgroundSelection || backgroundOptions.value[0].url,
   set: (url: string) => {
     if (url === CUSTOM_OPTION_ID) {
       selectCustomBackground()
@@ -81,12 +106,28 @@ async function loadBackground(url: string): Promise<void> {
     canvasInstance.backgroundImage = bg
     canvasInstance.requestRenderAll()
 
-    canvasStore.setBackgroundSelection(url)
-
-    emit('backgroundChanged', url)
+    resetStoredCanvases(url)
+    syncProductSelection(url)
   } catch (error) {
     console.error('Failed to load background image:', error)
   }
+}
+
+function resetStoredCanvases(url: string): void {
+  if (url === CUSTOM_OPTION_ID) return
+  canvasStore.clear()
+}
+
+function syncProductSelection(url: string): void {
+  if (url === CUSTOM_OPTION_ID) return
+
+  const otherSide = getOtherSide(props.side)
+  const mappedUrl = mapBackgroundUrlToSide(url, otherSide)
+
+  canvasStore.setBackgroundSelection(props.side, url)
+  canvasStore.setCustomBackgroundDataUrl(props.side, null)
+  canvasStore.setBackgroundSelection(otherSide, mappedUrl)
+  canvasStore.setCustomBackgroundDataUrl(otherSide, null)
 }
 
 function clearBackground(): void {
@@ -97,8 +138,9 @@ function clearBackground(): void {
 }
 
 function selectCustomBackground(): void {
-  const storedDataUrl = customBackgroundDataUrl.value
-  canvasStore.setBackgroundSelection(CUSTOM_OPTION_ID)
+  const storedDataUrl = sideState.value.customBackgroundDataUrl
+  canvasStore.setBackgroundSelection(props.side, CUSTOM_OPTION_ID)
+  canvasStore.setBackgroundSelection(getOtherSide(props.side), CUSTOM_OPTION_ID)
 
   if (storedDataUrl) {
     applyCustomBackground(storedDataUrl)
@@ -106,7 +148,6 @@ function selectCustomBackground(): void {
   }
 
   clearBackground()
-  emit('backgroundChanged', CUSTOM_OPTION_ID)
 }
 
 function openCustomFileDialog(): void {
@@ -139,10 +180,8 @@ async function applyCustomBackground(dataUrl: string): Promise<void> {
     canvasInstance.backgroundImage = bg
     canvasInstance.requestRenderAll()
 
-    canvasStore.setBackgroundSelection(CUSTOM_OPTION_ID)
-    canvasStore.setCustomBackgroundDataUrl(dataUrl)
-
-    emit('backgroundChanged', dataUrl)
+    canvasStore.setBackgroundSelection(props.side, CUSTOM_OPTION_ID)
+    canvasStore.setCustomBackgroundDataUrl(props.side, dataUrl)
   } catch (error) {
     console.error('Failed to load custom background image:', error)
   }
@@ -168,12 +207,11 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
   input.value = ''
 }
 
-// 7. Lifecycle hooks
-onMounted(() => {
-  const selection = backgroundSelection.value
+function hydrateFromStore(): void {
+  const selection = sideState.value.backgroundSelection
   if (selection === CUSTOM_OPTION_ID) {
-    if (customBackgroundDataUrl.value) {
-      applyCustomBackground(customBackgroundDataUrl.value)
+    if (sideState.value.customBackgroundDataUrl) {
+      applyCustomBackground(sideState.value.customBackgroundDataUrl)
     } else {
       clearBackground()
     }
@@ -183,15 +221,37 @@ onMounted(() => {
   if (selection && selection !== selectedBackground.value) {
     loadBackground(selection)
   }
+}
+
+function getOtherSide(side: CanvasSide): CanvasSide {
+  return side === 'front' ? 'back' : 'front'
+}
+
+function mapBackgroundUrlToSide(url: string, side: CanvasSide): string {
+  if (side === 'front') {
+    return url.replace('-back.', '-front.')
+  }
+
+  return url.replace('-front.', '-back.')
+}
+
+// 7. Lifecycle hooks
+onMounted(() => {
+  hydrateFromStore()
 })
 
 // 8. Watchers
-// (none)
+watch(
+  () => [props.side, props.canvas],
+  () => {
+    hydrateFromStore()
+  },
+)
 </script>
 
 <template>
   <div class="w-full max-w-xl mx-auto my-4 px-4 justify-center flex">
-    <div class="flex flex-col max-w-sm sm:flex-row items-stretch sm:items-center gap-3 sm:gap-3 p-3 sm:p-3 bg-white border border-gray-300 rounded-lg shadow-md">
+    <div class="flex items-stretch sm:items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg shadow-md justify-center flex-wrap">
       <label class="flex items-center gap-3 flex-1">
         <select
           v-model="selectedBackground"
@@ -199,7 +259,7 @@ onMounted(() => {
           aria-label="Select canvas background"
         >
           <option
-            v-for="bg in backgrounds"
+            v-for="bg in backgroundOptions"
             :key="bg.id"
             :value="bg.url"
           >
@@ -207,6 +267,18 @@ onMounted(() => {
           </option>
         </select>
       </label>
+      <label class="flex  sm:w-auto items-center gap-3">
+        <select
+          :value="props.side"
+          class="h-11 px-3 py-2 border w-full border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          aria-label="Select side"
+          @change="emit('sideChanged', ($event.target as HTMLSelectElement).value as CanvasSide)"
+        >
+          <option value="front">Fram</option>
+          <option value="back">Bak</option>
+        </select>
+      </label>
+
       <button
         v-if="isCustomSelected"
         class="inline-flex items-center justify-center h-11 px-4 text-sm font-semibold rounded-button bg-primary-600 text-white shadow-sm transition hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600"
