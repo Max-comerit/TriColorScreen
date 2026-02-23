@@ -27,12 +27,12 @@ const backgrounds = [
   },
   {
     id: 'baseball-cap',
-    label: 'Baseball Cap',
+    label: 'Baseball Keps',
     url: '/images/custom-design/baseball-cap-front.png',
   },
     {
     id: 'jacket',
-    label: 'Jacket',
+    label: 'Jacka',
     url: '/images/custom-design/jacket-front.png',
   },
 ]
