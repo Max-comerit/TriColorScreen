@@ -84,6 +84,7 @@ const { front: frontState, back: backState } = storeToRefs(canvasStore)
 
 watch(() => frontState.value.backgroundSelection, async (newSelection) => {
   if (!frontCanvas.value || !newSelection) return
+  frontCanvas.value.remove(...frontCanvas.value.getObjects())
   if (newSelection === CUSTOM_BACKGROUND_SELECTION) {
     frontCanvas.value.backgroundImage = undefined
     frontCanvas.value.requestRenderAll()
@@ -94,6 +95,7 @@ watch(() => frontState.value.backgroundSelection, async (newSelection) => {
 
 watch(() => backState.value.backgroundSelection, async (newSelection) => {
   if (!backCanvas.value || !newSelection) return
+  backCanvas.value.remove(...backCanvas.value.getObjects())
   if (newSelection === CUSTOM_BACKGROUND_SELECTION) {
     backCanvas.value.backgroundImage = undefined
     backCanvas.value.requestRenderAll()
