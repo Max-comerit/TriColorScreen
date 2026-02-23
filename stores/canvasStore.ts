@@ -22,7 +22,8 @@ export const useCanvasStore = defineStore('canvas', {
   state: () => ({
     json: null as string | null,
     size: 0,
-    backgroundUrl: null as string | null,
+    backgroundSelection: null as string | null,
+    customBackgroundDataUrl: null as string | null,
   }),
   actions: {
     save(canvas: Canvas, size: number) {
@@ -47,13 +48,17 @@ export const useCanvasStore = defineStore('canvas', {
 
       canvas.requestRenderAll()
     },
-    setBackgroundUrl(url: string) {
-      this.backgroundUrl = url
+    setBackgroundSelection(selection: string | null) {
+      this.backgroundSelection = selection
+    },
+    setCustomBackgroundDataUrl(dataUrl: string | null) {
+      this.customBackgroundDataUrl = dataUrl
     },
     clear() {
       this.json = null
       this.size = 0
-      this.backgroundUrl = null
+      this.backgroundSelection = null
+      this.customBackgroundDataUrl = null
     }
   }
 })
