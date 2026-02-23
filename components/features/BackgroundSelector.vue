@@ -251,7 +251,7 @@ watch(
 
 <template>
   <div class="w-full max-w-xl mx-auto my-4 px-4 justify-center flex">
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg shadow-md">
+    <div class="flex items-stretch sm:items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg shadow-md justify-center flex-wrap">
       <label class="flex items-center gap-3 flex-1">
         <select
           v-model="selectedBackground"
@@ -267,15 +267,15 @@ watch(
           </option>
         </select>
       </label>
-      <label class="flex items-center gap-3">
+      <label class="flex  sm:w-auto items-center gap-3">
         <select
           :value="props.side"
-          class="h-11 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="h-11 px-3 py-2 border w-full border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select side"
           @change="emit('sideChanged', ($event.target as HTMLSelectElement).value as CanvasSide)"
         >
-          <option value="front">Framsida</option>
-          <option value="back">Baksida</option>
+          <option value="front">Fram</option>
+          <option value="back">Bak</option>
         </select>
       </label>
 
