@@ -42,7 +42,7 @@ const backgrounds = [
   },
   {
     id: CUSTOM_OPTION_ID,
-    label: 'Custom',
+    label: 'Egen Produkt',
     url: CUSTOM_OPTION_ID,
   },
 ]
