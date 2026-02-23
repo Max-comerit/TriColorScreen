@@ -89,7 +89,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full max-w-2xl mx-auto my-4 px-4">
+  <div class="w-full max-w-sm mx-auto my-4 px-4">
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-3 p-3 sm:p-3 bg-white border border-gray-300 rounded-lg shadow-md">
       <label class="flex items-center gap-3 flex-1">
         <select
