@@ -1,8 +1,10 @@
 <script setup lang="ts">
 // 1. Imports
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import type { Canvas } from 'fabric'
 import { FabricImage } from 'fabric'
+import { storeToRefs } from 'pinia'
+import { useCanvasStore } from '@/stores/canvasStore'
 
 // 2. Props & Emits
 interface Props {
@@ -16,7 +18,8 @@ const emit = defineEmits<{
 }>()
 
 // 3. Composables & Stores
-// (none)
+const canvasStore = useCanvasStore()
+const { backgroundUrl } = storeToRefs(canvasStore)
 
 // 4. State
 const backgrounds = [
@@ -38,7 +41,7 @@ const backgrounds = [
 ]
 
 const selectedBackground = computed({
-  get: () => props.currentBackgroundUrl || backgrounds[0].url,
+  get: () => props.currentBackgroundUrl || backgroundUrl.value || backgrounds[0].url,
   set: (url: string) => {
     loadBackground(url)
   },
@@ -65,6 +68,8 @@ async function loadBackground(url: string): Promise<void> {
     canvasInstance.backgroundImage = bg
     canvasInstance.requestRenderAll()
 
+    canvasStore.setBackgroundUrl(url)
+
     emit('backgroundChanged', url)
   } catch (error) {
     console.error('Failed to load background image:', error)
@@ -72,7 +77,12 @@ async function loadBackground(url: string): Promise<void> {
 }
 
 // 7. Lifecycle hooks
-// (none)
+onMounted(() => {
+  const storedUrl = backgroundUrl.value
+  if (storedUrl && storedUrl !== selectedBackground.value) {
+    loadBackground(storedUrl)
+  }
+})
 
 // 8. Watchers
 // (none)
