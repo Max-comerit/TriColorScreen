@@ -231,6 +231,7 @@ export function useContactForm() {
         formDataToSubmit.append('image', formData.value.image)
       }
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
+      formDataToSubmit.append('bot-field', '') // Honeypot field for spam protection
 
       // Submit to Netlify Forms at root (Netlify processes all forms at /)
       // Note: Don't set Content-Type header - browser will set it correctly for multipart/form-data with boundary
