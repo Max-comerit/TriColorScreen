@@ -145,6 +145,7 @@ watch(isChanged, (newValue) => {
     data-netlify="true"
     data-netlify-honeypot="bot-field"
     enctype="multipart/form-data"
+    autocomplete="off"
     class="w-full max-w-2xl bg-primary-100 p-6 sm:p-8 rounded-card shadow-drop"
     aria-label="Kontaktformulär"
     @submit.prevent="handleSubmit"
