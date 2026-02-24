@@ -6,6 +6,7 @@
     "build": "nuxi build",
     "dev": "nuxi dev",
     "generate": "nuxi generate",
+    "generate:clean": "npx rimraf dist .nuxt .output && nuxi generate",
     "preview": "nuxi preview",
     "postinstall": "nuxi prepare",
     "lint": "eslint .",
