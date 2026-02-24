@@ -115,6 +115,11 @@ export function useContactForm() {
   const isSuccess = computed(() => formState.value === 'success')
 
   /**
+   * Check if form submission failed
+   */
+  const isError = computed(() => formState.value === 'error')
+
+  /**
    * Check if form has any validation errors
    */
   const hasErrors = computed(() => fieldErrors.value.size > 0 || generalError.value !== null)
@@ -275,6 +280,7 @@ export function useContactForm() {
     isChanged,
     isSubmitting,
     isSuccess,
+    isError,
     hasErrors,
     
     // Methods

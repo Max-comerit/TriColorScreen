@@ -20,6 +20,7 @@ const {
   isChanged,
   isSubmitting,
   isSuccess,
+  isError,
   hasErrors,
   validateField,
   getFieldError,
@@ -492,7 +493,7 @@ watch(isChanged, (newValue) => {
 
       <!-- Error Message -->
       <div
-        v-if="showErrorMessage && hasErrors"
+        v-if="showErrorMessage && (isError || hasErrors)"
         role="alert"
         aria-live="assertive"
         class="p-4 bg-error-light border-l-4 border-error rounded-input"
