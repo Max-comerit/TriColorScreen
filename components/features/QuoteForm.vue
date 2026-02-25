@@ -419,9 +419,9 @@ watch(
         <input
           ref="fileInputRef"
           type="file"
-          name="images[]"
-          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+          name="images"
           multiple
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
           class="sr-only"
           tabindex="-1"
           aria-hidden="true"

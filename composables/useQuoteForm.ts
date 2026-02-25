@@ -1,3 +1,5 @@
+// composables/useQuoteForm.ts
+
 /**
  * Quote Form Composable
  *
@@ -256,7 +258,7 @@ export function useQuoteForm() {
       }
       formDataToSubmit.append('product_count', String(formData.value.productCount))
       formData.value.images?.forEach((file) => {
-        formDataToSubmit.append('images[]', file, file.name)
+        formDataToSubmit.append('images', file, file.name)
       })
       if (formData.value.message) {
         formDataToSubmit.append('message', formData.value.message)
