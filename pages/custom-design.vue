@@ -71,7 +71,6 @@ const fileInputRef = ref<HTMLInputElement | null>(null)
 const frontCanvasRef = ref<HTMLCanvasElement | null>(null)
 const backCanvasRef = ref<HTMLCanvasElement | null>(null)
 const canvasWrapperRef = ref<HTMLDivElement | null>(null)
-const selectedProduct = ref<string>('')
 const activeSide = ref<CanvasSide>('front')
 const frontCanvas = shallowRef<Canvas | null>(null)
 const backCanvas = shallowRef<Canvas | null>(null)
@@ -441,7 +440,7 @@ async function openQuoteForm(): Promise<void> {
         align="center"
         aria-label="Design Verktyg"
       >
-        <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" @product-changed="selectedProduct = $event" />
+        <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
           <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] aspect-square">
             <div v-show="activeSide === 'front'" class="absolute inset-0" :aria-hidden="activeSide !== 'front'">
@@ -493,7 +492,7 @@ async function openQuoteForm(): Promise<void> {
           class="mt-10 flex justify-center"
           aria-label="Offertformulär"
         >
-          <QuoteForm :files="quoteFiles" product-category="T-Shirts" :product="selectedProduct" />
+          <QuoteForm :files="quoteFiles" product-category="Textil" product="T-Shirt" />
         </div>
       </Section>
     </div>
