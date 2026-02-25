@@ -64,6 +64,12 @@ export type QuoteFormData = z.infer<typeof quoteFormSchema>
 
 // ===== TYPES =====
 
+/** Form field error type */
+export interface FormFieldError<T> {
+  field: keyof T
+  message: string
+}
+
 /** Form submission state */
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
 

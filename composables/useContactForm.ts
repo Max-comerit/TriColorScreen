@@ -66,12 +66,6 @@ export type ContactFormData = z.infer<typeof contactFormSchema>
 
 // ===== TYPES =====
 
-/** Form field error type */
-export interface FormFieldError {
-  field: keyof ContactFormData
-  message: string
-}
-
 /** Form submission state */
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
