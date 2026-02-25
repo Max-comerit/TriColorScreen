@@ -2,10 +2,10 @@
 
 <script setup lang="ts">
 // 1. Imports
-import type { Canvas, Textbox } from 'fabric'
-import { ActiveSelection } from 'fabric'
+import { type Canvas, Textbox, ActiveSelection } from 'fabric'
 import { ref, shallowRef, computed, watch, onUnmounted } from 'vue'
 import { setTextboxTextRadius } from '@/utils/customDesign'
+import { CircularTextbox } from '@/utils/CircularTextbox'
 
 // 2. Props & Emits
 interface Props {
@@ -35,7 +35,7 @@ const hasSelection = computed(() => selectedTextboxes.value.length > 0)
 
 // 6. Methods
 function isTextbox(obj: unknown): obj is Textbox {
-  return !!obj && typeof obj === 'object' && 'type' in obj && (obj as { type: string }).type === 'textbox'
+  return obj instanceof Textbox
 }
 
 function getTextboxesFromSelection(): Textbox[] {
@@ -94,7 +94,7 @@ function syncFromFirst() {
   textAlign.value = (first.textAlign as 'left' | 'center' | 'right') ?? 'left'
   fill.value = (first.fill as string) ?? '#000000'
   textValue.value = first.text ?? ''
-  textRadius.value = (first as Textbox & { textRadius?: number }).textRadius ?? 0
+  textRadius.value = first instanceof CircularTextbox ? first.textRadius : 0
 }
 
 function applyToAll(updater: (tb: Textbox) => void) {
@@ -145,7 +145,11 @@ function closeCircularMode() {
 }
 
 function applyCircularRadius() {
-  applyToAll(tb => setTextboxTextRadius(tb, textRadius.value))
+  applyToAll((tb) => {
+    if (tb instanceof CircularTextbox) {
+      setTextboxTextRadius(tb, textRadius.value)
+    }
+  })
 }
 
 // 7. Lifecycle hooks

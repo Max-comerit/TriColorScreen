@@ -1,6 +1,7 @@
 // composables/useCustomText.ts
 
-import { Textbox, Control, controlsUtils, util } from 'fabric'
+import {  Control, controlsUtils, util } from 'fabric'
+import type { Textbox } from 'fabric'
 import {
   createResizeControlRender,
   createRotateControlRender,
@@ -9,11 +10,12 @@ import {
 } from '@/utils/customControlRenders'
 import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
 import { toggleObjectZOrder, setTextboxTextRadius } from '@/utils/customDesign'
+import { CircularTextbox } from '@/utils/CircularTextbox'
 
 interface FabricCanvasLike {
-  add: (object: Textbox) => void
-  centerObject: (object: Textbox) => void
-  setActiveObject: (object: Textbox) => void
+  add: (object: CircularTextbox) => void
+  centerObject: (object: CircularTextbox) => void
+  setActiveObject: (object: CircularTextbox) => void
   requestRenderAll: () => void
   getWidth: () => number
 }
@@ -133,7 +135,7 @@ export function useCustomText() {
   /**
    * Adds a textbox to a Fabric canvas (accepts a Vue Ref<Canvas | null>).
    */
-  function addTextToCanvas(canvas: FabricCanvasLike | null, options: AddTextOptions = {}): Textbox | null {
+  function addTextToCanvas(canvas: FabricCanvasLike | null, options: AddTextOptions = {}): CircularTextbox | null {
     if (!canvas) return null
 
     const text = options.text ?? DEFAULT_TEXT
@@ -145,7 +147,7 @@ export function useCustomText() {
     const textRadius = options.textRadius ?? DEFAULT_TEXT_RADIUS;
     const width = options.width ?? Math.min(DEFAULT_TEXT_WIDTH, canvas.getWidth() * 0.8)
 
-    const textbox = new Textbox(text, {
+    const textbox = new CircularTextbox(text, {
       width,
       fontSize,
       fontFamily,
@@ -155,10 +157,11 @@ export function useCustomText() {
       borderColor: 'blue',
       borderScaleFactor: 1,
       borderDashArray: [5, 5],
-      editable: true,
     })
 
-    applyTextboxControls(textbox)
+    // Cast to Textbox: CircularTextbox.toObject uses @ts-expect-error for Fabric's generic
+    // constraint — at runtime CircularTextbox is always a valid Textbox.
+    applyTextboxControls(textbox as unknown as Textbox)
     setTextboxTextRadius(textbox, textRadius)
 
     canvas.add(textbox)

@@ -2,6 +2,8 @@
 
 import { FabricImage, Textbox } from 'fabric'
 import type { Canvas, FabricObject } from 'fabric'
+import { CircularTextbox } from '~/utils/CircularTextbox'
+import { setTextboxTextRadius } from '~/utils/customDesign'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
 
@@ -23,6 +25,14 @@ export function useCanvasControls() {
   function reapplyControlsToObject(obj: FabricObject): void {
     if (obj instanceof FabricImage) {
       applyImageControls(obj)
+    } else if (obj instanceof CircularTextbox) {
+      // CircularTextbox must be checked before Textbox since it extends it.
+      // Cast to Textbox because CircularTextbox.toObject uses @ts-expect-error to work
+      // around Fabric's complex generic constraint — the runtime behaviour is correct.
+      applyTextboxControls(obj as unknown as Textbox)
+      // Re-apply textRadius after applyTextboxControls resets all controls,
+      // to restore correct path and resize control visibility
+      setTextboxTextRadius(obj, obj.textRadius)
     } else if (obj instanceof Textbox) {
       applyTextboxControls(obj)
     }

@@ -3,8 +3,9 @@
  * 
  * This module provides functions to manipulate the z-order of Fabric objects and to set a circular text path for Textbox objects based on a specified radius. The circular path is created using SVG path syntax and is centered at the origin. The module also includes a function to check if the radius value is within a valid range for creating a circular path.
  */
-import type { FabricObject, Canvas, Textbox } from 'fabric'
+import type { FabricObject, Canvas } from 'fabric'
 import { Path } from 'fabric'
+import { CircularTextbox } from './CircularTextbox'
 
 /**
  * Toggles the z-order of a single Fabric object.
@@ -64,22 +65,24 @@ function createCircularTextPath(radius: number) : Path {
 }
 
 /**
- * Sets the text radius for a Textbox object, which determines whether the text follows a circular path.
- * If the radius is within the valid range, the Textbox's width is updated to match the circumference of the circle, and a circular path is created. 
- * If the radius is out of bounds, the Textbox reverts to normal text layout without a path.
- * The visibility of the resize control is also toggled based on whether the text is following a path, as resizing doesn't make sense in that context.
- * 
- * @param textbox - The Textbox object to update
+ * Sets the text radius for a CircularTextbox, which determines whether the text follows a circular path.
+ * If the radius is within the valid range, the box's width is updated to match the circumference of the
+ * circle and a circular path is created.
+ * If the radius is out of bounds, the textbox reverts to normal text layout without a path.
+ * The visibility of the resize control is also toggled based on whether the text is following a path,
+ * as resizing doesn't make sense in that context.
+ *
+ * @param textbox - The CircularTextbox object to update
  * @param radius - The desired text radius, which determines the circular path
  */
-export function setTextboxTextRadius(textbox: Textbox, radius: number): void {
+export function setTextboxTextRadius(textbox: CircularTextbox, radius: number): void {
   textbox.set({
-    width: hasPath(radius) ? 2 * Math.PI * radius : textbox.width, // Update width based on whether text is on a path
+    width: hasPath(radius) ? 2 * Math.PI * radius : textbox.width,
     textRadius: radius,
     path: createCircularTextPath(radius),
     pathSide: 'left',
     pathStartOffset: 0,
   })
-  textbox.controls.resize.visible = !hasPath(radius) // Hide resize control if text is on a path, since resizing doesn't make sense in that context
-  textbox.setCoords() // Update the bounding box after changing width
+  textbox.controls.resize.visible = !hasPath(radius)
+  textbox.setCoords()
 }
