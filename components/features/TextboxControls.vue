@@ -302,12 +302,12 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
         <!-- Circular Text -->
         <button
           type="button"
-          class="min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 border border-gray-300 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="min-w-[44px] min-h-[44px] flex items-center justify-center px-2 py-1 border border-gray-300 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
           title="Circular Text"
           aria-label="Apply circular text effect"
           @click="updateRadius"
         >
-          <img src="@/assets/images/custom-design/circular-text-icon.svg?url" alt="" class="w-4 h-4" />
+          <img src="@/assets/images/custom-design/circular-text-icon.svg?url" alt="" class="h-7 w-7" />
         </button>
 
       </div>
