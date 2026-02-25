@@ -1,8 +1,11 @@
+// components/features/TextboxControls.vue
+
 <script setup lang="ts">
 // 1. Imports
 import type { Canvas, Textbox } from 'fabric'
 import { ActiveSelection } from 'fabric'
 import { ref, shallowRef, computed, watch, onUnmounted } from 'vue'
+import { setTextboxTextRadius } from '@/utils/customDesign'
 
 // 2. Props & Emits
 interface Props {
@@ -21,7 +24,9 @@ const isBold = ref(false)
 const isItalic = ref(false)
 const textAlign = ref<'left' | 'center' | 'right'>('left')
 const fill = ref('#000000')
+const textRadius = ref(0)
 const textValue = ref('')
+const circularMode = ref(false)
 
 let attachedCanvas: Canvas | null = null
 
@@ -89,6 +94,7 @@ function syncFromFirst() {
   textAlign.value = (first.textAlign as 'left' | 'center' | 'right') ?? 'left'
   fill.value = (first.fill as string) ?? '#000000'
   textValue.value = first.text ?? ''
+  textRadius.value = (first as Textbox & { textRadius?: number }).textRadius ?? 0
 }
 
 function applyToAll(updater: (tb: Textbox) => void) {
@@ -130,6 +136,18 @@ function updateText() {
   applyToAll(tb => tb.set('text', textValue.value))
 }
 
+function updateRadius() {
+  circularMode.value = true
+}
+
+function closeCircularMode() {
+  circularMode.value = false
+}
+
+function applyCircularRadius() {
+  applyToAll(tb => setTextboxTextRadius(tb, textRadius.value))
+}
+
 // 7. Lifecycle hooks
 onUnmounted(() => {
   if (attachedCanvas) detach(attachedCanvas)
@@ -151,8 +169,34 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
     v-if="hasSelection"
     class="w-full max-w-2xl mx-auto mt-4 px-4"
   >
-    <!-- Mobile: Vertical Stack, Tablet+: Horizontal Flex -->
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-2 p-3 sm:p-2 bg-white border border-gray-300 rounded-lg shadow-md">
+    <!-- Circular Text Mode -->
+    <div v-if="circularMode" class="flex items-center gap-3 p-3 sm:p-2 bg-white border border-gray-300 rounded-lg shadow-md">
+      <label class="flex-1 flex flex-col gap-2">
+        <span class="text-sm font-medium text-gray-700">Circular Text Radius</span>
+        <input
+          v-model.number="textRadius"
+          type="range"
+          min="0"
+          max="150"
+          class="h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500"
+          @input="applyCircularRadius"
+          @change="applyCircularRadius"
+        >
+        <span class="text-xs text-gray-600">{{ textRadius }}px</span>
+      </label>
+      <button
+        type="button"
+        class="min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 border border-gray-300 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+        title="Close"
+        aria-label="Close circular text mode"
+        @click="closeCircularMode"
+      >
+        <img src="@/assets/images/dialog/close-icon.svg?url" alt="" class="w-5 h-5" />
+      </button>
+    </div>
+
+    <!-- Normal Toolbar Mode -->
+    <div v-else class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-2 p-3 sm:p-2 bg-white border border-gray-300 rounded-lg shadow-md">
       <!-- Text Input - Full width on mobile, flexible on larger screens -->
       <label class="flex items-center gap-2 flex-1 min-w-0">
         <input
@@ -254,6 +298,18 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
           aria-label="Choose text color"
           @input="updateColor"
         >
+
+        <!-- Circular Text -->
+        <button
+          type="button"
+          class="min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 border border-gray-300 bg-gray-50 rounded-md cursor-pointer hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+          title="Circular Text"
+          aria-label="Apply circular text effect"
+          @click="updateRadius"
+        >
+          <img src="@/assets/images/custom-design/circular-text-icon.svg?url" alt="" class="w-4 h-4" />
+        </button>
+
       </div>
     </div>
   </div>

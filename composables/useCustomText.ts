@@ -8,7 +8,7 @@ import {
   createBringToFrontControlRender,
 } from '@/utils/customControlRenders'
 import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
-import { toggleObjectZOrder } from '@/utils/fabricZOrder'
+import { toggleObjectZOrder, setTextboxTextRadius } from '@/utils/customDesign'
 
 interface FabricCanvasLike {
   add: (object: Textbox) => void
@@ -25,6 +25,7 @@ export interface AddTextOptions {
   fontWeight?: number | string
   fill?: string
   textAlign?: 'left' | 'center' | 'right' | 'justify'
+  textRadius?: number
   width?: number
 }
 
@@ -34,6 +35,7 @@ const DEFAULT_FONT_FAMILY = "'Inter', sans-serif"
 const DEFAULT_FONT_WEIGHT = 400
 const DEFAULT_FILL = '#111111'
 const DEFAULT_TEXT_ALIGN: AddTextOptions['textAlign'] = 'center'
+const DEFAULT_TEXT_RADIUS = 0
 const DEFAULT_TEXT_WIDTH = 360
 
 export function useCustomText() {
@@ -140,6 +142,7 @@ export function useCustomText() {
     const fontWeight = options.fontWeight ?? DEFAULT_FONT_WEIGHT
     const fill = options.fill ?? DEFAULT_FILL
     const textAlign = options.textAlign ?? DEFAULT_TEXT_ALIGN
+    const textRadius = options.textRadius ?? DEFAULT_TEXT_RADIUS;
     const width = options.width ?? Math.min(DEFAULT_TEXT_WIDTH, canvas.getWidth() * 0.8)
 
     const textbox = new Textbox(text, {
@@ -156,6 +159,7 @@ export function useCustomText() {
     })
 
     applyTextboxControls(textbox)
+    setTextboxTextRadius(textbox, textRadius)
 
     canvas.add(textbox)
     canvas.centerObject(textbox)
