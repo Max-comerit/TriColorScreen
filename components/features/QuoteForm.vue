@@ -142,10 +142,10 @@ watch(
       if (input) input.value = ''
     })
 
-    images?.forEach((file, index) => {
+    // Populate only existing files
+    images?.slice(0, MAX_IMAGES).forEach((file, index) => {
       const input = fileInputRefs.value[index]
       if (!input) return
-
       const dt = new DataTransfer()
       dt.items.add(file)
       input.files = dt.files
@@ -424,13 +424,10 @@ watch(
       </div>
 
       <!-- ── Attached design images (hidden / prop-filled) ───── -->
-      <div
-        v-if="formData.images && formData.images.length > 0"
-        aria-live="polite"
-      >
+      <div aria-hidden="true" class="sr-only">
         <!-- Hidden file inputs for Netlify submission, one per image -->
         <input
-          v-for="(_, index) in formData.images"
+          v-for="index in MAX_IMAGES"
           :key="index"
           :ref="el => fileInputRefs[index] = el as HTMLInputElement"
           type="file"
