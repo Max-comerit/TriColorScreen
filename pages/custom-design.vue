@@ -493,7 +493,7 @@ async function openQuoteForm(): Promise<void> {
           class="mt-10 flex justify-center"
           aria-label="Offertformulär"
         >
-          <QuoteForm :files="quoteFiles" :product="selectedProduct" />
+          <QuoteForm :files="quoteFiles" product-category="T-Shirts" :product="selectedProduct" />
         </div>
       </Section>
     </div>
