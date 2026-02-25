@@ -43,6 +43,7 @@ const {
 const showSuccessMessage = ref(false)
 const showErrorMessage = ref(false)
 const showGdprDialog = ref(false)
+const fileInputRef = ref<HTMLInputElement | null>(null)
 
 // ===== METHODS =====
 /**
@@ -124,6 +125,21 @@ watch(
 watch(isChanged, (newValue) => {
   emit('changed', newValue)
 })
+
+/**
+ * Sync prop-provided files into the hidden file input so Netlify
+ * includes them in the multipart/form-data submission.
+ */
+watch(
+  () => formData.value.files,
+  (files) => {
+    if (!fileInputRef.value) return
+    const dt = new DataTransfer()
+    ;(files ?? []).forEach(file => dt.items.add(file))
+    fileInputRef.value.files = dt.files
+  },
+  { deep: true },
+)
 </script>
 
 <template>
@@ -399,6 +415,16 @@ watch(isChanged, (newValue) => {
         v-if="formData.files && formData.files.length > 0"
         aria-live="polite"
       >
+        <!-- Hidden file input so Netlify includes files in the submission -->
+        <input
+          ref="fileInputRef"
+          type="file"
+          name="images[]"
+          multiple
+          class="sr-only"
+          tabindex="-1"
+          aria-hidden="true"
+        >
         <p class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5">
           Tillagda designbilder
         </p>
