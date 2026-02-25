@@ -40,10 +40,12 @@ const {
 } = useQuoteForm()
 
 // ===== STATE =====
+const MAX_IMAGES = 5
+
 const showSuccessMessage = ref(false)
 const showErrorMessage = ref(false)
 const showGdprDialog = ref(false)
-const fileInputRef = ref<HTMLInputElement | null>(null)
+const fileInputRefs = ref<HTMLInputElement[]>([])
 
 // ===== METHODS =====
 /**
@@ -115,7 +117,9 @@ watch(
 
 watch(
   () => props.files,
-  (value) => { formData.value.images = value ?? [] },
+  (files) => {
+    formData.value.images = (files ?? []).slice(0, MAX_IMAGES)
+  },
   { immediate: true },
 )
 
@@ -133,10 +137,19 @@ watch(isChanged, (newValue) => {
 watch(
   () => formData.value.images,
   (images) => {
-    if (!fileInputRef.value) return
-    const dt = new DataTransfer()
-    ;(images ?? []).forEach(file => dt.items.add(file))
-    fileInputRef.value.files = dt.files
+    // Clear all inputs first
+    fileInputRefs.value.forEach(input => {
+      if (input) input.value = ''
+    })
+
+    images?.forEach((file, index) => {
+      const input = fileInputRefs.value[index]
+      if (!input) return
+
+      const dt = new DataTransfer()
+      dt.items.add(file)
+      input.files = dt.files
+    })
   },
   { deep: true },
 )
@@ -415,12 +428,13 @@ watch(
         v-if="formData.images && formData.images.length > 0"
         aria-live="polite"
       >
-        <!-- Hidden file input so Netlify includes files in the submission -->
+        <!-- Hidden file inputs for Netlify submission, one per image -->
         <input
-          ref="fileInputRef"
+          v-for="(_, index) in formData.images"
+          :key="index"
+          :ref="el => fileInputRefs[index] = el as HTMLInputElement"
           type="file"
-          name="images"
-          multiple
+          :name="`image_${index + 1}`"
           accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
           class="sr-only"
           tabindex="-1"
