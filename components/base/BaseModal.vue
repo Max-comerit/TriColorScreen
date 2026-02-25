@@ -9,7 +9,7 @@
 
 // ===== IMPORTS =====
 import { watch, nextTick, onMounted, onUnmounted } from 'vue'
-import CloseIcon from '~/assets/images/dialog/close-icon.svg?component'
+import CloseIcon from '~/assets/images/common/close-icon.svg?component'
 
 // ===== TYPES =====
 /** Inner border style type */

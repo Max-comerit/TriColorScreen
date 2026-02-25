@@ -6,7 +6,7 @@ import { useContactForm } from '~/composables/useContactForm'
 import type { ContactFormData } from '~/composables/useContactForm'
 import TextButton from '~/components/common/TextButton.vue'
 import GdprDialog from '~/components/features/GdprDialog.vue'
-import CloseIcon from '~/assets/images/dialog/close-icon.svg?component'
+import CloseIcon from '~/assets/images/common/close-icon.svg?component'
 
 // ===== EMITS =====
 const emit = defineEmits<{
