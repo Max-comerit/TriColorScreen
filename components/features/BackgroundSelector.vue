@@ -15,6 +15,7 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits<{
   sideChanged: [side: CanvasSide]
+  productChanged: [label: string]
 }>()
 
 // 3. Composables & Stores
@@ -82,6 +83,8 @@ const selectedBackground = computed({
       return
     }
     loadBackground(url)
+    const label = backgroundOptionsBySide[props.side].find(opt => opt.url === url)?.label ?? ''
+    emit('productChanged', label)
   },
 })
 
@@ -235,9 +238,15 @@ function mapBackgroundUrlToSide(url: string, side: CanvasSide): string {
   return url.replace('-front.', '-back.')
 }
 
+function getSelectedProductLabel(): string {
+  const url = sideState.value.backgroundSelection || backgroundOptions.value[0].url
+  return backgroundOptionsBySide[props.side].find(opt => opt.url === url)?.label ?? ''
+}
+
 // 7. Lifecycle hooks
 onMounted(() => {
   hydrateFromStore()
+  emit('productChanged', getSelectedProductLabel())
 })
 
 // 8. Watchers

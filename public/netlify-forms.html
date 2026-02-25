@@ -28,5 +28,32 @@
       <input name="bot-field" autocomplete="off" style="display:none">
       <button type="submit">Skicka</button>
     </form>
+
+    <!--
+      Quote request form — registered for Netlify Forms detection.
+      Fields mirror components/features/QuoteForm.vue exactly.
+    -->
+    <form name="quote" method="POST" action="/" data-netlify="true" data-netlify-honeypot="bot-field" enctype="multipart/form-data" autocomplete="off">
+      <input type="hidden" name="form-name" value="quote">
+      <input type="text" name="name" autocomplete="name">
+      <input type="email" name="email" autocomplete="email">
+      <input type="tel" name="phone" autocomplete="tel">
+      <select name="customer_type" autocomplete="off">
+        <option value="person">person</option>
+        <option value="company">company</option>
+      </select>
+      <input type="text" name="subject" value="Offert förfrågan" autocomplete="off">
+      <input type="text" name="product_category" autocomplete="off">
+      <input type="text" name="product" autocomplete="off">
+      <input type="number" name="product_count" autocomplete="off">
+      <input type="file" name="file_1" autocomplete="off">
+      <input type="file" name="file_2" autocomplete="off">
+      <input type="file" name="file_3" autocomplete="off">
+      <input type="file" name="file_4" autocomplete="off">
+      <textarea name="message" autocomplete="off"></textarea>
+      <input type="checkbox" name="gdpr_consent" autocomplete="off">
+      <input name="bot-field" autocomplete="off" style="display:none">
+      <button type="submit">Skicka offertförfrågan</button>
+    </form>
   </body>
 </html>

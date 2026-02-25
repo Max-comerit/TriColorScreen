@@ -20,6 +20,7 @@ import { useCanvasStore, type CanvasSide } from '@/stores/canvasStore'
 import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
+import QuoteForm from '~/components/features/QuoteForm.vue'
 import {
   createRotateControlRender,
   createTrashControlRender,
@@ -70,9 +71,12 @@ const fileInputRef = ref<HTMLInputElement | null>(null)
 const frontCanvasRef = ref<HTMLCanvasElement | null>(null)
 const backCanvasRef = ref<HTMLCanvasElement | null>(null)
 const canvasWrapperRef = ref<HTMLDivElement | null>(null)
+const selectedProduct = ref<string>('')
 const activeSide = ref<CanvasSide>('front')
 const frontCanvas = shallowRef<Canvas | null>(null)
 const backCanvas = shallowRef<Canvas | null>(null)
+const quoteFormRef = ref<HTMLElement | null>(null)
+const quoteFiles = ref<File[]>([])
 let resizeObserver: ResizeObserver | null = null
 let currentCanvasSize = 0
 
@@ -332,51 +336,78 @@ function addText() {
   addTextToCanvas(activeCanvas.value)
 }
 
-function downloadFile(dataURL: string, filename: string): void {
-    const link = document.createElement('a')
-    link.href = dataURL
-    link.download = filename
-    link.click()
+/**
+ * Convert a data URL to a File object.
+ */
+async function dataUrlToFile(dataUrl: string, filename: string): Promise<File> {
+  const response = await fetch(dataUrl)
+  const blob = await response.blob()
+  return new File([blob], filename, { type: blob.type })
 }
 
-async function downloadCanvasImages(): Promise<void> {
+/**
+ * Compress a data URL to JPEG at the given quality (0–1).
+ * Reduces file size significantly compared to the raw PNG canvas export.
+ */
+async function compressDataUrl(dataUrl: string, quality = 0.75): Promise<string> {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.width = img.naturalWidth
+      canvas.height = img.naturalHeight
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0)
+      resolve(canvas.toDataURL('image/jpeg', quality))
+    }
+    img.src = dataUrl
+  })
+}
+
+/**
+ * Export both canvas sides as File objects and populate quoteFiles.
+ * Includes a merged composite image and all individual image-layer files.
+ */
+async function collectQuoteFiles(): Promise<void> {
   const availableCanvases = [
     { side: 'front' as const, canvas: frontCanvas.value },
     { side: 'back' as const, canvas: backCanvas.value },
   ].filter(entry => entry.canvas)
 
   if (availableCanvases.length === 0) {
-    alert('Canvas not initialized')
-    console.error('Error downloading canvas: Canvas is not initialized')
+    console.warn('collectQuoteFiles: no canvas available')
     return
   }
 
-  try {
-    const id = nanoid(10)
-    for (const entry of availableCanvases) {
-      const canvasInstance = entry.canvas as Canvas
-      const [mergedUrl, imageUrls] = await Promise.all([
-        exportMergedImage(canvasInstance),
-        exportImageObjects(canvasInstance),
-      ])
+  const collected: File[] = []
+  const id = nanoid(10)
 
-      // Download merged image first
-      downloadFile(mergedUrl, `design-${id}-${entry.side}.png`)
-      URL.revokeObjectURL(mergedUrl)
+  for (const entry of availableCanvases) {
+    const canvasInstance = entry.canvas as Canvas
+    const [mergedUrl, imageUrls] = await Promise.all([
+      exportMergedImage(canvasInstance),
+      exportImageObjects(canvasInstance),
+    ])
 
-      // Download individual layer images
-      imageUrls.forEach((url, index) => {
-        // Stagger image downloads slightly so browsers don't block them
-        setTimeout(() => {
-          downloadFile(url, `design-${id}-${entry.side}-image-${index + 1}.png`)
-          URL.revokeObjectURL(url)
-        }, (index + 1) * 200)
-      })
+    // Merged composite: compress to JPEG (no transparency needed, smaller payload)
+    const compressedMerged = await compressDataUrl(mergedUrl)
+    collected.push(await dataUrlToFile(compressedMerged, `design-${id}-${entry.side}.jpg`))
+
+    // Individual layers: keep as PNG to preserve transparency
+    for (let i = 0; i < imageUrls.length; i++) {
+      collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-${entry.side}-layer-${i + 1}.png`))
     }
-  } catch (error) {
-    alert('Failed to download design images')
-    console.error('Error downloading canvas:', error)
   }
+
+  quoteFiles.value = collected
+}
+
+/**
+ * Collect canvas files and scroll the quote form into view.
+ */
+async function openQuoteForm(): Promise<void> {
+  await collectQuoteFiles()
+  quoteFormRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
 </script>
@@ -410,7 +441,7 @@ async function downloadCanvasImages(): Promise<void> {
         align="center"
         aria-label="Design Verktyg"
       >
-        <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" />
+        <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" @product-changed="selectedProduct = $event" />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
           <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] aspect-square">
             <div v-show="activeSide === 'front'" class="absolute inset-0" :aria-hidden="activeSide !== 'front'">
@@ -450,8 +481,19 @@ async function downloadCanvasImages(): Promise<void> {
           </div>
         </div>
         <TextboxControls :canvas="activeCanvas" />
-        <div class="mt-24 flex justify-center gap-4">
-          <TextButton @click="downloadCanvasImages">Begär Offert</TextButton>
+
+        <!-- Offert-knapp — samlar designfiler och rullar till formuläret -->
+        <div class="mt-10 flex justify-center gap-4">
+          <TextButton @click="openQuoteForm">Förbered offertförfrågan</TextButton>
+        </div>
+
+        <!-- Offertformulär -->
+        <div
+          ref="quoteFormRef"
+          class="mt-10 flex justify-center"
+          aria-label="Offertformulär"
+        >
+          <QuoteForm :files="quoteFiles" :product="selectedProduct" />
         </div>
       </Section>
     </div>

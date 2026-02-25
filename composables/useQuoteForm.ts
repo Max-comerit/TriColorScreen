@@ -1,22 +1,15 @@
 /**
- * Contact Form Composable
+ * Quote Form Composable
  *
  * Provides form state management, validation, and submission handling
- * for the contact form with Zod schema validation.
+ * for the quote request form with Zod schema validation.
  */
 
 import { z } from 'zod'
 
-// ===== CONSTANTS =====
-/** Maximum file size: 5MB */
-const MAX_FILE_SIZE = 5 * 1024 * 1024
-
-/** Allowed image MIME types */
-const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
-
 // ===== ZOD SCHEMA =====
-/** Contact form validation schema */
-export const contactFormSchema = z.object({
+/** Quote form validation schema */
+export const quoteFormSchema = z.object({
   name: z
     .string()
     .min(2, 'Namnet måste vara minst 2 tecken')
@@ -34,26 +27,31 @@ export const contactFormSchema = z.object({
     .enum(['person', 'company'], {
       errorMap: () => ({ message: 'Välj om du är privatperson eller företag' }),
     }),
-  subject: z
+  subject: z.literal('Offert förfrågan'),
+  productCategory: z
     .string()
-    .min(3, 'Ämnet måste vara minst 3 tecken')
-    .max(200, 'Ämnet får inte vara längre än 200 tecken'),
+    .optional()
+    .or(z.literal('')),
+  product: z
+    .string()
+    .optional()
+    .or(z.literal('')),
+  productCount: z
+    .number({
+      required_error: 'Ange antal',
+      invalid_type_error: 'Ange ett giltigt antal',
+    })
+    .int('Antal måste vara ett heltal')
+    .min(1, 'Antal måste vara minst 1')
+    .max(10000, 'Antal får inte vara mer än 10 000'),
+  files: z
+    .array(z.custom<File>((val) => val instanceof File))
+    .optional(),
   message: z
     .string()
     .max(2000, 'Meddelandet får inte vara längre än 2000 tecken')
     .optional()
     .or(z.literal('')),
-  image: z
-    .custom<File>((file) => {
-      if (!file) return true // Optional field
-      if (!(file instanceof File)) return false
-      if (file.size > MAX_FILE_SIZE) return false
-      return ALLOWED_IMAGE_TYPES.includes(file.type)
-    }, {
-      message: 'Bilden måste vara mindre än 5MB och i formatet JPEG, PNG, WebP eller GIF',
-    })
-    .optional()
-    .nullable(),
   gdprConsent: z
     .boolean()
     .refine(val => val === true, {
@@ -62,7 +60,7 @@ export const contactFormSchema = z.object({
 })
 
 /** TypeScript type from Zod schema */
-export type ContactFormData = z.infer<typeof contactFormSchema>
+export type QuoteFormData = z.infer<typeof quoteFormSchema>
 
 // ===== TYPES =====
 
@@ -71,32 +69,39 @@ type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
 // ===== COMPOSABLE =====
 /**
- * Contact form composable with validation and state management
+ * Quote form composable with validation and state management
  */
-export function useContactForm() {
+export function useQuoteForm() {
   // ===== STATE =====
-  const formData = ref<ContactFormData>({
+  const formData = ref<QuoteFormData>({
     name: '',
     email: '',
     phone: '',
     customerType: undefined as unknown as 'person' | 'company',
-    subject: '',
+    subject: 'Offert förfrågan',
+    productCategory: '',
+    product: '',
+    productCount: undefined as unknown as number,
+    files: [],
     message: '',
-    image: null as File | null,
     gdprConsent: false,
   })
 
-  const initialFormData = ref<ContactFormData>(JSON.parse(JSON.stringify(formData.value)))
+  const initialFormData = ref<Omit<QuoteFormData, 'files'>>(
+    (({ files: _f, ...rest }) => rest)(formData.value),
+  )
   const formState = ref<FormState>('idle')
-  const fieldErrors = ref<Map<keyof ContactFormData, string>>(new Map())
+  const fieldErrors = ref<Map<keyof QuoteFormData, string>>(new Map())
   const generalError = ref<string | null>(null)
 
   // ===== COMPUTED =====
   /**
-   * Check if form data has changed from initial state
+   * Check if user-editable form data has changed from initial state.
+   * Files are excluded because they are prop-injected and cannot be serialised.
    */
   const isChanged = computed(() => {
-    return JSON.stringify(formData.value) !== JSON.stringify(initialFormData.value)
+    const editableData = (({ files: _f, ...rest }) => rest)(formData.value)
+    return JSON.stringify(editableData) !== JSON.stringify(initialFormData.value)
   })
 
   /**
@@ -123,9 +128,9 @@ export function useContactForm() {
   /**
    * Validate a single field
    */
-  function validateField(field: keyof ContactFormData): boolean {
+  function validateField(field: keyof QuoteFormData): boolean {
     try {
-      const fieldSchema = contactFormSchema.shape[field]
+      const fieldSchema = quoteFormSchema.shape[field]
       fieldSchema.parse(formData.value[field])
       fieldErrors.value.delete(field)
       return true
@@ -143,7 +148,7 @@ export function useContactForm() {
    */
   function validateForm(): boolean {
     try {
-      contactFormSchema.parse(formData.value)
+      quoteFormSchema.parse(formData.value)
       fieldErrors.value.clear()
       generalError.value = null
       return true
@@ -152,7 +157,7 @@ export function useContactForm() {
       if (error instanceof z.ZodError) {
         fieldErrors.value.clear()
         error.errors.forEach((err) => {
-          const field = err.path[0] as keyof ContactFormData
+          const field = err.path[0] as keyof QuoteFormData
           fieldErrors.value.set(field, err.message)
         })
       }
@@ -163,14 +168,14 @@ export function useContactForm() {
   /**
    * Get error message for a specific field
    */
-  function getFieldError(field: keyof ContactFormData): string | undefined {
+  function getFieldError(field: keyof QuoteFormData): string | undefined {
     return fieldErrors.value.get(field)
   }
 
   /**
    * Clear error for a specific field
    */
-  function clearFieldError(field: keyof ContactFormData): void {
+  function clearFieldError(field: keyof QuoteFormData): void {
     fieldErrors.value.delete(field)
   }
 
@@ -183,20 +188,20 @@ export function useContactForm() {
   }
 
   /**
-   * Reset form to initial state
+   * Reset all user-editable fields to their initial state.
+   * Prop-injected fields (subject, productCategory, product, files) are preserved.
    */
   function resetForm(): void {
-    formData.value = {
-      name: '',
-      email: '',
-      phone: '',
-      customerType: undefined as unknown as 'person' | 'company',
-      subject: '',
-      message: '',
-      image: null as File | null,
-      gdprConsent: false,
-    }
-    initialFormData.value = JSON.parse(JSON.stringify(formData.value))
+    formData.value.name = ''
+    formData.value.email = ''
+    formData.value.phone = ''
+    formData.value.customerType = undefined as unknown as 'person' | 'company'
+    formData.value.productCount = undefined as unknown as number
+    formData.value.message = ''
+    formData.value.gdprConsent = false
+    // subject, productCategory, product and files are intentionally NOT reset —
+    // they are controlled by the parent component via props.
+    initialFormData.value = (({ files: _f, ...rest }) => rest)(formData.value)
     clearErrors()
     formState.value = 'idle'
   }
@@ -205,7 +210,6 @@ export function useContactForm() {
    * Submit form data to Netlify Forms
    */
   async function submitForm(): Promise<boolean> {
-    // Validate form before submission
     if (!validateForm()) {
       return false
     }
@@ -214,9 +218,8 @@ export function useContactForm() {
       formState.value = 'submitting'
       clearErrors()
 
-      // Prepare form data for Netlify submission
       const formDataToSubmit = new FormData()
-      formDataToSubmit.append('form-name', 'contact')
+      formDataToSubmit.append('form-name', 'quote')
       formDataToSubmit.append('name', formData.value.name)
       formDataToSubmit.append('email', formData.value.email)
       if (formData.value.phone) {
@@ -224,17 +227,24 @@ export function useContactForm() {
       }
       formDataToSubmit.append('customer_type', formData.value.customerType)
       formDataToSubmit.append('subject', formData.value.subject)
+      if (formData.value.productCategory) {
+        formDataToSubmit.append('product_category', formData.value.productCategory)
+      }
+      if (formData.value.product) {
+        formDataToSubmit.append('product', formData.value.product)
+      }
+      formDataToSubmit.append('product_count', String(formData.value.productCount))
+      formData.value.files?.forEach((file, index) => {
+        formDataToSubmit.append(`file_${index + 1}`, file, file.name)
+      })
       if (formData.value.message) {
         formDataToSubmit.append('message', formData.value.message)
       }
-      if (formData.value.image) {
-        formDataToSubmit.append('image', formData.value.image)
-      }
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
-      formDataToSubmit.append('bot-field', '') // Honeypot field for spam protection
+      formDataToSubmit.append('bot-field', '')
 
-      // Submit to Netlify Forms at root (Netlify processes all forms at /)
-      // Note: Don't set Content-Type header - browser will set it correctly for multipart/form-data with boundary
+      // Submit to Netlify Forms
+      // Note: Do not set Content-Type — browser sets it with the correct multipart boundary
       const response = await fetch('/', {
         method: 'POST',
         body: formDataToSubmit,
@@ -244,22 +254,19 @@ export function useContactForm() {
         throw new Error('Formuläret kunde inte skickas. Försök igen.')
       }
 
-      // Success
       formState.value = 'success'
-      initialFormData.value = JSON.parse(JSON.stringify(formData.value))
+      initialFormData.value = (({ files: _f, ...rest }) => rest)(formData.value)
 
       return true
     }
     catch (error) {
       formState.value = 'error'
-      
       if (error instanceof Error) {
         generalError.value = error.message
       }
       else {
         generalError.value = 'Ett oväntat fel inträffade. Försök igen senare.'
       }
-      
       return false
     }
   }
@@ -270,14 +277,14 @@ export function useContactForm() {
     formState,
     fieldErrors: readonly(fieldErrors),
     generalError: readonly(generalError),
-    
+
     // Computed
     isChanged,
     isSubmitting,
     isSuccess,
     isError,
     hasErrors,
-    
+
     // Methods
     validateField,
     validateForm,
