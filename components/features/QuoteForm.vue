@@ -115,7 +115,7 @@ watch(
 
 watch(
   () => props.files,
-  (value) => { formData.value.files = value ?? [] },
+  (value) => { formData.value.images = value ?? [] },
   { immediate: true },
 )
 
@@ -131,11 +131,11 @@ watch(isChanged, (newValue) => {
  * includes them in the multipart/form-data submission.
  */
 watch(
-  () => formData.value.files,
-  (files) => {
+  () => formData.value.images,
+  (images) => {
     if (!fileInputRef.value) return
     const dt = new DataTransfer()
-    ;(files ?? []).forEach(file => dt.items.add(file))
+    ;(images ?? []).forEach(file => dt.items.add(file))
     fileInputRef.value.files = dt.files
   },
   { deep: true },
@@ -412,7 +412,7 @@ watch(
 
       <!-- ── Attached design images (hidden / prop-filled) ───── -->
       <div
-        v-if="formData.files && formData.files.length > 0"
+        v-if="formData.images && formData.images.length > 0"
         aria-live="polite"
       >
         <!-- Hidden file input so Netlify includes files in the submission -->
@@ -420,6 +420,7 @@ watch(
           ref="fileInputRef"
           type="file"
           name="images[]"
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
           multiple
           class="sr-only"
           tabindex="-1"
@@ -433,12 +434,12 @@ watch(
           aria-label="Designbilder som biläggs formuläret"
         >
           <li
-            v-for="(file, index) in formData.files"
+            v-for="(image, index) in formData.images"
             :key="index"
             class="flex items-center gap-2"
           >
             <span aria-hidden="true" class="text-neutral-400">-</span>
-            {{ file.name }}
+            {{ image.name }}
           </li>
         </ul>
       </div>

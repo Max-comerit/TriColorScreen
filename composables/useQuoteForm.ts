@@ -7,6 +7,13 @@
 
 import { z } from 'zod'
 
+// ===== CONSTANTS =====
+/** Maximum file size: 5MB */
+const MAX_FILE_SIZE = 5 * 1024 * 1024
+
+/** Allowed image MIME types */
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
+
 // ===== ZOD SCHEMA =====
 /** Quote form validation schema */
 export const quoteFormSchema = z.object({
@@ -44,9 +51,17 @@ export const quoteFormSchema = z.object({
     .int('Antal måste vara ett heltal')
     .min(1, 'Antal måste vara minst 1')
     .max(10000, 'Antal får inte vara mer än 10 000'),
-  files: z
-    .array(z.custom<File>((val) => val instanceof File))
-    .optional(),
+  images: z
+    .array(z.custom<File>((file) => {
+      if (!file) return true // Optional field
+      if (!(file instanceof File)) return false
+      if (file.size > MAX_FILE_SIZE) return false
+      return ALLOWED_IMAGE_TYPES.includes(file.type)
+    }, {
+      message: 'Bilden måste vara mindre än 5MB och i formatet JPEG, PNG, WebP eller GIF',
+    }))
+    .optional()
+    .nullable(),
   message: z
     .string()
     .max(2000, 'Meddelandet får inte vara längre än 2000 tecken')
@@ -88,13 +103,13 @@ export function useQuoteForm() {
     productCategory: '',
     product: '',
     productCount: undefined as unknown as number,
-    files: [],
+    images: [],
     message: '',
     gdprConsent: false,
   })
 
-  const initialFormData = ref<Omit<QuoteFormData, 'files'>>(
-    (({ files: _f, ...rest }) => rest)(formData.value),
+  const initialFormData = ref<Omit<QuoteFormData, 'images'>>(
+    (({ images: _i, ...rest }) => rest)(formData.value),
   )
   const formState = ref<FormState>('idle')
   const fieldErrors = ref<Map<keyof QuoteFormData, string>>(new Map())
@@ -106,7 +121,7 @@ export function useQuoteForm() {
    * Files are excluded because they are prop-injected and cannot be serialised.
    */
   const isChanged = computed(() => {
-    const editableData = (({ files: _f, ...rest }) => rest)(formData.value)
+    const editableData = (({ images: _i, ...rest }) => rest)(formData.value)
     return JSON.stringify(editableData) !== JSON.stringify(initialFormData.value)
   })
 
@@ -205,9 +220,9 @@ export function useQuoteForm() {
     formData.value.productCount = undefined as unknown as number
     formData.value.message = ''
     formData.value.gdprConsent = false
-    // subject, productCategory, product and files are intentionally NOT reset —
+    // subject, productCategory, product and images are intentionally NOT reset —
     // they are controlled by the parent component via props.
-    initialFormData.value = (({ files: _f, ...rest }) => rest)(formData.value)
+    initialFormData.value = (({ images: _i, ...rest }) => rest)(formData.value)
     clearErrors()
     formState.value = 'idle'
   }
@@ -240,7 +255,7 @@ export function useQuoteForm() {
         formDataToSubmit.append('product', formData.value.product)
       }
       formDataToSubmit.append('product_count', String(formData.value.productCount))
-      formData.value.files?.forEach((file) => {
+      formData.value.images?.forEach((file) => {
         formDataToSubmit.append('images[]', file, file.name)
       })
       if (formData.value.message) {
@@ -261,7 +276,7 @@ export function useQuoteForm() {
       }
 
       formState.value = 'success'
-      initialFormData.value = (({ files: _f, ...rest }) => rest)(formData.value)
+      initialFormData.value = (({ images: _i, ...rest }) => rest)(formData.value)
 
       return true
     }
