@@ -40,8 +40,6 @@ const {
 } = useQuoteForm()
 
 // ===== STATE =====
-const MAX_IMAGES = 5
-
 const showSuccessMessage = ref(false)
 const showErrorMessage = ref(false)
 const showGdprDialog = ref(false)
@@ -117,9 +115,7 @@ watch(
 
 watch(
   () => props.files,
-  (files) => {
-    formData.value.images = (files ?? []).slice(0, MAX_IMAGES)
-  },
+  (value) => { formData.value.images = value ?? [] },
   { immediate: true },
 )
 
@@ -131,24 +127,18 @@ watch(isChanged, (newValue) => {
 })
 
 /**
- * Sync prop-provided files into the hidden file input so Netlify
- * includes them in the multipart/form-data submission.
+ * Sync each image to its corresponding hidden file input for Netlify submission
  */
 watch(
   () => formData.value.images,
   (images) => {
-    // Clear all inputs first
-    fileInputRefs.value.forEach(input => {
-      if (input) input.value = ''
-    })
-
-    // Populate only existing files
-    images?.slice(0, MAX_IMAGES).forEach((file, index) => {
-      const input = fileInputRefs.value[index]
-      if (!input) return
-      const dt = new DataTransfer()
-      dt.items.add(file)
-      input.files = dt.files
+    images?.forEach((file, index) => {
+      const ref = fileInputRefs.value[index]
+      if (ref) {
+        const dt = new DataTransfer()
+        if (file) dt.items.add(file)
+        ref.files = dt.files
+      }
     })
   },
   { deep: true },
