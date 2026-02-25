@@ -4,6 +4,7 @@ import { useQuoteForm } from '~/composables/useQuoteForm'
 import type { QuoteFormData } from '~/composables/useQuoteForm'
 import TextButton from '~/components/common/TextButton.vue'
 import GdprDialog from '~/components/features/GdprDialog.vue'
+import { nextTick } from 'vue'
 
 // ===== PROPS =====
 interface Props {
@@ -131,7 +132,8 @@ watch(isChanged, (newValue) => {
  */
 watch(
   () => formData.value.images,
-  (images) => {
+  async (images) => {
+    await nextTick()
     images?.forEach((file, index) => {
       const ref = fileInputRefs.value[index]
       if (ref) {
@@ -419,9 +421,9 @@ watch(
           <input
             v-for="(image, index) in formData.images"
             :key="index"
-            :ref="el => fileInputRefs[index - 1] = el as HTMLInputElement"
+            :ref="el => fileInputRefs[index] = el as HTMLInputElement"
             type="file"
-            :name="`image_${index}`"
+            :name="`image_${index + 1}`"
             accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
             class="sr-only"
             tabindex="-1"
