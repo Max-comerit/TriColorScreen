@@ -9,7 +9,7 @@ import { Path } from 'fabric'
 
 // Valid range for text radius to create a circular path
 export const MIN_TEXT_RADIUS = 25
-export const MAX_TEXT_RADIUS = 150
+export const MAX_TEXT_RADIUS = 100
 
 /**
  * Toggles the z-order of a single Fabric object.
