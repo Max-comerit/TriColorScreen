@@ -74,19 +74,19 @@ onBeforeRouteLeave((to, _from) => {
 <template>
   <div>
     <!-- ✅ Hidden static form for Netlify form detection during build -->
-    <form name="contact" method="POST" action="/" data-netlify="true" enctype="multipart/form-data" hidden>
+    <form name="contact" method="POST" action="/" data-netlify="true" enctype="multipart/form-data" autocomplete="off" hidden>
       <input type="hidden" name="form-name" value="contact">
-      <input type="text" name="name">
-      <input type="email" name="email">
-      <input type="tel" name="phone">
-      <select name="customer_type">
+      <input type="text" name="name" autocomplete="name">
+      <input type="email" name="email" autocomplete="email">
+      <input type="tel" name="phone" autocomplete="tel">
+      <select name="customer_type" autocomplete="off">
         <option value="person">person</option>
         <option value="company">company</option>
       </select>
-      <input type="text" name="subject">
-      <input type="file" name="image">
-      <textarea name="message"/>
-      <input type="checkbox" name="gdpr_consent">
+      <input type="text" name="subject" autocomplete="off">
+      <input type="file" name="image" autocomplete="off">
+      <textarea name="message" autocomplete="off"/>
+      <input type="checkbox" name="gdpr_consent" autocomplete="off">
     </form>
 
     <!-- Hero: full width -->

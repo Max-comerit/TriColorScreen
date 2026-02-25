@@ -20,6 +20,7 @@ const {
   isChanged,
   isSubmitting,
   isSuccess,
+  isError,
   hasErrors,
   validateField,
   getFieldError,
@@ -144,6 +145,7 @@ watch(isChanged, (newValue) => {
     data-netlify="true"
     data-netlify-honeypot="bot-field"
     enctype="multipart/form-data"
+    autocomplete="off"
     class="w-full max-w-2xl bg-primary-100 p-6 sm:p-8 rounded-card shadow-drop"
     aria-label="Kontaktformulär"
     @submit.prevent="handleSubmit"
@@ -285,6 +287,7 @@ watch(isChanged, (newValue) => {
           v-model="formData.customerType"
           name="customer_type"
           required
+          autocomplete="off"
           :aria-invalid="!!getFieldError('customerType')"
           :aria-describedby="getFieldError('customerType') ? 'customer-type-error' : undefined"
           class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
@@ -325,6 +328,7 @@ watch(isChanged, (newValue) => {
           type="text"
           name="subject"
           required
+          autocomplete="off"
           :aria-invalid="!!getFieldError('subject')"
           :aria-describedby="getFieldError('subject') ? 'subject-error' : undefined"
           class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
@@ -361,6 +365,7 @@ watch(isChanged, (newValue) => {
           type="file"
           name="image"
           accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+          autocomplete="off"
           :aria-invalid="!!getFieldError('image')"
           :aria-describedby="getFieldError('image') ? 'image-error' : undefined"
           class="sr-only"
@@ -415,6 +420,7 @@ watch(isChanged, (newValue) => {
           v-model="formData.message"
           name="message"
           rows="4"
+          autocomplete="off"
           placeholder="Skriv ditt meddelande här…"
           :aria-invalid="!!getFieldError('message')"
           :aria-describedby="getFieldError('message') ? 'message-error' : undefined"
@@ -447,6 +453,7 @@ watch(isChanged, (newValue) => {
             type="checkbox"
             name="gdpr_consent"
             required
+            autocomplete="off"
             :aria-invalid="!!getFieldError('gdprConsent')"
             :aria-describedby="getFieldError('gdprConsent') ? 'gdpr-error' : undefined"
             class="mt-1 w-4 h-4 rounded border-neutral-300 text-primary-600 focus:ring-2 focus:ring-primary-600 focus:ring-offset-0 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -492,7 +499,7 @@ watch(isChanged, (newValue) => {
 
       <!-- Error Message -->
       <div
-        v-if="showErrorMessage && hasErrors"
+        v-if="showErrorMessage && (isError || hasErrors)"
         role="alert"
         aria-live="assertive"
         class="p-4 bg-error-light border-l-4 border-error rounded-input"

@@ -113,7 +113,7 @@ const serviceCards = computed<CardItem[]>(() =>
           </div>
           <p class="font-semibold">20% Rabatt på er första event beställning!</p>
           <NuxtLink to="/contact" class="inline-flex">
-            <TextButton>Kontakta oss</TextButton>
+            <TextButton>Kontakta Oss</TextButton>
           </NuxtLink>
         </div>
       </Section>
