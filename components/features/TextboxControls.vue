@@ -4,7 +4,7 @@
 // 1. Imports
 import { type Canvas, Textbox, ActiveSelection } from 'fabric'
 import { ref, shallowRef, computed, watch, onUnmounted } from 'vue'
-import { setTextboxTextRadius } from '@/utils/customDesign'
+import { setTextboxTextRadius, MAX_TEXT_RADIUS } from '@/utils/customDesign'
 import { CircularTextbox } from '@/utils/CircularTextbox'
 
 // 2. Props & Emits
@@ -180,8 +180,8 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
         <input
           v-model.number="textRadius"
           type="range"
-          min="0"
-          max="150"
+          :min="-MAX_TEXT_RADIUS"
+          :max="MAX_TEXT_RADIUS"
           class="h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500"
           @input="applyCircularRadius"
           @change="applyCircularRadius"

@@ -4,8 +4,12 @@
  * This module provides functions to manipulate the z-order of Fabric objects and to set a circular text path for Textbox objects based on a specified radius. The circular path is created using SVG path syntax and is centered at the origin. The module also includes a function to check if the radius value is within a valid range for creating a circular path.
  */
 import type { FabricObject, Canvas } from 'fabric'
+import type { CircularTextbox } from './CircularTextbox'
 import { Path } from 'fabric'
-import { CircularTextbox } from './CircularTextbox'
+
+// Valid range for text radius to create a circular path
+export const MIN_TEXT_RADIUS = 25
+export const MAX_TEXT_RADIUS = 150
 
 /**
  * Toggles the z-order of a single Fabric object.
@@ -29,17 +33,15 @@ export function toggleObjectZOrder(target: FabricObject, canvas: Canvas): void {
 
 /**
  * Checks if the given radius value is within the valid range for creating a circular path.
- * The valid range is defined by MIN_RADIUS and MAX_RADIUS constants.
+ * The valid range is defined by MIN_TEXT_RADIUS and MAX_TEXT_RADIUS constants.
  *
  * @param radius - The radius value to check
  * @return boolean - True if the radius is valid, false otherwise
- * @see MIN_RADIUS
- * @see MAX_RADIUS
+ * @see MIN_TEXT_RADIUS
+ * @see MAX_TEXT_RADIUS
  */
-const MIN_RADIUS = 25
-const MAX_RADIUS = 150
 function hasPath(radius: number): boolean {
-  return (radius >= MIN_RADIUS && radius <= MAX_RADIUS);
+  return (Math.abs(radius) >= MIN_TEXT_RADIUS && Math.abs(radius) <= MAX_TEXT_RADIUS);
 }
 
 /**
@@ -50,12 +52,13 @@ function hasPath(radius: number): boolean {
  * @param radius - The radius of the circular path
  */
 function createCircularTextPath(radius: number) : Path {
+  const absRadius = Math.abs(radius)
   if(hasPath(radius)) {
     // Create a circle path centered at origin (0, 0), rotated 90 degrees
     return new Path(
         `M 0 ${radius} 
-        A ${radius} ${radius} 0 1 1 0 -${radius} 
-        A ${radius} ${radius} 0 1 1 0 ${radius} 
+        A ${absRadius} ${absRadius} 0 1 1 0  ${-radius} 
+        A ${absRadius} ${absRadius} 0 1 1 0  ${radius} 
         Z`,
         { offset: { x: 0, y: radius }, fill: '', stroke: 'blue', strokeWidth: 1, strokeDashArray: [5, 5], visible: false }
       );
@@ -76,11 +79,12 @@ function createCircularTextPath(radius: number) : Path {
  * @param radius - The desired text radius, which determines the circular path
  */
 export function setTextboxTextRadius(textbox: CircularTextbox, radius: number): void {
+  const circumference = 2 * Math.PI * Math.abs(radius)
   textbox.set({
-    width: hasPath(radius) ? 2 * Math.PI * radius : textbox.width,
+    width: hasPath(radius) ? circumference : textbox.width, // Update width based on whether text is on a path
     textRadius: radius,
     path: createCircularTextPath(radius),
-    pathSide: 'left',
+    pathSide: radius >= 0 ? 'left' : 'right',
     pathStartOffset: 0,
   })
   textbox.controls.resize.visible = !hasPath(radius)
