@@ -191,7 +191,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
         aria-label="Close circular text mode"
         @click="closeCircularMode"
       >
-        <img src="@/assets/images/dialog/close-icon.svg?url" alt="" class="w-5 h-5" />
+        <img src="@/assets/images/common/close-icon.svg?url" alt="" class="w-5 h-5" />
       </button>
     </div>
 
