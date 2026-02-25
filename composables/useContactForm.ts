@@ -73,7 +73,7 @@ export interface FormFieldError {
 }
 
 /** Form submission state */
-export type FormState = 'idle' | 'submitting' | 'success' | 'error'
+type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
 // ===== COMPOSABLE =====
 /**
