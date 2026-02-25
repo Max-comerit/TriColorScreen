@@ -176,7 +176,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
     <!-- Circular Text Mode -->
     <div v-if="circularMode" class="flex items-center gap-3 p-3 sm:p-2 bg-white border border-gray-300 rounded-lg shadow-md">
       <label class="flex-1 flex flex-col gap-2">
-        <span class="text-sm font-medium text-gray-700">Circular Text Radius</span>
+        <span class="text-sm font-medium text-gray-700">Cirkulär textradie</span>
         <input
           v-model.number="textRadius"
           type="range"
@@ -195,7 +195,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
         aria-label="Close circular text mode"
         @click="closeCircularMode"
       >
-        <img src="@/assets/images/common/close-icon.svg?url" alt="" class="w-5 h-5" />
+        <img src="@/assets/images/common/close-icon.svg?url" alt="" class="w-5 h-5" >
       </button>
     </div>
 
@@ -311,7 +311,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
           aria-label="Apply circular text effect"
           @click="updateRadius"
         >
-          <img src="@/assets/images/custom-design/circular-text-icon.svg?url" alt="" class="h-7 w-7" />
+          <img src="@/assets/images/custom-design/circular-text-icon.svg?url" alt="" class="h-7 w-7" >
         </button>
 
       </div>
