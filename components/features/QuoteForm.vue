@@ -425,13 +425,13 @@ watch(
 
       <!-- ── Attached design images (hidden / prop-filled) ───── -->
       <div aria-hidden="true" class="sr-only">
-        <!-- Hidden file inputs for Netlify submission, one per image -->
+        <!-- Hidden file inputs for Netlify submission, one per image slot -->
         <input
           v-for="index in MAX_IMAGES"
           :key="index"
-          :ref="el => fileInputRefs[index] = el as HTMLInputElement"
+          :ref="el => fileInputRefs[index - 1] = el as HTMLInputElement"
           type="file"
-          :name="`image_${index + 1}`"
+          :name="`image_${index}`"
           accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
           class="sr-only"
           tabindex="-1"
