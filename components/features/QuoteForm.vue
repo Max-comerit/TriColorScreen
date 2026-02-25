@@ -437,6 +437,10 @@ watch(
           tabindex="-1"
           aria-hidden="true"
         >
+      </div>
+
+      <!-- Display attached files to user (optional) -->
+      <div v-if="formData.images && formData.images.length > 0" aria-live="polite">
         <p class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5">
           Tillagda designbilder
         </p>
