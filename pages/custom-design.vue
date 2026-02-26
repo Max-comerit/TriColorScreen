@@ -4,7 +4,6 @@
 // ===== IMPORTS =====
 import '~/assets/css/custom-design-fonts.css'
 import { Canvas, FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
-import { nanoid } from 'nanoid'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import HeroImage from '~/components/common/HeroImage.vue'
@@ -14,7 +13,6 @@ import TextButton from '~/components/common/TextButton.vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
-import { useCanvasExport } from '~/composables/useCanvasExport'
 import { useCanvasRescale } from '~/composables/useCanvasRescale'
 import { useCanvasStore, type CanvasSide } from '@/stores/canvasStore'
 import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
@@ -60,7 +58,6 @@ useHead({
 
 const { addImageToCanvas } = useCustomImage()
 const { addTextToCanvas } = useCustomText()
-const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const { rescaleObjects } = useCanvasRescale()
 const canvasStore = useCanvasStore()
 
@@ -74,8 +71,6 @@ const canvasWrapperRef = ref<HTMLDivElement | null>(null)
 const activeSide = ref<CanvasSide>('front')
 const frontCanvas = shallowRef<Canvas | null>(null)
 const backCanvas = shallowRef<Canvas | null>(null)
-const quoteFormRef = ref<HTMLElement | null>(null)
-const quoteFiles = ref<File[]>([])
 let resizeObserver: ResizeObserver | null = null
 let currentCanvasSize = 0
 
@@ -335,80 +330,6 @@ function addText() {
   addTextToCanvas(activeCanvas.value)
 }
 
-/**
- * Convert a data URL to a File object.
- */
-async function dataUrlToFile(dataUrl: string, filename: string): Promise<File> {
-  const response = await fetch(dataUrl)
-  const blob = await response.blob()
-  return new File([blob], filename, { type: blob.type })
-}
-
-/**
- * Compress a data URL to JPEG at the given quality (0–1).
- * Reduces file size significantly compared to the raw PNG canvas export.
- */
-async function compressDataUrl(dataUrl: string, quality = 0.75): Promise<string> {
-  return new Promise((resolve) => {
-    const img = new Image()
-    img.onload = () => {
-      const canvas = document.createElement('canvas')
-      canvas.width = img.naturalWidth
-      canvas.height = img.naturalHeight
-      const ctx = canvas.getContext('2d')!
-      ctx.drawImage(img, 0, 0)
-      resolve(canvas.toDataURL('image/jpeg', quality))
-    }
-    img.src = dataUrl
-  })
-}
-
-/**
- * Export both canvas sides as File objects and populate quoteFiles.
- * Includes a merged composite image and all individual image-layer files.
- */
-async function collectQuoteFiles(): Promise<void> {
-  const availableCanvases = [
-    { side: 'front' as const, canvas: frontCanvas.value },
-    { side: 'back' as const, canvas: backCanvas.value },
-  ].filter(entry => entry.canvas)
-
-  if (availableCanvases.length === 0) {
-    console.warn('collectQuoteFiles: no canvas available')
-    return
-  }
-
-  const collected: File[] = []
-  const id = nanoid(10)
-
-  for (const entry of availableCanvases) {
-    const canvasInstance = entry.canvas as Canvas
-    const [mergedUrl, imageUrls] = await Promise.all([
-      exportMergedImage(canvasInstance),
-      exportImageObjects(canvasInstance),
-    ])
-
-    // Merged composite: compress to JPEG (no transparency needed, smaller payload)
-    const compressedMerged = await compressDataUrl(mergedUrl)
-    collected.push(await dataUrlToFile(compressedMerged, `design-${id}-${entry.side}.jpg`))
-
-    // Individual layers: keep as PNG to preserve transparency
-    for (let i = 0; i < imageUrls.length; i++) {
-      collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-${entry.side}-layer-${i + 1}.png`))
-    }
-  }
-
-  quoteFiles.value = collected
-}
-
-/**
- * Collect canvas files and scroll the quote form into view.
- */
-async function openQuoteForm(): Promise<void> {
-  await collectQuoteFiles()
-  quoteFormRef.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-}
-
 </script>
 
 <template>
@@ -481,18 +402,12 @@ async function openQuoteForm(): Promise<void> {
         </div>
         <TextboxControls :canvas="activeCanvas" />
 
-        <!-- Offert-knapp — samlar designfiler och rullar till formuläret -->
-        <div class="mt-10 flex justify-center gap-4">
-          <TextButton @click="openQuoteForm">Förbered offertförfrågan</TextButton>
-        </div>
-
         <!-- Offertformulär -->
         <div
-          ref="quoteFormRef"
           class="mt-10 flex justify-center"
           aria-label="Offertformulär"
         >
-          <QuoteForm :files="quoteFiles" product-category="Textil" product="T-Shirt" />
+          <QuoteForm :front-canvas="frontCanvas" :back-canvas="backCanvas" product-category="Textil" product="T-Shirt" />
         </div>
       </Section>
     </div>

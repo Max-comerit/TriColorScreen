@@ -1,19 +1,24 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { useQuoteForm } from '~/composables/useQuoteForm'
+import { nanoid } from 'nanoid'
+import type { Canvas } from 'fabric'
 import type { QuoteFormData } from '~/composables/useQuoteForm'
+import { useQuoteForm } from '~/composables/useQuoteForm'
 import TextButton from '~/components/common/TextButton.vue'
 import GdprDialog from '~/components/features/GdprDialog.vue'
-import { nextTick } from 'vue'
+import { useCanvasExport } from '~/composables/useCanvasExport'
 
 // ===== PROPS =====
 interface Props {
+  frontCanvas?: Canvas | null
+  backCanvas?: Canvas | null
   productCategory?: string
   product?: string
-  files?: File[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  frontCanvas: null,
+  backCanvas: null,
   productCategory: '',
   product: '',
   files: () => [],
@@ -26,6 +31,7 @@ const emit = defineEmits<{
 }>()
 
 // ===== COMPOSABLES =====
+const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const {
   formData,
   isChanged,
@@ -45,6 +51,10 @@ const showSuccessMessage = ref(false)
 const showErrorMessage = ref(false)
 const showGdprDialog = ref(false)
 const fileInputRefs = ref<HTMLInputElement[]>([])
+const collectedImages = ref(false)
+
+// ===== COMPUTED =====
+
 
 // ===== METHODS =====
 /**
@@ -68,6 +78,48 @@ function handleInput(field: keyof QuoteFormData): void {
  */
 function openGdprDialog(): void {
   showGdprDialog.value = true
+}
+
+/**
+ * Handle in-focus event to collect current canvas images before submission
+ */
+async function handleFocusIn(): Promise<void> {
+  if(!collectedImages.value) {
+    collectedImages.value = true
+    console.log('handleFocusIn')
+    // Collect current canvas images and populate formData before user submits
+    formData.value.images = await collectQuoteFiles()
+    // Sync each image to its corresponding hidden file input for Netlify submission
+    formData.value.images?.forEach((file, index) => {
+        const ref = fileInputRefs.value[index]
+        if (ref) {
+          const dt = new DataTransfer()
+          if (file) dt.items.add(file)
+          ref.files = dt.files
+        }
+      })
+    console.log('handleFocusIn: collected files', formData.value.images)
+  }
+}
+
+/**
+ * Handle focus out event to clear collected images and file inputs
+ */
+async function handleFocusOut(event: FocusEvent): Promise<void> {
+  const form = event.currentTarget as HTMLElement
+  const next = event.relatedTarget as HTMLElement | null
+  if (!next || !form.contains(next)) {
+    // Focus left the whole form
+    console.log('handleFocusOut')
+    collectedImages.value = false
+    // Clear collected images when user leaves the form to avoid stale data
+    formData.value.images = []
+    fileInputRefs.value.forEach(ref => {
+      const dt = new DataTransfer()
+      ref.files = dt.files
+    })
+    console.log('handleFocusOut: cleared files')
+  }
 }
 
 /**
@@ -98,6 +150,73 @@ async function handleSubmit(): Promise<void> {
   }
 }
 
+/**
+ * Convert a data URL to a File object.
+ */
+async function dataUrlToFile(dataUrl: string, filename: string): Promise<File> {
+  const response = await fetch(dataUrl)
+  const blob = await response.blob()
+  return new File([blob], filename, { type: blob.type })
+}
+
+/**
+ * Compress a data URL to JPEG at the given quality (0–1).
+ * Reduces file size significantly compared to the raw PNG canvas export.
+ */
+async function compressDataUrl(dataUrl: string, quality = 0.75): Promise<string> {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.width = img.naturalWidth
+      canvas.height = img.naturalHeight
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0)
+      resolve(canvas.toDataURL('image/jpeg', quality))
+    }
+    img.src = dataUrl
+  })
+}
+
+/**
+ * Export both canvas sides as File objects and populate files.
+ * Includes a merged composite image and all individual image-layer files.
+ */
+async function collectQuoteFiles(): Promise<File[]> {
+  const availableCanvases = [
+    { side: 'front' as const, canvas: props.frontCanvas },
+    { side: 'back' as const, canvas: props.backCanvas },
+  ].filter(entry => entry.canvas)
+
+  if (availableCanvases.length === 0) {
+    console.warn('collectQuoteFiles: no canvas available')
+    return []
+  }
+
+  const collected: File[] = []
+  const id = nanoid(10)
+
+  for (const entry of availableCanvases) {
+    const canvasInstance = entry.canvas as Canvas
+    const [mergedUrl, imageUrls] = await Promise.all([
+      exportMergedImage(canvasInstance),
+      exportImageObjects(canvasInstance),
+    ])
+
+    // Merged composite: compress to JPEG (no transparency needed, smaller payload)
+    const compressedMerged = await compressDataUrl(mergedUrl)
+    collected.push(await dataUrlToFile(compressedMerged, `design-${id}-${entry.side}.jpg`))
+
+    // Individual layers: keep as PNG to preserve transparency
+    for (let i = 0; i < imageUrls.length; i++) {
+      collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-${entry.side}-layer-${i + 1}.png`))
+    }
+  }
+
+  return collected
+}
+
+
 // ===== WATCHERS =====
 /**
  * Sync prop values into formData whenever props change
@@ -114,12 +233,6 @@ watch(
   { immediate: true },
 )
 
-watch(
-  () => props.files,
-  (value) => { formData.value.images = value ?? [] },
-  { immediate: true },
-)
-
 /**
  * Emit changed event when form change state updates
  */
@@ -127,24 +240,8 @@ watch(isChanged, (newValue) => {
   emit('changed', newValue)
 })
 
-/**
- * Sync each image to its corresponding hidden file input for Netlify submission
- */
-watch(
-  () => formData.value.images,
-  async (images) => {
-    await nextTick()
-    images?.forEach((file, index) => {
-      const ref = fileInputRefs.value[index]
-      if (ref) {
-        const dt = new DataTransfer()
-        if (file) dt.items.add(file)
-        ref.files = dt.files
-      }
-    })
-  },
-  { deep: true },
-)
+// ===== LIFECYCLE HOOKS =====
+
 </script>
 
 <template>
@@ -158,7 +255,10 @@ watch(
     autocomplete="off"
     class="w-full max-w-2xl bg-primary-100 p-6 sm:p-8 rounded-card shadow-drop"
     aria-label="Offertförfrågningsformulär"
+    tabindex="-1"
     @submit.prevent="handleSubmit"
+    @focusin="handleFocusIn"
+    @focusout="handleFocusOut"
   >
     <!-- Form title -->
     <h3 class="sr-only">Offertförfrågningsformulär</h3>
