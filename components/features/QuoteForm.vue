@@ -89,7 +89,6 @@ function openGdprDialog(): void {
 async function handleFocusIn(): Promise<void> {
   if(!collectedImages.value) {
     collectedImages.value = true
-    console.log('handleFocusIn')
     // Collect current canvas images and populate formData before user submits
     formData.value.images = await collectQuoteFiles()
     // Sync each image to its corresponding hidden file input for Netlify submission
@@ -101,7 +100,6 @@ async function handleFocusIn(): Promise<void> {
         ref.files = dt.files
       }
     })
-    console.log('handleFocusIn: collected files', formData.value.images)
   }
 }
 
@@ -113,7 +111,6 @@ async function handleFocusOut(event: FocusEvent): Promise<void> {
   const next = event.relatedTarget as HTMLElement | null
   if (!next || !form.contains(next)) {
     // Focus left the whole form
-    console.log('handleFocusOut')
     collectedImages.value = false
     // Clear collected images when user leaves the form to avoid stale data
     // formData.value.images = []
@@ -121,7 +118,6 @@ async function handleFocusOut(event: FocusEvent): Promise<void> {
     //   const dt = new DataTransfer()
     //   ref.files = dt.files
     // })
-    // console.log('handleFocusOut: cleared files')
   }
 }
 

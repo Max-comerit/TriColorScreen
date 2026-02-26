@@ -259,7 +259,6 @@ export function useQuoteForm() {
       formDataToSubmit.append('product_count', String(formData.value.productCount))
       formData.value.images?.forEach((file, index) => {
         formDataToSubmit.append(`image_${index + 1}`, file)
-        console.log(`Appending file to FormData: image_${index + 1} - ${file.name} (${file.size} bytes)`)
       })
       if (formData.value.message) {
         formDataToSubmit.append('message', formData.value.message)
