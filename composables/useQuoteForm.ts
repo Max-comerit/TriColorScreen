@@ -220,7 +220,6 @@ export function useQuoteForm() {
     formData.value.phone = ''
     formData.value.customerType = undefined as unknown as 'person' | 'company'
     formData.value.productCount = undefined as unknown as number
-    formData.value.images = [];
     formData.value.message = ''
     formData.value.gdprConsent = false
     // subject, productCategory, product and images are intentionally NOT reset —
@@ -259,8 +258,8 @@ export function useQuoteForm() {
       }
       formDataToSubmit.append('product_count', String(formData.value.productCount))
       formData.value.images?.forEach((file, index) => {
-        formDataToSubmit.append('images[]', file);
-        console.log(`Appending file to FormData: images[${index}] - ${file.name} (${file.size} bytes)`)
+        formDataToSubmit.append(`image_${index + 1}`, file, file.name)
+        console.log(`Appending file to FormData: image_${index + 1} - ${file.name} (${file.size} bytes)`)
       })
       if (formData.value.message) {
         formDataToSubmit.append('message', formData.value.message)
