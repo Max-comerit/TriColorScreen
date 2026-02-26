@@ -521,11 +521,45 @@ watch(isChanged, (newValue) => {
       <div aria-hidden="true" class="sr-only">
         <!-- Hidden file inputs for Netlify submission, one per image slot -->
           <input
-            v-for="(image, index) in formData.images"
-            :key="index"
-            :ref="el => fileInputRefs[index] = el as HTMLInputElement"
+            :ref="el => fileInputRefs[0] = el as HTMLInputElement"
             type="file"
-            :name="`image_${index + 1}`"
+            name="image_1"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <input
+            :ref="el => fileInputRefs[1] = el as HTMLInputElement"
+            type="file"
+            name="image_2"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <input
+            :ref="el => fileInputRefs[2] = el as HTMLInputElement"
+            type="file"
+            name="image_3"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <input
+            :ref="el => fileInputRefs[3] = el as HTMLInputElement"
+            type="file"
+            name="image_4"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <input
+            :ref="el => fileInputRefs[4] = el as HTMLInputElement"
+            type="file"
+            name="image_5"
             accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
             class="sr-only"
             tabindex="-1"
