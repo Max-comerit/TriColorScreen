@@ -74,10 +74,13 @@ const activeSide = ref<CanvasSide>('front')
 const frontCanvas = shallowRef<Canvas | null>(null)
 const backCanvas = shallowRef<Canvas | null>(null)
 let resizeObserver: ResizeObserver | null = null
-let currentCanvasSize = 0
+let currentCanvasWidth = 0
+let currentCanvasHeight = 0
 
 // ===== COMPUTED =====
 const activeCanvas = computed(() => (activeSide.value === 'front' ? frontCanvas.value : backCanvas.value))
+const canvasAspectRatio = ref('1:1')
+const canvasAspectRatioCss = computed(() => canvasAspectRatio.value.replace(':', ' / '))
 
 // ===== WATCHERS =====
 const { front: frontState, back: backState } = storeToRefs(canvasStore)
@@ -169,27 +172,29 @@ onMounted(async () => {
 
   // Observe the wrapper div — CSS controls its size, we sync Fabric to it
   resizeObserver = new ResizeObserver((entries) => {
-    const size = Math.ceil(entries[0].contentRect.width)
-    if (size <= 0) return
+    const width = Math.ceil(entries[0].contentRect.width)
+    const height = Math.ceil(entries[0].contentRect.height)
+    if (width <= 0 || height <= 0) return
 
-    const previousSize = currentCanvasSize
-    if (previousSize > 0 && size !== previousSize) {
-      const ratio = size / previousSize
+    const previousWidth = currentCanvasWidth
+    if (previousWidth > 0 && (width !== previousWidth || height !== currentCanvasHeight)) {
+      const ratio = width / previousWidth
       if (frontCanvas.value) {
-        rescaleCanvas(frontCanvas.value, ratio, size)
+        rescaleCanvas(frontCanvas.value, ratio, width, height)
       }
       if (backCanvas.value) {
-        rescaleCanvas(backCanvas.value, ratio, size)
+        rescaleCanvas(backCanvas.value, ratio, width, height)
       }
     }
 
-    currentCanvasSize = size
+    currentCanvasWidth = width
+    currentCanvasHeight = height
 
     if (!frontCanvas.value) {
-      void initializeCanvas('front', frontEl, size)
+      void initializeCanvas('front', frontEl, width, height)
     }
     if (!backCanvas.value) {
-      void initializeCanvas('back', backEl, size)
+      void initializeCanvas('back', backEl, width, height)
     }
   })
   resizeObserver.observe(wrapper)
@@ -198,16 +203,16 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
   if (frontCanvas.value) {
-    canvasStore.save('front', frontCanvas.value, currentCanvasSize)
+    canvasStore.save('front', frontCanvas.value, currentCanvasWidth)
     frontCanvas.value.dispose()
   }
   if (backCanvas.value) {
-    canvasStore.save('back', backCanvas.value, currentCanvasSize)
+    canvasStore.save('back', backCanvas.value, currentCanvasWidth)
     backCanvas.value.dispose()
   }
 })
 
-async function initializeCanvas(side: CanvasSide, el: HTMLCanvasElement, size: number): Promise<void> {
+async function initializeCanvas(side: CanvasSide, el: HTMLCanvasElement, width: number, height: number): Promise<void> {
   const canvasInstance = new Canvas(el, { selection: true })
   if (!canvasInstance) {
     console.error('Failed to initialize Fabric canvas')
@@ -220,23 +225,23 @@ async function initializeCanvas(side: CanvasSide, el: HTMLCanvasElement, size: n
     backCanvas.value = canvasInstance
   }
 
-  canvasInstance.setDimensions({ width: size, height: size })
+  canvasInstance.setDimensions({ width, height })
   canvasInstance.enablePointerEvents = true
 
-  await canvasStore.restore(side, canvasInstance, size)
+  await canvasStore.restore(side, canvasInstance, width)
 
   if (!canvasInstance.backgroundImage) {
     const initialBackgroundUrl = getInitialBackgroundUrl(side)
-    await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl, size)
+    await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl, width, height)
     const sideState = getSideState(side)
     if (!sideState.backgroundSelection && initialBackgroundUrl) {
       canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
     }
   }
 
-  canvasInstance.on('object:added', () => canvasStore.save(side, canvasInstance, currentCanvasSize))
-  canvasInstance.on('object:modified', () => canvasStore.save(side, canvasInstance, currentCanvasSize))
-  canvasInstance.on('object:removed', () => canvasStore.save(side, canvasInstance, currentCanvasSize))
+  canvasInstance.on('object:added', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
+  canvasInstance.on('object:modified', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
+  canvasInstance.on('object:removed', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
 }
 
 function getDefaultBackgroundUrl(side: CanvasSide): string {
@@ -272,26 +277,26 @@ function mapBackgroundUrlToSide(url: string, side: CanvasSide): string {
   return url.replace('-front.', '-back.')
 }
 
-async function loadBackgroundOnCanvas(canvasInstance: Canvas, url: string, size: number = currentCanvasSize): Promise<void> {
+async function loadBackgroundOnCanvas(canvasInstance: Canvas, url: string, width = currentCanvasWidth, height = currentCanvasHeight): Promise<void> {
   const bg = await FabricImage.fromURL(url)
-  bg.scaleToWidth(size)
-  bg.scaleToHeight(size)
+  bg.scaleToWidth(width)
+  bg.scaleToHeight(height)
   bg.selectable = false
   bg.evented = false
-  bg.set({ originX: 'center', originY: 'center', left: size / 2, top: size / 2 })
+  bg.set({ originX: 'center', originY: 'center', left: width / 2, top: height / 2 })
   canvasInstance.backgroundImage = bg
   canvasInstance.requestRenderAll()
 }
 
-function rescaleCanvas(canvasInstance: Canvas, ratio: number, newSize: number): void {
-  canvasInstance.setDimensions({ width: newSize, height: newSize })
+function rescaleCanvas(canvasInstance: Canvas, ratio: number, newWidth: number, newHeight: number): void {
+  canvasInstance.setDimensions({ width: newWidth, height: newHeight })
 
-    // Rescale background image
+  // Rescale background image to fill new dimensions
   const bg = canvasInstance.backgroundImage as FabricImage | undefined
   if (bg) {
-    bg.scaleToWidth(newSize)
-    bg.scaleToHeight(newSize)
-    bg.set({ left: newSize / 2, top: newSize / 2 })
+    bg.scaleToWidth(newWidth)
+    bg.scaleToHeight(newHeight)
+    bg.set({ left: newWidth / 2, top: newHeight / 2 })
   }
 
   // Proportionally rescale and reposition all objects
@@ -330,6 +335,10 @@ async function handleImageSelected(event: Event): Promise<void> {
 
 function addText() {
   addTextToCanvas(activeCanvas.value)
+}
+
+function onCanvasResized(aspectRatio: string): void {
+  canvasAspectRatio.value = aspectRatio
 }
 
 function downloadFile(dataURL: string, filename: string): void {
@@ -410,9 +419,9 @@ async function downloadCanvasImages(): Promise<void> {
         align="center"
         aria-label="Design Verktyg"
       >
-        <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" />
+        <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" @canvas-resized="onCanvasResized" />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
-          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] aspect-square">
+          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px]" :style="{ aspectRatio: canvasAspectRatioCss }">
             <div v-show="activeSide === 'front'" class="absolute inset-0" :aria-hidden="activeSide !== 'front'">
               <canvas
                 ref="frontCanvasRef"

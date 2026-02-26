@@ -5,6 +5,32 @@ import type { Canvas } from 'fabric'
 import { FabricImage } from 'fabric'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore, type CanvasSide } from '@/stores/canvasStore'
+import rawBackgroundOptions from '~/assets/json/custom-design/backgroundOptions.json'
+
+interface Side {
+  label: string
+  src: string
+}
+
+interface Product {
+  label: string
+  activeSide: number
+  aspectRatio: string
+  sides: Side[]
+}
+
+interface ProductCategory {
+  label: string
+  activeProduct: number
+  products: Product[]
+}
+
+interface ProductCategories {
+  activeProductCategory: number
+  productCategories: ProductCategory[]
+}
+
+const PRODUCT_CATEGORIES = (rawBackgroundOptions as ProductCategories).productCategories
 
 // 2. Props & Emits
 interface Props {
@@ -15,6 +41,7 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits<{
   sideChanged: [side: CanvasSide]
+  canvasResized: [aspectRatio: string]
 }>()
 
 // 3. Composables & Stores
@@ -24,58 +51,27 @@ const { front, back } = storeToRefs(canvasStore)
 // 4. State
 const CUSTOM_OPTION_ID = 'custom'
 
-const backgroundOptionsBySide = {
-  front: [
-    {
-      id: 'tshirt',
-      label: 'T-Shirt',
-      url: '/images/custom-design/t-shirt-front.png',
-    },
-    {
-      id: 'baseball-cap',
-      label: 'Baseball Keps',
-      url: '/images/custom-design/baseball-cap-front.png',
-    },
-    {
-      id: 'jacket',
-      label: 'Jacka',
-      url: '/images/custom-design/jacket-front.png',
-    },
-  ],
-  back: [
-    {
-      id: 'tshirt',
-      label: 'T-Shirt',
-      url: '/images/custom-design/t-shirt-back.png',
-    },
-    {
-      id: 'baseball-cap',
-      label: 'Baseball Keps',
-      url: '/images/custom-design/baseball-cap-back.png',
-    },
-    {
-      id: 'jacket',
-      label: 'Jacka',
-      url: '/images/custom-design/jacket-back.png',
-    },
-  ],
-} satisfies Record<CanvasSide, Array<{ id: string; label: string; url: string }>>
-
 const customFileInputRef = ref<HTMLInputElement | null>(null)
+const selectedCategoryIndex = ref(0)
 
 const sideState = computed(() => (props.side === 'front' ? front.value : back.value))
 
-const backgroundOptions = computed(() => [
-  ...backgroundOptionsBySide[props.side],
-  {
-    id: CUSTOM_OPTION_ID,
-    label: 'Egen Produkt',
-    url: CUSTOM_OPTION_ID,
-  },
-])
+// 5. Computed
+/** Products of the currently selected category, with per-side src resolved */
+const selectedCategoryProducts = computed(() => {
+  const sideIndex = props.side === 'front' ? 0 : 1
+  const cat = PRODUCT_CATEGORIES[selectedCategoryIndex.value]
+  if (!cat) return []
+  return cat.products.map(product => ({
+    label: product.label,
+    url: (product.sides[sideIndex] ?? product.sides[0]!).src,
+  }))
+})
+
+const defaultUrl = computed(() => selectedCategoryProducts.value[0]?.url ?? '')
 
 const selectedBackground = computed({
-  get: () => sideState.value.backgroundSelection || backgroundOptions.value[0].url,
+  get: () => sideState.value.backgroundSelection || defaultUrl.value,
   set: (url: string) => {
     if (url === CUSTOM_OPTION_ID) {
       selectCustomBackground()
@@ -85,7 +81,6 @@ const selectedBackground = computed({
   },
 })
 
-// 5. Computed
 const isCustomSelected = computed(() => selectedBackground.value === CUSTOM_OPTION_ID)
 
 // 6. Methods
@@ -108,8 +103,33 @@ async function loadBackground(url: string): Promise<void> {
 
     resetStoredCanvases(url)
     syncProductSelection(url)
+    emitCanvasResized(url)
   } catch (error) {
     console.error('Failed to load background image:', error)
+  }
+}
+
+function findProductByUrl(url: string): Product | undefined {
+  for (const cat of PRODUCT_CATEGORIES) {
+    for (const product of cat.products) {
+      if (product.sides.some(s => s.src === url)) return product
+    }
+  }
+  return undefined
+}
+
+function emitCanvasResized(url: string): void {
+  const product = findProductByUrl(url)
+  if (product) emit('canvasResized', product.aspectRatio)
+}
+
+function onCategoryChange(index: number): void {
+  selectedCategoryIndex.value = index
+  const sideIndex = props.side === 'front' ? 0 : 1
+  const firstProduct = PRODUCT_CATEGORIES[index]?.products[0]
+  if (firstProduct) {
+    const url = (firstProduct.sides[sideIndex] ?? firstProduct.sides[0]!).src
+    selectedBackground.value = url
   }
 }
 
@@ -207,6 +227,16 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
   input.value = ''
 }
 
+function syncCategoryIndexToUrl(url: string): void {
+  for (let i = 0; i < PRODUCT_CATEGORIES.length; i++) {
+    const cat = PRODUCT_CATEGORIES[i]!
+    if (cat.products.some(p => p.sides.some(s => s.src === url))) {
+      selectedCategoryIndex.value = i
+      return
+    }
+  }
+}
+
 function hydrateFromStore(): void {
   const selection = sideState.value.backgroundSelection
   if (selection === CUSTOM_OPTION_ID) {
@@ -218,8 +248,11 @@ function hydrateFromStore(): void {
     return
   }
 
-  if (selection && selection !== selectedBackground.value) {
-    loadBackground(selection)
+  if (selection) {
+    syncCategoryIndexToUrl(selection)
+    if (selection !== selectedBackground.value) {
+      loadBackground(selection)
+    }
   }
 }
 
@@ -228,11 +261,15 @@ function getOtherSide(side: CanvasSide): CanvasSide {
 }
 
 function mapBackgroundUrlToSide(url: string, side: CanvasSide): string {
-  if (side === 'front') {
-    return url.replace('-back.', '-front.')
+  const sideIndex = side === 'front' ? 0 : 1
+  for (const cat of PRODUCT_CATEGORIES) {
+    for (const product of cat.products) {
+      if (product.sides.some(s => s.src === url)) {
+        return (product.sides[sideIndex] ?? product.sides[0]!).src
+      }
+    }
   }
-
-  return url.replace('-front.', '-back.')
+  return url
 }
 
 // 7. Lifecycle hooks
@@ -252,19 +289,36 @@ watch(
 <template>
   <div class="w-full max-w-xl mx-auto my-4 px-4 justify-center flex">
     <div class="flex items-stretch sm:items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg shadow-md justify-center flex-wrap">
-      <label class="flex items-center gap-3 flex-1">
+      <label class="flex items-center gap-3">
         <select
-          v-model="selectedBackground"
-          class="flex-1 h-11 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          aria-label="Select canvas background"
+          :value="selectedCategoryIndex"
+          class="h-11 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          aria-label="Select product category"
+          @change="onCategoryChange(Number(($event.target as HTMLSelectElement).value))"
         >
           <option
-            v-for="bg in backgroundOptions"
-            :key="bg.id"
-            :value="bg.url"
+            v-for="(cat, i) in PRODUCT_CATEGORIES"
+            :key="cat.label"
+            :value="i"
           >
-            {{ bg.label }}
+            {{ cat.label }}
           </option>
+        </select>
+      </label>
+      <label class="flex items-center gap-3">
+        <select
+          v-model="selectedBackground"
+          class="h-11 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          aria-label="Select product"
+        >
+          <option
+            v-for="product in selectedCategoryProducts"
+            :key="product.url"
+            :value="product.url"
+          >
+            {{ product.label }}
+          </option>
+          <option :value="CUSTOM_OPTION_ID">Egen Produkt</option>
         </select>
       </label>
       <label class="flex  sm:w-auto items-center gap-3">
