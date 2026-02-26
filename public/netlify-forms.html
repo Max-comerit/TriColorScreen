@@ -12,7 +12,7 @@
       appear in the pre-rendered HTML that Netlify's crawler reads.
       This plain HTML file guarantees Netlify can always find and register the form.
     -->
-    <form name="contact" enctype="multipart/form-data" method="POST" action="/" data-netlify-honeypot="bot-field" autocomplete="off" data-netlify="true">
+    <form name="contact" enctype="multipart/form-data" method="POST" action="/" netlify-honeypot="bot-field" autocomplete="off" data-netlify="true">
       <input type="hidden" name="form-name" value="contact">
       <input type="text" name="name" autocomplete="name">
       <input type="email" name="email" autocomplete="email">
@@ -33,7 +33,7 @@
       Quote request form — registered for Netlify Forms detection.
       Fields mirror components/features/QuoteForm.vue exactly.
     -->
-    <form name="quote" enctype="multipart/form-data" method="POST" action="/" data-netlify-honeypot="bot-field" autocomplete="off" data-netlify="true">
+    <form name="quote" enctype="multipart/form-data" method="POST" action="/" netlify-honeypot="bot-field" autocomplete="off" data-netlify="true">
       <input type="hidden" name="form-name" value="quote">
       <input type="text" name="name" autocomplete="name">
       <input type="email" name="email" autocomplete="email">
