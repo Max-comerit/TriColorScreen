@@ -54,6 +54,7 @@ const showErrorMessage = ref(false)
 const showGdprDialog = ref(false)
 const fileInputRefs = ref<HTMLInputElement[]>([])
 const collectedImages = ref(false)
+const MAX_SUPPORTED_IMAGES = 12
 
 // ===== COMPUTED =====
 
@@ -92,14 +93,14 @@ async function handleFocusIn(): Promise<void> {
     // Collect current canvas images and populate formData before user submits
     formData.value.images = await collectQuoteFiles()
     // Sync each image to its corresponding hidden file input for Netlify submission
-    formData.value.images?.forEach((file, index) => {
-        const ref = fileInputRefs.value[index]
-        if (ref) {
-          const dt = new DataTransfer()
-          if (file) dt.items.add(file)
-          ref.files = dt.files
-        }
-      })
+    formData.value.images?.slice(0, MAX_SUPPORTED_IMAGES).forEach((file, index) => {
+      const ref = fileInputRefs.value[index]
+      if (ref) {
+        const dt = new DataTransfer()
+        if (file) dt.items.add(file)
+        ref.files = dt.files
+      }
+    })
     console.log('handleFocusIn: collected files', formData.value.images)
   }
 }
@@ -560,6 +561,69 @@ watch(isChanged, (newValue) => {
             :ref="el => fileInputRefs[4] = el as HTMLInputElement"
             type="file"
             name="image_5"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <input
+            :ref="el => fileInputRefs[5] = el as HTMLInputElement"
+            type="file"
+            name="image_6"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <input
+            :ref="el => fileInputRefs[6] = el as HTMLInputElement"
+            type="file"
+            name="image_7"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <input
+            :ref="el => fileInputRefs[7] = el as HTMLInputElement"
+            type="file"
+            name="image_8"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <input
+            :ref="el => fileInputRefs[8] = el as HTMLInputElement"
+            type="file"
+            name="image_9"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <input
+            :ref="el => fileInputRefs[9] = el as HTMLInputElement"
+            type="file"
+            name="image_10"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <input
+            :ref="el => fileInputRefs[10] = el as HTMLInputElement"
+            type="file"
+            name="image_11"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <input
+            :ref="el => fileInputRefs[11] = el as HTMLInputElement"
+            type="file"
+            name="image_12"
             accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
             class="sr-only"
             tabindex="-1"
