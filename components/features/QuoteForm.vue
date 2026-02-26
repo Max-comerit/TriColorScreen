@@ -113,12 +113,12 @@ async function handleFocusOut(event: FocusEvent): Promise<void> {
     console.log('handleFocusOut')
     collectedImages.value = false
     // Clear collected images when user leaves the form to avoid stale data
-    formData.value.images = []
-    fileInputRefs.value.forEach(ref => {
-      const dt = new DataTransfer()
-      ref.files = dt.files
-    })
-    console.log('handleFocusOut: cleared files')
+    // formData.value.images = []
+    // fileInputRefs.value.forEach(ref => {
+    //   const dt = new DataTransfer()
+    //   ref.files = dt.files
+    // })
+    // console.log('handleFocusOut: cleared files')
   }
 }
 
