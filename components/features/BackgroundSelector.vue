@@ -5,7 +5,7 @@ import type { Canvas } from 'fabric'
 import { FabricImage } from 'fabric'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore, type CanvasSide } from '@/stores/canvasStore'
-import rawBackgroundOptions from '~/assets/json/custom-design/backgroundOptions.json'
+import rawBackgroundOptions from '~/assets/json/custom-design/products.json'
 
 interface Side {
   label: string

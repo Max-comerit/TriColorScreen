@@ -87,11 +87,11 @@
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/polo-front.png"
+              "src": "/images/custom-design/polo-shirt-front.png"
             },
             {
               "label": "Bak",
-              "src": "/images/custom-design/polo-back.png"
+              "src": "/images/custom-design/polo-shirt-back.png"
             }
           ]
         }
