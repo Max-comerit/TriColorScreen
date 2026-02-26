@@ -261,7 +261,7 @@ export function useContactForm() {
       else {
         generalError.value = 'Ett oväntat fel inträffade. Försök igen senare.'
       }
-      
+
       return false
     }
   }
