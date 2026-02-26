@@ -1,3 +1,5 @@
+// components/features/QuoteForm.vue
+
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { nanoid } from 'nanoid'
@@ -541,8 +543,8 @@ watch(isChanged, (newValue) => {
           aria-label="Designbilder som biläggs formuläret"
         >
           <li
-            v-for="(image, index) in formData.images"
-            :key="index"
+            v-for="(image) in formData.images"
+            :key="image.name"
             class="flex items-center gap-2"
           >
             <span aria-hidden="true" class="text-neutral-400">-</span>
