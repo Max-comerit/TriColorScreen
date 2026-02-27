@@ -8,7 +8,6 @@
         {
           "label": "T-Shirt",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -23,7 +22,6 @@
         {
           "label": "Skjorta",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -38,7 +36,6 @@
         {
           "label": "Hoodie",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -53,7 +50,6 @@
         {
           "label": "College",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -68,7 +64,6 @@
         {
           "label": "Flagga",
           "activeSide": 0,
-          "aspectRatio": "3:2",
           "sides": [
             {
               "label": "Fram",
@@ -83,7 +78,6 @@
         {
           "label": "Pikétröja",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -104,7 +98,6 @@
         {
           "label": "Affisch",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -115,7 +108,6 @@
         {
           "label": "Flyer",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -126,7 +118,6 @@
         {
           "label": "Storformat",
           "activeSide": 0,
-          "aspectRatio": "16:9",
           "sides": [
             {
               "label": "Fram",
@@ -137,7 +128,6 @@
         {
           "label": "Banderoll",
           "activeSide": 0,
-          "aspectRatio": "3:2",
           "sides": [
             {
               "label": "Fram",
@@ -148,7 +138,6 @@
         {
           "label": "Skylt",
           "activeSide": 0,
-          "aspectRatio": "4:3",
           "sides": [
             {
               "label": "Fram",
@@ -159,7 +148,6 @@
                 {
           "label": "Beachflagga",
           "activeSide": 0,
-          "aspectRatio": "2:3",
           "sides": [
             {
               "label": "Fram",
@@ -176,7 +164,6 @@
         {
           "label": "Jacka",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -191,7 +178,6 @@
         {
           "label": "Tröja",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -206,7 +192,6 @@
         {
           "label": "Skjorta",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -221,7 +206,6 @@
         {
           "label": "Pikér",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -236,7 +220,6 @@
         {
           "label": "Keps",
           "activeSide": 0,
-          "aspectRatio": "1:1",
           "sides": [
             {
               "label": "Fram",
@@ -257,7 +240,6 @@
         {
           "label": "Skåpbil",
           "activeSide": 0,
-          "aspectRatio": "16:9",
           "sides": [
             {
               "label": "Fram",
@@ -268,7 +250,6 @@
         {
           "label": "Lastbil",
           "activeSide": 0,
-          "aspectRatio": "16:9",
           "sides": [
             {
               "label": "Fram",

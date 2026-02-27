@@ -15,7 +15,6 @@ interface Side {
 interface Product {
   label: string
   activeSide: number
-  aspectRatio: string
   sides: Side[]
 }
 
@@ -89,13 +88,14 @@ async function loadBackground(url: string): Promise<void> {
 
   try {
     const bg = await FabricImage.fromURL(url)
-    const size = props.canvas.getWidth()
+    const canvasWidth = props.canvas.getWidth()
+    const canvasHeight = props.canvas.getHeight()
 
-    bg.scaleToWidth(size)
-    bg.scaleToHeight(size)
+    bg.scaleToWidth(canvasWidth)
+    bg.scaleToHeight(canvasHeight)
     bg.selectable = false
     bg.evented = false
-    bg.set({ originX: 'center', originY: 'center', left: size / 2, top: size / 2 })
+    bg.set({ originX: 'center', originY: 'center', left: canvasWidth / 2, top: canvasHeight / 2 })
 
     const canvasInstance = props.canvas
     canvasInstance.backgroundImage = bg
@@ -103,24 +103,16 @@ async function loadBackground(url: string): Promise<void> {
 
     resetStoredCanvases(url)
     syncProductSelection(url)
-    emitCanvasResized(url)
+    emitCanvasResized(bg.width, bg.height)
   } catch (error) {
     console.error('Failed to load background image:', error)
   }
 }
 
-function findProductByUrl(url: string): Product | undefined {
-  for (const cat of PRODUCT_CATEGORIES) {
-    for (const product of cat.products) {
-      if (product.sides.some(s => s.src === url)) return product
-    }
+function emitCanvasResized(width: number, height: number): void {
+  if (width > 0 && height > 0) {
+    emit('canvasResized', `${width} / ${height}`)
   }
-  return undefined
-}
-
-function emitCanvasResized(url: string): void {
-  const product = findProductByUrl(url)
-  if (product) emit('canvasResized', product.aspectRatio)
 }
 
 function onCategoryChange(index: number): void {
@@ -188,13 +180,14 @@ async function applyCustomBackground(dataUrl: string): Promise<void> {
 
   try {
     const bg = await FabricImage.fromURL(dataUrl)
-    const size = props.canvas.getWidth()
+    const canvasWidth = props.canvas.getWidth()
+    const canvasHeight = props.canvas.getHeight()
 
-    bg.scaleToWidth(size)
-    bg.scaleToHeight(size)
+    bg.scaleToWidth(canvasWidth)
+    bg.scaleToHeight(canvasHeight)
     bg.selectable = false
     bg.evented = false
-    bg.set({ originX: 'center', originY: 'center', left: size / 2, top: size / 2 })
+    bg.set({ originX: 'center', originY: 'center', left: canvasWidth / 2, top: canvasHeight / 2 })
 
     const canvasInstance = props.canvas
     canvasInstance.backgroundImage = bg
@@ -202,6 +195,7 @@ async function applyCustomBackground(dataUrl: string): Promise<void> {
 
     canvasStore.setBackgroundSelection(props.side, CUSTOM_OPTION_ID)
     canvasStore.setCustomBackgroundDataUrl(props.side, dataUrl)
+    emitCanvasResized(bg.width, bg.height)
   } catch (error) {
     console.error('Failed to load custom background image:', error)
   }

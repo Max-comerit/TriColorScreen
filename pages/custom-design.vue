@@ -79,8 +79,8 @@ let currentCanvasHeight = 0
 
 // ===== COMPUTED =====
 const activeCanvas = computed(() => (activeSide.value === 'front' ? frontCanvas.value : backCanvas.value))
-const canvasAspectRatio = ref('1:1')
-const canvasAspectRatioCss = computed(() => canvasAspectRatio.value.replace(':', ' / '))
+const canvasAspectRatio = ref('1 / 1')
+const canvasAspectRatioCss = computed(() => canvasAspectRatio.value)
 
 // ===== WATCHERS =====
 const { front: frontState, back: backState } = storeToRefs(canvasStore)
