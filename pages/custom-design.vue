@@ -70,7 +70,7 @@ const fileInputRef = ref<HTMLInputElement | null>(null)
 const frontCanvasRef = ref<HTMLCanvasElement | null>(null)
 const backCanvasRef = ref<HTMLCanvasElement | null>(null)
 const canvasWrapperRef = ref<HTMLDivElement | null>(null)
-const activeSide = ref<CanvasSide>('front')
+const activeSide = ref<CanvasSide>(canvasStore.activeSide)
 const frontCanvas = shallowRef<Canvas | null>(null)
 const backCanvas = shallowRef<Canvas | null>(null)
 let resizeObserver: ResizeObserver | null = null
@@ -84,6 +84,10 @@ const canvasAspectRatioCss = computed(() => canvasAspectRatio.value.replace(':',
 
 // ===== WATCHERS =====
 const { front: frontState, back: backState } = storeToRefs(canvasStore)
+
+watch(activeSide, (side) => {
+  canvasStore.setActiveSide(side)
+})
 
 watch(() => frontState.value.backgroundSelection, async (newSelection) => {
   if (!frontCanvas.value || !newSelection) return
@@ -231,11 +235,15 @@ async function initializeCanvas(side: CanvasSide, el: HTMLCanvasElement, width: 
   await canvasStore.restore(side, canvasInstance, width)
 
   if (!canvasInstance.backgroundImage) {
-    const initialBackgroundUrl = getInitialBackgroundUrl(side)
-    await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl, width, height)
     const sideState = getSideState(side)
-    if (!sideState.backgroundSelection && initialBackgroundUrl) {
-      canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
+    // Don't load a default background if the user explicitly chose a custom (own) product —
+    // in that case the canvas is intentionally blank until they upload an image.
+    if (sideState.backgroundSelection !== 'custom') {
+      const initialBackgroundUrl = getInitialBackgroundUrl(side)
+      await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl, width, height)
+      if (!sideState.backgroundSelection && initialBackgroundUrl) {
+        canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
+      }
     }
   }
 
@@ -421,7 +429,7 @@ async function downloadCanvasImages(): Promise<void> {
       >
         <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" @canvas-resized="onCanvasResized" />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
-          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px]" :style="{ aspectRatio: canvasAspectRatioCss }">
+          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] max-h-[1000px]" :style="{ aspectRatio: canvasAspectRatioCss }">
             <div v-show="activeSide === 'front'" class="absolute inset-0" :aria-hidden="activeSide !== 'front'">
               <canvas
                 ref="frontCanvasRef"

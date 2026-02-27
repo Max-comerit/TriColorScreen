@@ -38,6 +38,7 @@ export const useCanvasStore = defineStore('canvas', {
   state: () => ({
     front: createSideState(),
     back: createSideState(),
+    activeSide: 'front' as CanvasSide,
   }),
   actions: {
     save(side: CanvasSide, canvas: Canvas, size: number) {
@@ -71,6 +72,9 @@ export const useCanvasStore = defineStore('canvas', {
     setCustomBackgroundDataUrl(side: CanvasSide, dataUrl: string | null) {
       const sideState = this[side] as CanvasSideState
       sideState.customBackgroundDataUrl = dataUrl
+    },
+    setActiveSide(side: CanvasSide) {
+      this.activeSide = side
     },
     clear() {
       this.front = createSideState()

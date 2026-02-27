@@ -155,6 +155,17 @@
               "src": "/images/custom-design/sign-front.png"
             }
           ]
+        },
+                {
+          "label": "Beachflagga",
+          "activeSide": 0,
+          "aspectRatio": "2:3",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/beach-flag.png"
+            }
+          ]
         }
       ]
     },
@@ -240,27 +251,6 @@
       ]
     },
     {
-      "label": "Profiltryck",
-      "activeProduct": 0,
-      "products": [
-        {
-          "label": "Profilplagg",
-          "activeSide": 0,
-          "aspectRatio": "1:1",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/profile-print-front.png"
-            },
-            {
-              "label": "Bak",
-              "src": "/images/custom-design/profile-print-back.png"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "label": "Bildekor",
       "activeProduct": 0,
       "products": [
@@ -283,27 +273,6 @@
             {
               "label": "Fram",
               "src": "/images/custom-design/truck.png"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "label": "Bilfoliering",
-      "activeProduct": 0,
-      "products": [
-        {
-          "label": "Helfoliering",
-          "activeSide": 0,
-          "aspectRatio": "16:9",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/car-wrap-front.png"
-            },
-            {
-              "label": "Bak",
-              "src": "/images/custom-design/car-wrap-back.png"
             }
           ]
         }
