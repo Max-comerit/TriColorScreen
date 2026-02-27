@@ -6,28 +6,9 @@ import { FabricImage } from 'fabric'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import rawBackgroundOptions from '~/assets/json/custom-design/products.json'
+import type { Product, ProductCategories } from '~/types/BackgroundSelector'
 
-interface Side {
-  label: string
-  src: string
-}
 
-interface Product {
-  label: string
-  activeSide: number
-  sides: Side[]
-}
-
-interface ProductCategory {
-  label: string
-  activeProduct: number
-  products: Product[]
-}
-
-interface ProductCategories {
-  activeProductCategory: number
-  productCategories: ProductCategory[]
-}
 
 const PRODUCT_CATEGORIES = (rawBackgroundOptions as ProductCategories).productCategories
 
@@ -139,7 +120,7 @@ function emitCanvasResized(width: number, height: number): void {
 
 function onCategoryChange(index: number): void {
   selectedCategoryIndex.value = index
-  const sideIndex = props.side === 'front' ? 0 : 1
+  const sideIndex = Number(props.side)
   const firstProduct = PRODUCT_CATEGORIES[index]?.products[0]
   if (firstProduct) {
     const url = (firstProduct.sides[sideIndex] ?? firstProduct.sides[0]!).src
@@ -283,6 +264,13 @@ onMounted(() => {
 })
 
 // 8. Watchers
+// If the active side no longer exists in the new product's sides, fall back to '0'
+watch(availableSides, (sides) => {
+  if (!sides.some(s => s.value === props.side)) {
+    emit('sideChanged', '0')
+  }
+})
+
 watch(
   () => [props.side, props.canvas],
   () => {
