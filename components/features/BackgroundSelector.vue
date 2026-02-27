@@ -26,10 +26,19 @@ const emit = defineEmits<{
 
 // 3. Composables & Stores
 const canvasStore = useCanvasStore()
-const { sides, sideKeys } = storeToRefs(canvasStore)
+const { sides } = storeToRefs(canvasStore)
 
 // 4. State
 const CUSTOM_OPTION_ID = 'custom'
+
+const CUSTOM_SIDES: { label: string; value: string }[] = [
+  { label: 'Framsida', value: '0' },
+  { label: 'Baksida', value: '1' },
+  { label: 'Vänster', value: '2' },
+  { label: 'Höger', value: '3' },
+  { label: 'Över', value: '4' },
+  { label: 'Under', value: '5' },
+]
 
 const customFileInputRef = ref<HTMLInputElement | null>(null)
 const selectedCategoryIndex = ref(0)
@@ -77,8 +86,9 @@ const selectedProduct = computed((): Product | null => {
 
 /** Side options derived from the selected product's sides array */
 const availableSides = computed((): { label: string; value: string }[] => {
+  if (isCustomSelected.value) return CUSTOM_SIDES
   const productSides = selectedProduct.value?.sides
-  if (!productSides?.length) return [{ label: 'Fram', value: '0' }, { label: 'Bak', value: '1' }]
+  if (!productSides?.length) return [{ label: 'Framsida', value: '0' }, { label: 'Baksida', value: '1' }]
   return productSides.map((side, i) => ({
     label: side.label,
     value: String(i),
@@ -165,7 +175,9 @@ function clearBackground(): void {
 
 function selectCustomBackground(): void {
   const storedDataUrl = sideState.value.customBackgroundDataUrl
-  sideKeys.value.forEach(key => canvasStore.setBackgroundSelection(key, CUSTOM_OPTION_ID))
+  const customKeys = CUSTOM_SIDES.map(s => s.value)
+  canvasStore.setSideKeys(customKeys)
+  customKeys.forEach(key => canvasStore.setBackgroundSelection(key, CUSTOM_OPTION_ID))
 
   if (storedDataUrl) {
     applyCustomBackground(storedDataUrl)
