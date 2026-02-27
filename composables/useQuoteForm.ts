@@ -13,6 +13,9 @@ import { z } from 'zod'
 /** Maximum file size: 5MB */
 const MAX_FILE_SIZE = 5 * 1024 * 1024
 
+/** Maximum number of images allowed */
+export const MAX_IMAGES = 12
+
 /** Allowed image MIME types */
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
 
@@ -62,6 +65,7 @@ export const quoteFormSchema = z.object({
     }, {
       message: 'Bilden måste vara mindre än 5MB och i formatet JPEG, PNG, WebP eller GIF',
     }))
+    .max(MAX_IMAGES, { message: `Maximalt ${MAX_IMAGES} bilder kan bifogas` })
     .optional()
     .nullable(),
   message: z
@@ -100,7 +104,7 @@ export function useQuoteForm() {
     name: '',
     email: '',
     phone: '',
-    customerType: undefined as unknown as 'person' | 'company',
+    customerType: undefined as unknown as 'Privatperson' | 'Företag',
     subject: 'Offert förfrågan',
     productCategory: '',
     product: '',
@@ -218,7 +222,7 @@ export function useQuoteForm() {
     formData.value.name = ''
     formData.value.email = ''
     formData.value.phone = ''
-    formData.value.customerType = undefined as unknown as 'person' | 'company'
+    formData.value.customerType = undefined as unknown as 'Privatperson' | 'Företag'
     formData.value.productCount = undefined as unknown as number
     formData.value.message = ''
     formData.value.gdprConsent = false
