@@ -33,7 +33,7 @@ export const quoteFormSchema = z.object({
     .optional()
     .or(z.literal('')),
   customerType: z
-    .enum(['person', 'company'], {
+    .enum(['Privatperson', 'Företag'], {
       errorMap: () => ({ message: 'Välj om du är privatperson eller företag' }),
     }),
   subject: z.literal('Offert förfrågan'),
