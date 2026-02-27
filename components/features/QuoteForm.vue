@@ -378,7 +378,7 @@ watch(isChanged, (newValue) => {
           for="quote-customer-type"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Är ni? <span class="text-error" aria-label="obligatoriskt fält">*</span>
+          Kundtyp <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
         <select
           id="quote-customer-type"
@@ -394,15 +394,9 @@ watch(isChanged, (newValue) => {
           @blur="handleBlur('customerType')"
           @change="handleInput('customerType')"
         >
-          <option value="" disabled>
-            Välj kundtyp
-          </option>
-          <option value="person">
-            Privatperson
-          </option>
-          <option value="company">
-            Företag
-          </option>
+          <option value="" disabled>Välj kundtyp</option>
+          <option value="Privatperson">Privatperson</option>
+          <option value="Företag">Företag</option>
         </select>
         <p
           v-if="getFieldError('customerType')"
