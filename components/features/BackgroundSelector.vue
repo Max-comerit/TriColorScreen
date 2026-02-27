@@ -121,8 +121,11 @@ function emitCanvasResized(width: number, height: number): void {
 function onCategoryChange(index: number): void {
   selectedCategoryIndex.value = index
   const sideIndex = Number(props.side)
-  const firstProduct = PRODUCT_CATEGORIES[index]?.products[0]
+  const cat = PRODUCT_CATEGORIES[index]
+  const firstProduct = cat?.products[0]
   if (firstProduct) {
+    canvasStore.setSelectedCategory(cat!.label)
+    canvasStore.setSelectedProduct(firstProduct.label)
     const url = (firstProduct.sides[sideIndex] ?? firstProduct.sides[0]!).src
     selectedBackground.value = url
   }
@@ -141,6 +144,8 @@ function syncProductSelection(url: string): void {
       if (product.sides.some(s => s.src === url)) {
         const keys = product.sides.map((_, i) => String(i))
         canvasStore.setSideKeys(keys)
+        canvasStore.setSelectedCategory(cat.label)
+        canvasStore.setSelectedProduct(product.label)
         product.sides.forEach((side, i) => {
           canvasStore.setBackgroundSelection(String(i), side.src)
           canvasStore.setCustomBackgroundDataUrl(String(i), null)
@@ -240,6 +245,12 @@ function syncCategoryIndexToUrl(url: string): void {
 }
 
 function hydrateFromStore(): void {
+  // Restore category index from stored label (reliable) or fall back to URL matching
+  if (canvasStore.selectedCategory) {
+    const idx = PRODUCT_CATEGORIES.findIndex(c => c.label === canvasStore.selectedCategory)
+    if (idx >= 0) selectedCategoryIndex.value = idx
+  }
+
   const selection = sideState.value.backgroundSelection
   if (selection === CUSTOM_OPTION_ID) {
     if (sideState.value.customBackgroundDataUrl) {
@@ -251,7 +262,7 @@ function hydrateFromStore(): void {
   }
 
   if (selection) {
-    syncCategoryIndexToUrl(selection)
+    if (!canvasStore.selectedCategory) syncCategoryIndexToUrl(selection)
     if (selection !== selectedBackground.value) {
       loadBackground(selection)
     }
@@ -264,13 +275,6 @@ onMounted(() => {
 })
 
 // 8. Watchers
-// If the active side no longer exists in the new product's sides, fall back to '0'
-watch(availableSides, (sides) => {
-  if (!sides.some(s => s.value === props.side)) {
-    emit('sideChanged', '0')
-  }
-})
-
 watch(
   () => [props.side, props.canvas],
   () => {

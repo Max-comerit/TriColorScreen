@@ -45,6 +45,10 @@ export const useCanvasStore = defineStore('canvas', {
     activeSide: '0',
     /** Ordered list of active side keys matching the selected product's sides */
     sideKeys: ['0', '1'] as string[],
+    /** The currently selected product category name */
+    selectedCategory: null as string | null,
+    /** The currently selected product name */
+    selectedProduct: null as string | null,
   }),
   actions: {
     /** Lazily initialize state for a side key if it doesn't exist yet */
@@ -101,6 +105,12 @@ export const useCanvasStore = defineStore('canvas', {
     clear() {
       this.sides = createInitialSides()
       this.sideKeys.forEach(key => this.ensureSide(key))
+    },
+    setSelectedCategory(category: string | null) {
+      this.selectedCategory = category
+    },
+    setSelectedProduct(product: string | null) {
+      this.selectedProduct = product
     },
   },
 })
