@@ -517,7 +517,14 @@ watch(isChanged, (newValue) => {
       <!-- ── Attached design images (hidden / prop-filled) ───── -->
       <div aria-hidden="true" class="sr-only">
         <!-- Hidden file inputs for Netlify submission, one per image slot -->
+          <label
+            for="quote-image-1"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 1
+          </label>
           <input
+            id="quote-image-1"
             :ref="el => fileInputRefs[0] = el as HTMLInputElement"
             type="file"
             name="image_1"
