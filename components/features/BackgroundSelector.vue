@@ -124,8 +124,8 @@ function onCategoryChange(index: number): void {
   const cat = PRODUCT_CATEGORIES[index]
   const firstProduct = cat?.products[0]
   if (firstProduct) {
-    canvasStore.setSelectedCategory(cat!.label)
-    canvasStore.setSelectedProduct(firstProduct.label)
+    canvasStore.setActiveCategory(cat!.label)
+    canvasStore.setActiveProduct(firstProduct.label)
     const url = (firstProduct.sides[sideIndex] ?? firstProduct.sides[0]!).src
     selectedBackground.value = url
   }
@@ -144,8 +144,8 @@ function syncProductSelection(url: string): void {
       if (product.sides.some(s => s.src === url)) {
         const keys = product.sides.map((_, i) => String(i))
         canvasStore.setSideKeys(keys)
-        canvasStore.setSelectedCategory(cat.label)
-        canvasStore.setSelectedProduct(product.label)
+        canvasStore.setActiveCategory(cat.label)
+        canvasStore.setActiveProduct(product.label)
         product.sides.forEach((side, i) => {
           canvasStore.setBackgroundSelection(String(i), side.src)
           canvasStore.setCustomBackgroundDataUrl(String(i), null)
@@ -246,8 +246,8 @@ function syncCategoryIndexToUrl(url: string): void {
 
 function hydrateFromStore(): void {
   // Restore category index from stored label (reliable) or fall back to URL matching
-  if (canvasStore.selectedCategory) {
-    const idx = PRODUCT_CATEGORIES.findIndex(c => c.label === canvasStore.selectedCategory)
+  if (canvasStore.activeCategory) {
+    const idx = PRODUCT_CATEGORIES.findIndex(c => c.label === canvasStore.activeCategory)
     if (idx >= 0) selectedCategoryIndex.value = idx
   }
 
@@ -262,7 +262,7 @@ function hydrateFromStore(): void {
   }
 
   if (selection) {
-    if (!canvasStore.selectedCategory) syncCategoryIndexToUrl(selection)
+    if (!canvasStore.activeCategory) syncCategoryIndexToUrl(selection)
     if (selection !== selectedBackground.value) {
       loadBackground(selection)
     }
