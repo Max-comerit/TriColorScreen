@@ -641,7 +641,6 @@ watch(isChanged, (newValue) => {
             :key="image.name"
             class="flex items-center gap-2"
           >
-            <span aria-hidden="true" class="text-neutral-400">-</span>
             {{ image.name }}
           </li>
         </ul>
