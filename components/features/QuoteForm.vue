@@ -533,7 +533,14 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-2"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 2
+          </label>
           <input
+            id="quote-image-2"
             :ref="el => fileInputRefs[1] = el as HTMLInputElement"
             type="file"
             name="image_2"
@@ -542,7 +549,14 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-3"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 3
+          </label>
           <input
+            id="quote-image-3"
             :ref="el => fileInputRefs[2] = el as HTMLInputElement"
             type="file"
             name="image_3"
@@ -551,7 +565,14 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-4"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 4
+          </label>
           <input
+            id="quote-image-4"
             :ref="el => fileInputRefs[3] = el as HTMLInputElement"
             type="file"
             name="image_4"
@@ -560,7 +581,14 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-5"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 5
+          </label>
           <input
+            id="quote-image-5"
             :ref="el => fileInputRefs[4] = el as HTMLInputElement"
             type="file"
             name="image_5"
@@ -569,7 +597,14 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-6"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 6
+          </label>
           <input
+            id="quote-image-6"
             :ref="el => fileInputRefs[5] = el as HTMLInputElement"
             type="file"
             name="image_6"
@@ -578,7 +613,14 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-7"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 7
+          </label>
           <input
+            id="quote-image-7"
             :ref="el => fileInputRefs[6] = el as HTMLInputElement"
             type="file"
             name="image_7"
@@ -587,7 +629,14 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-8"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 8
+          </label>
           <input
+            id="quote-image-8"
             :ref="el => fileInputRefs[7] = el as HTMLInputElement"
             type="file"
             name="image_8"
@@ -596,7 +645,14 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-9"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 9
+          </label>
           <input
+            id="quote-image-9"
             :ref="el => fileInputRefs[8] = el as HTMLInputElement"
             type="file"
             name="image_9"
@@ -605,7 +661,14 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-10"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 10
+          </label>
           <input
+            id="quote-image-10"
             :ref="el => fileInputRefs[9] = el as HTMLInputElement"
             type="file"
             name="image_10"
@@ -614,7 +677,14 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-11"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 11
+          </label>
           <input
+            id="quote-image-11"
             :ref="el => fileInputRefs[10] = el as HTMLInputElement"
             type="file"
             name="image_11"
@@ -623,7 +693,14 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-12"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 12
+          </label>
           <input
+            id="quote-image-12"
             :ref="el => fileInputRefs[11] = el as HTMLInputElement"
             type="file"
             name="image_12"
