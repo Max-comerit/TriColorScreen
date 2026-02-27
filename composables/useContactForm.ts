@@ -10,8 +10,8 @@
 import { z } from 'zod'
 
 // ===== CONSTANTS =====
-/** Maximum file size: 5MB */
-const MAX_FILE_SIZE = 5 * 1024 * 1024
+/** Maximum file size: 7MB */
+const MAX_FILE_SIZE = 7 * 1024 * 1024
 
 /** Allowed image MIME types */
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
@@ -52,7 +52,7 @@ export const contactFormSchema = z.object({
       if (file.size > MAX_FILE_SIZE) return false
       return ALLOWED_IMAGE_TYPES.includes(file.type)
     }, {
-      message: 'Bilden måste vara mindre än 5MB och i formatet JPEG, PNG, WebP eller GIF',
+      message: 'Bilden måste vara mindre än 7MB och i formatet JPEG, PNG, WebP eller GIF',
     })
     .optional()
     .nullable(),
