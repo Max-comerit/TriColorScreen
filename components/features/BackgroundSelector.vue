@@ -15,12 +15,12 @@ const PRODUCT_CATEGORIES = (rawBackgroundOptions as ProductCategories).productCa
 // 2. Props & Emits
 interface Props {
   canvas: Canvas | null
-  side: string
+  side: number
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits<{
-  sideChanged: [side: string]
+  sideChanged: [side: number]
   canvasResized: [aspectRatio: string]
 }>()
 
@@ -31,13 +31,13 @@ const { sides } = storeToRefs(canvasStore)
 // 4. State
 const CUSTOM_OPTION_ID = 'custom'
 
-const CUSTOM_SIDES: { label: string; value: string }[] = [
-  { label: 'Framsida', value: '0' },
-  { label: 'Baksida', value: '1' },
-  { label: 'Vänster', value: '2' },
-  { label: 'Höger', value: '3' },
-  { label: 'Över', value: '4' },
-  { label: 'Under', value: '5' },
+const CUSTOM_SIDES: { label: string; value: number }[] = [
+  { label: 'Fram', value: 0 },
+  { label: 'Bak', value: 1 },
+  { label: 'Vänster', value: 2 },
+  { label: 'Höger', value: 3 },
+  { label: 'Över', value: 4 },
+  { label: 'Under', value: 5 },
 ]
 
 const customFileInputRef = ref<HTMLInputElement | null>(null)
@@ -48,7 +48,7 @@ const sideState = computed(() => sides.value[props.side] ?? { json: null, size: 
 // 5. Computed
 /** Products of the currently selected category, with per-side src resolved */
 const selectedCategoryProducts = computed(() => {
-  const sideIndex = Number(props.side)
+  const sideIndex = props.side
   const cat = PRODUCT_CATEGORIES[selectedCategoryIndex.value]
   if (!cat) return []
   return cat.products.map(product => ({
@@ -85,13 +85,13 @@ const selectedProduct = computed((): Product | null => {
 })
 
 /** Side options derived from the selected product's sides array */
-const availableSides = computed((): { label: string; value: string }[] => {
+const availableSides = computed((): { label: string; value: number }[] => {
   if (isCustomSelected.value) return CUSTOM_SIDES
   const productSides = selectedProduct.value?.sides
-  if (!productSides?.length) return [{ label: 'Framsida', value: '0' }, { label: 'Baksida', value: '1' }]
+  if (!productSides?.length) return [{ label: 'Fram', value: 0 }, { label: 'Bak', value: 1 }]
   return productSides.map((side, i) => ({
     label: side.label,
-    value: String(i),
+    value: i,
   }))
 })
 
@@ -130,7 +130,7 @@ function emitCanvasResized(width: number, height: number): void {
 
 function onCategoryChange(index: number): void {
   selectedCategoryIndex.value = index
-  const sideIndex = Number(props.side)
+  const sideIndex = props.side
   const cat = PRODUCT_CATEGORIES[index]
   const firstProduct = cat?.products[0]
   if (firstProduct) {
@@ -152,13 +152,13 @@ function syncProductSelection(url: string): void {
   for (const cat of PRODUCT_CATEGORIES) {
     for (const product of cat.products) {
       if (product.sides.some(s => s.src === url)) {
-        const keys = product.sides.map((_, i) => String(i))
+        const keys = product.sides.map((_, i) => i)
         canvasStore.setSideKeys(keys)
         canvasStore.setActiveCategory(cat.label)
         canvasStore.setActiveProduct(product.label)
         product.sides.forEach((side, i) => {
-          canvasStore.setBackgroundSelection(String(i), side.src)
-          canvasStore.setCustomBackgroundDataUrl(String(i), null)
+          canvasStore.setBackgroundSelection(i, side.src)
+          canvasStore.setCustomBackgroundDataUrl(i, null)
         })
         return
       }
@@ -335,7 +335,7 @@ watch(
           :value="props.side"
           class="h-11 px-3 py-2 border w-full border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select side"
-          @change="emit('sideChanged', ($event.target as HTMLSelectElement).value)"
+          @change="emit('sideChanged', Number(($event.target as HTMLSelectElement).value))"
         >
           <option
             v-for="sideOption in availableSides"

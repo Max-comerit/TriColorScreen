@@ -67,17 +67,17 @@ const CUSTOM_BACKGROUND_SELECTION = 'custom'
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const canvasWrapperRef = ref<HTMLDivElement | null>(null)
-const activeSide = ref<string>(canvasStore.activeSide)
-/** Plain (non-reactive) map of side key → raw canvas element, populated by template refs */
-const canvasElMap: Record<string, HTMLCanvasElement | undefined> = {}
-/** Reactive map of side key → initialized Fabric Canvas instance */
-const canvasMap = shallowRef<Record<string, Canvas | undefined>>({})
+const activeSide = ref<number>(canvasStore.activeSide)
+/** Plain (non-reactive) array of raw canvas elements, indexed by side number */
+const canvasElMap: (HTMLCanvasElement | undefined)[] = []
+/** Reactive array of initialized Fabric Canvas instances, indexed by side number */
+const canvasMap = shallowRef<(Canvas | undefined)[]>([])
 let resizeObserver: ResizeObserver | null = null
 let currentCanvasWidth = 0
 let currentCanvasHeight = 0
 
 /** Assign or remove a canvas element ref from the template v-for */
-function assignCanvasEl(key: string, el: HTMLCanvasElement | null): void {
+function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
   canvasElMap[key] = el ?? undefined
 }
 
@@ -93,9 +93,10 @@ watch(activeSide, (side) => {
 
 // Single watcher for all side backgroundSelections — only reacts to actual changes
 watch(
-  () => Object.fromEntries(Object.entries(canvasStore.sides).map(([k, v]) => [k, v.backgroundSelection])),
+  () => canvasStore.sides.map(v => v.backgroundSelection),
   async (newSelections, oldSelections) => {
-    for (const [key, selection] of Object.entries(newSelections)) {
+    for (let key = 0; key < newSelections.length; key++) {
+      const selection = newSelections[key]
       if (selection === oldSelections?.[key]) continue
       if (!selection) continue
       const canvas = canvasMap.value[key]
@@ -128,7 +129,9 @@ watch(
       const canvas = canvasMap.value[key]
       if (canvas) {
         canvas.dispose()
-        canvasMap.value = Object.fromEntries(Object.entries(canvasMap.value).filter(([k]) => k !== key))
+        const newMap = [...canvasMap.value]
+        newMap[key] = undefined
+        canvasMap.value = newMap
       }
       canvasElMap[key] = undefined
     }
@@ -204,7 +207,7 @@ onMounted(async () => {
     const previousWidth = currentCanvasWidth
     if (previousWidth > 0 && (width !== previousWidth || height !== currentCanvasHeight)) {
       const ratio = width / previousWidth
-      for (const canvas of Object.values(canvasMap.value)) {
+      for (const canvas of canvasMap.value) {
         if (canvas) rescaleCanvas(canvas, ratio, width, height)
       }
     }
@@ -224,7 +227,7 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
-  for (const [key, canvas] of Object.entries(canvasMap.value)) {
+  for (const [key, canvas] of canvasMap.value.entries()) {
     if (canvas) {
       canvasStore.save(key, canvas, currentCanvasWidth)
       canvas.dispose()
@@ -232,14 +235,16 @@ onBeforeUnmount(() => {
   }
 })
 
-async function initializeCanvas(side: string, el: HTMLCanvasElement, width: number, height: number): Promise<void> {
+async function initializeCanvas(side: number, el: HTMLCanvasElement, width: number, height: number): Promise<void> {
   const canvasInstance = new Canvas(el, { selection: true })
   if (!canvasInstance) {
     console.error('Failed to initialize Fabric canvas')
     return
   }
 
-  canvasMap.value = { ...canvasMap.value, [side]: canvasInstance }
+  const newMap = [...canvasMap.value]
+  newMap[side] = canvasInstance
+  canvasMap.value = newMap
 
   canvasInstance.setDimensions({ width, height })
   canvasInstance.enablePointerEvents = true
@@ -267,16 +272,16 @@ async function initializeCanvas(side: string, el: HTMLCanvasElement, width: numb
 }
 
 /** Returns the initial background URL for a side: uses the stored selection, or a hardcoded default for the first two sides */
-function getInitialBackgroundUrl(sideKey: string): string {
+function getInitialBackgroundUrl(sideKey: number): string {
   const state = canvasStore.sides[sideKey]
   if (state?.backgroundSelection && state.backgroundSelection !== CUSTOM_BACKGROUND_SELECTION) {
     return state.backgroundSelection
   }
   // Fallback defaults for the first two sides on a blank first visit
-  const defaults: Record<string, string> = {
-    '0': '/images/custom-design/t-shirt-front.png',
-    '1': '/images/custom-design/t-shirt-back.png',
-  }
+  const defaults: string[] = [
+    '/images/custom-design/t-shirt-front.png',
+    '/images/custom-design/t-shirt-back.png',
+  ]
   return defaults[sideKey] ?? ''
 }
 
@@ -352,7 +357,7 @@ function downloadFile(dataURL: string, filename: string): void {
 }
 
 async function downloadCanvasImages(): Promise<void> {
-  const entries = Object.entries(canvasMap.value).filter((e): e is [string, Canvas] => !!e[1])
+  const entries = [...canvasMap.value.entries()].filter((e): e is [number, Canvas] => !!e[1])
 
   if (entries.length === 0) {
     alert('Canvas not initialized')

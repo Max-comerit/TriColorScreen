@@ -8,14 +8,14 @@ import { useCanvasControls } from '~/composables/useCanvasControls'
 /**
  * Canvas Store
  * @description Manages the state of N canvas sides dynamically. Sides are
- * identified by a string key (e.g. '0', '1', '2') so the number of sides
- * can grow beyond the original front/back pair as new product types are added.
+ * identified by a numeric index so the number of sides can grow beyond the
+ * original front/back pair as new product types are added.
  *
  * @example
  * const canvasStore = useCanvasStore()
- * canvasStore.save('0', canvas, canvasSize)
+ * canvasStore.save(0, canvas, canvasSize)
  * // ... later or on page reload ...
- * canvasStore.restore('0', canvas, currentCanvasSize)
+ * canvasStore.restore(0, canvas, currentCanvasSize)
  */
 
 interface CanvasSideState {
@@ -33,37 +33,37 @@ const createSideState = (): CanvasSideState => ({
 })
 
 /** Creates initial sides state for the default two sides */
-function createInitialSides(): Record<string, CanvasSideState> {
-  return { '0': createSideState(), '1': createSideState() }
+function createInitialSides(): CanvasSideState[] {
+  return [createSideState(), createSideState()]
 }
 
 export const useCanvasStore = defineStore('canvas', {
   state: () => ({
-    /** State keyed by side index string ('0', '1', '2', …) */
+    /** State indexed by side number (0, 1, 2, …) */
     sides: createInitialSides(),
-    /** The currently active side key */
-    activeSide: '0',
-    /** Ordered list of active side keys matching the selected product's sides */
-    sideKeys: ['0', '1'] as string[],
+    /** The currently active side index */
+    activeSide: 0,
+    /** Ordered list of active side indices matching the selected product's sides */
+    sideKeys: [0, 1] as number[],
     /** The currently active product category name */
     activeCategory: null as string | null,
     /** The currently active product name */
     activeProduct: null as string | null,
   }),
   actions: {
-    /** Lazily initialize state for a side key if it doesn't exist yet */
-    ensureSide(side: string) {
-      if (!this.sides[side]) {
-        this.sides[side] = createSideState()
+    /** Lazily initialize state for a side index if it doesn't exist yet */
+    ensureSide(side: number) {
+      while (this.sides.length <= side) {
+        this.sides.push(createSideState())
       }
     },
-    save(side: string, canvas: Canvas, size: number) {
+    save(side: number, canvas: Canvas, size: number) {
       this.ensureSide(side)
       const sideState = this.sides[side]!
       sideState.json = JSON.stringify(canvas.toJSON())
       sideState.size = size
     },
-    async restore(side: string, canvas: Canvas, currentSize: number) {
+    async restore(side: number, canvas: Canvas, currentSize: number) {
       const sideState = this.sides[side]
       if (!sideState?.json) return
 
@@ -82,15 +82,15 @@ export const useCanvasStore = defineStore('canvas', {
 
       canvas.requestRenderAll()
     },
-    setBackgroundSelection(side: string, selection: string | null) {
+    setBackgroundSelection(side: number, selection: string | null) {
       this.ensureSide(side)
       this.sides[side]!.backgroundSelection = selection
     },
-    setCustomBackgroundDataUrl(side: string, dataUrl: string | null) {
+    setCustomBackgroundDataUrl(side: number, dataUrl: string | null) {
       this.ensureSide(side)
       this.sides[side]!.customBackgroundDataUrl = dataUrl
     },
-    setActiveSide(side: string) {
+    setActiveSide(side: number) {
       this.activeSide = side
     },
     setActiveCategory(category: string | null) {
@@ -100,10 +100,10 @@ export const useCanvasStore = defineStore('canvas', {
       this.activeProduct = product
     },
     /**
-     * Update the ordered list of side keys for the active product.
-     * Ensures state objects exist for all incoming keys.
+     * Update the ordered list of side indices for the active product.
+     * Ensures state objects exist for all incoming indices.
      */
-    setSideKeys(keys: string[]) {
+    setSideKeys(keys: number[]) {
       this.sideKeys = keys
       keys.forEach(key => this.ensureSide(key))
     },
