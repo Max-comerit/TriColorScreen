@@ -10,11 +10,11 @@
 import { z } from 'zod'
 
 // ===== CONSTANTS =====
-/** Maximum file size: 5MB */
-const MAX_FILE_SIZE = 5 * 1024 * 1024
+/** Maximum file size: 8MB */
+const MAX_FILE_SIZE = 8 * 1024 * 1024
 
 /** Maximum number of images allowed */
-export const MAX_IMAGES = 12
+export const MAX_IMAGE_COUNT = 12
 
 /** Allowed image MIME types */
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
@@ -65,7 +65,7 @@ export const quoteFormSchema = z.object({
     }, {
       message: 'Bilden måste vara mindre än 5MB och i formatet JPEG, PNG, WebP eller GIF',
     }))
-    .max(MAX_IMAGES, { message: `Maximalt ${MAX_IMAGES} bilder kan bifogas` })
+    .max(MAX_IMAGE_COUNT, { message: `Maximalt ${MAX_IMAGE_COUNT} bilder kan bifogas` })
     .optional()
     .nullable(),
   message: z

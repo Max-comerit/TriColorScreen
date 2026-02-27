@@ -5,7 +5,7 @@
 import { nanoid } from 'nanoid'
 import type { Canvas } from 'fabric'
 import type { QuoteFormData } from '~/composables/useQuoteForm'
-import { useQuoteForm } from '~/composables/useQuoteForm'
+import { useQuoteForm, MAX_IMAGE_COUNT } from '~/composables/useQuoteForm'
 import TextButton from '~/components/common/TextButton.vue'
 import GdprDialog from '~/components/features/GdprDialog.vue'
 import { useCanvasExport } from '~/composables/useCanvasExport'
@@ -54,7 +54,6 @@ const showErrorMessage = ref(false)
 const showGdprDialog = ref(false)
 const fileInputRefs = ref<HTMLInputElement[]>([])
 const collectedImages = ref(false)
-const MAX_SUPPORTED_IMAGES = 12
 
 // ===== COMPUTED =====
 
@@ -92,7 +91,7 @@ async function handleFocusIn(): Promise<void> {
     // Collect current canvas images and populate formData before user submits
     formData.value.images = await collectQuoteFiles()
     // Sync each image to its corresponding hidden file input for Netlify submission
-    formData.value.images?.slice(0, MAX_SUPPORTED_IMAGES).forEach((file, index) => {
+    formData.value.images?.forEach((file, index) => {
       const ref = fileInputRefs.value[index]
       if (ref) {
         const dt = new DataTransfer()
@@ -180,6 +179,7 @@ async function compressDataUrl(dataUrl: string, quality = 0.75): Promise<string>
 /**
  * Export both canvas sides as File objects and populate files.
  * Includes a merged composite image and all individual image-layer files.
+ * Limits total images to MAX_IMAGE_COUNT to prevent excessive payloads.
  */
 async function collectQuoteFiles(): Promise<File[]> {
   const availableCanvases = [
@@ -194,6 +194,7 @@ async function collectQuoteFiles(): Promise<File[]> {
 
   const collected: File[] = []
   const id = nanoid(10)
+  let imgCount = 0;
 
   for (const entry of availableCanvases) {
     const canvasInstance = entry.canvas as Canvas
@@ -205,10 +206,12 @@ async function collectQuoteFiles(): Promise<File[]> {
     // Merged composite: compress to JPEG (no transparency needed, smaller payload)
     const compressedMerged = await compressDataUrl(mergedUrl)
     collected.push(await dataUrlToFile(compressedMerged, `design-${id}-${entry.side}.jpg`))
+    if (++imgCount >= MAX_IMAGE_COUNT) break;
 
     // Individual layers: keep as PNG to preserve transparency
     for (let i = 0; i < imageUrls.length; i++) {
       collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-${entry.side}-layer-${i + 1}.png`))
+      if (++imgCount >= MAX_IMAGE_COUNT) break;
     }
   }
 
