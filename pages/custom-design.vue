@@ -16,9 +16,8 @@ import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
 import { useCanvasExport } from '~/composables/useCanvasExport'
 import { useCanvasRescale } from '~/composables/useCanvasRescale'
-import { useCanvasStore, type CanvasSide } from '@/stores/canvasStore'
+import { useCanvasStore } from '@/stores/canvasStore'
 import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
-import { storeToRefs } from 'pinia'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
 import {
   createRotateControlRender,
@@ -67,60 +66,82 @@ const CUSTOM_BACKGROUND_SELECTION = 'custom'
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
-const frontCanvasRef = ref<HTMLCanvasElement | null>(null)
-const backCanvasRef = ref<HTMLCanvasElement | null>(null)
 const canvasWrapperRef = ref<HTMLDivElement | null>(null)
-const activeSide = ref<CanvasSide>(canvasStore.activeSide)
-const frontCanvas = shallowRef<Canvas | null>(null)
-const backCanvas = shallowRef<Canvas | null>(null)
+const activeSide = ref<string>(canvasStore.activeSide)
+/** Plain (non-reactive) map of side key → raw canvas element, populated by template refs */
+const canvasElMap: Record<string, HTMLCanvasElement | undefined> = {}
+/** Reactive map of side key → initialized Fabric Canvas instance */
+const canvasMap = shallowRef<Record<string, Canvas | undefined>>({})
 let resizeObserver: ResizeObserver | null = null
 let currentCanvasWidth = 0
 let currentCanvasHeight = 0
 
+/** Assign or remove a canvas element ref from the template v-for */
+function assignCanvasEl(key: string, el: HTMLCanvasElement | null): void {
+  canvasElMap[key] = el ?? undefined
+}
+
 // ===== COMPUTED =====
-const activeCanvas = computed(() => (activeSide.value === 'front' ? frontCanvas.value : backCanvas.value))
+const activeCanvas = computed(() => canvasMap.value[activeSide.value] ?? null)
 const canvasAspectRatio = ref('1 / 1')
 const canvasAspectRatioCss = computed(() => canvasAspectRatio.value)
 
 // ===== WATCHERS =====
-const { front: frontState, back: backState } = storeToRefs(canvasStore)
-
 watch(activeSide, (side) => {
   canvasStore.setActiveSide(side)
 })
 
-watch(() => frontState.value.backgroundSelection, async (newSelection) => {
-  if (!frontCanvas.value || !newSelection) return
-  frontCanvas.value.remove(...frontCanvas.value.getObjects())
-  if (newSelection === CUSTOM_BACKGROUND_SELECTION) {
-    frontCanvas.value.backgroundImage = undefined
-    frontCanvas.value.requestRenderAll()
-    return
-  }
-  await loadBackgroundOnCanvas(frontCanvas.value, newSelection)
-})
+// Single watcher for all side backgroundSelections — only reacts to actual changes
+watch(
+  () => Object.fromEntries(Object.entries(canvasStore.sides).map(([k, v]) => [k, v.backgroundSelection])),
+  async (newSelections, oldSelections) => {
+    for (const [key, selection] of Object.entries(newSelections)) {
+      if (selection === oldSelections?.[key]) continue
+      if (!selection) continue
+      const canvas = canvasMap.value[key]
+      if (!canvas) continue
+      canvas.remove(...canvas.getObjects())
+      if (selection === CUSTOM_BACKGROUND_SELECTION) {
+        canvas.backgroundImage = undefined
+        canvas.requestRenderAll()
+      } else {
+        await loadBackgroundOnCanvas(canvas, selection)
+      }
+    }
+  },
+  { deep: true },
+)
 
-watch(() => backState.value.backgroundSelection, async (newSelection) => {
-  if (!backCanvas.value || !newSelection) return
-  backCanvas.value.remove(...backCanvas.value.getObjects())
-  if (newSelection === CUSTOM_BACKGROUND_SELECTION) {
-    backCanvas.value.backgroundImage = undefined
-    backCanvas.value.requestRenderAll()
-    return
-  }
-  await loadBackgroundOnCanvas(backCanvas.value, newSelection)
-})
+// Initialize new canvases and dispose removed ones when the product's side count changes
+watch(
+  () => canvasStore.sideKeys,
+  async (newKeys, oldKeys) => {
+    await nextTick()
+    for (const key of newKeys) {
+      const el = canvasElMap[key]
+      if (el && !canvasMap.value[key] && currentCanvasWidth > 0) {
+        void initializeCanvas(key, el, currentCanvasWidth, currentCanvasHeight)
+      }
+    }
+    const removedKeys = (oldKeys ?? []).filter(k => !newKeys.includes(k))
+    for (const key of removedKeys) {
+      const canvas = canvasMap.value[key]
+      if (canvas) {
+        canvas.dispose()
+        canvasMap.value = Object.fromEntries(Object.entries(canvasMap.value).filter(([k]) => k !== key))
+      }
+      canvasElMap[key] = undefined
+    }
+  },
+)
 
 // ===== LIFECYCLE HOOKS =====
 onMounted(async () => {
   await nextTick()
-  const frontEl = frontCanvasRef.value
-  const backEl = backCanvasRef.value
   const wrapper = canvasWrapperRef.value
 
-  // Validate elements exist and are canvases
-  if (!(frontEl instanceof HTMLCanvasElement) || !(backEl instanceof HTMLCanvasElement) || !wrapper) {
-    console.error('Canvas element not found')
+  if (!wrapper) {
+    console.error('Canvas wrapper not found')
     return
   }
 
@@ -183,22 +204,19 @@ onMounted(async () => {
     const previousWidth = currentCanvasWidth
     if (previousWidth > 0 && (width !== previousWidth || height !== currentCanvasHeight)) {
       const ratio = width / previousWidth
-      if (frontCanvas.value) {
-        rescaleCanvas(frontCanvas.value, ratio, width, height)
-      }
-      if (backCanvas.value) {
-        rescaleCanvas(backCanvas.value, ratio, width, height)
+      for (const canvas of Object.values(canvasMap.value)) {
+        if (canvas) rescaleCanvas(canvas, ratio, width, height)
       }
     }
 
     currentCanvasWidth = width
     currentCanvasHeight = height
 
-    if (!frontCanvas.value) {
-      void initializeCanvas('front', frontEl, width, height)
-    }
-    if (!backCanvas.value) {
-      void initializeCanvas('back', backEl, width, height)
+    for (const key of canvasStore.sideKeys) {
+      const el = canvasElMap[key]
+      if (el && !canvasMap.value[key]) {
+        void initializeCanvas(key, el, width, height)
+      }
     }
   })
   resizeObserver.observe(wrapper)
@@ -206,28 +224,22 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
-  if (frontCanvas.value) {
-    canvasStore.save('front', frontCanvas.value, currentCanvasWidth)
-    frontCanvas.value.dispose()
-  }
-  if (backCanvas.value) {
-    canvasStore.save('back', backCanvas.value, currentCanvasWidth)
-    backCanvas.value.dispose()
+  for (const [key, canvas] of Object.entries(canvasMap.value)) {
+    if (canvas) {
+      canvasStore.save(key, canvas, currentCanvasWidth)
+      canvas.dispose()
+    }
   }
 })
 
-async function initializeCanvas(side: CanvasSide, el: HTMLCanvasElement, width: number, height: number): Promise<void> {
+async function initializeCanvas(side: string, el: HTMLCanvasElement, width: number, height: number): Promise<void> {
   const canvasInstance = new Canvas(el, { selection: true })
   if (!canvasInstance) {
     console.error('Failed to initialize Fabric canvas')
     return
   }
 
-  if (side === 'front') {
-    frontCanvas.value = canvasInstance
-  } else {
-    backCanvas.value = canvasInstance
-  }
+  canvasMap.value = { ...canvasMap.value, [side]: canvasInstance }
 
   canvasInstance.setDimensions({ width, height })
   canvasInstance.enablePointerEvents = true
@@ -235,14 +247,16 @@ async function initializeCanvas(side: CanvasSide, el: HTMLCanvasElement, width: 
   await canvasStore.restore(side, canvasInstance, width)
 
   if (!canvasInstance.backgroundImage) {
-    const sideState = getSideState(side)
+    const sideState = canvasStore.sides[side]
     // Don't load a default background if the user explicitly chose a custom (own) product —
     // in that case the canvas is intentionally blank until they upload an image.
-    if (sideState.backgroundSelection !== 'custom') {
+    if (sideState?.backgroundSelection !== 'custom') {
       const initialBackgroundUrl = getInitialBackgroundUrl(side)
-      await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl, width, height)
-      if (!sideState.backgroundSelection && initialBackgroundUrl) {
-        canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
+      if (initialBackgroundUrl) {
+        await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl, width, height)
+        if (!sideState?.backgroundSelection) {
+          canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
+        }
       }
     }
   }
@@ -252,37 +266,18 @@ async function initializeCanvas(side: CanvasSide, el: HTMLCanvasElement, width: 
   canvasInstance.on('object:removed', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
 }
 
-function getDefaultBackgroundUrl(side: CanvasSide): string {
-  return side === 'front'
-    ? '/images/custom-design/t-shirt-front.png'
-    : '/images/custom-design/t-shirt-back.png'
-}
-
-function getSideState(side: CanvasSide) {
-  return side === 'front' ? canvasStore.front : canvasStore.back
-}
-
-function getInitialBackgroundUrl(side: CanvasSide): string {
-  const sideState = getSideState(side)
-  if (sideState.backgroundSelection && sideState.backgroundSelection !== CUSTOM_BACKGROUND_SELECTION) {
-    return sideState.backgroundSelection
+/** Returns the initial background URL for a side: uses the stored selection, or a hardcoded default for the first two sides */
+function getInitialBackgroundUrl(sideKey: string): string {
+  const state = canvasStore.sides[sideKey]
+  if (state?.backgroundSelection && state.backgroundSelection !== CUSTOM_BACKGROUND_SELECTION) {
+    return state.backgroundSelection
   }
-
-  const otherSide = side === 'front' ? 'back' : 'front'
-  const otherState = getSideState(otherSide)
-  if (otherState.backgroundSelection && otherState.backgroundSelection !== CUSTOM_BACKGROUND_SELECTION) {
-    return mapBackgroundUrlToSide(otherState.backgroundSelection, side)
+  // Fallback defaults for the first two sides on a blank first visit
+  const defaults: Record<string, string> = {
+    '0': '/images/custom-design/t-shirt-front.png',
+    '1': '/images/custom-design/t-shirt-back.png',
   }
-
-  return getDefaultBackgroundUrl(side)
-}
-
-function mapBackgroundUrlToSide(url: string, side: CanvasSide): string {
-  if (side === 'front') {
-    return url.replace('-back.', '-front.')
-  }
-
-  return url.replace('-front.', '-back.')
+  return defaults[sideKey] ?? ''
 }
 
 async function loadBackgroundOnCanvas(canvasInstance: Canvas, url: string, width = currentCanvasWidth, height = currentCanvasHeight): Promise<void> {
@@ -357,12 +352,9 @@ function downloadFile(dataURL: string, filename: string): void {
 }
 
 async function downloadCanvasImages(): Promise<void> {
-  const availableCanvases = [
-    { side: 'front' as const, canvas: frontCanvas.value },
-    { side: 'back' as const, canvas: backCanvas.value },
-  ].filter(entry => entry.canvas)
+  const entries = Object.entries(canvasMap.value).filter((e): e is [string, Canvas] => !!e[1])
 
-  if (availableCanvases.length === 0) {
+  if (entries.length === 0) {
     alert('Canvas not initialized')
     console.error('Error downloading canvas: Canvas is not initialized')
     return
@@ -370,22 +362,21 @@ async function downloadCanvasImages(): Promise<void> {
 
   try {
     const id = nanoid(10)
-    for (const entry of availableCanvases) {
-      const canvasInstance = entry.canvas as Canvas
+    for (const [key, canvasInstance] of entries) {
       const [mergedUrl, imageUrls] = await Promise.all([
         exportMergedImage(canvasInstance),
         exportImageObjects(canvasInstance),
       ])
 
       // Download merged image first
-      downloadFile(mergedUrl, `design-${id}-${entry.side}.png`)
+      downloadFile(mergedUrl, `design-${id}-side-${key}.png`)
       URL.revokeObjectURL(mergedUrl)
 
       // Download individual layer images
       imageUrls.forEach((url, index) => {
         // Stagger image downloads slightly so browsers don't block them
         setTimeout(() => {
-          downloadFile(url, `design-${id}-${entry.side}-image-${index + 1}.png`)
+          downloadFile(url, `design-${id}-side-${key}-image-${index + 1}.png`)
           URL.revokeObjectURL(url)
         }, (index + 1) * 200)
       })
@@ -430,15 +421,15 @@ async function downloadCanvasImages(): Promise<void> {
         <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" @canvas-resized="onCanvasResized" />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
           <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] max-h-[1000px]" :style="{ aspectRatio: canvasAspectRatioCss }">
-            <div v-show="activeSide === 'front'" class="absolute inset-0" :aria-hidden="activeSide !== 'front'">
+            <div
+              v-for="key in canvasStore.sideKeys"
+              v-show="activeSide === key"
+              :key="key"
+              class="absolute inset-0"
+              :aria-hidden="activeSide !== key"
+            >
               <canvas
-                ref="frontCanvasRef"
-                class="block w-full h-full border border-black rounded-card overflow-hidden"
-              />
-            </div>
-            <div v-show="activeSide === 'back'" class="absolute inset-0" :aria-hidden="activeSide !== 'back'">
-              <canvas
-                ref="backCanvasRef"
+                :ref="(el) => assignCanvasEl(key, el as HTMLCanvasElement | null)"
                 class="block w-full h-full border border-black rounded-card overflow-hidden"
               />
             </div>

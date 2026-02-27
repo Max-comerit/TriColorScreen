@@ -4,7 +4,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import type { Canvas } from 'fabric'
 import { FabricImage } from 'fabric'
 import { storeToRefs } from 'pinia'
-import { useCanvasStore, type CanvasSide } from '@/stores/canvasStore'
+import { useCanvasStore } from '@/stores/canvasStore'
 import rawBackgroundOptions from '~/assets/json/custom-design/products.json'
 
 interface Side {
@@ -34,18 +34,18 @@ const PRODUCT_CATEGORIES = (rawBackgroundOptions as ProductCategories).productCa
 // 2. Props & Emits
 interface Props {
   canvas: Canvas | null
-  side: CanvasSide
+  side: string
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits<{
-  sideChanged: [side: CanvasSide]
+  sideChanged: [side: string]
   canvasResized: [aspectRatio: string]
 }>()
 
 // 3. Composables & Stores
 const canvasStore = useCanvasStore()
-const { front, back } = storeToRefs(canvasStore)
+const { sides, sideKeys } = storeToRefs(canvasStore)
 
 // 4. State
 const CUSTOM_OPTION_ID = 'custom'
@@ -53,12 +53,12 @@ const CUSTOM_OPTION_ID = 'custom'
 const customFileInputRef = ref<HTMLInputElement | null>(null)
 const selectedCategoryIndex = ref(0)
 
-const sideState = computed(() => (props.side === 'front' ? front.value : back.value))
+const sideState = computed(() => sides.value[props.side] ?? { json: null, size: 0, backgroundSelection: null, customBackgroundDataUrl: null })
 
 // 5. Computed
 /** Products of the currently selected category, with per-side src resolved */
 const selectedCategoryProducts = computed(() => {
-  const sideIndex = props.side === 'front' ? 0 : 1
+  const sideIndex = Number(props.side)
   const cat = PRODUCT_CATEGORIES[selectedCategoryIndex.value]
   if (!cat) return []
   return cat.products.map(product => ({
@@ -81,6 +81,28 @@ const selectedBackground = computed({
 })
 
 const isCustomSelected = computed(() => selectedBackground.value === CUSTOM_OPTION_ID)
+
+/** The product that owns the currently selected background URL */
+const selectedProduct = computed((): Product | null => {
+  const url = selectedBackground.value
+  for (const cat of PRODUCT_CATEGORIES) {
+    for (const product of cat.products) {
+      if (product.sides.some(s => s.src === url)) return product
+    }
+  }
+  // Fall back to first product of selected category (e.g. when custom is selected)
+  return PRODUCT_CATEGORIES[selectedCategoryIndex.value]?.products[0] ?? null
+})
+
+/** Side options derived from the selected product's sides array */
+const availableSides = computed((): { label: string; value: string }[] => {
+  const productSides = selectedProduct.value?.sides
+  if (!productSides?.length) return [{ label: 'Fram', value: '0' }, { label: 'Bak', value: '1' }]
+  return productSides.map((side, i) => ({
+    label: side.label,
+    value: String(i),
+  }))
+})
 
 // 6. Methods
 async function loadBackground(url: string): Promise<void> {
@@ -133,13 +155,19 @@ function resetStoredCanvases(url: string): void {
 function syncProductSelection(url: string): void {
   if (url === CUSTOM_OPTION_ID) return
 
-  const otherSide = getOtherSide(props.side)
-  const mappedUrl = mapBackgroundUrlToSide(url, otherSide)
-
-  canvasStore.setBackgroundSelection(props.side, url)
-  canvasStore.setCustomBackgroundDataUrl(props.side, null)
-  canvasStore.setBackgroundSelection(otherSide, mappedUrl)
-  canvasStore.setCustomBackgroundDataUrl(otherSide, null)
+  for (const cat of PRODUCT_CATEGORIES) {
+    for (const product of cat.products) {
+      if (product.sides.some(s => s.src === url)) {
+        const keys = product.sides.map((_, i) => String(i))
+        canvasStore.setSideKeys(keys)
+        product.sides.forEach((side, i) => {
+          canvasStore.setBackgroundSelection(String(i), side.src)
+          canvasStore.setCustomBackgroundDataUrl(String(i), null)
+        })
+        return
+      }
+    }
+  }
 }
 
 function clearBackground(): void {
@@ -151,8 +179,7 @@ function clearBackground(): void {
 
 function selectCustomBackground(): void {
   const storedDataUrl = sideState.value.customBackgroundDataUrl
-  canvasStore.setBackgroundSelection(props.side, CUSTOM_OPTION_ID)
-  canvasStore.setBackgroundSelection(getOtherSide(props.side), CUSTOM_OPTION_ID)
+  sideKeys.value.forEach(key => canvasStore.setBackgroundSelection(key, CUSTOM_OPTION_ID))
 
   if (storedDataUrl) {
     applyCustomBackground(storedDataUrl)
@@ -250,22 +277,6 @@ function hydrateFromStore(): void {
   }
 }
 
-function getOtherSide(side: CanvasSide): CanvasSide {
-  return side === 'front' ? 'back' : 'front'
-}
-
-function mapBackgroundUrlToSide(url: string, side: CanvasSide): string {
-  const sideIndex = side === 'front' ? 0 : 1
-  for (const cat of PRODUCT_CATEGORIES) {
-    for (const product of cat.products) {
-      if (product.sides.some(s => s.src === url)) {
-        return (product.sides[sideIndex] ?? product.sides[0]!).src
-      }
-    }
-  }
-  return url
-}
-
 // 7. Lifecycle hooks
 onMounted(() => {
   hydrateFromStore()
@@ -320,10 +331,15 @@ watch(
           :value="props.side"
           class="h-11 px-3 py-2 border w-full border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select side"
-          @change="emit('sideChanged', ($event.target as HTMLSelectElement).value as CanvasSide)"
+          @change="emit('sideChanged', ($event.target as HTMLSelectElement).value)"
         >
-          <option value="front">Fram</option>
-          <option value="back">Bak</option>
+          <option
+            v-for="sideOption in availableSides"
+            :key="sideOption.value"
+            :value="sideOption.value"
+          >
+            {{ sideOption.label }}
+          </option>
         </select>
       </label>
 

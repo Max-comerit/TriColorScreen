@@ -30,6 +30,10 @@
             {
               "label": "Bak",
               "src": "/images/custom-design/shirt-back.png"
+            },
+            {
+              "label": "Sida",
+              "src": "/images/custom-design/shirt-side-left.png"
             }
           ]
         },
