@@ -706,6 +706,70 @@ watch(isChanged, (newValue) => {
             tabindex="-1"
             aria-hidden="true"
           >
+          <label
+            for="quote-image-13"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 13
+          </label>
+          <input
+            id="quote-image-13"
+            :ref="el => fileInputRefs[12] = el as HTMLInputElement"
+            type="file"
+            name="image_13"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <label
+            for="quote-image-14"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 14
+          </label>
+          <input
+            id="quote-image-14"
+            :ref="el => fileInputRefs[13] = el as HTMLInputElement"
+            type="file"
+            name="image_14"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <label
+            for="quote-image-15"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 15
+          </label>
+          <input
+            id="quote-image-15"
+            :ref="el => fileInputRefs[14] = el as HTMLInputElement"
+            type="file"
+            name="image_15"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+          <label
+            for="quote-image-16"
+            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+          >
+            Bild 16
+          </label>
+          <input
+            id="quote-image-16"
+            :ref="el => fileInputRefs[15] = el as HTMLInputElement"
+            type="file"
+            name="image_16"
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="sr-only"
+            tabindex="-1"
+            aria-hidden="true"
+          >
       </div>
 
       <!-- Display attached files to user (optional) -->

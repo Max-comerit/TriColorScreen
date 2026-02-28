@@ -14,7 +14,7 @@ import { z } from 'zod'
 const MAX_FILE_SIZE = 7 * 1024 * 1024
 
 /** Maximum number of images allowed */
-export const MAX_IMAGE_COUNT = 12
+export const MAX_IMAGE_COUNT = 16
 
 /** Allowed image MIME types */
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
