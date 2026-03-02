@@ -66,6 +66,12 @@ const selectedBackground = computed({
 
 const isCustomSelected = computed(() => selectedBackground.value === CUSTOM_OPTION_ID)
 
+const activeSideOptions = computed<{ label: string }[]>(() =>
+  isCustomSelected.value
+    ? CUSTOM_SIDES
+    : PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products[canvasStore.activeProduct]?.sides ?? []
+)
+
 
 // 6. Methods
 function emitCanvasResized(width: number, height: number): void {
@@ -305,24 +311,13 @@ onMounted(() => {
           aria-label="Select side"
           @change="onSideChange(Number(($event.target as HTMLSelectElement).value))"
         >
-          <div v-if="isCustomSelected">
-            <option
-              v-for="(sideOption, i) in CUSTOM_SIDES"
-              :key="sideOption.label"
-              :value="i"
-            >
-              {{ sideOption.label }}
-            </option>
-          </div>
-          <div v-else>
-            <option
-              v-for="(sideOption, i) in PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products[canvasStore.activeProduct]?.sides || []"
-              :key="sideOption.label"
-              :value="i"
-            >
-              {{ sideOption.label }}
-            </option>
-          </div>
+          <option
+            v-for="(sideOption, i) in activeSideOptions"
+            :key="sideOption.label"
+            :value="i"
+          >
+            {{ sideOption.label }}
+          </option>
         </select>
       </label>
 
