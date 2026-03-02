@@ -32,6 +32,10 @@
             {
               "label": "Vänster",
               "src": "/images/custom-design/shirt-side-left.png"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/shirt-side-right.png"
             }
           ]
         },
@@ -119,7 +123,7 @@
           "label": "Skylt",
           "sides": [
             {
-              "label": "Fram",
+              "label": "Höger",
               "src": "/images/custom-design/sign.png"
             }
           ]
@@ -138,7 +142,7 @@
           "label": "Butiksflagga",
           "sides": [
             {
-              "label": "Fram",
+              "label": "Vänster",
               "src": "/images/custom-design/kiosk-flag.png"
             }
           ]

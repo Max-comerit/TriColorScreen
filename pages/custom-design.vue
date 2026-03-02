@@ -4,21 +4,19 @@
 // ===== IMPORTS =====
 import '~/assets/css/custom-design-fonts.css'
 import { Canvas, FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
-import { nanoid } from 'nanoid'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
-import TextButton from '~/components/common/TextButton.vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
-import { useCanvasExport } from '~/composables/useCanvasExport'
 import { useCanvasRescale } from '~/composables/useCanvasRescale'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
+import QuoteForm from '~/components/features/QuoteForm.vue'
 import {
   createRotateControlRender,
   createTrashControlRender,
@@ -58,7 +56,6 @@ useHead({
 
 const { addImageToCanvas } = useCustomImage()
 const { addTextToCanvas } = useCustomText()
-const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const { rescaleObjects } = useCanvasRescale()
 const canvasStore = useCanvasStore()
 
@@ -350,50 +347,6 @@ function addText() {
 function onCanvasResized(aspectRatio: string): void {
   canvasAspectRatio.value = aspectRatio
 }
-
-function downloadFile(dataURL: string, filename: string): void {
-    const link = document.createElement('a')
-    link.href = dataURL
-    link.download = filename
-    link.click()
-}
-
-async function downloadCanvasImages(): Promise<void> {
-  const entries = [...canvasMap.value.entries()].filter((e): e is [number, Canvas] => !!e[1])
-
-  if (entries.length === 0) {
-    alert('Canvas not initialized')
-    console.error('Error downloading canvas: Canvas is not initialized')
-    return
-  }
-
-  try {
-    const id = nanoid(10)
-    for (const [key, canvasInstance] of entries) {
-      const [mergedUrl, imageUrls] = await Promise.all([
-        exportMergedImage(canvasInstance),
-        exportImageObjects(canvasInstance),
-      ])
-
-      // Download merged image first
-      downloadFile(mergedUrl, `design-${id}-side-${key}.png`)
-      URL.revokeObjectURL(mergedUrl)
-
-      // Download individual layer images
-      imageUrls.forEach((url, index) => {
-        // Stagger image downloads slightly so browsers don't block them
-        setTimeout(() => {
-          downloadFile(url, `design-${id}-side-${key}-image-${index + 1}.png`)
-          URL.revokeObjectURL(url)
-        }, (index + 1) * 200)
-      })
-    }
-  } catch (error) {
-    alert('Failed to download design images')
-    console.error('Error downloading canvas:', error)
-  }
-}
-
 </script>
 
 <template>
@@ -427,6 +380,8 @@ async function downloadCanvasImages(): Promise<void> {
       >
         <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" @canvas-resized="onCanvasResized" />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
+          <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
+          <div class="w-[0px] md:w-[48px]" />
           <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] max-h-[1000px]" :style="{ aspectRatio: canvasAspectRatioCss }">
             <div
               v-for="key in canvasStore.sideKeys"
@@ -465,8 +420,13 @@ async function downloadCanvasImages(): Promise<void> {
           </div>
         </div>
         <TextboxControls :canvas="activeCanvas" />
-        <div class="mt-24 flex justify-center gap-4">
-          <TextButton @click="downloadCanvasImages">Begär Offert</TextButton>
+
+        <!-- Offertformulär -->
+        <div
+          class="mt-10 flex justify-center"
+          aria-label="Offertformulär"
+        >
+          <QuoteForm :canvas-map="canvasMap"/>
         </div>
       </Section>
     </div>

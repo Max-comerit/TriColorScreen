@@ -12,7 +12,7 @@
       appear in the pre-rendered HTML that Netlify's crawler reads.
       This plain HTML file guarantees Netlify can always find and register the form.
     -->
-    <form name="contact" method="POST" action="/" data-netlify="true" data-netlify-honeypot="bot-field" enctype="multipart/form-data" autocomplete="off">
+    <form name="contact" enctype="multipart/form-data" method="POST" action="/" netlify-honeypot="bot-field" autocomplete="off" data-netlify="true">
       <input type="hidden" name="form-name" value="contact">
       <input type="text" name="name" autocomplete="name">
       <input type="email" name="email" autocomplete="email">
@@ -27,6 +27,45 @@
       <input type="checkbox" name="gdpr_consent" autocomplete="off">
       <input name="bot-field" autocomplete="off" style="display:none">
       <button type="submit">Skicka</button>
+    </form>
+
+    <!--
+      Quote request form — registered for Netlify Forms detection.
+      Fields mirror components/features/QuoteForm.vue exactly.
+    -->
+    <form name="quote" enctype="multipart/form-data" method="POST" action="/" netlify-honeypot="bot-field" autocomplete="off" data-netlify="true">
+      <input type="hidden" name="form-name" value="quote">
+      <input type="text" name="name" autocomplete="name">
+      <input type="email" name="email" autocomplete="email">
+      <input type="tel" name="phone" autocomplete="tel">
+      <select name="customer_type" autocomplete="off">
+        <option value="person">person</option>
+        <option value="company">company</option>
+      </select>
+      <input type="text" name="subject" value="Offert förfrågan" autocomplete="off">
+      <input type="text" name="product_category" autocomplete="off">
+      <input type="text" name="product" autocomplete="off">
+      <input type="number" name="product_count" autocomplete="off">
+      <input type="file" name="image_1" autocomplete="off">
+      <input type="file" name="image_2" autocomplete="off">
+      <input type="file" name="image_3" autocomplete="off">
+      <input type="file" name="image_4" autocomplete="off">
+      <input type="file" name="image_5" autocomplete="off">
+      <input type="file" name="image_6" autocomplete="off">
+      <input type="file" name="image_7" autocomplete="off">
+      <input type="file" name="image_8" autocomplete="off">
+      <input type="file" name="image_9" autocomplete="off">
+      <input type="file" name="image_10" autocomplete="off">
+      <input type="file" name="image_11" autocomplete="off">
+      <input type="file" name="image_12" autocomplete="off">
+      <input type="file" name="image_13" autocomplete="off">
+      <input type="file" name="image_14" autocomplete="off">
+      <input type="file" name="image_15" autocomplete="off">
+      <input type="file" name="image_16" autocomplete="off">
+      <textarea name="message" autocomplete="off"></textarea>
+      <input type="checkbox" name="gdpr_consent" autocomplete="off">
+      <input name="bot-field" autocomplete="off" style="display:none">
+      <button type="submit">Skicka offertförfrågan</button>
     </form>
   </body>
 </html>

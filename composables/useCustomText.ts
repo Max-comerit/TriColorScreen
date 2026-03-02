@@ -10,7 +10,7 @@ import {
 } from '@/utils/customControlRenders'
 import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
 import { toggleObjectZOrder, setTextboxTextRadius } from '@/utils/customDesign'
-import { CircularTextbox } from '@/utils/CircularTextbox'
+import { CircularTextbox } from '~/utils/circularTextbox'
 
 interface FabricCanvasLike {
   add: (object: CircularTextbox) => void

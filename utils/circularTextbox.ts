@@ -1,4 +1,4 @@
-// utils/CircularTextbox.ts
+// utils/circularTextbox.ts
 
 import { Textbox, classRegistry } from 'fabric'
 import type { SerializedTextboxProps } from 'fabric'
