@@ -1,0 +1,229 @@
+{
+  "activeProductCategory": 0,
+  "productCategories": [
+    {
+      "label": "Textil",
+      "products": [
+        {
+          "label": "T-Shirt",
+          "activeSide": 0,
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/t-shirt-front.png"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/t-shirt-back.png"
+            }
+          ]
+        },
+        {
+          "label": "Skjorta",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/shirt-front.png"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/shirt-back.png"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/shirt-side-left.png"
+            }
+          ]
+        },
+        {
+          "label": "Hoodie",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/hoodie-front.png"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/hoodie-back.png"
+            }
+          ]
+        },
+        {
+          "label": "College",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/college-front.png"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/college-back.png"
+            }
+          ]
+        },
+        {
+          "label": "Pikétröja",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/polo-shirt-front.png"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/polo-shirt-back.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Reklam",
+      "products": [
+        {
+          "label": "Affisch",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/poster.png"
+            }
+          ]
+        },
+        {
+          "label": "Flyer",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/poster.png"
+            }
+          ]
+        },
+        {
+          "label": "Storformat",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/poster.png"
+            }
+          ]
+        },
+        {
+          "label": "Banderoll",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/banderoll.png"
+            }
+          ]
+        },
+        {
+          "label": "Skylt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/sign.png"
+            }
+          ]
+        },
+                {
+          "label": "Beachflagga",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/beach-flag.png"
+            }
+          ]
+        },
+        
+        {
+          "label": "Butiksflagga",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/kiosk-flag.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Brodyr",
+      "products": [
+        {
+          "label": "Jacka",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/jacket-front.png"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/jacket-back.png"
+            }
+          ]
+        },
+        {
+          "label": "Skjorta",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/shirt-front.png"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/shirt-back.png"
+            }
+          ]
+        },
+        {
+          "label": "Pikér",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/polo-shirt-front.png"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/polo-shirt-back.png"
+            }
+          ]
+        },
+        {
+          "label": "Keps",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/baseball-cap-front.png"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/baseball-cap-back.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Bildekor",
+      "products": [
+        {
+          "label": "Skåpbil",
+          "sides": [
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/van.png"
+            }
+          ]
+        },
+        {
+          "label": "Lastbil",
+          "sides": [
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/truck.png"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
