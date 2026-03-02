@@ -381,7 +381,7 @@ function onCanvasResized(aspectRatio: string): void {
         <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" @canvas-resized="onCanvasResized" />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
           <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
-          <div class="w-[48px]" />
+          <div class="md:w-[48px]" />
           <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] max-h-[1000px]" :style="{ aspectRatio: canvasAspectRatioCss }">
             <div
               v-for="key in canvasStore.sideKeys"
