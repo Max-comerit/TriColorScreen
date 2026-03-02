@@ -5,7 +5,7 @@
 import { type Canvas, Textbox, ActiveSelection } from 'fabric'
 import { ref, shallowRef, computed, watch, onUnmounted } from 'vue'
 import { setTextboxTextRadius, MAX_TEXT_RADIUS } from '@/utils/customDesign'
-import { CircularTextbox } from '@/utils/CircularTextbox'
+import { CircularTextbox } from '~/utils/circularTextbox'
 
 // 2. Props & Emits
 interface Props {
