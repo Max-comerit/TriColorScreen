@@ -166,19 +166,6 @@
           ]
         },
         {
-          "label": "Skjorta",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/shirt-front.png"
-            },
-            {
-              "label": "Bak",
-              "src": "/images/custom-design/shirt-back.png"
-            }
-          ]
-        },
-        {
           "label": "Pikér",
           "sides": [
             {
