@@ -11,7 +11,6 @@ import GdprDialog from '~/components/features/GdprDialog.vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { useCanvasExport } from '~/composables/useCanvasExport'
-import { sanitizeFilenameSegment } from '~/utils/QuoteForm'
 
 // ===== PROPS =====
 interface Props {
