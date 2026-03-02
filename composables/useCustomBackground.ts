@@ -54,23 +54,37 @@ export function useCustomBackground(canvas: Ref<Canvas | null>) {
 
   // 3. State
   const aspectRatio = ref('1 / 1')
+  /** Incremented on every loadBackground call; stale responses check against this before touching the canvas. */
+  let loadToken = 0
 
   // 4. Methods
 
   function clearBackground(): void {
     const c = canvas.value
+    aspectRatio.value = '1 / 1'
     if (!c) return
     c.backgroundImage = undefined
     c.requestRenderAll()
   }
 
   async function loadBackground(url: string): Promise<void> {
+    const token = ++loadToken
     const c = canvas.value
     if (!c) return
     try {
-      await loadBackgroundOnCanvas(c, url)
-      const bg = c.backgroundImage as FabricImage | undefined
-      if (bg && bg.width > 0 && bg.height > 0) {
+      const bg = await FabricImage.fromURL(url)
+      // Discard stale responses — a newer loadBackground call superseded this one
+      if (token !== loadToken) return
+      const w = c.getWidth()
+      const h = c.getHeight()
+      bg.scaleToWidth(w)
+      bg.scaleToHeight(h)
+      bg.selectable = false
+      bg.evented = false
+      bg.set({ originX: 'center', originY: 'center', left: w / 2, top: h / 2 })
+      c.backgroundImage = bg
+      c.requestRenderAll()
+      if (bg.width > 0 && bg.height > 0) {
         aspectRatio.value = `${bg.width} / ${bg.height}`
       }
     }
@@ -80,8 +94,8 @@ export function useCustomBackground(canvas: Ref<Canvas | null>) {
     }
   }
 
-  function updateBackground(url: string | null | undefined): void {
-    if (url) loadBackground(url)
+  async function updateBackground(url: string | null | undefined): Promise<void> {
+    if (url) await loadBackground(url)
     else clearBackground()
   }
 
@@ -126,12 +140,12 @@ export function useCustomBackground(canvas: Ref<Canvas | null>) {
     }
   }
 
-  function selectCustomBackground(): void {
+  async function selectCustomBackground(): Promise<void> {
     canvasStore.setSideCount(CUSTOM_SIDES.length)
     CUSTOM_SIDES.forEach((_, i) => canvasStore.setBackgroundSelection(i, CUSTOM_BACKGROUND_ID))
     const storedDataUrl = canvasStore.sides[canvasStore.activeSide]?.customBackgroundDataUrl ?? null
     if (storedDataUrl) {
-      applyCustomBackground(storedDataUrl)
+      await applyCustomBackground(storedDataUrl)
       return
     }
     clearBackground()
@@ -142,45 +156,44 @@ export function useCustomBackground(canvas: Ref<Canvas | null>) {
     canvasStore.setProductCategoryTree(PRODUCT_CATEGORIES_OBJ)
   }
 
-  function onCategoryChange(index: number): void {
+  async function onCategoryChange(index: number): Promise<void> {
     canvasStore.setActiveCategory(index)
     canvasStore.setActiveProduct(0)
     canvasStore.setActiveSide(0)
     canvasStore.clear()
     const url = PRODUCT_CATEGORIES[index]?.products[0]?.sides[0]?.src
     if (url) syncProductSelection(url)
-    updateBackground(url)
+    await updateBackground(url)
   }
 
-  function onProductChange(index: number, dataKey: string | null): void {
+  async function onProductChange(index: number, dataKey: string | null): Promise<void> {
     canvasStore.setActiveProduct(index)
     canvasStore.setActiveSide(0)
     if (dataKey === CUSTOM_BACKGROUND_ID) {
-      selectCustomBackground()
+      await selectCustomBackground()
     }
     else {
       canvasStore.clear()
       const url = PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products[index]?.sides[0]?.src
       if (url) syncProductSelection(url)
-      updateBackground(url)
+      await updateBackground(url)
     }
   }
 
-  function onSideChange(index: number): void {
+  async function onSideChange(index: number): Promise<void> {
     canvasStore.setActiveSide(index)
     // Each side canvas already carries its background from initialisation.
     // Only reload when the side has a product background (not custom), because
     // canvas.clear() may have wiped it when the product changed.
     const selection = canvasStore.sides[index]?.backgroundSelection
     if (selection && selection !== CUSTOM_BACKGROUND_ID) {
-      loadBackground(selection)
+      await loadBackground(selection)
     }
   }
 
   return {
     aspectRatio,
     applyCustomBackground,
-    loadBackgroundOnCanvas,
     initProductCategories,
     onCategoryChange,
     onProductChange,

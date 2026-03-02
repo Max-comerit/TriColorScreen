@@ -22,8 +22,9 @@ import QuoteForm from '~/components/features/QuoteForm.vue'
 import {
   createRotateControlRender,
   createTrashControlRender,
+  createResizeControlRender,
 } from '@/utils/customControlRenders'
-import { getRotateImage, getTrashCanImage } from '@/utils/customImageIcons'
+import { getRotateImage, getTrashCanImage, getResizeImage } from '@/utils/customImageIcons'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -90,57 +91,6 @@ function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
 }
 
 // ===== COMPUTED =====
-const canvasAspectRatioCss = computed(() => aspectRatio.value)
-
-// ===== WATCHERS =====
-// Single watcher for all side backgroundSelections — only reacts to actual changes
-watch(
-  () => canvasStore.sides.map(v => v.backgroundSelection),
-  async (newSelections, oldSelections) => {
-    for (let key = 0; key < newSelections.length; key++) {
-      const selection = newSelections[key]
-      if (selection === oldSelections?.[key]) continue
-      if (!selection) continue
-      const canvas = canvasMap.value[key]
-      if (!canvas) continue
-      canvas.remove(...canvas.getObjects())
-      if (selection === CUSTOM_BACKGROUND_ID) {
-        canvas.backgroundImage = undefined
-        canvas.requestRenderAll()
-      } else {
-        await loadBackgroundOnCanvas(canvas, selection)
-      }
-    }
-  },
-  { deep: true },
-)
-
-// Initialize new canvases and dispose removed ones when the product's side count changes
-watch(
-  () => canvasStore.sideCount,
-  async (newCount, oldCount) => {
-    await nextTick()
-    const newKeys = Array.from({ length: newCount }, (_, i) => i)
-    for (const key of newKeys) {
-      const el = canvasElMap[key]
-      if (el && !canvasMap.value[key] && currentCanvasWidth > 0) {
-        void initializeCanvas(key, el, currentCanvasWidth, currentCanvasHeight)
-      }
-    }
-    const oldKeys = Array.from({ length: oldCount ?? 0 }, (_, i) => i)
-    const removedKeys = oldKeys.filter(k => !newKeys.includes(k))
-    for (const key of removedKeys) {
-      const canvas = canvasMap.value[key]
-      if (canvas) {
-        canvas.dispose()
-        const newMap = [...canvasMap.value]
-        newMap[key] = undefined
-        canvasMap.value = newMap
-      }
-      canvasElMap[key] = undefined
-    }
-  },
-)
 
 // ===== LIFECYCLE HOOKS =====
 onMounted(async () => {
@@ -162,7 +112,7 @@ onMounted(async () => {
       sizeX: 36,
       sizeY: 36,
       cursorStyle: 'pointer',
-        render: createTrashControlRender(getTrashCanImage()),
+      render: createTrashControlRender(getTrashCanImage()),
       mouseUpHandler: (_eventData, transform) => {
         const target = transform?.target as ActiveSelection | undefined
         if (target) {
@@ -239,6 +189,56 @@ onBeforeUnmount(() => {
     }
   }
 })
+
+// ===== WATCHERS =====
+// Single watcher for all side backgroundSelections — only reacts to actual changes
+watch(
+  () => canvasStore.sides.map(v => v.backgroundSelection),
+  async (newSelections, oldSelections) => {
+    for (let key = 0; key < newSelections.length; key++) {
+      const selection = newSelections[key]
+      if (selection === oldSelections?.[key]) continue
+      if (!selection) continue
+      const canvas = canvasMap.value[key]
+      if (!canvas) continue
+      canvas.remove(...canvas.getObjects())
+      if (selection === CUSTOM_BACKGROUND_ID) {
+        canvas.backgroundImage = undefined
+        canvas.requestRenderAll()
+      } else {
+        await loadBackgroundOnCanvas(canvas, selection)
+      }
+    }
+  },
+  { deep: true },
+)
+
+// Initialize new canvases and dispose removed ones when the product's side count changes
+watch(
+  () => canvasStore.sideCount,
+  async (newCount, oldCount) => {
+    await nextTick()
+    const newKeys = Array.from({ length: newCount }, (_, i) => i)
+    for (const key of newKeys) {
+      const el = canvasElMap[key]
+      if (el && !canvasMap.value[key] && currentCanvasWidth > 0) {
+        initializeCanvas(key, el, currentCanvasWidth, currentCanvasHeight).catch(console.error)
+      }
+    }
+    const oldKeys = Array.from({ length: oldCount ?? 0 }, (_, i) => i)
+    const removedKeys = oldKeys.filter(k => !newKeys.includes(k))
+    for (const key of removedKeys) {
+      const canvas = canvasMap.value[key]
+      if (canvas) {
+        canvas.dispose()
+        const newMap = [...canvasMap.value]
+        newMap[key] = undefined
+        canvasMap.value = newMap
+      }
+      canvasElMap[key] = undefined
+    }
+  },
+)
 
 async function initializeCanvas(side: number, el: HTMLCanvasElement, width: number, height: number): Promise<void> {
   const canvasInstance = new Canvas(el, { selection: true })
@@ -335,7 +335,7 @@ async function handleImageSelected(event: Event): Promise<void> {
   input.value = ''
 }
 
-function addText() {
+function addText(): void {
   addTextToCanvas(activeCanvas.value)
 }
 
@@ -379,7 +379,7 @@ function addText() {
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
           <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
           <div class="w-[0px] md:w-[48px]" />
-          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] max-h-[1000px]" :style="{ aspectRatio: canvasAspectRatioCss }">
+          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] max-h-[1000px]" :style="{ aspectRatio: aspectRatio }">
             <div
               v-for="key in canvasStore.sideKeys"
               v-show="activeSide === key"
