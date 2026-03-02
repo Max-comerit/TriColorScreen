@@ -8,21 +8,16 @@ import type { QuoteFormData } from '~/composables/useQuoteForm'
 import { useQuoteForm, MAX_IMAGE_COUNT } from '~/composables/useQuoteForm'
 import TextButton from '~/components/common/TextButton.vue'
 import GdprDialog from '~/components/features/GdprDialog.vue'
+import { useCanvasStore } from '@/stores/canvasStore'
 import { useCanvasExport } from '~/composables/useCanvasExport'
 
 // ===== PROPS =====
 interface Props {
-  frontCanvas?: Canvas | null
-  backCanvas?: Canvas | null
-  productCategory?: string
-  product?: string
+  canvasMap?: (Canvas | undefined)[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  frontCanvas: null,
-  backCanvas: null,
-  productCategory: '',
-  product: '',
+  canvasMap: () => [],
   files: () => [],
 })
 
@@ -32,7 +27,8 @@ const emit = defineEmits<{
   (e: 'success'): void
 }>()
 
-// ===== COMPOSABLES =====
+// ===== COMPOSABLES & STORES =====
+const canvasStore = useCanvasStore()
 const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const {
   formData,
@@ -86,6 +82,8 @@ function openGdprDialog(): void {
  * Handle in-focus event to collect current canvas images before submission
  */
 async function handleFocusIn(): Promise<void> {
+  formData.value.productCategory = canvasStore.productCategoryTree?.productCategories[canvasStore.activeCategory]?.label || ''
+  formData.value.product = canvasStore.productCategoryTree?.productCategories[canvasStore.activeCategory]?.products[canvasStore.activeProduct]?.label || ''
   if(!collectedImages.value) {
     collectedImages.value = true
     // Collect current canvas images and populate formData before user submits
@@ -182,10 +180,9 @@ async function compressDataUrl(dataUrl: string, quality = 0.75): Promise<string>
  * Limits total images to MAX_IMAGE_COUNT to prevent excessive payloads.
  */
 async function collectQuoteFiles(): Promise<File[]> {
-  const availableCanvases = [
-    { side: 'front' as const, canvas: props.frontCanvas },
-    { side: 'back' as const, canvas: props.backCanvas },
-  ].filter(entry => entry.canvas)
+  const availableCanvases = props.canvasMap
+    .map((canvas, index) => ({ index, canvas }))
+    .filter((entry): entry is { index: number; canvas: Canvas } => entry.canvas !== undefined)
 
   if (availableCanvases.length === 0) {
     console.warn('collectQuoteFiles: no canvas available')
@@ -205,12 +202,12 @@ async function collectQuoteFiles(): Promise<File[]> {
 
     // Merged composite: compress to JPEG (no transparency needed, smaller payload)
     const compressedMerged = await compressDataUrl(mergedUrl)
-    collected.push(await dataUrlToFile(compressedMerged, `design-${id}-${entry.side}.jpg`))
+    collected.push(await dataUrlToFile(compressedMerged, `design-${id}-side-${entry.index}.jpg`))
     if (++imgCount >= MAX_IMAGE_COUNT) break;
 
     // Individual layers: keep as PNG to preserve transparency
     for (let i = 0; i < imageUrls.length; i++) {
-      collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-${entry.side}-layer-${i + 1}.png`))
+      collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-side-${entry.index}-layer-${i + 1}.png`))
       if (++imgCount >= MAX_IMAGE_COUNT) break;
     }
   }
@@ -220,20 +217,7 @@ async function collectQuoteFiles(): Promise<File[]> {
 
 
 // ===== WATCHERS =====
-/**
- * Sync prop values into formData whenever props change
- */
-watch(
-  () => props.productCategory,
-  (value) => { formData.value.productCategory = value ?? '' },
-  { immediate: true },
-)
 
-watch(
-  () => props.product,
-  (value) => { formData.value.product = value ?? '' },
-  { immediate: true },
-)
 
 /**
  * Emit changed event when form change state updates
@@ -433,46 +417,42 @@ watch(isChanged, (newValue) => {
       </div>
 
       <!-- ── Product category (disabled / prop-filled) ─────── -->
-      <div v-if="formData.productCategory">
-        <label
-          for="quote-product-category"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Produktkategori
-        </label>
-        <input
-          id="quote-product-category"
-          type="text"
-          name="product_category"
-          :value="formData.productCategory"
-          disabled
-          readonly
-          autocomplete="off"
-          aria-readonly="true"
-          class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
-        >
-      </div>
+      <label
+        for="quote-product-category"
+        class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+      >
+        Produktkategori
+      </label>
+      <input
+        id="quote-product-category"
+        type="text"
+        name="product_category"
+        :value="formData.productCategory"
+        disabled
+        readonly
+        autocomplete="off"
+        aria-readonly="true"
+        class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
+      >
 
       <!-- ── Product (disabled / prop-filled) ─────────────── -->
-      <div v-if="formData.product">
-        <label
-          for="quote-product"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Produkt
-        </label>
-        <input
-          id="quote-product"
-          type="text"
-          name="product"
-          :value="formData.product"
-          disabled
-          readonly
-          autocomplete="off"
-          aria-readonly="true"
-          class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
-        >
-      </div>
+      <label
+        for="quote-product"
+        class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+      >
+        Produkt
+      </label>
+      <input
+        id="quote-product"
+        type="text"
+        name="product"
+        :value="formData.product"
+        disabled
+        readonly
+        autocomplete="off"
+        aria-readonly="true"
+        class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
+      >
 
       <!-- ── Product count ──────────────────────────────────── -->
       <div>

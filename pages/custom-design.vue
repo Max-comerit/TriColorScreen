@@ -424,7 +424,7 @@ function onCanvasResized(aspectRatio: string): void {
           class="mt-10 flex justify-center"
           aria-label="Offertformulär"
         >
-          <QuoteForm :front-canvas="frontCanvas" :back-canvas="backCanvas" product-category="Textil" product="T-Shirt" />
+          <QuoteForm :canvas-map="canvasMap"/>
         </div>
       </Section>
     </div>
