@@ -104,7 +104,7 @@ export function useQuoteForm() {
     name: '',
     email: '',
     phone: '',
-    customerType: undefined as unknown as 'Privatperson' | 'Företag',
+    customerType: '' as 'Privatperson' | 'Företag',
     subject: 'Offert förfrågan',
     productCategory: '',
     product: '',
@@ -222,7 +222,7 @@ export function useQuoteForm() {
     formData.value.name = ''
     formData.value.email = ''
     formData.value.phone = ''
-    formData.value.customerType = undefined as unknown as 'Privatperson' | 'Företag'
+    formData.value.customerType = '' as 'Privatperson' | 'Företag'
     formData.value.productCount = undefined as unknown as number
     formData.value.message = ''
     formData.value.gdprConsent = false

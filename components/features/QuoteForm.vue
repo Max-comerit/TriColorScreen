@@ -19,7 +19,6 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   canvasMap: () => [],
-  files: () => [],
 })
 
 // ===== EMITS =====
