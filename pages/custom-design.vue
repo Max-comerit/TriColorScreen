@@ -3,7 +3,8 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import '~/assets/css/custom-design-fonts.css'
-import { Canvas, FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
+import { Canvas, type FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
+import { nanoid } from 'nanoid'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import HeroImage from '~/components/common/HeroImage.vue'
@@ -14,6 +15,8 @@ import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
 import { useCanvasRescale } from '~/composables/useCanvasRescale'
 import { useCanvasStore } from '@/stores/canvasStore'
+import { storeToRefs } from 'pinia'
+import { useCustomBackground, loadBackgroundOnCanvas, CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
 import QuoteForm from '~/components/features/QuoteForm.vue'
@@ -57,14 +60,13 @@ useHead({
 const { addImageToCanvas } = useCustomImage()
 const { addTextToCanvas } = useCustomText()
 const { rescaleObjects } = useCanvasRescale()
+const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const canvasStore = useCanvasStore()
-
-const CUSTOM_BACKGROUND_SELECTION = 'custom'
+const { activeSide } = storeToRefs(canvasStore)
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const canvasWrapperRef = ref<HTMLDivElement | null>(null)
-const activeSide = ref<number>(canvasStore.activeSide)
 /** Plain (non-reactive) array of raw canvas elements, indexed by side number */
 const canvasElMap: (HTMLCanvasElement | undefined)[] = []
 /** Reactive array of initialized Fabric Canvas instances, indexed by side number */
@@ -73,21 +75,26 @@ let resizeObserver: ResizeObserver | null = null
 let currentCanvasWidth = 0
 let currentCanvasHeight = 0
 
+// ===== COMPOSABLES =====
+const activeCanvas = computed(() => canvasMap.value[activeSide.value] ?? null)
+const {
+  aspectRatio,
+  applyCustomBackground,
+  initProductCategories,
+  onCategoryChange,
+  onProductChange,
+  onSideChange,
+} = useCustomBackground(activeCanvas)
+
 /** Assign or remove a canvas element ref from the template v-for */
 function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
   canvasElMap[key] = el ?? undefined
 }
 
 // ===== COMPUTED =====
-const activeCanvas = computed(() => canvasMap.value[activeSide.value] ?? null)
-const canvasAspectRatio = ref('1 / 1')
-const canvasAspectRatioCss = computed(() => canvasAspectRatio.value)
+const canvasAspectRatioCss = computed(() => aspectRatio.value)
 
 // ===== WATCHERS =====
-watch(activeSide, (side) => {
-  canvasStore.setActiveSide(side)
-})
-
 // Single watcher for all side backgroundSelections — only reacts to actual changes
 watch(
   () => canvasStore.sides.map(v => v.backgroundSelection),
@@ -99,7 +106,7 @@ watch(
       const canvas = canvasMap.value[key]
       if (!canvas) continue
       canvas.remove(...canvas.getObjects())
-      if (selection === CUSTOM_BACKGROUND_SELECTION) {
+      if (selection === CUSTOM_BACKGROUND_ID) {
         canvas.backgroundImage = undefined
         canvas.requestRenderAll()
       } else {
@@ -222,6 +229,7 @@ onMounted(async () => {
     }
   })
   resizeObserver.observe(wrapper)
+  initProductCategories()
 })
 
 onBeforeUnmount(() => {
@@ -254,10 +262,10 @@ async function initializeCanvas(side: number, el: HTMLCanvasElement, width: numb
     const sideState = canvasStore.sides[side]
     // Don't load a default background if the user explicitly chose a custom (own) product —
     // in that case the canvas is intentionally blank until they upload an image.
-    if (sideState?.backgroundSelection !== 'custom') {
+    if (sideState?.backgroundSelection !== CUSTOM_BACKGROUND_ID) {
       const initialBackgroundUrl = getInitialBackgroundUrl(side)
       if (initialBackgroundUrl) {
-        await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl, width, height)
+        await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl)
         if (!sideState?.backgroundSelection) {
           canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
         }
@@ -273,7 +281,7 @@ async function initializeCanvas(side: number, el: HTMLCanvasElement, width: numb
 /** Returns the initial background URL for a side: uses the stored selection, or a hardcoded default for the first two sides */
 function getInitialBackgroundUrl(sideKey: number): string {
   const state = canvasStore.sides[sideKey]
-  if (state?.backgroundSelection && state.backgroundSelection !== CUSTOM_BACKGROUND_SELECTION) {
+  if (state?.backgroundSelection && state.backgroundSelection !== CUSTOM_BACKGROUND_ID) {
     return state.backgroundSelection
   }
   // Fallback defaults for the first two sides on a blank first visit
@@ -282,17 +290,6 @@ function getInitialBackgroundUrl(sideKey: number): string {
     '/images/custom-design/t-shirt-back.png',
   ]
   return defaults[sideKey] ?? ''
-}
-
-async function loadBackgroundOnCanvas(canvasInstance: Canvas, url: string, width = currentCanvasWidth, height = currentCanvasHeight): Promise<void> {
-  const bg = await FabricImage.fromURL(url)
-  bg.scaleToWidth(width)
-  bg.scaleToHeight(height)
-  bg.selectable = false
-  bg.evented = false
-  bg.set({ originX: 'center', originY: 'center', left: width / 2, top: height / 2 })
-  canvasInstance.backgroundImage = bg
-  canvasInstance.requestRenderAll()
 }
 
 function rescaleCanvas(canvasInstance: Canvas, ratio: number, newWidth: number, newHeight: number): void {
@@ -344,9 +341,6 @@ function addText() {
   addTextToCanvas(activeCanvas.value)
 }
 
-function onCanvasResized(aspectRatio: string): void {
-  canvasAspectRatio.value = aspectRatio
-}
 </script>
 
 <template>
@@ -378,7 +372,12 @@ function onCanvasResized(aspectRatio: string): void {
         align="center"
         aria-label="Design Verktyg"
       >
-        <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" @canvas-resized="onCanvasResized" />
+        <BackgroundSelector
+          @category-changed="onCategoryChange"
+          @product-changed="onProductChange"
+          @side-changed="onSideChange"
+          @custom-image-selected="applyCustomBackground"
+        />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
           <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
           <div class="w-[0px] md:w-[48px]" />
