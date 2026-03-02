@@ -16,9 +16,8 @@ import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
 import { useCanvasExport } from '~/composables/useCanvasExport'
 import { useCanvasRescale } from '~/composables/useCanvasRescale'
-import { useCanvasStore, type CanvasSide } from '@/stores/canvasStore'
+import { useCanvasStore } from '@/stores/canvasStore'
 import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
-import { storeToRefs } from 'pinia'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
 import {
   createRotateControlRender,
@@ -67,53 +66,87 @@ const CUSTOM_BACKGROUND_SELECTION = 'custom'
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
-const frontCanvasRef = ref<HTMLCanvasElement | null>(null)
-const backCanvasRef = ref<HTMLCanvasElement | null>(null)
 const canvasWrapperRef = ref<HTMLDivElement | null>(null)
-const activeSide = ref<CanvasSide>('front')
-const frontCanvas = shallowRef<Canvas | null>(null)
-const backCanvas = shallowRef<Canvas | null>(null)
+const activeSide = ref<number>(canvasStore.activeSide)
+/** Plain (non-reactive) array of raw canvas elements, indexed by side number */
+const canvasElMap: (HTMLCanvasElement | undefined)[] = []
+/** Reactive array of initialized Fabric Canvas instances, indexed by side number */
+const canvasMap = shallowRef<(Canvas | undefined)[]>([])
 let resizeObserver: ResizeObserver | null = null
-let currentCanvasSize = 0
+let currentCanvasWidth = 0
+let currentCanvasHeight = 0
+
+/** Assign or remove a canvas element ref from the template v-for */
+function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
+  canvasElMap[key] = el ?? undefined
+}
 
 // ===== COMPUTED =====
-const activeCanvas = computed(() => (activeSide.value === 'front' ? frontCanvas.value : backCanvas.value))
+const activeCanvas = computed(() => canvasMap.value[activeSide.value] ?? null)
+const canvasAspectRatio = ref('1 / 1')
+const canvasAspectRatioCss = computed(() => canvasAspectRatio.value)
 
 // ===== WATCHERS =====
-const { front: frontState, back: backState } = storeToRefs(canvasStore)
-
-watch(() => frontState.value.backgroundSelection, async (newSelection) => {
-  if (!frontCanvas.value || !newSelection) return
-  frontCanvas.value.remove(...frontCanvas.value.getObjects())
-  if (newSelection === CUSTOM_BACKGROUND_SELECTION) {
-    frontCanvas.value.backgroundImage = undefined
-    frontCanvas.value.requestRenderAll()
-    return
-  }
-  await loadBackgroundOnCanvas(frontCanvas.value, newSelection)
+watch(activeSide, (side) => {
+  canvasStore.setActiveSide(side)
 })
 
-watch(() => backState.value.backgroundSelection, async (newSelection) => {
-  if (!backCanvas.value || !newSelection) return
-  backCanvas.value.remove(...backCanvas.value.getObjects())
-  if (newSelection === CUSTOM_BACKGROUND_SELECTION) {
-    backCanvas.value.backgroundImage = undefined
-    backCanvas.value.requestRenderAll()
-    return
-  }
-  await loadBackgroundOnCanvas(backCanvas.value, newSelection)
-})
+// Single watcher for all side backgroundSelections — only reacts to actual changes
+watch(
+  () => canvasStore.sides.map(v => v.backgroundSelection),
+  async (newSelections, oldSelections) => {
+    for (let key = 0; key < newSelections.length; key++) {
+      const selection = newSelections[key]
+      if (selection === oldSelections?.[key]) continue
+      if (!selection) continue
+      const canvas = canvasMap.value[key]
+      if (!canvas) continue
+      canvas.remove(...canvas.getObjects())
+      if (selection === CUSTOM_BACKGROUND_SELECTION) {
+        canvas.backgroundImage = undefined
+        canvas.requestRenderAll()
+      } else {
+        await loadBackgroundOnCanvas(canvas, selection)
+      }
+    }
+  },
+  { deep: true },
+)
+
+// Initialize new canvases and dispose removed ones when the product's side count changes
+watch(
+  () => canvasStore.sideCount,
+  async (newCount, oldCount) => {
+    await nextTick()
+    const newKeys = Array.from({ length: newCount }, (_, i) => i)
+    for (const key of newKeys) {
+      const el = canvasElMap[key]
+      if (el && !canvasMap.value[key] && currentCanvasWidth > 0) {
+        void initializeCanvas(key, el, currentCanvasWidth, currentCanvasHeight)
+      }
+    }
+    const oldKeys = Array.from({ length: oldCount ?? 0 }, (_, i) => i)
+    const removedKeys = oldKeys.filter(k => !newKeys.includes(k))
+    for (const key of removedKeys) {
+      const canvas = canvasMap.value[key]
+      if (canvas) {
+        canvas.dispose()
+        const newMap = [...canvasMap.value]
+        newMap[key] = undefined
+        canvasMap.value = newMap
+      }
+      canvasElMap[key] = undefined
+    }
+  },
+)
 
 // ===== LIFECYCLE HOOKS =====
 onMounted(async () => {
   await nextTick()
-  const frontEl = frontCanvasRef.value
-  const backEl = backCanvasRef.value
   const wrapper = canvasWrapperRef.value
 
-  // Validate elements exist and are canvases
-  if (!(frontEl instanceof HTMLCanvasElement) || !(backEl instanceof HTMLCanvasElement) || !wrapper) {
-    console.error('Canvas element not found')
+  if (!wrapper) {
+    console.error('Canvas wrapper not found')
     return
   }
 
@@ -169,27 +202,26 @@ onMounted(async () => {
 
   // Observe the wrapper div — CSS controls its size, we sync Fabric to it
   resizeObserver = new ResizeObserver((entries) => {
-    const size = Math.ceil(entries[0].contentRect.width)
-    if (size <= 0) return
+    const width = Math.ceil(entries[0].contentRect.width)
+    const height = Math.ceil(entries[0].contentRect.height)
+    if (width <= 0 || height <= 0) return
 
-    const previousSize = currentCanvasSize
-    if (previousSize > 0 && size !== previousSize) {
-      const ratio = size / previousSize
-      if (frontCanvas.value) {
-        rescaleCanvas(frontCanvas.value, ratio, size)
-      }
-      if (backCanvas.value) {
-        rescaleCanvas(backCanvas.value, ratio, size)
+    const previousWidth = currentCanvasWidth
+    if (previousWidth > 0 && (width !== previousWidth || height !== currentCanvasHeight)) {
+      const ratio = width / previousWidth
+      for (const canvas of canvasMap.value) {
+        if (canvas) rescaleCanvas(canvas, ratio, width, height)
       }
     }
 
-    currentCanvasSize = size
+    currentCanvasWidth = width
+    currentCanvasHeight = height
 
-    if (!frontCanvas.value) {
-      void initializeCanvas('front', frontEl, size)
-    }
-    if (!backCanvas.value) {
-      void initializeCanvas('back', backEl, size)
+    for (const key of canvasStore.sideKeys) {
+      const el = canvasElMap[key]
+      if (el && !canvasMap.value[key]) {
+        void initializeCanvas(key, el, width, height)
+      }
     }
   })
   resizeObserver.observe(wrapper)
@@ -197,101 +229,84 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
-  if (frontCanvas.value) {
-    canvasStore.save('front', frontCanvas.value, currentCanvasSize)
-    frontCanvas.value.dispose()
-  }
-  if (backCanvas.value) {
-    canvasStore.save('back', backCanvas.value, currentCanvasSize)
-    backCanvas.value.dispose()
+  for (const [key, canvas] of canvasMap.value.entries()) {
+    if (canvas) {
+      canvasStore.save(key, canvas, currentCanvasWidth)
+      canvas.dispose()
+    }
   }
 })
 
-async function initializeCanvas(side: CanvasSide, el: HTMLCanvasElement, size: number): Promise<void> {
+async function initializeCanvas(side: number, el: HTMLCanvasElement, width: number, height: number): Promise<void> {
   const canvasInstance = new Canvas(el, { selection: true })
   if (!canvasInstance) {
     console.error('Failed to initialize Fabric canvas')
     return
   }
 
-  if (side === 'front') {
-    frontCanvas.value = canvasInstance
-  } else {
-    backCanvas.value = canvasInstance
-  }
+  const newMap = [...canvasMap.value]
+  newMap[side] = canvasInstance
+  canvasMap.value = newMap
 
-  canvasInstance.setDimensions({ width: size, height: size })
+  canvasInstance.setDimensions({ width, height })
   canvasInstance.enablePointerEvents = true
 
-  await canvasStore.restore(side, canvasInstance, size)
+  await canvasStore.restore(side, canvasInstance, width)
 
   if (!canvasInstance.backgroundImage) {
-    const initialBackgroundUrl = getInitialBackgroundUrl(side)
-    await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl, size)
-    const sideState = getSideState(side)
-    if (!sideState.backgroundSelection && initialBackgroundUrl) {
-      canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
+    const sideState = canvasStore.sides[side]
+    // Don't load a default background if the user explicitly chose a custom (own) product —
+    // in that case the canvas is intentionally blank until they upload an image.
+    if (sideState?.backgroundSelection !== 'custom') {
+      const initialBackgroundUrl = getInitialBackgroundUrl(side)
+      if (initialBackgroundUrl) {
+        await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl, width, height)
+        if (!sideState?.backgroundSelection) {
+          canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
+        }
+      }
     }
   }
 
-  canvasInstance.on('object:added', () => canvasStore.save(side, canvasInstance, currentCanvasSize))
-  canvasInstance.on('object:modified', () => canvasStore.save(side, canvasInstance, currentCanvasSize))
-  canvasInstance.on('object:removed', () => canvasStore.save(side, canvasInstance, currentCanvasSize))
+  canvasInstance.on('object:added', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
+  canvasInstance.on('object:modified', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
+  canvasInstance.on('object:removed', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
 }
 
-function getDefaultBackgroundUrl(side: CanvasSide): string {
-  return side === 'front'
-    ? '/images/custom-design/t-shirt-front.png'
-    : '/images/custom-design/t-shirt-back.png'
-}
-
-function getSideState(side: CanvasSide) {
-  return side === 'front' ? canvasStore.front : canvasStore.back
-}
-
-function getInitialBackgroundUrl(side: CanvasSide): string {
-  const sideState = getSideState(side)
-  if (sideState.backgroundSelection && sideState.backgroundSelection !== CUSTOM_BACKGROUND_SELECTION) {
-    return sideState.backgroundSelection
+/** Returns the initial background URL for a side: uses the stored selection, or a hardcoded default for the first two sides */
+function getInitialBackgroundUrl(sideKey: number): string {
+  const state = canvasStore.sides[sideKey]
+  if (state?.backgroundSelection && state.backgroundSelection !== CUSTOM_BACKGROUND_SELECTION) {
+    return state.backgroundSelection
   }
-
-  const otherSide = side === 'front' ? 'back' : 'front'
-  const otherState = getSideState(otherSide)
-  if (otherState.backgroundSelection && otherState.backgroundSelection !== CUSTOM_BACKGROUND_SELECTION) {
-    return mapBackgroundUrlToSide(otherState.backgroundSelection, side)
-  }
-
-  return getDefaultBackgroundUrl(side)
+  // Fallback defaults for the first two sides on a blank first visit
+  const defaults: string[] = [
+    '/images/custom-design/t-shirt-front.png',
+    '/images/custom-design/t-shirt-back.png',
+  ]
+  return defaults[sideKey] ?? ''
 }
 
-function mapBackgroundUrlToSide(url: string, side: CanvasSide): string {
-  if (side === 'front') {
-    return url.replace('-back.', '-front.')
-  }
-
-  return url.replace('-front.', '-back.')
-}
-
-async function loadBackgroundOnCanvas(canvasInstance: Canvas, url: string, size: number = currentCanvasSize): Promise<void> {
+async function loadBackgroundOnCanvas(canvasInstance: Canvas, url: string, width = currentCanvasWidth, height = currentCanvasHeight): Promise<void> {
   const bg = await FabricImage.fromURL(url)
-  bg.scaleToWidth(size)
-  bg.scaleToHeight(size)
+  bg.scaleToWidth(width)
+  bg.scaleToHeight(height)
   bg.selectable = false
   bg.evented = false
-  bg.set({ originX: 'center', originY: 'center', left: size / 2, top: size / 2 })
+  bg.set({ originX: 'center', originY: 'center', left: width / 2, top: height / 2 })
   canvasInstance.backgroundImage = bg
   canvasInstance.requestRenderAll()
 }
 
-function rescaleCanvas(canvasInstance: Canvas, ratio: number, newSize: number): void {
-  canvasInstance.setDimensions({ width: newSize, height: newSize })
+function rescaleCanvas(canvasInstance: Canvas, ratio: number, newWidth: number, newHeight: number): void {
+  canvasInstance.setDimensions({ width: newWidth, height: newHeight })
 
-    // Rescale background image
+  // Rescale background image to fill new dimensions
   const bg = canvasInstance.backgroundImage as FabricImage | undefined
   if (bg) {
-    bg.scaleToWidth(newSize)
-    bg.scaleToHeight(newSize)
-    bg.set({ left: newSize / 2, top: newSize / 2 })
+    bg.scaleToWidth(newWidth)
+    bg.scaleToHeight(newHeight)
+    bg.set({ left: newWidth / 2, top: newHeight / 2 })
   }
 
   // Proportionally rescale and reposition all objects
@@ -332,6 +347,10 @@ function addText() {
   addTextToCanvas(activeCanvas.value)
 }
 
+function onCanvasResized(aspectRatio: string): void {
+  canvasAspectRatio.value = aspectRatio
+}
+
 function downloadFile(dataURL: string, filename: string): void {
     const link = document.createElement('a')
     link.href = dataURL
@@ -340,12 +359,9 @@ function downloadFile(dataURL: string, filename: string): void {
 }
 
 async function downloadCanvasImages(): Promise<void> {
-  const availableCanvases = [
-    { side: 'front' as const, canvas: frontCanvas.value },
-    { side: 'back' as const, canvas: backCanvas.value },
-  ].filter(entry => entry.canvas)
+  const entries = [...canvasMap.value.entries()].filter((e): e is [number, Canvas] => !!e[1])
 
-  if (availableCanvases.length === 0) {
+  if (entries.length === 0) {
     alert('Canvas not initialized')
     console.error('Error downloading canvas: Canvas is not initialized')
     return
@@ -353,22 +369,21 @@ async function downloadCanvasImages(): Promise<void> {
 
   try {
     const id = nanoid(10)
-    for (const entry of availableCanvases) {
-      const canvasInstance = entry.canvas as Canvas
+    for (const [key, canvasInstance] of entries) {
       const [mergedUrl, imageUrls] = await Promise.all([
         exportMergedImage(canvasInstance),
         exportImageObjects(canvasInstance),
       ])
 
       // Download merged image first
-      downloadFile(mergedUrl, `design-${id}-${entry.side}.png`)
+      downloadFile(mergedUrl, `design-${id}-side-${key}.png`)
       URL.revokeObjectURL(mergedUrl)
 
       // Download individual layer images
       imageUrls.forEach((url, index) => {
         // Stagger image downloads slightly so browsers don't block them
         setTimeout(() => {
-          downloadFile(url, `design-${id}-${entry.side}-image-${index + 1}.png`)
+          downloadFile(url, `design-${id}-side-${key}-image-${index + 1}.png`)
           URL.revokeObjectURL(url)
         }, (index + 1) * 200)
       })
@@ -410,18 +425,18 @@ async function downloadCanvasImages(): Promise<void> {
         align="center"
         aria-label="Design Verktyg"
       >
-        <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" />
+        <BackgroundSelector :canvas="activeCanvas" :side="activeSide" @side-changed="activeSide = $event" @canvas-resized="onCanvasResized" />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
-          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] aspect-square">
-            <div v-show="activeSide === 'front'" class="absolute inset-0" :aria-hidden="activeSide !== 'front'">
+          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] max-h-[1000px]" :style="{ aspectRatio: canvasAspectRatioCss }">
+            <div
+              v-for="key in canvasStore.sideKeys"
+              v-show="activeSide === key"
+              :key="key"
+              class="absolute inset-0"
+              :aria-hidden="activeSide !== key"
+            >
               <canvas
-                ref="frontCanvasRef"
-                class="block w-full h-full border border-black rounded-card overflow-hidden"
-              />
-            </div>
-            <div v-show="activeSide === 'back'" class="absolute inset-0" :aria-hidden="activeSide !== 'back'">
-              <canvas
-                ref="backCanvasRef"
+                :ref="(el) => assignCanvasEl(key, el as HTMLCanvasElement | null)"
                 class="block w-full h-full border border-black rounded-card overflow-hidden"
               />
             </div>
