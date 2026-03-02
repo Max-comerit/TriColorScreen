@@ -1,24 +1,29 @@
+// components/features/BackgroundSelector.vue
+
 <script setup lang="ts">
 // 1. Imports
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import type { Canvas } from 'fabric'
 import { FabricImage } from 'fabric'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import rawBackgroundOptions from '~/assets/json/custom-design/products.json'
-import type { Product, ProductCategories } from '~/types/BackgroundSelector'
+import type { ProductCategories } from '~/types/BackgroundSelector'
 
 
-
-const PRODUCT_CATEGORIES = (rawBackgroundOptions as ProductCategories).productCategories
+const PRODUCT_CATEGORIES_OBJ = rawBackgroundOptions as ProductCategories
+const PRODUCT_CATEGORIES = PRODUCT_CATEGORIES_OBJ.productCategories
 
 // 2. Props & Emits
 interface Props {
   canvas: Canvas | null
-  side: number
+  side?: number
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  side: 0,
+})
+
 const emit = defineEmits<{
   sideChanged: [side: number]
   canvasResized: [aspectRatio: string]
@@ -26,7 +31,7 @@ const emit = defineEmits<{
 
 // 3. Composables & Stores
 const canvasStore = useCanvasStore()
-const { sides } = storeToRefs(canvasStore)
+const { sides, activeCategory, activeProduct, activeSide } = storeToRefs(canvasStore)
 
 // 4. State
 const CUSTOM_OPTION_ID = 'custom'
@@ -41,23 +46,12 @@ const CUSTOM_SIDES: { label: string; value: number }[] = [
 ]
 
 const customFileInputRef = ref<HTMLInputElement | null>(null)
-const selectedCategoryIndex = ref(0)
 
 const sideState = computed(() => sides.value[props.side] ?? { json: null, size: 0, backgroundSelection: null, customBackgroundDataUrl: null })
 
 // 5. Computed
-/** Products of the currently selected category, with per-side src resolved */
-const selectedCategoryProducts = computed(() => {
-  const sideIndex = props.side
-  const cat = PRODUCT_CATEGORIES[selectedCategoryIndex.value]
-  if (!cat) return []
-  return cat.products.map(product => ({
-    label: product.label,
-    url: (product.sides[sideIndex] ?? product.sides[0]!).src,
-  }))
-})
 
-const defaultUrl = computed(() => selectedCategoryProducts.value[0]?.url ?? '')
+const defaultUrl = computed(() => PRODUCT_CATEGORIES[activeCategory.value]?.products[activeProduct.value]?.sides[activeSide.value]?.src ?? '')
 
 const selectedBackground = computed({
   get: () => sideState.value.backgroundSelection || defaultUrl.value,
@@ -72,30 +66,36 @@ const selectedBackground = computed({
 
 const isCustomSelected = computed(() => selectedBackground.value === CUSTOM_OPTION_ID)
 
-/** The product that owns the currently selected background URL */
-const selectedProduct = computed((): Product | null => {
-  const url = selectedBackground.value
-  for (const cat of PRODUCT_CATEGORIES) {
-    for (const product of cat.products) {
-      if (product.sides.some(s => s.src === url)) return product
-    }
-  }
-  // Fall back to first product of selected category (e.g. when custom is selected)
-  return PRODUCT_CATEGORIES[selectedCategoryIndex.value]?.products[0] ?? null
-})
-
-/** Side options derived from the selected product's sides array */
-const availableSides = computed((): { label: string; value: number }[] => {
-  if (isCustomSelected.value) return CUSTOM_SIDES
-  const productSides = selectedProduct.value?.sides
-  if (!productSides?.length) return [{ label: 'Fram', value: 0 }, { label: 'Bak', value: 1 }]
-  return productSides.map((side, i) => ({
-    label: side.label,
-    value: i,
-  }))
-})
 
 // 6. Methods
+function emitCanvasResized(width: number, height: number): void {
+  if (width > 0 && height > 0) {
+    emit('canvasResized', `${width} / ${height}`)
+  }
+}
+
+function resetStoredCanvases(url: string): void {
+  if (url === CUSTOM_OPTION_ID) return
+  canvasStore.clear()
+}
+
+function syncProductSelection(url: string): void {
+  if (url === CUSTOM_OPTION_ID) return
+
+  for (const cat of PRODUCT_CATEGORIES) {
+    for (const product of cat.products) {
+      if (product.sides.some(s => s.src === url)) {
+        canvasStore.setSideCount(product.sides.length)
+        product.sides.forEach((side, i) => {
+          canvasStore.setBackgroundSelection(i, side.src)
+          canvasStore.setCustomBackgroundDataUrl(i, null)
+        })
+        return
+      }
+    }
+  }
+}
+
 async function loadBackground(url: string): Promise<void> {
   if (!props.canvas) return
 
@@ -119,50 +119,7 @@ async function loadBackground(url: string): Promise<void> {
     emitCanvasResized(bg.width, bg.height)
   } catch (error) {
     console.error('Failed to load background image:', error)
-  }
-}
-
-function emitCanvasResized(width: number, height: number): void {
-  if (width > 0 && height > 0) {
-    emit('canvasResized', `${width} / ${height}`)
-  }
-}
-
-function onCategoryChange(index: number): void {
-  selectedCategoryIndex.value = index
-  const sideIndex = props.side
-  const cat = PRODUCT_CATEGORIES[index]
-  const firstProduct = cat?.products[0]
-  if (firstProduct) {
-    canvasStore.setActiveCategory(cat!.label)
-    canvasStore.setActiveProduct(firstProduct.label)
-    const url = (firstProduct.sides[sideIndex] ?? firstProduct.sides[0]!).src
-    selectedBackground.value = url
-  }
-}
-
-function resetStoredCanvases(url: string): void {
-  if (url === CUSTOM_OPTION_ID) return
-  canvasStore.clear()
-}
-
-function syncProductSelection(url: string): void {
-  if (url === CUSTOM_OPTION_ID) return
-
-  for (const cat of PRODUCT_CATEGORIES) {
-    for (const product of cat.products) {
-      if (product.sides.some(s => s.src === url)) {
-        const keys = product.sides.map((_, i) => i)
-        canvasStore.setSideKeys(keys)
-        canvasStore.setActiveCategory(cat.label)
-        canvasStore.setActiveProduct(product.label)
-        product.sides.forEach((side, i) => {
-          canvasStore.setBackgroundSelection(i, side.src)
-          canvasStore.setCustomBackgroundDataUrl(i, null)
-        })
-        return
-      }
-    }
+    clearBackground()
   }
 }
 
@@ -173,31 +130,12 @@ function clearBackground(): void {
   canvasInstance.requestRenderAll()
 }
 
-function selectCustomBackground(): void {
-  const storedDataUrl = sideState.value.customBackgroundDataUrl
-  const customKeys = CUSTOM_SIDES.map(s => s.value)
-  canvasStore.setSideKeys(customKeys)
-  customKeys.forEach(key => canvasStore.setBackgroundSelection(key, CUSTOM_OPTION_ID))
-
-  if (storedDataUrl) {
-    applyCustomBackground(storedDataUrl)
-    return
+function updateBackground(url: string | null | undefined): void {
+  if(url) {
+    loadBackground(url)
+  } else {
+    clearBackground()
   }
-
-  clearBackground()
-}
-
-function openCustomFileDialog(): void {
-  customFileInputRef.value?.click()
-}
-
-function readFileAsDataUrl(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = () => reject(new Error('Failed to read file'))
-    reader.readAsDataURL(file)
-  })
 }
 
 async function applyCustomBackground(dataUrl: string): Promise<void> {
@@ -226,6 +164,32 @@ async function applyCustomBackground(dataUrl: string): Promise<void> {
   }
 }
 
+function selectCustomBackground(): void {
+  const storedDataUrl = sideState.value.customBackgroundDataUrl
+  canvasStore.setSideCount(CUSTOM_SIDES.length)
+  CUSTOM_SIDES.forEach((_, key) => canvasStore.setBackgroundSelection(key, CUSTOM_OPTION_ID))
+
+  if (storedDataUrl) {
+    applyCustomBackground(storedDataUrl)
+    return
+  }
+
+  clearBackground()
+}
+
+function openCustomFileDialog(): void {
+  customFileInputRef.value?.click()
+}
+
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result as string)
+    reader.onerror = () => reject(new Error('Failed to read file'))
+    reader.readAsDataURL(file)
+  })
+}
+
 async function handleCustomFileSelected(event: Event): Promise<void> {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
@@ -246,53 +210,46 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
   input.value = ''
 }
 
-function syncCategoryIndexToUrl(url: string): void {
-  for (let i = 0; i < PRODUCT_CATEGORIES.length; i++) {
-    const cat = PRODUCT_CATEGORIES[i]!
-    if (cat.products.some(p => p.sides.some(s => s.src === url))) {
-      selectedCategoryIndex.value = i
-      return
-    }
-  }
+function initProductCategories() {
+  canvasStore.setProductCategoryTree(PRODUCT_CATEGORIES_OBJ)
+  updateBackground(PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products[canvasStore.activeProduct]?.sides[canvasStore.activeSide]?.src)
+  emit('sideChanged', canvasStore.activeSide)
 }
 
-function hydrateFromStore(): void {
-  // Restore category index from stored label (reliable) or fall back to URL matching
-  if (canvasStore.activeCategory) {
-    const idx = PRODUCT_CATEGORIES.findIndex(c => c.label === canvasStore.activeCategory)
-    if (idx >= 0) selectedCategoryIndex.value = idx
-  }
+function onCategoryChange(index: number): void {
+  canvasStore.setActiveCategory(index)
+  canvasStore.setActiveProduct(0)
+  canvasStore.setActiveSide(0)
+  updateBackground(PRODUCT_CATEGORIES[index]?.products[0]?.sides[0]?.src)
+  emit('sideChanged', 0)
+}
 
-  const selection = sideState.value.backgroundSelection
-  if (selection === CUSTOM_OPTION_ID) {
-    if (sideState.value.customBackgroundDataUrl) {
-      applyCustomBackground(sideState.value.customBackgroundDataUrl)
-    } else {
-      clearBackground()
-    }
-    return
+function onProductChange(index: number, dataKey: string | null): void {
+  canvasStore.setActiveProduct(index)
+  canvasStore.setActiveSide(0)
+  if (dataKey === CUSTOM_OPTION_ID) {
+    selectCustomBackground()
+  } 
+  else {
+    updateBackground(PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products[index]?.sides[0]?.src)
   }
+  emit('sideChanged', 0)
+}
 
-  if (selection) {
-    if (!canvasStore.activeCategory) syncCategoryIndexToUrl(selection)
-    if (selection !== selectedBackground.value) {
-      loadBackground(selection)
-    }
+function onSideChange(index: number): void {
+  canvasStore.setActiveSide(index)
+  if (!isCustomSelected.value) {
+    updateBackground(PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products[canvasStore.activeProduct]?.sides[index]?.src)
   }
+  emit('sideChanged', index)
 }
 
 // 7. Lifecycle hooks
 onMounted(() => {
-  hydrateFromStore()
+  initProductCategories()
 })
 
-// 8. Watchers
-watch(
-  () => [props.side, props.canvas],
-  () => {
-    hydrateFromStore()
-  },
-)
+
 </script>
 
 <template>
@@ -300,50 +257,72 @@ watch(
     <div class="flex items-stretch sm:items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg shadow-md justify-center flex-wrap">
       <label class="flex items-center gap-3">
         <select
-          :value="selectedCategoryIndex"
+          :value="canvasStore.activeCategory"
           class="h-11 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select product category"
           @change="onCategoryChange(Number(($event.target as HTMLSelectElement).value))"
         >
           <option
-            v-for="(cat, i) in PRODUCT_CATEGORIES"
-            :key="cat.label"
+            v-for="(category, i) in PRODUCT_CATEGORIES"
+            :key="category.label"
             :value="i"
           >
-            {{ cat.label }}
+            {{ category.label }}
           </option>
         </select>
       </label>
       <label class="flex items-center gap-3">
         <select
-          v-model="selectedBackground"
+          :value="canvasStore.activeProduct"
           class="h-11 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select product"
+          @change="onProductChange(
+            $event.target ? Number(($event.target as HTMLSelectElement).value) : 0,
+            $event.target ? ($event.target as HTMLSelectElement).options[($event.target as HTMLSelectElement).selectedIndex]?.getAttribute('data-key') : null
+          )"
         >
           <option
-            v-for="product in selectedCategoryProducts"
-            :key="product.url"
-            :value="product.url"
+            v-for="(product, i) in PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products || []"
+            :key="product.label"
+            :value="i"
+            :data-key="product.label"
           >
             {{ product.label }}
           </option>
-          <option :value="CUSTOM_OPTION_ID">Egen Produkt</option>
+          <option 
+            :key="CUSTOM_OPTION_ID"
+            :value="PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products.length || 0"
+            :data-key="CUSTOM_OPTION_ID"
+          >
+            Egen Produkt
+          </option>
         </select>
       </label>
       <label class="flex  sm:w-auto items-center gap-3">
         <select
-          :value="props.side"
+          :value="canvasStore.activeSide"
           class="h-11 px-3 py-2 border w-full border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select side"
-          @change="emit('sideChanged', Number(($event.target as HTMLSelectElement).value))"
+          @change="onSideChange(Number(($event.target as HTMLSelectElement).value))"
         >
-          <option
-            v-for="sideOption in availableSides"
-            :key="sideOption.value"
-            :value="sideOption.value"
-          >
-            {{ sideOption.label }}
-          </option>
+          <div v-if="isCustomSelected">
+            <option
+              v-for="(sideOption, i) in CUSTOM_SIDES"
+              :key="sideOption.label"
+              :value="i"
+            >
+              {{ sideOption.label }}
+            </option>
+          </div>
+          <div v-else>
+            <option
+              v-for="(sideOption, i) in PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products[canvasStore.activeProduct]?.sides || []"
+              :key="sideOption.label"
+              :value="i"
+            >
+              {{ sideOption.label }}
+            </option>
+          </div>
         </select>
       </label>
 

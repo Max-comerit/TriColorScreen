@@ -3,7 +3,6 @@
   "productCategories": [
     {
       "label": "Textil",
-      "activeProduct": 0,
       "products": [
         {
           "label": "T-Shirt",
@@ -21,7 +20,6 @@
         },
         {
           "label": "Skjorta",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -39,7 +37,6 @@
         },
         {
           "label": "Hoodie",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -53,7 +50,6 @@
         },
         {
           "label": "College",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -67,7 +63,6 @@
         },
         {
           "label": "Flagga",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -81,7 +76,6 @@
         },
         {
           "label": "Pikétröja",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -97,11 +91,9 @@
     },
     {
       "label": "Reklam",
-      "activeProduct": 0,
       "products": [
         {
           "label": "Affisch",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -111,7 +103,6 @@
         },
         {
           "label": "Flyer",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -121,7 +112,6 @@
         },
         {
           "label": "Storformat",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -131,7 +121,6 @@
         },
         {
           "label": "Banderoll",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -141,7 +130,6 @@
         },
         {
           "label": "Skylt",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -151,7 +139,6 @@
         },
                 {
           "label": "Beachflagga",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -163,11 +150,9 @@
     },
     {
       "label": "Brodyr",
-      "activeProduct": 0,
       "products": [
         {
           "label": "Jacka",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -181,7 +166,6 @@
         },
         {
           "label": "Tröja",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -195,7 +179,6 @@
         },
         {
           "label": "Skjorta",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -209,21 +192,19 @@
         },
         {
           "label": "Pikér",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/polo-front.png"
+              "src": "/images/custom-design/polo-shirt-front.png"
             },
             {
               "label": "Bak",
-              "src": "/images/custom-design/polo-back.png"
+              "src": "/images/custom-design/polo-shirt-back.png"
             }
           ]
         },
         {
           "label": "Keps",
-          "activeSide": 0,
           "sides": [
             {
               "label": "Fram",
@@ -239,24 +220,21 @@
     },
     {
       "label": "Bildekor",
-      "activeProduct": 0,
       "products": [
         {
           "label": "Skåpbil",
-          "activeSide": 0,
           "sides": [
             {
-              "label": "Fram",
+              "label": "Vänster",
               "src": "/images/custom-design/van.png"
             }
           ]
         },
         {
           "label": "Lastbil",
-          "activeSide": 0,
           "sides": [
             {
-              "label": "Fram",
+              "label": "Vänster",
               "src": "/images/custom-design/truck.png"
             }
           ]

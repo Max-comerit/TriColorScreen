@@ -115,16 +115,18 @@ watch(
 
 // Initialize new canvases and dispose removed ones when the product's side count changes
 watch(
-  () => canvasStore.sideKeys,
-  async (newKeys, oldKeys) => {
+  () => canvasStore.sideCount,
+  async (newCount, oldCount) => {
     await nextTick()
+    const newKeys = Array.from({ length: newCount }, (_, i) => i)
     for (const key of newKeys) {
       const el = canvasElMap[key]
       if (el && !canvasMap.value[key] && currentCanvasWidth > 0) {
         void initializeCanvas(key, el, currentCanvasWidth, currentCanvasHeight)
       }
     }
-    const removedKeys = (oldKeys ?? []).filter(k => !newKeys.includes(k))
+    const oldKeys = Array.from({ length: oldCount ?? 0 }, (_, i) => i)
+    const removedKeys = oldKeys.filter(k => !newKeys.includes(k))
     for (const key of removedKeys) {
       const canvas = canvasMap.value[key]
       if (canvas) {

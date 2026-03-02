@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 import type { Canvas } from 'fabric'
 import { useCanvasRescale } from '~/composables/useCanvasRescale'
 import { useCanvasControls } from '~/composables/useCanvasControls'
+import type { ProductCategories } from '~/types/BackgroundSelector'
 
 /**
  * Canvas Store
@@ -39,17 +40,23 @@ function createInitialSides(): CanvasSideState[] {
 
 export const useCanvasStore = defineStore('canvas', {
   state: () => ({
+    /** The currently active product category name */
+    productCategoryTree:  undefined as ProductCategories | undefined,
+    /** The currently active product category name */
+    activeCategory: 0 as number,
+    /** The currently active product name */
+    activeProduct: 0 as number,
+    /** The currently active side index */
+    activeSide: 0 as number ,
     /** State indexed by side number (0, 1, 2, …) */
     sides: createInitialSides(),
-    /** The currently active side index */
-    activeSide: 0,
-    /** Ordered list of active side indices matching the selected product's sides */
-    sideKeys: [0, 1] as number[],
-    /** The currently active product category name */
-    activeCategory: null as string | null,
-    /** The currently active product name */
-    activeProduct: null as string | null,
+    /** Number of active sides for the selected product */
+    sideCount: 2 as number,
   }),
+  getters: {
+    /** Ordered list of active side indices derived from sideCount */
+    sideKeys: (state): number[] => Array.from({ length: state.sideCount }, (_, i) => i),
+  },
   actions: {
     /** Lazily initialize state for a side index if it doesn't exist yet */
     ensureSide(side: number) {
@@ -90,22 +97,27 @@ export const useCanvasStore = defineStore('canvas', {
       this.ensureSide(side)
       this.sides[side]!.customBackgroundDataUrl = dataUrl
     },
+    setProductCategoryTree(categories: ProductCategories | undefined) {
+      this.productCategoryTree = categories
+    },
+    setActiveCategory(category: number) {
+      this.activeCategory = category
+    },
+    setActiveProduct(product: number) {
+      this.activeProduct = product
+    },
     setActiveSide(side: number) {
       this.activeSide = side
     },
-    setActiveCategory(category: string | null) {
-      this.activeCategory = category
-    },
-    setActiveProduct(product: string | null) {
-      this.activeProduct = product
-    },
     /**
-     * Update the ordered list of side indices for the active product.
-     * Ensures state objects exist for all incoming indices.
+     * Set the number of active sides for the selected product.
+     * Ensures state objects exist for all indices.
      */
-    setSideKeys(keys: number[]) {
-      this.sideKeys = keys
-      keys.forEach(key => this.ensureSide(key))
+    setSideCount(count: number) {
+      this.sideCount = count
+      for (let i = 0; i < count; i++) {
+        this.ensureSide(i)
+      }
     },
     /** Clear all canvas content while preserving side structure */
     clear() {
