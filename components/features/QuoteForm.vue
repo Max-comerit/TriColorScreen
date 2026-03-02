@@ -8,6 +8,7 @@ import type { QuoteFormData } from '~/composables/useQuoteForm'
 import { useQuoteForm, MAX_IMAGE_COUNT } from '~/composables/useQuoteForm'
 import TextButton from '~/components/common/TextButton.vue'
 import GdprDialog from '~/components/features/GdprDialog.vue'
+import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { useCanvasExport } from '~/composables/useCanvasExport'
 
@@ -29,6 +30,7 @@ const emit = defineEmits<{
 
 // ===== COMPOSABLES & STORES =====
 const canvasStore = useCanvasStore()
+const { productCategoryTree, activeCategory, activeProduct } = storeToRefs(canvasStore)
 const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const {
   formData,
@@ -52,6 +54,12 @@ const fileInputRefs = ref<HTMLInputElement[]>([])
 const collectedImages = ref(false)
 
 // ===== COMPUTED =====
+const activeCategoryLabel = computed(
+  () => productCategoryTree.value?.productCategories[activeCategory.value]?.label ?? ''
+)
+const activeProductLabel = computed(
+  () => productCategoryTree.value?.productCategories[activeCategory.value]?.products[activeProduct.value]?.label ?? ''
+)
 
 
 // ===== METHODS =====
@@ -82,8 +90,6 @@ function openGdprDialog(): void {
  * Handle in-focus event to collect current canvas images before submission
  */
 async function handleFocusIn(): Promise<void> {
-  formData.value.productCategory = canvasStore.productCategoryTree?.productCategories[canvasStore.activeCategory]?.label || ''
-  formData.value.product = canvasStore.productCategoryTree?.productCategories[canvasStore.activeCategory]?.products[canvasStore.activeProduct]?.label || ''
   if(!collectedImages.value) {
     collectedImages.value = true
     // Collect current canvas images and populate formData before user submits
@@ -218,6 +224,17 @@ async function collectQuoteFiles(): Promise<File[]> {
 
 // ===== WATCHERS =====
 
+/**
+ * Keep productCategory & product in formData in sync with the canvas store
+ * reactively, so SSR hydration order or event timing never causes stale values.
+ */
+watch(activeCategoryLabel, (label) => {
+  formData.value.productCategory = label
+}, { immediate: true })
+
+watch(activeProductLabel, (label) => {
+  formData.value.product = label
+}, { immediate: true })
 
 /**
  * Emit changed event when form change state updates
