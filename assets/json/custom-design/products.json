@@ -30,7 +30,7 @@
               "src": "/images/custom-design/shirt-back.png"
             },
             {
-              "label": "Sida",
+              "label": "Vänster",
               "src": "/images/custom-design/shirt-side-left.png"
             }
           ]
@@ -119,8 +119,8 @@
           "label": "Skylt",
           "sides": [
             {
-              "label": "Fram",
-              "src": "/images/custom-design/sign-front.png"
+              "label": "Höger",
+              "src": "/images/custom-design/sign.png"
             }
           ]
         },
