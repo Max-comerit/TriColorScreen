@@ -62,19 +62,6 @@
           ]
         },
         {
-          "label": "Flagga",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/flag-front.png"
-            },
-            {
-              "label": "Bak",
-              "src": "/images/custom-design/flag-back.png"
-            }
-          ]
-        },
-        {
           "label": "Pikétröja",
           "sides": [
             {
@@ -145,6 +132,16 @@
               "src": "/images/custom-design/beach-flag.png"
             }
           ]
+        },
+        
+        {
+          "label": "Butiksflagga",
+          "sides": [
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/kiosk-flag.png"
+            }
+          ]
         }
       ]
     },
@@ -161,19 +158,6 @@
             {
               "label": "Bak",
               "src": "/images/custom-design/jacket-back.png"
-            }
-          ]
-        },
-        {
-          "label": "Tröja",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/hoodie-front.png"
-            },
-            {
-              "label": "Bak",
-              "src": "/images/custom-design/hoodie-back.png"
             }
           ]
         },
