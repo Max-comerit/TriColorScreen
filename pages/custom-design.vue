@@ -4,7 +4,6 @@
 // ===== IMPORTS =====
 import '~/assets/css/custom-design-fonts.css'
 import { Canvas, type FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
-import { nanoid } from 'nanoid'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import HeroImage from '~/components/common/HeroImage.vue'
@@ -60,7 +59,6 @@ useHead({
 const { addImageToCanvas } = useCustomImage()
 const { addTextToCanvas } = useCustomText()
 const { rescaleObjects } = useCanvasRescale()
-const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const canvasStore = useCanvasStore()
 const { activeSide } = storeToRefs(canvasStore)
 

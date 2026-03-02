@@ -17,6 +17,10 @@ export const CUSTOM_BACKGROUND_ID = 'custom'
 export const CUSTOM_SIDES: { label: string }[] = [
   { label: 'Fram' },
   { label: 'Bak' },
+  { label: 'Vänster'},
+  { label: 'Höger'},
+  { label: 'Över'},
+  { label: 'Under'},
 ]
 
 /**
