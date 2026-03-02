@@ -62,7 +62,7 @@ const activeProductLabel = computed(
 )
 
 const activeSideLabels = computed(
-  () => productCategoryTree.value?.productCategories[activeCategory.value]?.products[activeProduct.value]?.sides ?? ''
+  () => productCategoryTree.value?.productCategories[activeCategory.value]?.products[activeProduct.value]?.sides ?? []
 )
 
 // ===== METHODS =====
@@ -211,12 +211,12 @@ async function collectQuoteFiles(): Promise<File[]> {
 
     // Merged composite: compress to JPEG (no transparency needed, smaller payload)
     const compressedMerged = await compressDataUrl(mergedUrl)
-    collected.push(await dataUrlToFile(compressedMerged, `design-${id}-side-${activeSideLabels.value[entry.index]}.jpg`))
+    collected.push(await dataUrlToFile(compressedMerged, `design-${id}-side-${activeSideLabels.value[entry.index]?.label ?? entry.index}.jpg`))
     if (++imgCount >= MAX_IMAGE_COUNT) break;
 
     // Individual layers: keep as PNG to preserve transparency
     for (let i = 0; i < imageUrls.length; i++) {
-      collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-side-${activeSideLabels.value[entry.index]}-layer-${i + 1}.png`))
+      collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-side-${activeSideLabels.value[entry.index]?.label ?? entry.index}-layer-${i + 1}.png`))
       if (++imgCount >= MAX_IMAGE_COUNT) break;
     }
   }
