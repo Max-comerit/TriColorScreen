@@ -11,6 +11,7 @@ import GdprDialog from '~/components/features/GdprDialog.vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { useCanvasExport } from '~/composables/useCanvasExport'
+import { sanitizeFilenameSegment } from '~/utils/QuoteForm'
 
 // ===== PROPS =====
 interface Props {
@@ -211,12 +212,12 @@ async function collectQuoteFiles(): Promise<File[]> {
 
     // Merged composite: compress to JPEG (no transparency needed, smaller payload)
     const compressedMerged = await compressDataUrl(mergedUrl)
-    collected.push(await dataUrlToFile(compressedMerged, `design-${id}-side-${activeSideLabels.value[entry.index]?.label.toLowerCase() ?? entry.index}.jpg`))
+    collected.push(await dataUrlToFile(compressedMerged, `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}.jpg`))
     if (++imgCount >= MAX_IMAGE_COUNT) break;
 
     // Individual layers: keep as PNG to preserve transparency
     for (let i = 0; i < imageUrls.length; i++) {
-      collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-side-${activeSideLabels.value[entry.index]?.label.toLowerCase() ?? entry.index}-layer-${i + 1}.png`))
+      collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}-layer-${i + 1}.png`))
       if (++imgCount >= MAX_IMAGE_COUNT) break;
     }
   }
