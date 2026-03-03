@@ -14,9 +14,9 @@ const PRODUCT_CATEGORIES = PRODUCT_CATEGORIES_OBJ.productCategories
 
 // 2. Props & Emits
 const emit = defineEmits<{
-  sideChanged: [side: number]
   categoryChanged: [index: number]
   productChanged: [index: number, dataKey: string | null]
+  sideChanged: [side: number]
   customImageSelected: [dataUrl: string]
 }>()
 
@@ -79,7 +79,7 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
     <div class="flex items-stretch sm:items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg shadow-md justify-center flex-wrap">
       <label class="flex items-center gap-3">
         <select
-          :value="canvasStore.activeCategory"
+          :value="activeCategory"
           class="h-11 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select product category"
           @change="emit('categoryChanged', Number(($event.target as HTMLSelectElement).value))"
@@ -95,7 +95,7 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
       </label>
       <label class="flex items-center gap-3">
         <select
-          :value="canvasStore.activeProduct"
+          :value="activeProduct"
           class="h-11 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select product"
           @change="emit('productChanged',
@@ -104,7 +104,7 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
           )"
         >
           <option
-            v-for="(product, i) in PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products || []"
+            v-for="(product, i) in PRODUCT_CATEGORIES[activeCategory]?.products || []"
             :key="product.label"
             :value="i"
             :data-key="product.label"
@@ -112,7 +112,7 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
             {{ product.label }}
           </option>
           <option
-            :value="PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products.length || 0"
+            :value="PRODUCT_CATEGORIES[activeCategory]?.products.length || 0"
             :data-key="CUSTOM_BACKGROUND_ID"
           >
             Egen Produkt
@@ -121,7 +121,7 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
       </label>
       <label class="flex sm:w-auto items-center gap-3">
         <select
-          :value="canvasStore.activeSide"
+          :value="activeSide"
           class="h-11 px-3 py-2 border w-full border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select side"
           @change="emit('sideChanged', Number(($event.target as HTMLSelectElement).value))"

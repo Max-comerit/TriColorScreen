@@ -137,12 +137,11 @@
             }
           ]
         },
-        
         {
           "label": "Butiksflagga",
           "sides": [
             {
-              "label": "Vänster",
+              "label": "Fram",
               "src": "/images/custom-design/kiosk-flag.png"
             }
           ]

@@ -16,6 +16,7 @@ import { useCanvasRescale } from '~/composables/useCanvasRescale'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { storeToRefs } from 'pinia'
 import { useCustomBackground, loadBackgroundOnCanvas, CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
+import { useBackgroundSelector } from '~/composables/useBackgroundSelector'
 import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
 import QuoteForm from '~/components/features/QuoteForm.vue'
@@ -77,13 +78,15 @@ let currentCanvasHeight = 0
 // ===== COMPOSABLES =====
 const activeCanvas = computed(() => canvasMap.value[activeSide.value] ?? null)
 const {
-  aspectRatio,
   applyCustomBackground,
+} = useCustomBackground()
+
+const {
   initProductCategories,
   onCategoryChange,
   onProductChange,
   onSideChange,
-} = useCustomBackground(activeCanvas)
+} = useBackgroundSelector()
 
 /** Assign or remove a canvas element ref from the template v-for */
 function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
@@ -203,10 +206,22 @@ watch(
       if (!canvas) continue
       canvas.remove(...canvas.getObjects())
       if (selection === CUSTOM_BACKGROUND_ID) {
-        canvas.backgroundImage = undefined
-        canvas.requestRenderAll()
+        const customDataUrl = canvasStore.sides[key]?.customBackgroundDataUrl
+        if (customDataUrl) {
+          const bg = await loadBackgroundOnCanvas(canvas, customDataUrl)
+          if (key === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
+            canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
+          }
+        }
+        else {
+          canvas.backgroundImage = undefined
+          canvas.requestRenderAll()
+        }
       } else {
-        await loadBackgroundOnCanvas(canvas, selection)
+        const bg = await loadBackgroundOnCanvas(canvas, selection)
+        if (key === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
+          canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
+        }
       }
     }
   },
@@ -258,12 +273,22 @@ async function initializeCanvas(side: number, el: HTMLCanvasElement, width: numb
 
   if (!canvasInstance.backgroundImage) {
     const sideState = canvasStore.sides[side]
-    // Don't load a default background if the user explicitly chose a custom (own) product —
-    // in that case the canvas is intentionally blank until they upload an image.
-    if (sideState?.backgroundSelection !== CUSTOM_BACKGROUND_ID) {
+    if (sideState?.backgroundSelection === CUSTOM_BACKGROUND_ID) {
+      // Restore a previously uploaded custom image; otherwise leave the canvas blank.
+      if (sideState.customBackgroundDataUrl) {
+        const bg = await loadBackgroundOnCanvas(canvasInstance, sideState.customBackgroundDataUrl)
+        if (side === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
+          canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
+        }
+      }
+    }
+    else {
       const initialBackgroundUrl = getInitialBackgroundUrl(side)
       if (initialBackgroundUrl) {
-        await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl)
+        const bg = await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl)
+        if (side === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
+          canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
+        }
         if (!sideState?.backgroundSelection) {
           canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
         }
@@ -304,6 +329,13 @@ function rescaleCanvas(canvasInstance: Canvas, ratio: number, newWidth: number, 
   // Proportionally rescale and reposition all objects
   rescaleObjects(canvasInstance, ratio)
   canvasInstance.requestRenderAll()
+}
+
+/** Bridges the BackgroundSelector emit to applyCustomBackground, injecting the active canvas. */
+async function handleCustomImageSelected(dataUrl: string): Promise<void> {
+  const canvas = activeCanvas.value
+  if (!canvas) return
+  await applyCustomBackground(canvas, dataUrl)
 }
 
 function uploadImage(): void {
@@ -374,12 +406,12 @@ function addText(): void {
           @category-changed="onCategoryChange"
           @product-changed="onProductChange"
           @side-changed="onSideChange"
-          @custom-image-selected="applyCustomBackground"
+          @custom-image-selected="handleCustomImageSelected"
         />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
           <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
           <div class="w-[0px] md:w-[48px]" />
-          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] max-h-[1000px]" :style="{ aspectRatio: aspectRatio }">
+          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] max-h-[1000px]" :style="{ aspectRatio: canvasStore.aspectRatio }">
             <div
               v-for="key in canvasStore.sideKeys"
               v-show="activeSide === key"
