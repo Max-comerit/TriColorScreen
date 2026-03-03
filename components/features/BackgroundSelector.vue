@@ -2,10 +2,11 @@
 
 <script setup lang="ts">
 // 1. Imports
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { CUSTOM_BACKGROUND_ID, CUSTOM_SIDES } from '~/composables/useCustomBackground'
+import { useBackgroundSelector } from '~/composables/useBackgroundSelector'
 import rawBackgroundOptions from '~/assets/json/custom-design/products.json'
 import type { ProductCategories } from '~/types/BackgroundSelector'
 
@@ -14,15 +15,14 @@ const PRODUCT_CATEGORIES = PRODUCT_CATEGORIES_OBJ.productCategories
 
 // 2. Props & Emits
 const emit = defineEmits<{
-  categoryChanged: [index: number]
-  productChanged: [index: number, dataKey: string | null]
-  sideChanged: [side: number]
   customImageSelected: [dataUrl: string]
 }>()
 
 // 3. Composables & Stores
 const canvasStore = useCanvasStore()
 const { activeCategory, activeProduct, activeSide, sides } = storeToRefs(canvasStore)
+
+const { initProductCategories, onCategoryChange, onProductChange, onSideChange } = useBackgroundSelector()
 
 // 4. State
 const customFileInputRef = ref<HTMLInputElement | null>(null)
@@ -72,6 +72,11 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
 
   input.value = ''
 }
+
+// 7. Lifecycle hooks
+onMounted(() => {
+  initProductCategories()
+})
 </script>
 
 <template>
@@ -82,7 +87,7 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
           :value="activeCategory"
           class="h-11 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select product category"
-          @change="emit('categoryChanged', Number(($event.target as HTMLSelectElement).value))"
+          @change="onCategoryChange(Number(($event.target as HTMLSelectElement).value))"
         >
           <option
             v-for="(category, i) in PRODUCT_CATEGORIES"
@@ -98,7 +103,7 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
           :value="activeProduct"
           class="h-11 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select product"
-          @change="emit('productChanged',
+          @change="onProductChange(
             $event.target ? Number(($event.target as HTMLSelectElement).value) : 0,
             $event.target ? ($event.target as HTMLSelectElement).options[($event.target as HTMLSelectElement).selectedIndex]?.getAttribute('data-key') : null
           )"
@@ -124,7 +129,7 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
           :value="activeSide"
           class="h-11 px-3 py-2 border w-full border-gray-300 rounded-md bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Select side"
-          @change="emit('sideChanged', Number(($event.target as HTMLSelectElement).value))"
+          @change="onSideChange(Number(($event.target as HTMLSelectElement).value))"
         >
           <option
             v-for="(sideOption, i) in activeSideOptions"

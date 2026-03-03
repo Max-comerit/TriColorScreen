@@ -16,7 +16,6 @@ import { useCanvasRescale } from '~/composables/useCanvasRescale'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { storeToRefs } from 'pinia'
 import { useCustomBackground, loadBackgroundOnCanvas, CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
-import { useBackgroundSelector } from '~/composables/useBackgroundSelector'
 import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
 import QuoteForm from '~/components/features/QuoteForm.vue'
@@ -80,13 +79,6 @@ const activeCanvas = computed(() => canvasMap.value[activeSide.value] ?? null)
 const {
   applyCustomBackground,
 } = useCustomBackground()
-
-const {
-  initProductCategories,
-  onCategoryChange,
-  onProductChange,
-  onSideChange,
-} = useBackgroundSelector()
 
 /** Assign or remove a canvas element ref from the template v-for */
 function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
@@ -180,7 +172,6 @@ onMounted(async () => {
     }
   })
   resizeObserver.observe(wrapper)
-  initProductCategories()
 })
 
 onBeforeUnmount(() => {
@@ -403,9 +394,6 @@ function addText(): void {
         aria-label="Design Verktyg"
       >
         <BackgroundSelector
-          @category-changed="onCategoryChange"
-          @product-changed="onProductChange"
-          @side-changed="onSideChange"
           @custom-image-selected="handleCustomImageSelected"
         />
         <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
