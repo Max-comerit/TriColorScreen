@@ -10,7 +10,7 @@ import Carousel from '~/components/common/Carousel.vue'
 import ServiceCard from '~/components/common/ServiceCard.vue'
 import { useResponsivePerPage } from '~/composables/useResponsivePerPage'
 
-// ===== COMPOSABLES =====
+// ===== COMPOSABLES & STORES =====
 useHead({
   title: 'Screentryck, Brodyr & Textiltryck | Tricolor Screen',
   meta: [

@@ -5,6 +5,9 @@
  * A reusable card for displaying a single image without text overlay.
  */
 
+// ===== IMPORTS =====
+// (Auto-imported by Nuxt: computed)
+
 // ===== PROPS & EMITS =====
 /** Props interface for ImageCard component */
 interface Props {
@@ -29,14 +32,25 @@ const props = withDefaults(defineProps<Props>(), {
 
 /** Emits 'click' event when the card is clicked */
 const emit = defineEmits<{
-  (e: 'click'): void
+  click: []
 }>()
+
+// ===== COMPOSABLES & STORES =====
+// (No composables or stores needed)
+
+// ===== STATE =====
+// (No state needed)
 
 // ===== COMPUTED =====
 const cardStyle = computed(() => ({
   width: typeof props.width === 'number' ? `${props.width}px` : props.width,
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
 }))
+
+// ===== METHODS =====
+const handleClick = (): void => {
+  emit('click')
+}
 </script>
 
 <template>
@@ -45,7 +59,7 @@ const cardStyle = computed(() => ({
       class="overflow-hidden rounded-card shadow-drop"
       :class="backgroundColor"
       :style="cardStyle"
-      @click="emit('click')"
+      @click="handleClick"
     >
       <NuxtImg
         :src="imageSrc"
