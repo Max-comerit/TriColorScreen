@@ -3,9 +3,17 @@
 <script setup lang="ts">
 // 1. Imports
 import { type Canvas, Textbox, ActiveSelection } from 'fabric'
-import { ref, shallowRef, computed, watch, onUnmounted } from 'vue'
+import { ref, shallowRef, computed, watch, onMounted, onUnmounted } from 'vue'
 import { setTextboxTextRadius, MAX_TEXT_RADIUS } from '@/utils/customDesign'
 import { CircularTextbox } from '~/utils/circularTextbox'
+
+// Font names used for eager preloading on mount
+const FONT_NAMES = [
+  'Inter', 'Open Sans', 'Roboto',
+  'Merriweather', 'Playfair Display', 'PT Serif',
+  'Dancing Script', 'Pacifico',
+  'Bebas Neue', 'Oswald',
+]
 
 // 2. Props & Emits
 interface Props {
@@ -107,7 +115,21 @@ function applyToAll(updater: (tb: Textbox) => void) {
   props.canvas.requestRenderAll()
 }
 
-function updateFontFamily() {
+/**
+ * Wait for the browser to load the font before telling Fabric to render.
+ * Without this, Firefox/Safari may render in the fallback font on first switch.
+ */
+async function ensureFontLoaded(fontValue: string): Promise<void> {
+  const name = fontValue.replace(/['"]*/g, '').split(',')[0].trim()
+  try {
+    await document.fonts.load(`400 16px "${name}"`)
+  } catch {
+    // best-effort: proceed even if the API fails
+  }
+}
+
+async function updateFontFamily() {
+  await ensureFontLoaded(fontFamily.value)
   applyToAll(tb => tb.set('fontFamily', fontFamily.value))
 }
 
@@ -153,6 +175,14 @@ function applyCircularRadius() {
 }
 
 // 7. Lifecycle hooks
+onMounted(() => {
+  // Eagerly load all fonts so they are ready before the user interacts.
+  // This prevents the Firefox/Safari "wrong font on first switch" issue.
+  Promise.allSettled(
+    FONT_NAMES.map(name => document.fonts.load(`400 16px "${name}"`))
+  )
+})
+
 onUnmounted(() => {
   if (attachedCanvas) detach(attachedCanvas)
 })
@@ -320,44 +350,16 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
 </template>
 
 <style scoped>
-/* Font preview in select options */
-select option[value*="Inter"] {
-  font-family: 'Inter', sans-serif;
-}
-
-select option[value*="Open Sans"] {
-  font-family: 'Open Sans', sans-serif;
-}
-
-select option[value*="Roboto"] {
-  font-family: 'Roboto', sans-serif;
-}
-
-select option[value*="Merriweather"] {
-  font-family: 'Merriweather', serif;
-}
-
-select option[value*="Playfair Display"] {
-  font-family: 'Playfair Display', serif;
-}
-
-select option[value*="PT Serif"] {
-  font-family: 'PT Serif', serif;
-}
-
-select option[value*="Dancing Script"] {
-  font-family: 'Dancing Script', cursive;
-}
-
-select option[value*="Pacifico"] {
-  font-family: 'Pacifico', cursive;
-}
-
-select option[value*="Bebas Neue"] {
-  font-family: 'Bebas Neue', sans-serif;
-}
-
-select option[value*="Oswald"] {
-  font-family: 'Oswald', sans-serif;
-}
+/* Font preview in select options — Chrome only; Firefox/Safari ignore this */
+select option[value*="Inter"] { font-family: 'Inter', sans-serif; }
+select option[value*="Open Sans"] { font-family: 'Open Sans', sans-serif; }
+select option[value*="Roboto"] { font-family: 'Roboto', sans-serif; }
+select option[value*="Merriweather"] { font-family: 'Merriweather', serif; }
+select option[value*="Playfair Display"] { font-family: 'Playfair Display', serif; }
+select option[value*="PT Serif"] { font-family: 'PT Serif', serif; }
+select option[value*="Dancing Script"] { font-family: 'Dancing Script', cursive; }
+select option[value*="Pacifico"] { font-family: 'Pacifico', cursive; }
+select option[value*="Bebas Neue"] { font-family: 'Bebas Neue', sans-serif; }
+select option[value*="Oswald"] { font-family: 'Oswald', sans-serif; }
 </style>
+
