@@ -210,6 +210,7 @@ onMounted(() => {
     embla.value.on('init', updateState)
     embla.value.on('select', updateState)
     embla.value.on('scroll', updateState)
+    embla.value.on('resize', updateState)
   })
 })
 
