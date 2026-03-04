@@ -5,7 +5,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
-import { CUSTOM_BACKGROUND_ID, CUSTOM_SIDES } from '~/composables/useCustomBackground'
+import { CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 import { useBackgroundSelector } from '~/composables/useBackgroundSelector'
 import rawBackgroundOptions from '~/assets/json/custom-design/products.json'
 import type { ProductCategories } from '~/types/BackgroundSelector'
@@ -30,12 +30,6 @@ const customFileInputRef = ref<HTMLInputElement | null>(null)
 // 5. Computed
 const isCustomSelected = computed(() =>
   sides.value[activeSide.value]?.backgroundSelection === CUSTOM_BACKGROUND_ID,
-)
-
-const activeSideOptions = computed<{ label: string }[]>(() =>
-  isCustomSelected.value
-    ? CUSTOM_SIDES
-    : PRODUCT_CATEGORIES[activeCategory.value]?.products[activeProduct.value]?.sides ?? [],
 )
 
 // 6. Methods
@@ -112,15 +106,9 @@ onMounted(() => {
             v-for="(product, i) in PRODUCT_CATEGORIES[activeCategory]?.products || []"
             :key="product.label"
             :value="i"
-            :data-key="product.label"
+            :data-key="product.label === 'Egen Produkt' ? CUSTOM_BACKGROUND_ID : product.label"
           >
             {{ product.label }}
-          </option>
-          <option
-            :value="PRODUCT_CATEGORIES[activeCategory]?.products.length || 0"
-            :data-key="CUSTOM_BACKGROUND_ID"
-          >
-            Egen Produkt
           </option>
         </select>
       </label>
@@ -132,7 +120,7 @@ onMounted(() => {
           @change="onSideChange(Number(($event.target as HTMLSelectElement).value))"
         >
           <option
-            v-for="(sideOption, i) in activeSideOptions"
+            v-for="(sideOption, i) in PRODUCT_CATEGORIES[activeCategory]?.products[activeProduct]?.sides ?? []"
             :key="sideOption.label"
             :value="i"
           >

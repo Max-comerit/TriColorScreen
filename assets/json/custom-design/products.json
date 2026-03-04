@@ -77,6 +77,35 @@
               "src": "/images/custom-design/polo-shirt-back.png"
             }
           ]
+        },
+        {
+          "label": "Egen Produkt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": ""
+            },
+            {
+              "label": "Bak",
+              "src": ""
+            },
+            {
+              "label": "Vänster",
+              "src": ""
+            },
+            {
+              "label": "Höger",
+              "src": ""
+            },
+            {
+              "label": "Över",
+              "src": ""
+            },
+            {
+              "label": "Under",
+              "src": ""
+            }
+          ]
         }
       ]
     },
@@ -145,6 +174,35 @@
               "src": "/images/custom-design/kiosk-flag.png"
             }
           ]
+        },
+        {
+          "label": "Egen Produkt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": ""
+            },
+            {
+              "label": "Bak",
+              "src": ""
+            },
+            {
+              "label": "Vänster",
+              "src": ""
+            },
+            {
+              "label": "Höger",
+              "src": ""
+            },
+            {
+              "label": "Över",
+              "src": ""
+            },
+            {
+              "label": "Under",
+              "src": ""
+            }
+          ]
         }
       ]
     },
@@ -189,6 +247,35 @@
               "src": "/images/custom-design/baseball-cap-back.png"
             }
           ]
+        },
+        {
+          "label": "Egen Produkt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": ""
+            },
+            {
+              "label": "Bak",
+              "src": ""
+            },
+            {
+              "label": "Vänster",
+              "src": ""
+            },
+            {
+              "label": "Höger",
+              "src": ""
+            },
+            {
+              "label": "Över",
+              "src": ""
+            },
+            {
+              "label": "Under",
+              "src": ""
+            }
+          ]
         }
       ]
     },
@@ -210,6 +297,35 @@
             {
               "label": "Vänster",
               "src": "/images/custom-design/truck.png"
+            }
+          ]
+        },
+        {
+          "label": "Egen Produkt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": ""
+            },
+            {
+              "label": "Bak",
+              "src": ""
+            },
+            {
+              "label": "Vänster",
+              "src": ""
+            },
+            {
+              "label": "Höger",
+              "src": ""
+            },
+            {
+              "label": "Över",
+              "src": ""
+            },
+            {
+              "label": "Under",
+              "src": ""
             }
           ]
         }
