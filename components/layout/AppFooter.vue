@@ -30,7 +30,7 @@
       </div>
       <div>
         <h2 class="text-sm md:text-base font-semibold my-2 mb-4 text-inherit">Sociala Medier</h2>
-        <ul class="flex gap-3">
+        <ul class="flex flex-wrap sm:flex-nowrap gap-3">
           <li>
             <a
               href="https://www.linkedin.com/in/ruben-veizaga-856a561a6/?originalSubdomain=se"
