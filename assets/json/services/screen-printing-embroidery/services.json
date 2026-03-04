@@ -10,5 +10,33 @@
     {
     "imageSrc": "/images/services/screen-printing-embroidery/piker-right.jpg",
     "alt": "Piker höger med screentryck"
+  },
+  {
+    "imageSrc": "/images/services/screen-printing-embroidery/t-shirt-1-front.jpg",
+    "alt": "T-shirt 1 fram"
+  },
+  {
+    "imageSrc": "/images/services/screen-printing-embroidery/t-shirt-2-front.jpg",
+    "alt": "T-shirt 2 fram"
+  },
+  {
+    "imageSrc": "/images/services/screen-printing-embroidery/t-shirt-3-front.jpg",
+    "alt": "T-shirt 3 fram"
+  },
+  {
+    "imageSrc": "/images/services/screen-printing-embroidery/t-shirt-4-front.jpg",
+    "alt": "T-shirt 4 fram"
+  },
+  {
+    "imageSrc": "/images/services/screen-printing-embroidery/hoodie-front.jpg",
+    "alt": "Hoodie fram"
+  },
+  {
+    "imageSrc": "/images/services/screen-printing-embroidery/embroidery-right.jpg",
+    "alt": "Brodyr höger"
+  },
+  {
+    "imageSrc": "/images/services/screen-printing-embroidery/hood-front.jpg",
+    "alt": "Mössa fram"
   }
 ]
