@@ -77,6 +77,35 @@
               "src": "/images/custom-design/polo-shirt-back.png"
             }
           ]
+        },
+        {
+          "label": "Egen Produkt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": ""
+            },
+            {
+              "label": "Bak",
+              "src": ""
+            },
+            {
+              "label": "Vänster",
+              "src": ""
+            },
+            {
+              "label": "Höger",
+              "src": ""
+            },
+            {
+              "label": "Över",
+              "src": ""
+            },
+            {
+              "label": "Under",
+              "src": ""
+            }
+          ]
         }
       ]
     },
@@ -137,13 +166,41 @@
             }
           ]
         },
-        
         {
           "label": "Butiksflagga",
           "sides": [
             {
-              "label": "Vänster",
+              "label": "Fram",
               "src": "/images/custom-design/kiosk-flag.png"
+            }
+          ]
+        },
+        {
+          "label": "Egen Produkt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": ""
+            },
+            {
+              "label": "Bak",
+              "src": ""
+            },
+            {
+              "label": "Vänster",
+              "src": ""
+            },
+            {
+              "label": "Höger",
+              "src": ""
+            },
+            {
+              "label": "Över",
+              "src": ""
+            },
+            {
+              "label": "Under",
+              "src": ""
             }
           ]
         }
@@ -162,19 +219,6 @@
             {
               "label": "Bak",
               "src": "/images/custom-design/jacket-back.png"
-            }
-          ]
-        },
-        {
-          "label": "Skjorta",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/shirt-front.png"
-            },
-            {
-              "label": "Bak",
-              "src": "/images/custom-design/shirt-back.png"
             }
           ]
         },
@@ -203,6 +247,35 @@
               "src": "/images/custom-design/baseball-cap-back.png"
             }
           ]
+        },
+        {
+          "label": "Egen Produkt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": ""
+            },
+            {
+              "label": "Bak",
+              "src": ""
+            },
+            {
+              "label": "Vänster",
+              "src": ""
+            },
+            {
+              "label": "Höger",
+              "src": ""
+            },
+            {
+              "label": "Över",
+              "src": ""
+            },
+            {
+              "label": "Under",
+              "src": ""
+            }
+          ]
         }
       ]
     },
@@ -224,6 +297,35 @@
             {
               "label": "Vänster",
               "src": "/images/custom-design/truck.png"
+            }
+          ]
+        },
+        {
+          "label": "Egen Produkt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": ""
+            },
+            {
+              "label": "Bak",
+              "src": ""
+            },
+            {
+              "label": "Vänster",
+              "src": ""
+            },
+            {
+              "label": "Höger",
+              "src": ""
+            },
+            {
+              "label": "Över",
+              "src": ""
+            },
+            {
+              "label": "Under",
+              "src": ""
             }
           ]
         }

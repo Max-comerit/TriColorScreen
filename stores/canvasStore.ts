@@ -52,6 +52,8 @@ export const useCanvasStore = defineStore('canvas', {
     sides: createInitialSides(),
     /** Number of active sides for the selected product */
     sideCount: 2 as number,
+    /** CSS aspect-ratio string for the active product's background image */
+    aspectRatio: '1 / 1' as string,
   }),
   getters: {
     /** Ordered list of active side indices derived from sideCount */
@@ -123,6 +125,9 @@ export const useCanvasStore = defineStore('canvas', {
     clear() {
       this.sides = createInitialSides()
       this.sideKeys.forEach(key => this.ensureSide(key))
-    }
+    },
+    setAspectRatio(ratio: string) {
+      this.aspectRatio = ratio
+    },
   },
 })
