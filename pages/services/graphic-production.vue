@@ -67,7 +67,7 @@ const serviceCards = computed<CardItem[]>(() =>
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/services/graphic-production/hero.jpg"
-      title="Design och Grafisk Produktion"
+      title="Design & Grafisk Produktion"
       description="Vi hjälper dig att designa din logotyp och allt annat som är kopplat till ditt varumärke på ett sätt som förför dina kunder."
       :width="1280"
       :height="854"

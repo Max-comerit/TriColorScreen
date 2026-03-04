@@ -1,8 +1,14 @@
 [
   {
-    "title": "Textiler i butik och på lager",
-    "description": "Vi har alla sorters textiler hos oss på Öregrundsgatan 24 i Stockholm på Gärdet. Ni skickar enkelt in er design och skriver i meddelande vilken produkt ni önskar er samt placering, vi skickar sedan förslag till er som ni granskar innan vi gör er  beställning.",
-    "imageSrc": "",
-    "alt": "Textiler i butik och på lager"
+    "imageSrc": "/images/services/screen-printing-embroidery/piker-front.jpg",
+    "alt": "Piker fram med screentryck"
+  },
+  {
+    "imageSrc": "/images/services/screen-printing-embroidery/piker-back.jpg",
+    "alt": "Piker bak med screentryck"
+  },
+    {
+    "imageSrc": "/images/services/screen-printing-embroidery/piker-right.jpg",
+    "alt": "Piker höger med screentryck"
   }
 ]

@@ -8,6 +8,7 @@ import type { EmblaCarouselType } from 'embla-carousel'
 
 import type { CardItem } from '~/types/CardContent'
 import ServiceCard from './ServiceCard.vue'
+import ImageCard from './ImageCard.vue'
 import ReviewCard from './ReviewCard.vue'
 import LeftArrow from '~/assets/images/icons/left-arrow.svg'
 import RightArrow from '~/assets/images/icons/right-arrow.svg'
@@ -248,6 +249,14 @@ onMounted(() => {
             :review="item.data.review"
             :name="item.data.name"
             :date="item.data.date"
+          />
+
+          <!-- Image Card -->
+          <ImageCard
+            v-else-if="item.type === 'image'"
+            :image-src="item.data.imageSrc"
+            :alt="item.data.alt"
+            @click="onCardClick(item, idx)"
           />
         </div>
       </div>

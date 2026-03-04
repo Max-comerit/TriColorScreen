@@ -2,19 +2,51 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
+import type { CardItem, IImageCardContent } from '~/types/CardContent'
+import images from '~/assets/json/services/screen-printing-embroidery/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
+import Carousel from '~/components/common/Carousel.vue'
+import ServiceCard from '~/components/common/ServiceCard.vue'
+import { useResponsivePerPage } from '~/composables/useResponsivePerPage'
 
 // ===== COMPOSABLES =====
 useHead({
-  title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
+  title: 'Screentryck, Brodyr & Textiltryck | Tricolor Screen',
   meta: [
     {
       name: 'description',
-      content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
+      content: 'Vi erbjuder professionella lösningar inom screentryck, brodyr och textiltryck för företag och privatpersoner.',
+    },
+    {
+      name: 'keywords',
+      content: 'screentryck, brodyr, textiltryck, tricolor screen, tryckeri, profiltryck, reklammaterial, företagskläder, eventkläder',
+    },
+    {
+      property: 'og:title',
+      content: 'Screentryck, Brodyr & Textiltryck | Tricolor Screen',
+    },
+    {
+      property: 'og:description',
+      content: 'Professionella lösningar inom screentryck, brodyr och textiltryck för företag och privatpersoner. Kontakta oss för skräddarsydda trycklösningar.',
+    },
+    {
+      property: 'og:type',
+      content: 'website',
+    },
+    {
+      property: 'og:image',
+      content: '/images/services/screen-printing-embroidery/hero.jpg',
     },
   ],
 })
+
+const { perPage } = useResponsivePerPage()
+
+// ===== COMPUTED =====
+const imageCards = computed<CardItem[]>(() =>
+  (images as IImageCardContent[]).map((item) => ({ type: 'image', data: item })),
+)
 </script>
 
 <template>
@@ -22,8 +54,8 @@ useHead({
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/services/screen-printing-embroidery/hero.jpg"
-      title="Tricolor Screen"
-      description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering."
+      title="Screentryck, Brodyr & Textiltryck"
+      description="Vi använder alla sorters metoder för att trycka er design på valt underlag."
       :width="1280"
       :height="854"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
@@ -32,20 +64,33 @@ useHead({
     <!-- Sections -->
     <div class="layout-container">
       <Section 
-        id="services" 
-        title="Våra tjänster" 
+        id="printed-matter" 
+        title="Screentryck & Textiltryck"
+        description="Vi trycker på alla sorters textilier med personlig vägledning och rådgör med er om vilken tryckmetod som passar just ert ändamål." 
         align="center"
-        aria-label="Våra tjänster och lösningar"
+        aria-label="Våra trycksaker"
       >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
-      </Section>
-      <Section 
-        id="testimonials" 
-        title="Omdömen" 
-        align="center"
-        aria-label="Kundrecensioner och omdömen"
-      >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis temporibus est velit provident blanditiis obcaecati veritatis ipsum inventore doloremque ab eum deleniti maxime dolor id, sit repellendus quisquam laudantium porro.</p>
+        <!-- Carousel view -->
+        <Carousel
+          :items="imageCards"
+          :per-page="perPage"
+          :gap-px="16"
+          :loop="true"
+          show-arrows
+          show-dots
+          aria-label="Trycksaker"
+        />
+
+      <div class="pt-6 w-full sm:w-[350px] mx-auto">
+        <ServiceCard
+          title="Textiler i butik och på lager"
+          description="Vi har alla sorters textiler hos oss på Öregrundsgatan 24 i Stockholm på Gärdet. Ni skickar enkelt in er design och skriver i meddelande vilken produkt ni önskar er samt placering, vi skickar sedan förslag till er som ni granskar innan vi gör er  beställning."
+          image-src="/images/services/screen-printing-embroidery/store.jpg"
+          alt="Textiler i butik och på lager"
+          :max-lines="8"
+          :height="420"
+        />
+      </div>
       </Section>
     </div>
   </div>
