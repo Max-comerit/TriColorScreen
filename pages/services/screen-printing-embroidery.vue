@@ -65,7 +65,7 @@ const imageCards = computed<CardItem[]>(() =>
     <div class="layout-container">
       <Section 
         id="printed-matter" 
-        title="Screentryck & Textiltryck"
+        title="Screentryck, Brodyr & Textiltryck"
         description="Vi trycker på alla sorters textilier med personlig vägledning och rådgör med er om vilken tryckmetod som passar just ert ändamål." 
         align="center"
         aria-label="Våra trycksaker"
@@ -84,12 +84,20 @@ const imageCards = computed<CardItem[]>(() =>
       <div class="pt-6 w-full sm:w-[350px] mx-auto">
         <ServiceCard
           title="Textiler i butik och på lager"
-          description="Vi har alla sorters textiler hos oss på Öregrundsgatan 24 i Stockholm på Gärdet. Ni skickar enkelt in er design och skriver i meddelande vilken produkt ni önskar er samt placering, vi skickar sedan förslag till er som ni granskar innan vi gör er  beställning."
           image-src="/images/services/screen-printing-embroidery/store.jpg"
           alt="Textiler i butik och på lager"
           :max-lines="8"
           :height="420"
-        />
+        >
+          <template #description="{ descriptionStyle }">
+            <p class="text-sm leading-relaxed" :style="descriptionStyle">
+              Vi har alla sorters textiler hos oss på Öregrundsgatan 24 i Stockholm på Gärdet. Använd designverktyget i 
+              <NuxtLink to="/custom-design" class="font-semibold underline hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">DESIGNA SJÄLV</NuxtLink>
+              för att designa dina textilier och se hur de kommer att se ut. 
+              Skicka sedan en offertförfrågan via formuläret så återkommer vi med en offert inom kort.
+            </p>
+          </template>
+        </ServiceCard>
       </div>
       </Section>
     </div>

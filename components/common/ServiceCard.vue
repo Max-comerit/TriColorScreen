@@ -15,7 +15,7 @@ interface Props {
   /** Title text displayed on the card */
   title: string
   /** Description text displayed below the title */
-  description: string
+  description?: string
   /** Maximum number of lines to display in description - default: 3 */
   maxLines?: number
   /** Width of the card (CSS value or pixel number) */
@@ -34,6 +34,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   maxLines: 3,
+  description: '',
   width: '100%',
   height: '100%',
   backgroundColor: 'bg-primary-50',
@@ -122,9 +123,11 @@ const handleCardClick = () => {
             {{ title }}
           </h3>
           <!-- Service description -->
-          <p :class="['text-sm leading-relaxed', textColorClass]" :style="descriptionStyle">
-            {{ description }}
-          </p>
+          <slot name="description" :description-style="descriptionStyle">
+            <p :class="['text-sm leading-relaxed', textColorClass]" :style="descriptionStyle">
+              {{ description }}
+            </p>
+          </slot>
         </div>
       </article>
     </NuxtLink>
@@ -165,9 +168,11 @@ const handleCardClick = () => {
           {{ title }}
         </h3>
         <!-- Service description -->
-        <p :class="['text-sm leading-relaxed', textColorClass]" :style="descriptionStyle">
-          {{ description }}
-        </p>
+        <slot name="description" :description-style="descriptionStyle">
+          <p :class="['text-sm leading-relaxed', textColorClass]" :style="descriptionStyle">
+            {{ description }}
+          </p>
+        </slot>
       </div>
     </article>
   </div>
