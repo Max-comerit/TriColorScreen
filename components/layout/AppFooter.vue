@@ -5,6 +5,7 @@
   import FacebookIcon from '~/assets/images/footer/facebook-icon.svg'
   import InstagramIcon from '~/assets/images/footer/instagram-icon.svg'
   import LinkedInIcon from '~/assets/images/footer/linkedin-icon.svg'
+  import TikTokIcon from '~/assets/images/footer/tiktok-icon.svg'
 </script>
 
 <template>
@@ -61,6 +62,17 @@
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
               <InstagramIcon class="w-7 h-7 text-neutral-900" aria-hidden="true" />
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.tiktok.com/@rubenrobertosiles?lang=en"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+              class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
+            >
+              <TikTokIcon class="w-7 h-7 text-neutral-900" aria-hidden="true" />
             </a>
           </li>
         </ul>
