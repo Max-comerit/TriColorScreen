@@ -130,8 +130,8 @@ const values = ref([
             :key="value.title"
             class="flex flex-col gap-2 rounded-card bg-gray-100 p-6 shadow-sm ring-1 ring-neutral-100"
           >
-            <h3 class="my-auto font-display font-semibold text-center">{{ value.title }}</h3>
-            <p class="my-auto text-base leading-relaxed">{{ value.description }}</p>
+            <h3 class="mb-2 font-display font-semibold text-neutral-900">{{ value.title }}</h3>
+            <p class="text-base leading-relaxed text-neutral-600">{{ value.description }}</p>
           </li>
         </ul>
       </Section>
