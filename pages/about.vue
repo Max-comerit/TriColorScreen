@@ -161,11 +161,6 @@ const values = ref([
             >
               <TextButton class="border">Kontakta oss</TextButton>
             </NuxtLink>
-            <NuxtLink
-              to="/services"
-            >
-              <TextButton class="border">Se våra tjänster</TextButton>
-            </NuxtLink>
           </div>
         </div>
       </Section>
