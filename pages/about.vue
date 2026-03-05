@@ -4,6 +4,7 @@
 // ===== IMPORTS =====
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
+import TextButton from '~/components/common/TextButton.vue';
 
 // ===== COMPOSABLES =====
 useHead({
@@ -157,15 +158,13 @@ const values = ref([
           <div class="flex flex-wrap justify-center gap-4 pt-2">
             <NuxtLink
               to="/contact"
-              class="rounded-button bg-white px-6 py-3 font-medium text-primary-700 transition-colors hover:bg-primary-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              Kontakta oss
+              <TextButton class="border">Kontakta oss</TextButton>
             </NuxtLink>
             <NuxtLink
               to="/services"
-              class="rounded-button border border-white px-6 py-3 font-medium text-white transition-colors hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              Se våra tjänster
+              <TextButton class="border">Se våra tjänster</TextButton>
             </NuxtLink>
           </div>
         </div>
