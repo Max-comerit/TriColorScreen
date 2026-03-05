@@ -29,9 +29,20 @@ export interface IReviewCardContent {
   date: string
 }
 
+/**
+ * Image Card Content Interface
+ */
+export interface IImageCardContent {
+  /** Image source URL for the image card */
+  imageSrc: string
+  /** Alt text for the image card */
+  alt?: string
+}
+
 export type CardItem =
   | { type: 'service'; data: IServiceCardContent }
   | { type: 'review'; data: IReviewCardContent }
+  | { type: 'image'; data: IImageCardContent }
 
 /**
  * Horizontal Card Content Interface
