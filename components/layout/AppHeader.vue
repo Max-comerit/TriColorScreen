@@ -23,7 +23,7 @@ onMounted(() => {
     <div class="min-w-[100px] mx-auto max-w-full px-3 lg:px-5 flex items-center justify-between">
       <!-- Logo -->
       <NuxtLink to="/" aria-label="Gå till hemsida" class="logo-link">
-        <picture class="p-2">
+        <picture class="py-[10px]">
           <source srcset="/images/header/tcs-logo-100.webp 1x, /images/header/tcs-logo-200.webp 2x" type="image/webp">
           <img
             src="/images/header/tcs-logo-100.png"
@@ -41,7 +41,7 @@ onMounted(() => {
       </NuxtLink>
 
       <!-- Desktop Navigation -->
-      <NavBar />
+      <NavBar class="px-[10px]" />
 
       <!-- Dummy layout element -->
       <div
