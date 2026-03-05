@@ -30,6 +30,13 @@ useHead({
 })
 
 // ===== STATE =====
+const stats = ref([
+  { value: '28+', label: 'År i branschen', ariaLabel: '28 år i branschen' },
+  { value: '5 000+', label: 'Nöjda kunder', ariaLabel: 'Över 5 000 nöjda kunder' },
+  { value: '50 000+', label: 'Levererade ordrar', ariaLabel: 'Över 50 000 levererade ordrar' },
+  { value: '8', label: 'Tjänsteområden', ariaLabel: '8 tjänsteområden' },
+])
+
 const values = ref([
   {
     title: 'Kvalitet i varje detalj',
@@ -102,21 +109,9 @@ const values = ref([
         background-color="bg-primary-50"
       >
         <ul class="grid grid-cols-2 gap-6 text-center md:grid-cols-4" role="list">
-          <li class="space-y-1">
-            <p class="font-display text-4xl font-bold text-primary-600" aria-label="28 år i branschen">28+</p>
-            <p class="text-sm font-medium text-neutral-600">År i branschen</p>
-          </li>
-          <li class="space-y-1">
-            <p class="font-display text-4xl font-bold text-primary-600" aria-label="Över 5 000 nöjda kunder">5 000+</p>
-            <p class="text-sm font-medium text-neutral-600">Nöjda kunder</p>
-          </li>
-          <li class="space-y-1">
-            <p class="font-display text-4xl font-bold text-primary-600" aria-label="Över 50 000 levererade ordrar">50 000+</p>
-            <p class="text-sm font-medium text-neutral-600">Levererade ordrar</p>
-          </li>
-          <li class="space-y-1">
-            <p class="font-display text-4xl font-bold text-primary-600" aria-label="8 tjänsteområden">8</p>
-            <p class="text-sm font-medium text-neutral-600">Tjänsteområden</p>
+          <li v-for="stat in stats" :key="stat.label" class="space-y-1">
+            <p class="font-display text-4xl font-bold text-primary-600" :aria-label="stat.ariaLabel">{{ stat.value }}</p>
+            <p class="font-medium text-neutral-600">{{ stat.label }}</p>
           </li>
         </ul>
       </Section>
@@ -136,7 +131,7 @@ const values = ref([
             class="rounded-card bg-white p-6 shadow-sm ring-1 ring-neutral-100"
           >
             <h3 class="mb-2 font-display font-semibold text-neutral-900">{{ value.title }}</h3>
-            <p class="text-sm leading-relaxed text-neutral-600">{{ value.description }}</p>
+            <p class="text-base leading-relaxed text-neutral-600">{{ value.description }}</p>
           </li>
         </ul>
       </Section>
