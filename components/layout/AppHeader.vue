@@ -7,24 +7,34 @@ import NavBar from '~/components/layout/NavBar.vue'
  * @description Desktop header with logo and navigation bar
  */
 
+// ===== STATE =====
+const scrolled = ref(false)
+
+// ===== LIFECYCLE HOOKS =====
+onMounted(() => {
+  const onScroll = () => { scrolled.value = window.scrollY > 20 }
+  window.addEventListener('scroll', onScroll, { passive: true })
+  onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
+})
 </script>
 
 <template>
-  <header class="min-h-[80px] bg-neutral-900 sticky top-0 z-50 shadow-[0_4px_10px_rgba(0,0,0,0.25)] shadow-black/50">
-    <div class="h-[80px] mx-auto max-w-full px-3 lg:px-5 flex items-center justify-between">
+  <header class="min-h-[80px] bg-neutral-900 sticky top-0 z-50 shadow-[0_4px_10px_rgba(0,0,0,0.25)] shadow-black/50 transition-all duration-300" :class="scrolled ? 'min-h-[60px]' : 'min-h-[80px]'">
+    <div class="min-w-[100px] mx-auto max-w-full px-3 lg:px-5 flex items-center justify-between">
       <!-- Logo -->
       <NuxtLink to="/" aria-label="Gå till hemsida" class="logo-link">
-        <picture>
-          <source srcset="/images/header/tcs-logo-60.webp 1x, /images/header/tcs-logo-120.webp 2x" type="image/webp">
+        <picture class="p-2">
+          <source srcset="/images/header/tcs-logo-100.webp 1x, /images/header/tcs-logo-200.webp 2x" type="image/webp">
           <img
-            src="/images/header/tcs-logo-60.png"
-            width="60"
-            height="60"
+            src="/images/header/tcs-logo-100.png"
+            :width="scrolled ? 60 : 100"
+            :height="scrolled ? 60 : 100"
             loading="eager"
             fetchpriority="high"
             alt="Tricolor Screen logotyp"
             decoding="async"
-            class="h-[60px] w-[60px] object-contain"
+            class="object-contain transition-all duration-300"
+            :class="scrolled ? 'min-w-[60px]' : 'min-w-[100px]'"
             style="image-rendering: crisp-edges;"
           >
         </picture>
@@ -34,7 +44,11 @@ import NavBar from '~/components/layout/NavBar.vue'
       <NavBar />
 
       <!-- Dummy layout element -->
-      <div class="hidden sm:block min-w-[60px] min-h-[60px]" aria-hidden="true"/>
+      <div
+        class="hidden sm:block transition-all duration-300"
+        :class="scrolled ? 'min-w-[60px] min-h-[60px]' : 'min-w-[100px] min-h-[100px]'"
+        aria-hidden="true"
+      />
 
     </div>
   </header>
