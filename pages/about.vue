@@ -31,51 +31,27 @@ useHead({
 // ===== STATE =====
 const values = ref([
   {
-    icon: '🎯',
     title: 'Kvalitet i varje detalj',
     description:
       'Vi kompromissar aldrig med kvaliteten. Varje order behandlas med omsorg från första kontakt till leverans.',
   },
   {
-    icon: '🤝',
     title: 'Personlig service',
     description:
       'Vi lyssnar på dina behov och ger rådgivning som passar just ditt projekt och din budget.',
   },
   {
-    icon: '⚡',
     title: 'Snabba leveranser',
     description:
       'Vi vet att deadlines är viktiga. Med effektiva processer levererar vi i tid – varje gång.',
   },
   {
-    icon: '🌱',
     title: 'Hållbarhet',
     description:
       'Vi använder miljövänliga material och processer där det är möjligt, för en bättre framtid.',
   },
 ])
 
-const teamMembers = ref([
-  {
-    name: 'Andreas Andersson',
-    role: 'Grundare & VD',
-    description:
-      'Grundade Tricolor Screen 1996 med en vision om att erbjuda högkvalitativt tryck till rimliga priser. Brinner för hantverk och kundrelationer.',
-  },
-  {
-    name: 'Maria Lindqvist',
-    role: 'Produktionschef',
-    description:
-      'Ansvarar för att varje order håller vår höga standard. Med 15 års erfarenhet inom tryck säkerställer Maria att allt flödar smidigt.',
-  },
-  {
-    name: 'Erik Svensson',
-    role: 'Grafisk Designer',
-    description:
-      'Hjälper kunder att förverkliga sina idéer med kreativ design och teknisk precision. Specialiserad på logotyper och profilmaterial.',
-  },
-])
 </script>
 
 <template>
@@ -158,7 +134,6 @@ const teamMembers = ref([
             :key="value.title"
             class="rounded-card bg-white p-6 shadow-sm ring-1 ring-neutral-100"
           >
-            <p class="mb-3 text-4xl" role="img" :aria-label="value.title">{{ value.icon }}</p>
             <h3 class="mb-2 font-display font-semibold text-neutral-900">{{ value.title }}</h3>
             <p class="text-sm leading-relaxed text-neutral-600">{{ value.description }}</p>
           </li>
