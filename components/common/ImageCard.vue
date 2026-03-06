@@ -76,7 +76,7 @@ const handleClick = (): void => {
         fit="cover"
         loading="lazy"
         fetchpriority="low"
-        class="w-full h-full object-cover"
+        class="w-full w-auto object-cover"
       />
     </article>
   </div>
