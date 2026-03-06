@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 import AppHeader from '~/components/layout/AppHeader.vue'
-// AppFooter is imported lazily via <LazyAppFooter> — no static import needed
+import AppFooter from '~/components/layout/AppFooter.vue'
 
 // Base SEO meta tags for all pages
 useHead({
@@ -48,8 +48,8 @@ useHead({
       <main id="main-content" role="main" aria-label="Huvudinnehåll" tabindex="-1" class="flex-1">
         <NuxtPage />
       </main>
-      <!-- Footer is below the fold — load its JS lazily -->
-      <LazyAppFooter />
+      <!-- Footer -->
+      <AppFooter />
     </div>
   </div>
 </template>
