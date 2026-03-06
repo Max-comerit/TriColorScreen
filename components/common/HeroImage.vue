@@ -117,6 +117,7 @@ onMounted(() => {
       format="webp"
       quality="80"
       sizes="320px sm:640px md:768px lg:1024px xl:1280px"
+      densities="x1 x2"
       loading="eager"
       fetchpriority="high"
       decoding="async"
