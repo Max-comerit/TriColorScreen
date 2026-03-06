@@ -1,6 +1,6 @@
 # Netlify Build Configuration
 [build]
-  command = "npm run generate"
+  command = "npm run generate:clean"
   publish = "dist/"
 
 # Note: No SPA catch-all redirect — this is SSG (nuxt generate).
