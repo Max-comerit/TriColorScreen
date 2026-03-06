@@ -70,7 +70,7 @@ const handleClick = (): void => {
         height="600"
         format="webp"
         :alt="alt"
-        quality="80"
+        quality="70"
         :sizes="imgSizes"
         densities="x1"
         fit="cover"
