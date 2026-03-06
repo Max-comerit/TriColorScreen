@@ -6,9 +6,10 @@ import type { CardItem, IServiceCardContent } from '~/types/CardContent'
 import services from '~/assets/json/services/printed-matter/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import Carousel from '~/components/common/Carousel.vue'
 import TextButton from '~/components/common/TextButton.vue'
 import { useResponsivePerPage } from '~/composables/useResponsivePerPage'
+import { defineAsyncComponent } from 'vue'
+const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
 
 // ===== COMPOSABLES =====
 useHead({
