@@ -389,11 +389,35 @@ function addText(): void {
 
     <!-- Sections -->
     <div class="layout-container">
+      <!-- Intro -->
+      <Section
+        id="intro"
+        title="Skapa din egen design"
+        aria-label="Hur du använder designverktyget"
+        align="center"
+         padding-y="pt-4 md:pt-6 lg:pt-8 xl:pt-12 2xl:pt-16"
+      >
+        <div class="mx-auto max-w-3xl space-y-4">
+          <p class="leading-relaxed">
+            Med vårt designverktyg kan du skapa exakt den produkt du drömmer om. Välj en
+            produkt från våra textilier, ladda upp en bild, lägg till text och se hur det
+            kommer att se ut innan du beställer. Designa båda fram- och baksidan för en
+            helt personlig produkt.
+          </p>
+          <p class="leading-relaxed">
+            Efter att du är nöjd med din design skickar du en offertförfrågan direkt från verktyget.
+            Vi återkommer snabbt med pris och leveranstid. Det är så enkelt!
+          </p>
+        </div>
+      </Section>
+
+      <!-- Design Tool -->
       <Section 
         id="services" 
         title="Design Verktyg" 
         align="center"
         aria-label="Design Verktyg"
+        
       >
         <BackgroundSelector
           @custom-image-selected="handleCustomImageSelected"

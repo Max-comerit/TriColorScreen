@@ -26,6 +26,8 @@ interface Props {
   align?: 'left' | 'center' | 'right'
   /** ARIA label for accessibility */
   ariaLabel?: string
+  /** Tailwind padding-y class */
+  paddingY?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -37,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   contained: true,
   align: 'left',
   ariaLabel: undefined,
+  paddingY: 'py-4 md:py-6 lg:py-8 xl:py-12 2xl:py-16',
 })
 
 // ===== COMPUTED =====
@@ -54,7 +57,7 @@ const alignClass = computed(() => {
 <template>
   <section
     :id="id"
-    :class="[backgroundColor, textColor, 'py-4 md:py-6 lg:py-8 xl:py-12 2xl:py-16']"
+    :class="[backgroundColor, textColor, paddingY]"
     :aria-label="ariaLabel || title"
   >
     <div :class="{ 'container mx-auto': contained }">

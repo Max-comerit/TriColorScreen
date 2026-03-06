@@ -2,6 +2,8 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
+import type { CardItem } from '~/types/CardContent'
+import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import TextButton from '~/components/common/TextButton.vue'
@@ -37,26 +39,43 @@ const stats = ref([
   { value: '8', label: 'Tjänsteområden', ariaLabel: '8 tjänsteområden' },
 ])
 
-const values = ref([
+// ===== COMPUTED =====
+const valueCards = computed<CardItem[]>(() => [
   {
-    title: 'Kvalitet i varje detalj',
-    description:
-      'Vi kompromissar aldrig med kvaliteten. Varje order behandlas med omsorg från första kontakt till leverans.',
+    type: 'text',
+    data: {
+      title: 'Kvalitet i varje detalj',
+      description: 'Vi kompromissar aldrig med kvaliteten. Varje order behandlas med omsorg från första kontakt till leverans.',
+      align: 'center',
+      backgroundColor: "bg-primary-50"
+    },
   },
   {
-    title: 'Personlig service',
-    description:
-      'Vi lyssnar på dina behov och ger rådgivning som passar just ditt projekt och din budget.',
+    type: 'text',
+    data: {
+      title: 'Personlig service',
+      description: 'Vi lyssnar på dina behov och ger rådgivning som passar just ditt projekt och din budget.',
+      align: 'center',
+      backgroundColor: "bg-primary-50"
+    },
   },
   {
-    title: 'Snabba leveranser',
-    description:
-      'Vi vet att deadlines är viktiga. Med effektiva processer levererar vi i tid – varje gång.',
+    type: 'text',
+    data: {
+      title: 'Snabba leveranser',
+      description: 'Vi vet att deadlines är viktiga. Med effektiva processer levererar vi i tid – varje gång.',
+      align: 'center',
+      backgroundColor: "bg-primary-50"
+    },
   },
   {
-    title: 'Hållbarhet',
-    description:
-      'Vi använder miljövänliga material och processer där det är möjligt, för en bättre framtid.',
+    type: 'text',
+    data: {
+      title: 'Hållbarhet',
+      description: 'Vi använder miljövänliga material och processer där det är möjligt, för en bättre framtid.',
+      align: 'center',
+      backgroundColor: "bg-primary-50"
+    },
   },
 ])
 
@@ -124,16 +143,12 @@ const values = ref([
         align="center"
         aria-label="Våra kärnvärderingar"
       >
-        <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
-          <li
-            v-for="value in values"
-            :key="value.title"
-            class="rounded-card bg-gray-100 p-6 shadow-sm ring-1 ring-neutral-100"
-          >
-            <h3 class="mb-2 font-display font-semibold text-neutral-900 text-center">{{ value.title }}</h3>
-            <p class="text-base leading-relaxed text-neutral-600">{{ value.description }}</p>
-          </li>
-        </ul>
+        <CardGrid
+          :card-content-arr="valueCards"
+          :min-item-width="220"
+          :gap="24"
+          aria-label="Våra värderingar"
+        />
       </Section>
 
       <!-- CTA -->

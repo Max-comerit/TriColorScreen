@@ -2,13 +2,13 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import type { CardItem, IServiceCardContent, IHorizontalCardContent } from '~/types/CardContent'
-import horizontalCards from '~/assets/json/services/graphic-production/horizontal-cards.json'
+import type { CardItem, IServiceCardContent, ITextCardContent } from '~/types/CardContent'
 import services from '~/assets/json/services/graphic-production/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import HorizontalCard from '~/components/common/HorizontalCard.vue'
 import CardGrid from '~/components/common/CardGrid.vue'
+import TextButton from '~/components/common/TextButton.vue'
+
 
 // ===== PROPS & EMITS =====
 // (Page component - no props/emits needed)
@@ -44,12 +44,9 @@ useHead({
   ],
 })
 
-// ===== STATE (ref/reactive) =====
+// ===== STATE =====
 const servicesData = ref<IServiceCardContent[]>(
   (services as IServiceCardContent[]).map(item => ({ ...item, maxLines: 8 }))
-)
-const horizontalCardsData = ref<IHorizontalCardContent[]>(
-  (horizontalCards as IHorizontalCardContent[]).map(item => ({ ...item, maxLines: 12 }))
 )
 
 // ===== COMPUTED =====
@@ -59,13 +56,38 @@ const serviceCards = computed<CardItem[]>(() =>
 
 // ===== METHODS =====
 // (No additional methods needed)
+const stepCards = computed<CardItem[]>(() => (
+  [
+    {
+      number: '01',
+      title: 'Budskap först',
+      description: 'Det första vi frågar är: vad vill ni förmedla? Rätt budskap är grunden för all grafisk produktion – utan det spelar varken design eller material någon roll.',
+      backgroundColor: "bg-primary-50"
+    },
+    {
+      number: '02',
+      title: 'Design & material',
+      description: 'Vi tar fram en design som kommunicerar rätt och väljer material som stärker intrycket. Valet av papper är avgörande – fel karaktär kan försvaga ett annars starkt budskap.',
+      backgroundColor: "bg-primary-50"
+    },
+    {
+      number: '03',
+      title: 'Produktion & leverans',
+      description: 'Vi trycker materialet i den kvantitet du behöver och säkerställer att allt är tekniskt och kommunikativt korrekt innan det hamnar i dina händer.',
+      backgroundColor: "bg-primary-50"
+    },
+  ] satisfies (ITextCardContent & { number: string })[]
+).map(({ number, ...rest }) => ({
+  type: 'text' as const,
+  data: { ...rest, prefix: number, prefixColor: 'text-primary-300' },
+})))
 
 </script>
 
 <template>
   <div>
     <!-- Hero: full width -->
-    <HeroImage 
+    <HeroImage
       src="/images/services/graphic-production/hero.jpg"
       title="Design & Grafisk Produktion"
       description="Vi hjälper dig att designa din logotyp och allt annat som är kopplat till ditt varumärke på ett sätt som förför dina kunder."
@@ -74,40 +96,83 @@ const serviceCards = computed<CardItem[]>(() =>
       alt="Grafisk design och tryckmaterial med klistermärken, färgprover, klädmockups och varumärkesprofilering."
     />
 
-    <!-- Sections -->
     <div class="layout-container">
-      <Section 
-        id="graphic-production" 
-        title="Grafisk Produktion"
+
+      <!-- Intro -->
+      <Section
+        id="intro"
+        title="Design som kommunicerar"
+        aria-label="Om vår grafiska produktion"
         align="center"
-        aria-label="Grafisk Produktion"
       >
-        <HorizontalCard
-          v-for="(card, index) in horizontalCardsData" 
-          :key="`horizontal-card-${index}`"
-          :title="card.title"
-          :image-src="card.imageSrc"
-          :description="card.description"
-          :max-lines="card.maxLines"
-          :link="card.link"
-          size="fit"
-          class="mb-6"
+        <div class="mx-auto max-w-3xl space-y-4">
+          <p class="leading-relaxed">
+            Vi har producerat underlag för de flesta typer av grafiskt material. Oavsett vad du
+            behöver – logotyp, broschyr, skylt eller visitkort – kan vi med största sannolikhet
+            lösa det åt dig, från idé till färdig trycksak.
+          </p>
+          <p class="leading-relaxed">
+            Vi är alltid måna om att det grafiska är både kommunikativt och tekniskt korrekt.
+            Kommer texten att synas? Sänder bilden rätt budskap? Vi ställer de frågorna
+            innan du ens behöver tänka på dem.
+          </p>
+        </div>
+      </Section>
+
+      <!-- Process -->
+      <Section
+        id="process"
+        title="Hur vi arbetar"
+        description="En enkel process från brief till leverans – vi guidar dig hela vägen."
+        align="center"
+        aria-label="Vår arbetsprocess"
+        class="p-4"
+      >
+        <CardGrid
+          :card-content-arr="stepCards"
+          :min-item-width="280"
+          :gap="24"
+          aria-label="Arbetsprocess steg"
         />
       </Section>
-      <Section 
-        id="graphic-production-services" 
-        title="Våra tjänster inom Design och Grafisk Produktion" 
+
+      <!-- Services -->
+      <Section
+        id="services"
+        title="Våra tjänster"
         align="center"
-        aria-label="Våra tjänster inom Design och Grafisk Produktion"
+        aria-label="Våra tjänster inom design och grafisk produktion"
       >
-        <!-- Service card grid -->
         <CardGrid
           :card-content-arr="serviceCards"
           :min-item-width="280"
           :gap="24"
-          aria-label="Tjänstekategorier"
+          aria-label="Tjänster inom grafisk produktion"
         />
       </Section>
+
+      <!-- CTA -->
+      <Section
+        id="contact-cta"
+        aria-label="Kontakta oss"
+        background-color="bg-primary-600"
+        text-color="text-white"
+        align="center"
+      >
+        <div class="space-y-4 text-center">
+          <h2 class="font-display text-white">Har du ett projekt i åtanke?</h2>
+          <p class="mx-auto max-w-xl leading-relaxed text-primary-100">
+            Berätta om ditt varumärke och vad du behöver – vi återkommer med ett förslag
+            som passar ditt ändamål och din budget.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4 pt-2">
+            <NuxtLink to="/contact">
+              <TextButton class="border">Kontakta oss</TextButton>
+            </NuxtLink>
+          </div>
+        </div>
+      </Section>
+
     </div>
   </div>
 </template>

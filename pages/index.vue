@@ -74,8 +74,28 @@ const reviewCards = computed<CardItem[]>(() =>
     <!-- Brag Bar -->
     <BragBar />
 
-    <!-- Sections -->
     <div class="layout-container">
+
+      <!-- Intro -->
+      <Section
+        id="intro"
+        title="Välkommen till Tricolor Screen"
+        aria-label="Om Tricolor Screen"
+        align="center"
+      >
+        <div class="mx-auto max-w-3xl space-y-4">
+          <p class="leading-relaxed">
+            Sedan 1996 har vi levererat professionellt tryck och profilmaterial till företag och privatpersoner.
+            Trycksaker, broderade kläder, skyltar, bildekor eller en ny grafisk profil – vi tar hand om hela processen från idé till färdig produkt.
+          </p>
+          <p class="leading-relaxed">
+            Med 28 års erfarenhet vet vi vad som krävs för ett resultat som håller och gör intryck.
+            Vi lyssnar på dina behov, ger ärlig rådgivning och levererar alltid i tid.
+            Ditt varumärke är i trygga händer.
+          </p>
+        </div>
+      </Section>
+
       <!-- Service Categories -->
       <Section 
         id="services"
@@ -86,7 +106,7 @@ const reviewCards = computed<CardItem[]>(() =>
         <!-- Service categories card grid -->
         <CardGrid
           :card-content-arr="serviceCards"
-          :min-item-width="280"
+          :min-item-width="320"
           :gap="24"
           aria-label="Tjänstekategorier"
         />

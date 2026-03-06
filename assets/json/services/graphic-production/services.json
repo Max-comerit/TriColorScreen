@@ -1,25 +1,25 @@
 [
   {
     "title": "Logotyper",
-    "description": "Har ni en idé eller ingen aning hur er logo ska se ut - Lugn! vi hjälper er.",
+    "description": "En logotyp som speglar ditt varumärke. Har du en idé eller ingen alls tar vi fram en design som passar din verksamhet.",
     "imageSrc": "/images/services/graphic-production/logos.jpg",
     "alt": "Logotyper"
   },
   {
     "title": "Broschyrer & Mappar",
-    "description": "Vi designar och producerar broschyrer, folders och affischer för ditt företag eller event. Oavsett om du behöver marknadsföringsmaterial eller informationsmaterial hjälper vi dig att få ett professionellt resultat.",
+    "description": "Broschyrer, folders och affischer som presenterar ditt företag tydligt och professionellt. Passar både för marknadsföring och information.",
     "imageSrc": "/images/services/graphic-production/folders.jpg",
     "alt": "Broschyrer / Folders / Affischer"
   },
   {
     "title": "Skyltar & Banderoller",
-    "description": "Vi hjälper er att designa och producera skyltar, rollups och banderoller för er verksamhet. Från den speciella skylten för kontoret till kreativa rollups för mässor, vi fixar allt för att göra ert företag synliggjort.",
+    "description": "Skyltar, rollups och banderoller som gör din verksamhet synlig. Perfekt för kontor, butiker och mässor.",
     "imageSrc": "/images/services/graphic-production/rollups.jpg",
     "alt": "Skyltar / Rollups / Banderoller"
   },
   {
     "title": "Visitkort & Kuvert",
-    "description": "Vi designar och producerar visitkort, kuvert, presentationsmaterial och menyer för din verksamhet. Vi har hjälpt många företag med all sorts grafisk produktion och kan lösa nästan vilket projekt som helst inom designbranschen.",
+    "description": "Visitkort, kuvert och presentationsmaterial med en genomtänkt design som stärker intrycket av ditt företag.",
     "imageSrc": "/images/services/graphic-production/business-cards.jpg",
     "alt": "Visitkort / Kuvert / Presentationsmaterial / Menyer"
   }

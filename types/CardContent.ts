@@ -39,10 +39,29 @@ export interface IImageCardContent {
   alt?: string
 }
 
+/**
+ * Text Card Content Interface
+ */
+export interface ITextCardContent {
+  /** Card heading */
+  title: string
+  /** Descriptive body text */
+  description?: string
+  /** Optional prefix displayed above the title – e.g. an emoji or a step number */
+  prefix?: string
+  /** Tailwind text-color class applied to the prefix */
+  prefixColor?: string
+  /** Text alignment for title and description */
+  align?: 'left' | 'center'
+  /** Tailwind background-color class */
+  backgroundColor?: string
+}
+
 export type CardItem =
   | { type: 'service'; data: IServiceCardContent }
   | { type: 'review'; data: IReviewCardContent }
   | { type: 'image'; data: IImageCardContent }
+  | { type: 'text'; data: ITextCardContent }
 
 /**
  * Horizontal Card Content Interface

@@ -44,7 +44,7 @@ useHead({
 
 const { perPage } = useResponsivePerPage()
 
-// ===== STATE (ref/reactive) =====
+// ===== STATE =====
 const servicesData = ref<IServiceCardContent[]>(
   (services as IServiceCardContent[]).map(item => ({ ...item, maxLines: 8 }))
 )
@@ -53,15 +53,12 @@ const servicesData = ref<IServiceCardContent[]>(
 const serviceCards = computed<CardItem[]>(() =>
   servicesData.value.map((item) => ({ type: 'service', data: item })),
 )
-
-
-
 </script>
 
 <template>
   <div>
     <!-- Hero: full width -->
-    <HeroImage 
+    <HeroImage
       src="/images/services/printed-matter/hero.jpg"
       title="Designa produkter med eget tryck"
       :width="1280"
@@ -78,15 +75,37 @@ const serviceCards = computed<CardItem[]>(() =>
       </template>
     </HeroImage>
 
-    <!-- Sections -->
     <div class="layout-container">
-      <Section 
-        id="printed-matter" 
-        title="Trycksaker" 
+
+      <!-- Intro -->
+      <Section
+        id="intro"
+        title="Trycksaker som syns och håller"
+        aria-label="Om våra trycksaker"
+        align="center"
+      >
+        <div class="mx-auto max-w-3xl space-y-4">
+          <p class="leading-relaxed">
+            Från visitkort till hela broschyrkampanjer.
+            Vi tar hand om hela processen, från idé till färdig trycksak.
+            Med 28 år i branschen vet vi vad som krävs för ett resultat som gör intryck.
+          </p>
+          <p class="leading-relaxed">
+            Vi trycker på en mängd olika material och för många olika ändamål.
+            Hittar du inte exakt det du söker bland våra produkter?
+            Hör av dig, vi hjälper dig att hitta rätt lösning.
+          </p>
+        </div>
+      </Section>
+
+      <!-- Products carousel -->
+      <Section
+        id="printed-matter"
+        title="Våra trycksaker"
         align="center"
         aria-label="Våra trycksaker"
+        padding-y="pb-4 md:pb-6 lg:pb-8 xl:pb-12 2xl:pb-16"
       >
-        <!-- Carousel view -->
         <Carousel
           :items="serviceCards"
           :per-page="perPage"
@@ -96,15 +115,30 @@ const serviceCards = computed<CardItem[]>(() =>
           show-dots
           aria-label="Trycksaker"
         />
-        <p class="mt-6 text-center"><strong>Är det något som saknas?</strong></p>
-        <p class="text-center"><strong>Kontakta oss!</strong></p>
-        <p class="text-center"><strong>Vi trycker på alla sorters material för alla ändamål.</strong></p>
-        <div class="mt-6 flex justify-center">
-          <NuxtLink to="/contact" class="inline-block">
-              <TextButton>Kontakta Oss</TextButton>
-          </NuxtLink>
+      </Section>
+
+      <!-- CTA -->
+      <Section
+        id="contact-cta"
+        aria-label="Kontakta oss"
+        background-color="bg-primary-600"
+        text-color="text-white"
+        align="center"
+      >
+        <div class="space-y-4 text-center">
+          <h2 class="font-display text-white">Hittar du inte vad du letar efter?</h2>
+          <p class="mx-auto max-w-xl leading-relaxed text-primary-100">
+            Vi trycker på i princip alla material och kan ta fram skräddarsydda lösningar.
+            Berätta vad du behöver så återkommer vi med ett förslag.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4 pt-2">
+            <NuxtLink to="/contact">
+              <TextButton class="border">Kontakta oss</TextButton>
+            </NuxtLink>
+          </div>
         </div>
       </Section>
+
     </div>
   </div>
 </template>
