@@ -59,27 +59,24 @@ const serviceCards = computed<CardItem[]>(() =>
 const stepCards = computed<CardItem[]>(() => (
   [
     {
-      number: '01',
       title: 'Budskap först',
       description: 'Det första vi frågar är: vad vill ni förmedla? Rätt budskap är grunden för all grafisk produktion – utan det spelar varken design eller material någon roll.',
       backgroundColor: "bg-primary-50"
     },
     {
-      number: '02',
       title: 'Design & material',
       description: 'Vi tar fram en design som kommunicerar rätt och väljer material som stärker intrycket. Valet av papper är avgörande – fel karaktär kan försvaga ett annars starkt budskap.',
       backgroundColor: "bg-primary-50"
     },
     {
-      number: '03',
       title: 'Produktion & leverans',
       description: 'Vi trycker materialet i den kvantitet du behöver och säkerställer att allt är tekniskt och kommunikativt korrekt innan det hamnar i dina händer.',
       backgroundColor: "bg-primary-50"
     },
-  ] satisfies (ITextCardContent & { number: string })[]
-).map(({ number, ...rest }) => ({
+  ] satisfies ITextCardContent[]
+).map(item => ({
   type: 'text' as const,
-  data: { ...rest, prefix: number, prefixColor: 'text-primary-300' },
+  data: item,
 })))
 
 </script>

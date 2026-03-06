@@ -87,16 +87,9 @@ const imageCards = computed<CardItem[]>(() =>
           All rådgivning anpassas efter ditt behov och användningsområde.
         </p>
       </div>
-    </Section>
 
-      <!-- Gallery -->
-      <Section
-        id="gallery"
-        description="Vi trycker på alla sorters textilier med personlig vägledning och rådgör med er om vilken tryckmetod som passar just ert ändamål."
-        align="center"
-        aria-label="Exempel på tryckmetoder"
-      >
-        <Carousel
+    </Section>
+          <Carousel
           :items="imageCards"
           :per-page="perPage"
           :gap-px="16"
@@ -104,8 +97,8 @@ const imageCards = computed<CardItem[]>(() =>
           show-arrows
           show-dots
           aria-label="Tryckmetoder och resultat"
+          class="mb-4"
         />
-      </Section>
 
       <!-- Store section -->
       <Section

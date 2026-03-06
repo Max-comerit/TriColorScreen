@@ -414,7 +414,6 @@ function addText(): void {
       <!-- Design Tool -->
       <Section 
         id="services" 
-        title="Design Verktyg" 
         align="center"
         aria-label="Design Verktyg"
         
@@ -444,21 +443,25 @@ function addText(): void {
               aria-label="Upload image design"
               variant="primary"
               size="fit"
+              class="w-full"
               @click="uploadImage()"
             >
               <template #icon>
                 <ImageIcon class="!w-6 !h-6" />
               </template>
+              <span class="hidden lg:inline">Ladda upp bild</span>
             </IconButton>
             <IconButton
               aria-label="Add text design"
               variant="primary"
               size="fit"
+              class="w-full"
               @click="addText()"
             >
               <template #icon>
                 <TextIcon class="!w-6 !h-6" />
               </template>
+              <span class="hidden lg:inline">Lägg till text</span>
             </IconButton>
           </div>
         </div>

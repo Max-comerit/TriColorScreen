@@ -74,25 +74,34 @@ const iconSize = computed(() => {
     class="icon-button"
     @click="handleClick"
   >
-    <!-- Icon slot for custom icon components (e.g., SVG components) -->
-    <slot name="icon">
-      <!-- Fallback to img element if iconSrc prop is provided -->
-      <img
-        v-if="props.iconSrc"
-        :src="props.iconSrc"
-        :alt="props.iconAlt"
-        :class="iconSize"
-        class="icon-image"
-        width="24"
-        height="24"
-      >
-    </slot>
+    <div class="flex flex-row items-center justify-center gap-2 leading-none">
+      <!-- Icon slot for custom icon components (e.g., SVG components) -->
+      <slot name="icon">
+        <!-- Fallback to img element if iconSrc prop is provided -->
+        <img
+          v-if="props.iconSrc"
+          :src="props.iconSrc"
+          :alt="props.iconAlt"
+          :class="iconSize"
+          class="icon-image flex-shrink-0"
+          width="24"
+          height="24"
+        >
+      </slot>
+      <!-- Default slot for optional text label -->
+      <slot />
+    </div>
   </BaseButton>
 </template>
 
 <style scoped>
 /* Icon button specific styles */
 .icon-button {
+  @apply flex items-center justify-center;
+}
+
+/* BaseButton wraps slot content in a plain <span> — make it flex so children center correctly */
+.icon-button :deep(> span) {
   @apply flex items-center justify-center;
 }
 

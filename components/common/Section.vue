@@ -39,7 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   contained: true,
   align: 'left',
   ariaLabel: undefined,
-  paddingY: 'py-4 md:py-6 lg:py-8 xl:py-12 2xl:py-16',
+  paddingY: 'py-4 md:py-6 lg:py-8 xl:py-12 2xl:py-12',
 })
 
 // ===== COMPUTED =====
