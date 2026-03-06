@@ -68,6 +68,7 @@ const handleClick = (): void => {
         :src="imageSrc"
         width="480"
         height="600"
+        widths="auto"
         format="webp"
         :alt="alt"
         quality="70"
