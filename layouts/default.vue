@@ -48,7 +48,6 @@ useHead({
       <main id="main-content" role="main" aria-label="Huvudinnehåll" tabindex="-1" class="flex-1">
         <NuxtPage />
       </main>
-      <!-- Footer -->
       <AppFooter />
     </div>
   </div>
