@@ -79,7 +79,7 @@ const gridStyle = computed(() => ({
           :link="card.data.link"
           :alt="card.data.alt"
           :background-color="(index % 2 === 0 ? 'bg-primary-50' : 'bg-secondary-50') + ' sm:bg-primary-50'"
-          img-sizes="335px sm:288px md:352px lg:312px xl:292px"
+          img-sizes="332px sm:248px md:312px lg:272px xl:252px"
         />
         <ReviewCard
           v-else-if="card.type === 'review'"
