@@ -68,7 +68,7 @@ const handleClick = (): void => {
         format="webp"
         :alt="alt"
         quality="80"
-        sizes="320px sm:320px lg:341px xl:427px"
+        sizes="100vw sm:50vw lg:33vw xl:25vw"
         fit="cover"
         loading="lazy"
         fetchpriority="low"
