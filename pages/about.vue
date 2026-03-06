@@ -8,7 +8,7 @@ import TextButton from '~/components/common/TextButton.vue';
 
 // ===== COMPOSABLES =====
 useHead({
-  title: 'Om oss – Tricolor Screen',
+  title: 'Om Oss – Tricolor Screen',
   meta: [
     {
       name: 'description',
@@ -84,18 +84,18 @@ const values = ref([
         align="center"
       >
         <div class="mx-auto max-w-3xl space-y-4">
-          <p class="leading-relaxed text-neutral-700">
+          <p class="leading-relaxed">
             Tricolor Screen grundades 1996 med en enkel men stark övertygelse: att alla företag –
             stora som små – förtjänar professionellt tryckt profilmaterial till ett rättvist pris.
             Vad som startade som ett litet screentryckeri har vuxit till ett fullserviceföretag
             inom reklam- och profiltryck.
           </p>
-          <p class="leading-relaxed text-neutral-700">
+          <p class="leading-relaxed">
             Idag erbjuder vi ett brett sortiment av tjänster: reklam- och profiltryck, brodyr,
             textiltryck, bildekor och bilfoliering. Med modern utrustning och ett dedikerat team
             levererar vi hög kvalitet varje dag.
           </p>
-          <p class="leading-relaxed text-neutral-700">
+          <p class="leading-relaxed">
             Vi är stolta över att ha byggt långvariga relationer med våra kunder, från lokala
             småföretag till stora nationella organisationer. Ditt varumärke är i trygga händer.
           </p>
@@ -128,10 +128,10 @@ const values = ref([
           <li
             v-for="value in values"
             :key="value.title"
-            class="rounded-card bg-gray-100 p-6 shadow-sm ring-1 ring-neutral-100"
+            class="flex flex-col gap-2 rounded-card bg-gray-100 p-6 shadow-sm ring-1 ring-neutral-100"
           >
-            <h3 class="mb-2 font-display font-semibold text-neutral-900 text-center">{{ value.title }}</h3>
-            <p class="text-base leading-relaxed text-neutral-600">{{ value.description }}</p>
+            <h3 class="my-auto font-display font-semibold text-center">{{ value.title }}</h3>
+            <p class="my-auto text-base leading-relaxed">{{ value.description }}</p>
           </li>
         </ul>
       </Section>
