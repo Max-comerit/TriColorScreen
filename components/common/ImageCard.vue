@@ -69,7 +69,6 @@ const handleClick = (): void => {
         :alt="alt"
         quality="80"
         sizes="100vw sm:50vw lg:33vw xl:25vw"
-        densities="x1 x2"
         fit="cover"
         loading="lazy"
         fetchpriority="low"
