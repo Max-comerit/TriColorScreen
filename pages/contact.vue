@@ -2,11 +2,13 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
+import { defineAsyncComponent } from 'vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import ContactPanel from '~/components/features/ContactPanel.vue'
-import ContactForm from '~/components/features/ContactForm.vue'
 import ConfirmDialog from '~/components/layout/ConfirmDialog.vue'
+// Lazy-load ContactForm so Zod is kept out of the shared synchronous bundle
+const ContactForm = defineAsyncComponent(() => import('~/components/features/ContactForm.vue'))
 
 // ===== STATE =====
 const showConfirmDialog = ref(false)
