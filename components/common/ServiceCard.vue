@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
   textColor: 'black',
   link: '',
   alt: 'Service Image',
-  imgSizes: '640px sm:265px md:330px lg:355px xl:360px'
+  imgSizes: '320px sm:265px md:330px lg:355px xl:360px'
 })
 
 /** Emits 'click' event when the card is clicked or activated via keyboard */
