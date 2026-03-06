@@ -7,11 +7,14 @@
  */
 
 // ===== IMPORTS =====
+import { defineAsyncComponent } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useNavigationStore } from '~/stores/navigationStore'
 import type { INavItem } from '~/types/NavigationStore'
-import BurgerMenu from './BurgerMenu.vue'
 import BurgerButton from './BurgerButton.vue'
+// BurgerMenu is only shown when the burger button is clicked (never in initial render)
+// → keep it out of the synchronous shared bundle
+const BurgerMenu = defineAsyncComponent(() => import('./BurgerMenu.vue'))
 
 // ===== COMPOSABLES & STORES =====
 const navigationStore = useNavigationStore()
