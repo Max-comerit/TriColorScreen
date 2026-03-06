@@ -21,6 +21,8 @@ interface Props {
   height?: string | number
   /** Tailwind background color class */
   backgroundColor?: string
+  /** Responsive sizes hint for the image — match your layout's column widths */
+  imgSizes?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   height: '100%',
   backgroundColor: 'bg-gray-100',
+  imgSizes: '320px sm:305px md:370px lg:325px xl:400px'
 })
 
 /** Emits 'click' event when the card is clicked */
@@ -68,7 +71,7 @@ const handleClick = (): void => {
         format="webp"
         :alt="alt"
         quality="80"
-        sizes="320px xs:320px sm:305px md:370px lg:325px xl:400px"
+        :sizes="imgSizes"
         fit="cover"
         loading="lazy"
         fetchpriority="low"
