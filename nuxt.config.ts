@@ -70,7 +70,7 @@ export default defineNuxtConfig({
   ],
 
   image: {
-    provider: 'ipx',
+    provider: process.env.NETLIFY === 'true' ? 'netlify' : 'ipx',
     screens: {
       xs: 320,
       sm: 640,
