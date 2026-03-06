@@ -30,6 +30,8 @@ interface Props {
   link?: string
   /** Alt text for the image */
   alt?: string
+  /** Responsive sizes hint for the image — match your layout's column widths */
+  imgSizes?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -40,7 +42,8 @@ const props = withDefaults(defineProps<Props>(), {
   backgroundColor: 'bg-primary-50',
   textColor: 'black',
   link: '',
-  alt: 'Service Image'
+  alt: 'Service Image',
+  imgSizes: '100vw sm:50vw lg:33vw xl:25vw'
 })
 
 /** Emits 'click' event when the card is clicked or activated via keyboard */
@@ -107,7 +110,7 @@ const handleCardClick = () => {
             format="webp"
             :alt="alt || title"
             quality="80"
-            sizes="100vw sm:50vw lg:33vw xl:25vw"
+            :sizes="imgSizes"
             fit="cover"
             loading="lazy"
             fetchpriority="low"
@@ -151,7 +154,7 @@ const handleCardClick = () => {
           format="webp"
           :alt="alt || title"
           quality="80"
-          sizes="100vw sm:50vw lg:33vw xl:25vw"
+          :sizes="imgSizes"
           fit="cover"
           loading="lazy"
           fetchpriority="low"
