@@ -245,6 +245,7 @@ onMounted(() => {
             :max-lines="item.data.maxLines"
             :link="item.data.link"
             :alt="item.data.alt"
+            img-sizes="100vw sm:50vw lg:33vw xl:330px"
             background-color="bg-primary-50"
             text-color="black"
             @click="onCardClick(item, idx)"
@@ -263,6 +264,7 @@ onMounted(() => {
             v-else-if="item.type === 'image'"
             :image-src="item.data.imageSrc"
             :alt="item.data.alt"
+            img-sizes="100vw sm:50vw lg:33vw xl:330px"
             @click="onCardClick(item, idx)"
           />
         </div>
