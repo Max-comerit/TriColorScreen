@@ -5,11 +5,13 @@
 import type { CardItem, IServiceCardContent, IReviewCardContent } from '~/types/CardContent'
 import serviceCategories from '~/assets/json/index/serviceCategories.json'
 import reviews from '~/assets/json/index/reviews.json'
+import { defineAsyncComponent } from 'vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import BragBar from '~/components/features/BragBar.vue'
 import Section from '~/components/common/Section.vue'
 import CardGrid from '~/components/common/CardGrid.vue'
-import Carousel from '~/components/common/Carousel.vue'
+// Lazy-load Carousel into its own chunk — it and Embla are only needed on mobile
+const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
 
 // ===== COMPOSABLES =====
 useHead({
