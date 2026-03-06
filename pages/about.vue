@@ -145,10 +145,10 @@ const values = ref([
         align="center"
       >
         <div class="space-y-4 text-center">
-          <h2 class="font-display text-white">Redo att samarbeta?</h2>
+          <h2 class="font-display text-white">Låt oss hjälpa dig</h2>
           <p class="mx-auto max-w-xl leading-relaxed text-primary-100">
-            Oavsett om du behöver trycksaker, broderade kläder eller en ny bildekoration – vi är
-            här för att hjälpa dig. Hör av dig så tar vi det därifrån.
+            Vi tror på enkla samtal och ärliga råd. Berätta vad du behöver så hittar vi
+            tillsammans den bästa lösningen för dig och ditt företag.
           </p>
           <div class="flex flex-wrap justify-center gap-4 pt-2">
             <NuxtLink
