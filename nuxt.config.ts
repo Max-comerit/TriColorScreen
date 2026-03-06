@@ -15,7 +15,7 @@ export default defineNuxtConfig({
       crawlLinks: true,
       ignore: [
         /^\/\.netlify\/images/,
-        /^\/ipx/
+        /^\/dist\/_ipx/
       ]
     },
     compressPublicAssets: true,
