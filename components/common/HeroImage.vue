@@ -79,7 +79,7 @@ const containerStyle = computed(() =>
 onMounted(() => {
   // Safari < 16.3 (March 2023) has an aspect-ratio bug in flex/grid containers.
   const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
-  if (!isSafari) {
+  if (isSafari) {
     const m = navigator.userAgent.match(/Version\/(\d+)\.(\d+)/)
     if (m) {
       const [major, minor] = [parseInt(m[1]), parseInt(m[2])]
