@@ -61,7 +61,7 @@ const imageCards = computed<CardItem[]>(() =>
       title="Screentryck, Brodyr & Textiltryck"
       description="Vi använder alla sorters metoder för att trycka er design på valt underlag."
       :width="1280"
-      :height="854"
+      :height="1276"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
     />
 
