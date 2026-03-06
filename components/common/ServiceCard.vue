@@ -111,6 +111,7 @@ const handleCardClick = () => {
             :alt="alt || title"
             quality="80"
             :sizes="imgSizes"
+            densities="x1 x2"
             fit="cover"
             loading="lazy"
             fetchpriority="low"
