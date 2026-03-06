@@ -54,6 +54,10 @@ const imageCards = computed<CardItem[]>(() =>
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/services/screen-printing-embroidery/hero.jpg"
+      :video-sources="[
+        { src: '/videos/services/screen-printing-embroidery/hero.webm', type: 'video/webm' },
+        { src: '/videos/services/screen-printing-embroidery/hero.mp4', type: 'video/mp4' }
+      ]"
       title="Screentryck, Brodyr & Textiltryck"
       description="Vi använder alla sorters metoder för att trycka er design på valt underlag."
       :width="1280"
