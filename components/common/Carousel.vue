@@ -264,7 +264,7 @@ onMounted(() => {
             v-else-if="item.type === 'image'"
             :image-src="item.data.imageSrc"
             :alt="item.data.alt"
-            img-sizes="xl:400px lg:330px sm:370px 90vw"
+            img-sizes="90vw sm:370px lg:330px xl:400px"
             @click="onCardClick(item, idx)"
           />
         </div>
