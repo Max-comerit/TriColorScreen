@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   height: '100%',
   backgroundColor: 'bg-gray-100',
-  imgSizes: "100vw sm:370px lg:330px xl:400px"
+  imgSizes: "90vw sm:370px lg:330px xl:400px"
 })
 
 /** Emits 'click' event when the card is clicked */
@@ -76,7 +76,7 @@ const handleClick = (): void => {
         fit="cover"
         loading="lazy"
         fetchpriority="low"
-        class="w-full w-auto object-cover"
+        class="w-full object-cover"
       />
     </article>
   </div>
