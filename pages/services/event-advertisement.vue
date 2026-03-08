@@ -106,7 +106,7 @@ const serviceCards = computed<CardItem[]>(() =>
               height="720"
               format="webp"
               quality="80"
-              sizes="calc(100vw - 40px) sm:600px md:728px lg:984px xl:1240px"
+              sizes="90vw sm:600px md:728px lg:984px xl:1240px"
               densities="x1"
               loading="lazy"
               class="h-full w-full object-cover"
