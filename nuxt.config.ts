@@ -82,12 +82,6 @@ export default defineNuxtConfig({
     },
   },
 
-  experimental: {
-    // Inline component scoped CSS into <head> instead of separate blocking .css requests
-    // Eliminates render-blocking /_nuxt/HeroImage.*.css and similar per-component CSS chunks
-    inlineStyles: true,
-  },
-
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
   modules: ['@nuxt/eslint', '@nuxt/image', '@nuxtjs/tailwindcss', '@pinia/nuxt'],
