@@ -4,7 +4,7 @@
 // ===== IMPORTS =====
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import TextButton from '~/components/common/TextButton.vue';
+import TextButton from '~/components/common/TextButton.vue'
 
 // ===== COMPOSABLES =====
 useHead({
