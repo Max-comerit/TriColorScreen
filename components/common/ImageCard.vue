@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   height: '100%',
   backgroundColor: 'bg-gray-100',
-  imgSizes: "90vw sm:370px lg:330px xl:400px"
+  imgSizes: "calc(100vw - 56px) sm:370px lg:330px xl:400px"
 })
 
 /** Emits 'click' event when the card is clicked */
@@ -70,7 +70,7 @@ const handleClick = (): void => {
         height="600"
         format="webp"
         :alt="alt"
-        quality="70"
+        quality="75"
         :sizes="imgSizes"
         densities="x1"
         fit="cover"

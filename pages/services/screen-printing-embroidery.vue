@@ -93,7 +93,7 @@ const imageCards = computed<CardItem[]>(() =>
           alt="Textiler i butik och på lager"
           :max-lines="8"
           :height="420"
-          img-sizes="100vw sm:310px"
+          img-sizes="calc(100vw - 80px) sm:310px"
         >
           <template #description="{ descriptionStyle }">
             <p class="text-sm leading-relaxed" :style="descriptionStyle">
