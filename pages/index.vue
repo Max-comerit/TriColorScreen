@@ -19,7 +19,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Tricolor Screen erbjuder kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor, bilfoliering, grafisk produktion och eventreklam. 28 år av expertis.',
+      content: 'Tricolor Screen erbjuder kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor, bilfoliering, grafisk produktion och eventreklam. Över 25 års expertis.',
     },
     {
       name: 'keywords',
@@ -89,7 +89,7 @@ const reviewCards = computed<CardItem[]>(() =>
             Trycksaker, broderade kläder, skyltar, bildekor eller en ny grafisk profil – vi tar hand om hela processen från idé till färdig produkt.
           </p>
           <p class="leading-relaxed">
-            Med 28 års erfarenhet vet vi vad som krävs för ett resultat som håller och gör intryck.
+            Med över 25 års erfarenhet vet vi vad som krävs för ett resultat som håller och gör intryck.
             Vi lyssnar på dina behov, ger ärlig rådgivning och levererar alltid i tid.
             Ditt varumärke är i trygga händer.
           </p>

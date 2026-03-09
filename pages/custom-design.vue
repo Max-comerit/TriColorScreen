@@ -421,10 +421,9 @@ function addText(): void {
         <BackgroundSelector
           @custom-image-selected="handleCustomImageSelected"
         />
-        <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
-          <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
-          <div class="w-[0px] md:w-[48px]" />
-          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] max-h-[1000px]" :style="{ aspectRatio: canvasStore.aspectRatio }">
+        <div class="designer grid grid-cols-1 sm:grid-cols-[1fr_minmax(350px,800px)_1fr] gap-4 items-start">
+          <div class="hidden sm:block" />
+          <div ref="canvasWrapperRef" class="relative w-full max-h-[1000px]" :style="{ aspectRatio: canvasStore.aspectRatio }">
             <div
               v-for="key in canvasStore.sideKeys"
               v-show="activeSide === key"
@@ -449,7 +448,7 @@ function addText(): void {
               <template #icon>
                 <ImageIcon class="!w-6 !h-6" />
               </template>
-              <span class="hidden lg:inline">Ladda upp bild</span>
+              <span class="hidden xl:inline">Lägg till bild</span>
             </IconButton>
             <IconButton
               aria-label="Add text design"
@@ -461,7 +460,7 @@ function addText(): void {
               <template #icon>
                 <TextIcon class="!w-6 !h-6" />
               </template>
-              <span class="hidden lg:inline">Lägg till text</span>
+              <span class="hidden xl:inline">Lägg till text</span>
             </IconButton>
           </div>
         </div>

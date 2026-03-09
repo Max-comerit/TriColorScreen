@@ -70,7 +70,7 @@ const serviceCards = computed<CardItem[]>(() =>
           <strong>Alla typer av trycksaker.</strong>
         </p>
         <p class="font-body font-medium text-base sm:text-lg lg:text-xl text-white/90">
-          Vi har valt att fokusera på ett otroligt brett utbud av trycksaker tack vare våra 28 år i branschen. Hos oss hittar du alltid produkter med hög kvalitét och fantastiska tryckresultat.
+          Vi har valt att fokusera på ett otroligt brett utbud av trycksaker tack vare våra över 25 års erfarenhet i branschen. Hos oss hittar du alltid produkter med hög kvalitét och fantastiska tryckresultat.
         </p>
       </template>
     </HeroImage>
@@ -88,7 +88,7 @@ const serviceCards = computed<CardItem[]>(() =>
           <p class="leading-relaxed">
             Från visitkort till hela broschyrkampanjer.
             Vi tar hand om hela processen, från idé till färdig trycksak.
-            Med 28 år i branschen vet vi vad som krävs för ett resultat som gör intryck.
+            Med över 25 års erfarenhet vet vi vad som krävs för ett resultat som gör intryck.
           </p>
           <p class="leading-relaxed">
             Vi trycker på en mängd olika material och för många olika ändamål.

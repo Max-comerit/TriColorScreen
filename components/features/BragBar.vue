@@ -13,7 +13,7 @@ const bragItems = [
   },
   {
     icon: checkSolidFull,
-    text: '28 Års Erfarenhet',
+    text: 'Över 25 Års Erfarenhet',
   },
   {
     icon: starSolidFull,

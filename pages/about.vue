@@ -14,7 +14,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Lär känna Tricolor Screen – ett familjeföretag med över 28 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
+      content: 'Lär känna Tricolor Screen – ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
     },
     {
       property: 'og:title',
@@ -22,7 +22,7 @@ useHead({
     },
     {
       property: 'og:description',
-      content: 'Lär känna Tricolor Screen – ett familjeföretag med över 28 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
+      content: 'Lär känna Tricolor Screen – ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
     },
     {
       property: 'og:image',
@@ -33,10 +33,10 @@ useHead({
 
 // ===== STATE =====
 const stats = ref([
-  { value: '28+', label: 'År i branschen', ariaLabel: '28 år i branschen' },
+  { value: '28+', label: 'År i branschen', ariaLabel: 'Mer än 25 år i branschen' },
   { value: '5 000+', label: 'Nöjda kunder', ariaLabel: 'Över 5 000 nöjda kunder' },
   { value: '50 000+', label: 'Levererade ordrar', ariaLabel: 'Över 50 000 levererade ordrar' },
-  { value: '8', label: 'Tjänsteområden', ariaLabel: '8 tjänsteområden' },
+  { value: '100%', label: 'Familjeägt', ariaLabel: '100% familjeägt företag' },
 ])
 
 // ===== COMPUTED =====
@@ -86,7 +86,7 @@ const valueCards = computed<CardItem[]>(() => [
     <!-- Hero: full width -->
     <HeroImage
       src="/images/about/hero.jpg"
-      title="Om oss"
+      title="Om Oss"
       description="Lär känna teamet bakom Tricolor Screen – över 28 år av passion för tryck och design."
       :width="1280"
       :height="854"
