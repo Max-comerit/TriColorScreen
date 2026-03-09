@@ -121,6 +121,7 @@ const serviceCards = computed<CardItem[]>(() =>
         background-color="bg-primary-600"
         text-color="text-white"
         align="center"
+        class="px-4 md:px-8 lg:px-16 rounded"
       >
         <div class="space-y-4 text-center">
           <h2 class="font-display text-white">Redo inför nästa event?</h2>

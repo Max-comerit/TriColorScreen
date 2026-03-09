@@ -101,24 +101,43 @@ const imageCards = computed<CardItem[]>(() =>
         />
 
       <!-- Store section -->
-      <Section
+      <section
         id="store"
-        title="Textiler i butik och på lager"
+        class="relative overflow-hidden py-4 md:py-6 lg:py-8 xl:py-12 2xl:py-12 rounded"
         aria-label="Vårt lager och sortiment"
-        align="center"
-        background-color="bg-primary-50"
       >
-        <div class="mx-auto max-w-3xl space-y-4">
-            <p class="text leading-relaxed">
-              Vi har alla sorters textiler hos oss på Öregrundsgatan 24 i Stockholm på Gärdet. 
+        <!-- Background image -->
+        <NuxtImg
+          src="/images/services/screen-printing-embroidery/store.jpg"
+          alt=""
+          width="1280"
+          height="854"
+          format="webp"
+          quality="80"
+          sizes="xl:100vw 1280px"
+          densities="x1 x2"
+          loading="lazy"
+          decoding="async"
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+        <!-- Dark overlay for text legibility -->
+        <div class="absolute inset-0 bg-black/70" aria-hidden="true" />
+        <div class="container relative z-10 mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <header class="mb-8 md:mb-12">
+            <h2 class="font-display text-white">Textiler i butik och på lager</h2>
+          </header>
+          <div class="mx-auto max-w-3xl space-y-4">
+            <p class="leading-relaxed text-white">
+              Vi har alla sorters textiler hos oss på Öregrundsgatan 24 i Stockholm på Gärdet.
               <br>
-              Använd designverktyget i 
-              <NuxtLink to="/custom-design" class="font-semibold underline hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">DESIGNA SJÄLV</NuxtLink>
-              för att designa dina textilier och se hur de kommer att se ut. 
+              Använd designverktyget i
+              <NuxtLink to="/custom-design" class="font-semibold text-white underline hover:text-primary-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">DESIGNA SJÄLV</NuxtLink>
+              för att designa dina textilier och se hur de kommer att se ut.
               Skicka sedan en offertförfrågan via formuläret så återkommer vi med en offert så snart som möjligt.
             </p>
+          </div>
         </div>
-      </Section>
+      </section>
 
     </div>
   </div>
