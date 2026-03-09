@@ -155,7 +155,8 @@ const handleCardClick = () => {
               :alt="imageAlt || title"
               class="w-full object-cover transition-transform duration-300 group-hover:scale-105" 
               format="webp"
-              sizes="100vw sm:50vw lg:33vw" 
+              sizes="80vw sm:240px lg:325px xl:400px"
+              densities="x1"
               loading="lazy" 
               width="400" 
               height="300" />
@@ -196,7 +197,8 @@ const handleCardClick = () => {
             :alt="imageAlt || title"
             class="w-full object-cover transition-transform duration-300" 
             format="webp"
-            sizes="100vw sm:50vw lg:33vw" 
+            sizes="80vw sm:240px lg:325px xl:400px"
+            densities="x1" 
             loading="lazy" 
             width="400" 
             height="300" />

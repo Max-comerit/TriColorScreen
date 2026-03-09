@@ -2,8 +2,6 @@
 
 import { defineStore } from 'pinia'
 import type { Canvas } from 'fabric'
-import { useCanvasRescale } from '~/composables/useCanvasRescale'
-import { useCanvasControls } from '~/composables/useCanvasControls'
 import type { ProductCategories } from '~/types/BackgroundSelector'
 
 /**
@@ -76,6 +74,10 @@ export const useCanvasStore = defineStore('canvas', {
       const sideState = this.sides[side]
       if (!sideState?.json) return
 
+      // Dynamically import canvas composables so fabric.js is not pulled into
+      // the bundle of pages that don't use the canvas (Lighthouse: unused JS).
+      const { useCanvasControls } = await import('~/composables/useCanvasControls')
+
       // Re-apply custom controls via reviver so each object is fixed immediately
       // as it is added during loadFromJSON — before any mouse events can fire.
       const { makeControlsReviver } = useCanvasControls()
@@ -84,6 +86,7 @@ export const useCanvasStore = defineStore('canvas', {
       // Rescale objects and background if the canvas size changed since last save
       if (sideState.size > 0 && sideState.size !== currentSize) {
         const ratio = currentSize / sideState.size
+        const { useCanvasRescale } = await import('~/composables/useCanvasRescale')
         const { rescaleBackground, rescaleObjects } = useCanvasRescale()
         rescaleBackground(canvas, ratio)
         rescaleObjects(canvas, ratio)

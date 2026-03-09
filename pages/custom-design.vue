@@ -16,15 +16,17 @@ import { useCanvasRescale } from '~/composables/useCanvasRescale'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { storeToRefs } from 'pinia'
 import { useCustomBackground, loadBackgroundOnCanvas, CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
-import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
-import QuoteForm from '~/components/features/QuoteForm.vue'
 import {
   createRotateControlRender,
   createTrashControlRender,
   createResizeControlRender,
 } from '@/utils/customControlRenders'
 import { getRotateImage, getTrashCanImage, getResizeImage } from '@/utils/customImageIcons'
+
+// Lazy-load QuoteForm so Zod and nanoid are kept out of the shared synchronous bundle
+const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
 
 // ===== COMPOSABLES =====
 useHead({

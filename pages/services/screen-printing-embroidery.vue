@@ -6,9 +6,10 @@ import type { CardItem, IImageCardContent } from '~/types/CardContent'
 import images from '~/assets/json/services/screen-printing-embroidery/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import Carousel from '~/components/common/Carousel.vue'
 import ServiceCard from '~/components/common/ServiceCard.vue'
 import { useResponsivePerPage } from '~/composables/useResponsivePerPage'
+import { defineAsyncComponent } from 'vue'
+const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
 
 // ===== COMPOSABLES & STORES =====
 useHead({
@@ -54,10 +55,14 @@ const imageCards = computed<CardItem[]>(() =>
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/services/screen-printing-embroidery/hero.jpg"
+      :video-sources="[
+        { src: '/videos/services/screen-printing-embroidery/hero.webm', type: 'video/webm' },
+        { src: '/videos/services/screen-printing-embroidery/hero.mp4', type: 'video/mp4' }
+      ]"
       title="Screentryck, Brodyr & Textiltryck"
       description="Vi använder alla sorters metoder för att trycka er design på valt underlag."
       :width="1280"
-      :height="854"
+      :height="1276"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
     />
 
@@ -88,6 +93,7 @@ const imageCards = computed<CardItem[]>(() =>
           alt="Textiler i butik och på lager"
           :max-lines="8"
           :height="420"
+          img-sizes="80vw sm:310px"
         >
           <template #description="{ descriptionStyle }">
             <p class="text-sm leading-relaxed" :style="descriptionStyle">

@@ -1,6 +1,6 @@
 # Netlify Build Configuration
 [build]
-  command = "npm run generate"
+  command = "npm run generate:clean"
   publish = "dist/"
 
 # Note: No SPA catch-all redirect — this is SSG (nuxt generate).
@@ -17,7 +17,14 @@
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/_ipx/**"
+  for = "/videos/**"
+  [headers.values]
+    # 1-year cache to satisfy Lighthouse. Not immutable — filenames are not
+    # content-hashed, so rename/version the file (e.g. hero-v2.webm) when updating.
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/.netlify/images"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 

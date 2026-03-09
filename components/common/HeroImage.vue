@@ -9,14 +9,21 @@
  *
  * @example
  * <HeroImage
- *   src="/images/index/hero-banner.png"
+ *   src="/images/index/hero.jpg"
+ *   :video-sources="[
+ *     { src: '/videos/hero.webm', type: 'video/webm' },
+ *     { src: '/videos/hero.mp4', type: 'video/mp4' }
+ *   ]"
  *   title="Welcome to TriColor Screen"
  *   description="Professional screen printing services"
- *   :width="1920"
- *   :height="1280"
+ *   :width="1280"
+ *   :height="854"
  *   alt="Team working on screen printing project"
  * />
  */
+
+// ===== IMPORTS =====
+import type { VideoSource } from '~/types/HeroImage'
 
 // ===== PROPS =====
 interface Props {
@@ -32,6 +39,8 @@ interface Props {
   height?: number
   /** Descriptive alt text for accessibility */
   alt?: string
+  /** Primary video sources (WebP format & MP4 format as fallback is recommended) */
+  videoSources?: VideoSource[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -40,12 +49,19 @@ const props = withDefaults(defineProps<Props>(), {
   width: 1280,
   height: 854,
   alt: 'Hero banner image',
+  videoSources: () => []
 })
 
 // ===== STATE =====
 // Start true (matches server render); corrected on mount for old Safari.
 // CSS.supports() does not read layout geometry so causes no forced reflow.
 const supportsAspectRatio = ref(true)
+
+// Video is injected into the DOM only after the page `load` event so it does
+// not compete with the LCP image request. Once the video fires `canplay` the
+// NuxtImg placeholder is hidden.
+const videoMounted = ref(false)
+const videoCanPlay = ref(false)
 
 // ===== COMPUTED =====
 const aspectRatio = computed(() => {
@@ -63,13 +79,25 @@ const containerStyle = computed(() =>
 onMounted(() => {
   // Safari < 16.3 (March 2023) has an aspect-ratio bug in flex/grid containers.
   const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
-  if (!isSafari) return // non-Safari: keep true, no DOM update needed
+  if (isSafari) {
+    const m = navigator.userAgent.match(/Version\/(\d+)\.(\d+)/)
+    if (m) {
+      const [major, minor] = [parseInt(m[1]), parseInt(m[2])]
+      if (major < 16 || (major === 16 && minor < 3)) supportsAspectRatio.value = false
+    }
+  }
 
-  const m = navigator.userAgent.match(/Version\/(\d+)\.(\d+)/)
-  if (!m) return
-  const [major, minor] = [parseInt(m[1]), parseInt(m[2])]
-  const hasBug = major < 16 || (major === 16 && minor < 3)
-  if (hasBug) supportsAspectRatio.value = false
+  // Mount video only after all page resources have loaded so it does not
+  // compete with the LCP image. Handles the case where onMounted fires after
+  // the load event (e.g. lazy-loaded components / navigations).
+  if (props.videoSources.length > 0) {
+    const initVideo = () => { videoMounted.value = true }
+    if (document.readyState === 'complete') {
+      initVideo()
+    } else {
+      window.addEventListener('load', initVideo, { once: true })
+    }
+  }
 })
 
 </script>
@@ -79,21 +107,39 @@ onMounted(() => {
     class="container-section"
     :style="containerStyle"
   >
-    <!-- Hero Image -->
+    <!-- Hero Image – eager LCP element; hidden once the video is ready to play -->
     <NuxtImg
+      v-show="!videoCanPlay"
       :src="props.src"
       :alt="props.alt"
       :width="props.width"
       :height="props.height"
       format="webp"
       quality="80"
-      sizes="xl:100vw 1280px"
+      sizes="100vw sm:640px md:768px lg:1024px xl:1280px"
       densities="x1 x2"
       loading="eager"
       fetchpriority="high"
       decoding="async"
-      class="absolute inset-0 w-full h-full object-cover"
+      class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
     />
+
+    <!-- Video – injected after the page load event so it does not compete with LCP -->
+    <video
+      v-if="videoMounted"
+      autoplay
+      muted
+      playsinline
+      class="absolute inset-0 w-full h-full object-cover"
+      @canplay="videoCanPlay = true"
+    >
+      <source
+        v-for="video in props.videoSources"
+        :key="video.src"
+        :src="video.src"
+        :type="video.type"
+      >
+    </video>
 
     <!-- Text Overlay -->
     <div class="overlay" role="presentation">

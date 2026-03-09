@@ -64,10 +64,14 @@ const decorationFoilingCards: CardItem[] = decorationFoilingServices.map((servic
     <!-- Hero: full width -->
     <HeroImage 
       src="/images/services/decoration-foiling/hero.jpg"
+      :video-sources="[
+        { src: '/videos/services/decoration-foiling/hero.webm', type: 'video/webm' },
+        { src: '/videos/services/decoration-foiling/hero.mp4', type: 'video/mp4' }
+      ]"
       title="Dekor & Foliering"
       description="Foliering är det smarta sättet att få fram budskap på ytor som annars är svårtillgängliga för marknadsföring, exempelvis på glas och karosser."
       :width="1280"
-      :height="854"
+      :height="2331"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
     />
 

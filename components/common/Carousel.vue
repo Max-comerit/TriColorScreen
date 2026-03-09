@@ -3,7 +3,6 @@
 // Imports
 // ====================
 import { ref, computed, onMounted } from 'vue'
-import EmblaCarousel from 'embla-carousel'
 import type { EmblaCarouselType } from 'embla-carousel'
 
 import type { CardItem } from '~/types/CardContent'
@@ -183,7 +182,14 @@ onMounted(() => {
   // EmblaCarousel reads offsetWidth/getBoundingClientRect internally;
   // wrapping in rAF ensures no pending style invalidation exists at that point,
   // avoiding a forced reflow on page load.
-  requestAnimationFrame(() => {
+  // EmblaCarousel is dynamically imported so it is excluded from the initial
+  // page bundle and only fetched when the carousel component actually mounts.
+  requestAnimationFrame(async () => {
+    if (!viewportRef.value) return
+
+    const { default: EmblaCarousel } = await import('embla-carousel')
+
+    // Guard: component may have unmounted while awaiting the dynamic import
     if (!viewportRef.value) return
 
     embla.value = EmblaCarousel(viewportRef.value, {
@@ -239,6 +245,7 @@ onMounted(() => {
             :max-lines="item.data.maxLines"
             :link="item.data.link"
             :alt="item.data.alt"
+            img-sizes="80vw sm:350px lg:300px xl:330px"
             background-color="bg-primary-50"
             text-color="black"
             @click="onCardClick(item, idx)"
@@ -257,6 +264,7 @@ onMounted(() => {
             v-else-if="item.type === 'image'"
             :image-src="item.data.imageSrc"
             :alt="item.data.alt"
+            img-sizes="80vw sm:370px lg:330px xl:400px"
             @click="onCardClick(item, idx)"
           />
         </div>
