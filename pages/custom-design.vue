@@ -402,7 +402,7 @@ function addText(): void {
           <p class="leading-relaxed">
             Med vårt designverktyg kan du skapa exakt den produkt du drömmer om:
           </p>
-          <ol class="list-decimal list-inside space-y-2 text-left leading-relaxed lg:text-lg">
+          <ol class="list-decimal list-inside space-y-2 text-left leading-relaxed text-base md:text-lg lg:text-xl leading-relaxed text-layout-text-on-light">
             <li>Välj en produkt från
               <a
                 href="https://www.jobmantexet.se"
