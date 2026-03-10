@@ -412,11 +412,19 @@ function addText(): void {
               >Jobman Texets produktkatalog</a>
             </li>
             <li>Välj sedan samma produkt i designverktyget (t.ex. T-Shirt om du har valt en T-Shirt)</li>
-            <li>Ladda upp bilder &amp; lägg till text och se hur det kommer att se ut innan du beställer</li>
-            <li>Designa både fram- och baksida för en helt personlig produkt</li>
+            <li>Ladda upp bilder &amp; text och se hur det kommer att se ut innan du beställer</li>
+            <li>Designa olika sidor (t.ex. Fram &amp; Bak) för en helt personlig produkt</li>
+            <li>När du är nöjd med din design fyller du i din Kontakt Information samt Produkt ID &amp; Storlek på din produkt från
+              <a
+                href="https://www.jobmantexet.se"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="underline hover:text-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+              >Jobman Texets produktkatalog</a>
+              i formuläret nedan</li>
+              <li>Sedan skickar du en offertförfrågan direkt från verktyget</li>
           </ol>
           <p class="leading-relaxed">
-            Efter att du är nöjd med din design skickar du en offertförfrågan direkt från verktyget.
             Vi återkommer snabbt med pris och leveranstid. Det är så enkelt!
           </p>
         </div>
