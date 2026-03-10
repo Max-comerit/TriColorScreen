@@ -8,6 +8,7 @@ interface NavigationState {
   menuItems: INavItem[]
   mobileMenuOpen: boolean
   currentRoute: string
+  headerScrolled: boolean
 }
 
 /**
@@ -49,6 +50,7 @@ export const useNavigationStore = defineStore('navigation', {
     ],
     mobileMenuOpen: false,
     currentRoute: '/',
+    headerScrolled: false,
   }),
 
   // ===== GETTERS =====
@@ -210,6 +212,16 @@ export const useNavigationStore = defineStore('navigation', {
      */
     setMenuItems(items: INavItem[]): void {
       this.menuItems = items
+    },
+
+    /**
+     * Update the scrolled state of the header.
+     * Called by AppHeader when scroll position crosses the threshold.
+     *
+     * @param scrolled - Whether the user has scrolled past the threshold
+     */
+    setHeaderScrolled(scrolled: boolean): void {
+      this.headerScrolled = scrolled
     },
   },
 })

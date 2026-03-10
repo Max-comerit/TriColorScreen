@@ -23,9 +23,15 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>()
 
+const HEADER_HEIGHT_DEFAULT = 120
+const HEADER_HEIGHT_SCROLLED = 80
+
 /** Initialize router and navigation store for active route tracking */
 const route = useRoute()
 const navigationStore = useNavigationStore()
+const headerHeight = computed(() =>
+  navigationStore.headerScrolled ? HEADER_HEIGHT_SCROLLED : HEADER_HEIGHT_DEFAULT
+)
 
 /** Two-way binding for menu visibility */
 const isOpen = computed({
@@ -90,7 +96,8 @@ watch(
   <Transition name="slide">
     <aside
       v-if="isOpen"
-      class="fixed top-[80px] w-72 bg-neutral-900 z-50 shadow-xl"
+      class="fixed w-72 bg-neutral-900 z-50 shadow-xl"
+      :style="{ top: `${headerHeight}px` }"
       :class="side === 'left' ? 'left-0' : 'right-0'"
       role="dialog"
       aria-modal="true"

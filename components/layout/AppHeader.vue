@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import NavBar from '~/components/layout/NavBar.vue'
+import { useNavigationStore } from '~/stores/navigationStore'
 
 /**
  * AppHeader Component
@@ -7,12 +8,18 @@ import NavBar from '~/components/layout/NavBar.vue'
  * @description Desktop header with logo and navigation bar
  */
 
+// ===== COMPOSABLES & STORES =====
+const navigationStore = useNavigationStore()
+
 // ===== STATE =====
 const scrolled = ref(false)
 
 // ===== LIFECYCLE HOOKS =====
 onMounted(() => {
-  const onScroll = () => { scrolled.value = window.scrollY > 20 }
+  const onScroll = () => {
+    scrolled.value = window.scrollY > 20
+    navigationStore.setHeaderScrolled(scrolled.value)
+  }
   window.addEventListener('scroll', onScroll, { passive: true })
   onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 })
