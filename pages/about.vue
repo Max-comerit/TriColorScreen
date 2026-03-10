@@ -2,9 +2,11 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
+import type { CardItem } from '~/types/CardContent'
+import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import TextButton from '~/components/common/TextButton.vue'
+import CtaSection from '~/components/features/CtaSection.vue'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -12,7 +14,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Lär känna Tricolor Screen – ett familjeföretag med över 28 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
+      content: 'Lär känna Tricolor Screen – ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
     },
     {
       property: 'og:title',
@@ -20,7 +22,7 @@ useHead({
     },
     {
       property: 'og:description',
-      content: 'Lär känna Tricolor Screen – ett familjeföretag med över 28 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
+      content: 'Lär känna Tricolor Screen – ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
     },
     {
       property: 'og:image',
@@ -31,32 +33,49 @@ useHead({
 
 // ===== STATE =====
 const stats = ref([
-  { value: '28+', label: 'År i branschen', ariaLabel: '28 år i branschen' },
+  { value: '28+', label: 'År i branschen', ariaLabel: 'Mer än 25 år i branschen' },
   { value: '5 000+', label: 'Nöjda kunder', ariaLabel: 'Över 5 000 nöjda kunder' },
   { value: '50 000+', label: 'Levererade ordrar', ariaLabel: 'Över 50 000 levererade ordrar' },
-  { value: '8', label: 'Tjänsteområden', ariaLabel: '8 tjänsteområden' },
+  { value: '100%', label: 'Familjeägt', ariaLabel: '100% familjeägt företag' },
 ])
 
-const values = ref([
+// ===== COMPUTED =====
+const valueCards = computed<CardItem[]>(() => [
   {
-    title: 'Kvalitet i varje detalj',
-    description:
-      'Vi kompromissar aldrig med kvaliteten. Varje order behandlas med omsorg från första kontakt till leverans.',
+    type: 'text',
+    data: {
+      title: 'Kvalitet i varje detalj',
+      description: 'Vi kompromissar aldrig med kvaliteten. Varje order behandlas med omsorg från första kontakt till leverans.',
+      align: 'center',
+      backgroundColor: "bg-primary-50"
+    },
   },
   {
-    title: 'Personlig service',
-    description:
-      'Vi lyssnar på dina behov och ger rådgivning som passar just ditt projekt och din budget.',
+    type: 'text',
+    data: {
+      title: 'Personlig service',
+      description: 'Vi lyssnar på dina behov och ger rådgivning som passar just ditt projekt och din budget.',
+      align: 'center',
+      backgroundColor: "bg-primary-50"
+    },
   },
   {
-    title: 'Snabba leveranser',
-    description:
-      'Vi vet att deadlines är viktiga. Med effektiva processer levererar vi i tid – varje gång.',
+    type: 'text',
+    data: {
+      title: 'Snabba leveranser',
+      description: 'Vi vet att deadlines är viktiga. Med effektiva processer levererar vi i tid – varje gång.',
+      align: 'center',
+      backgroundColor: "bg-primary-50"
+    },
   },
   {
-    title: 'Hållbarhet',
-    description:
-      'Vi använder miljövänliga material och processer där det är möjligt, för en bättre framtid.',
+    type: 'text',
+    data: {
+      title: 'Hållbarhet',
+      description: 'Vi använder miljövänliga material och processer där det är möjligt, för en bättre framtid.',
+      align: 'center',
+      backgroundColor: "bg-primary-50"
+    },
   },
 ])
 
@@ -67,8 +86,8 @@ const values = ref([
     <!-- Hero: full width -->
     <HeroImage
       src="/images/about/hero.jpg"
-      title="Om oss"
-      description="Lär känna teamet bakom Tricolor Screen – över 28 år av passion för tryck och design."
+      title="Om Oss"
+      description="Lär känna teamet bakom Tricolor Screen – mer än 25 år av passion för tryck och design."
       :width="1280"
       :height="854"
       alt="Tricolor Screen-teamet i verkstaden"
@@ -124,41 +143,19 @@ const values = ref([
         align="center"
         aria-label="Våra kärnvärderingar"
       >
-        <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
-          <li
-            v-for="value in values"
-            :key="value.title"
-            class="flex flex-col gap-2 rounded-card bg-gray-100 p-6 shadow-sm ring-1 ring-neutral-100"
-          >
-            <h3 class="my-auto font-display font-semibold text-center">{{ value.title }}</h3>
-            <p class="my-auto text-base leading-relaxed">{{ value.description }}</p>
-          </li>
-        </ul>
+        <CardGrid
+          :card-content-arr="valueCards"
+          :min-item-width="220"
+          :gap="24"
+          aria-label="Våra värderingar"
+        />
       </Section>
 
       <!-- CTA -->
-      <Section
-        id="contact-cta"
-        aria-label="Kontakta oss"
-        background-color="bg-primary-600"
-        text-color="text-white"
-        align="center"
-      >
-        <div class="space-y-4 text-center">
-          <h2 class="font-display text-white">Låt oss hjälpa dig</h2>
-          <p class="mx-auto max-w-xl leading-relaxed text-primary-100">
-            Vi tror på enkla samtal och ärliga råd. Berätta vad du behöver så hittar vi
-            tillsammans den bästa lösningen för dig och ditt företag.
-          </p>
-          <div class="flex flex-wrap justify-center gap-4 pt-2">
-            <NuxtLink
-              to="/contact"
-            >
-              <TextButton class="border">Kontakta oss</TextButton>
-            </NuxtLink>
-          </div>
-        </div>
-      </Section>
+      <CtaSection
+        heading="Låt oss hjälpa dig"
+        text="Vi tror på enkla samtal och ärliga råd. Berätta vad du behöver så hittar vi tillsammans den bästa lösningen för dig och ditt företag."
+      />
 
     </div>
   </div>

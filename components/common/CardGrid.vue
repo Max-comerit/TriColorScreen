@@ -14,6 +14,7 @@
 import type { CardItem } from '~/types/CardContent'
 import ServiceCard from '~/components/common/ServiceCard.vue'
 import ReviewCard from '~/components/common/ReviewCard.vue'
+import TextCard from '~/components/common/TextCard.vue'
 
 // ===== PROPS & EMITS =====
 
@@ -86,6 +87,15 @@ const gridStyle = computed(() => ({
           :review="card.data.review"
           :name="card.data.name"
           :date="card.data.date"
+        />
+        <TextCard
+          v-else-if="card.type === 'text'"
+          :title="card.data.title"
+          :description="card.data.description"
+          :prefix="card.data.prefix"
+          :prefix-color="card.data.prefixColor"
+          :align="card.data.align"
+          :background-color="card.data.backgroundColor"
         />
       </template>
     </div>

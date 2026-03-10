@@ -3,7 +3,7 @@
 import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import TextButton from '~/components/common/TextButton.vue'
+import CtaSection from '~/components/features/CtaSection.vue'
 import type { CardItem, IServiceCardContent } from '~/types/CardContent'
 import servicesData from '~/assets/json/services/event-advertisement/services.json'
 
@@ -73,51 +73,53 @@ const serviceCards = computed<CardItem[]>(() =>
       alt="Monter och profilmaterial för mässor och events"
     />
 
-    <!-- Sections -->
     <div class="layout-container">
+
+      <!-- Intro -->
+      <Section
+        id="intro"
+        title="På ett event gäller det att synas"
+        aria-label="Om våra mäss- och eventtjänster"
+        align="center"
+        padding-y="pt-4 md:pt-6 lg:pt-8 xl:pt-12 2xl:pt-16 pb-2 md:pb-4 lg:pb-6 xl:pb-6 2xl:pb-8"
+      >
+        <div class="mx-auto max-w-3xl space-y-4">
+          <p class="leading-relaxed">
+            På ett event konkurrerar du om uppmärksamheten med dussintals andra aktörer.
+            Rätt profilmaterial gör skillnaden. Det lockar besökare, 
+            stärker ditt varumärke och skapar ett professionellt första intryck.
+          </p>
+          <p class="leading-relaxed">
+            Vi hjälper dig hela vägen från idé till färdig lösning.
+            Skyltar, banderoller, roll-ups, flaggor och profilkläder.
+            Allt levereras i tid och med den kvalitet ditt varumärke förtjänar.
+          </p>
+        </div>
+      </Section>
+
+      <!-- Services -->
       <Section
         id="services"
-        title="Event Reklam"
+        title="Våra produkter"
         align="center"
         aria-label="Våra tjänster för mässor och event"
+        padding-y="pb-4 md:pb-6 lg:pb-8 xl:pb-12 2xl:pb-16 pt-2 md:pt-4 lg:pt-6 xl:pt-6 2xl:pt-8"
       >
-        <div class="flex flex-col gap-6">
-          <CardGrid
-            :card-content-arr="serviceCards"
-            :min-item-width="240"
-            :gap="24"
-            aria-label="Tjänster för mässor och event"
-            section-id="event-advertisement-services"
-          />
-        </div>
+        <CardGrid
+          :card-content-arr="serviceCards"
+          :min-item-width="360"
+          :gap="24"
+          aria-label="Tjänster för mässor och event"
+          section-id="event-advertisement-services"
+        />
       </Section>
-      <Section
-        id="promo"
-        title="Tricolorscreen får er att sticka ut på eventet!"
-        align="center"
-        aria-label="Tricolorscreen får er att sticka ut på eventet!"
-      >
-        <div class="items-center flex flex-col gap-6">
-          <div class="w-full overflow-hidden rounded-card">
-            <NuxtImg
-              src="/images/services/event-advertisement/promo.jpg"
-              alt="Profilmaterial för mässor och events"
-              width="960"
-              height="720"
-              format="webp"
-              quality="80"
-              sizes="90vw sm:600px md:728px lg:984px xl:1240px"
-              densities="x1"
-              loading="lazy"
-              class="h-full w-full object-cover"
-            />
-          </div>
-          <p class="font-semibold">20% Rabatt på er första event beställning!</p>
-          <NuxtLink to="/contact" class="inline-flex">
-            <TextButton>Kontakta Oss</TextButton>
-          </NuxtLink>
-        </div>
-      </Section>
+
+      <!-- CTA -->
+      <CtaSection
+        heading="Redo inför nästa event?"
+        text="Berätta om ditt event och vad du behöver. Vi tar fram ett förslag som passar din tidplan och budget. Enkelt, snabbt och personligt."
+      />
+
     </div>
   </div>
 </template>

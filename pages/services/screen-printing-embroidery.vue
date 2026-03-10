@@ -6,12 +6,11 @@ import type { CardItem, IImageCardContent } from '~/types/CardContent'
 import images from '~/assets/json/services/screen-printing-embroidery/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import ServiceCard from '~/components/common/ServiceCard.vue'
 import { useResponsivePerPage } from '~/composables/useResponsivePerPage'
 import { defineAsyncComponent } from 'vue'
 const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
 
-// ===== COMPOSABLES & STORES =====
+// ===== COMPOSABLES =====
 useHead({
   title: 'Screentryck, Brodyr & Textiltryck | Tricolor Screen',
   meta: [
@@ -53,7 +52,7 @@ const imageCards = computed<CardItem[]>(() =>
 <template>
   <div>
     <!-- Hero: full width -->
-    <HeroImage 
+    <HeroImage
       src="/images/services/screen-printing-embroidery/hero.jpg"
       :video-sources="[
         { src: '/videos/services/screen-printing-embroidery/hero.webm', type: 'video/webm' },
@@ -66,46 +65,80 @@ const imageCards = computed<CardItem[]>(() =>
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
     />
 
-    <!-- Sections -->
     <div class="layout-container">
-      <Section 
-        id="printed-matter" 
-        title="Screentryck, Brodyr & Textiltryck"
-        description="Vi trycker på alla sorters textilier med personlig vägledning och rådgör med er om vilken tryckmetod som passar just ert ändamål." 
-        align="center"
-        aria-label="Våra trycksaker"
-      >
-        <!-- Carousel view -->
-        <Carousel
+
+      <!-- Intro -->
+    <Section
+      id="intro"
+      title="Rätt metod för rätt material"
+      aria-label="Om våra tryckmetoder"
+      align="center"
+    >
+      <div class="mx-auto max-w-3xl space-y-4">
+        <p class="leading-relaxed">
+          Vi trycker på många typer av textilier och guidar dig genom hela processen,
+          från val av plagg till färdig produkt. Olika material och användningsområden
+          kräver olika tryckmetoder, och vi arbetar bland annat med screentryck,
+          brodyr, DTF-tryck och sublimering.
+        </p>
+        <p class="leading-relaxed">
+          Företagskläder, eventtröjor, profilartiklar eller hobbyplagg.
+          Vi ser till att du får rätt metod för ett hållbart resultat och ett bra pris.
+          All rådgivning anpassas efter ditt behov och användningsområde.
+        </p>
+      </div>
+
+    </Section>
+          <Carousel
           :items="imageCards"
           :per-page="perPage"
           :gap-px="16"
           :loop="true"
           show-arrows
           show-dots
-          aria-label="Trycksaker"
+          aria-label="Tryckmetoder och resultat"
+          class="mb-4"
         />
 
-      <div class="pt-6 w-full sm:w-[350px] mx-auto">
-        <ServiceCard
-          title="Textiler i butik och på lager"
-          image-src="/images/services/screen-printing-embroidery/store.jpg"
-          alt="Textiler i butik och på lager"
-          :max-lines="8"
-          :height="420"
-          img-sizes="80vw sm:310px"
-        >
-          <template #description="{ descriptionStyle }">
-            <p class="text-sm leading-relaxed" :style="descriptionStyle">
-              Vi har alla sorters textiler hos oss på Öregrundsgatan 24 i Stockholm på Gärdet. Använd designverktyget i 
-              <NuxtLink to="/custom-design" class="font-semibold underline hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">DESIGNA SJÄLV</NuxtLink>
-              för att designa dina textilier och se hur de kommer att se ut. 
+      <!-- Store section -->
+      <section
+        id="store"
+        class="relative overflow-hidden py-4 md:py-6 lg:py-8 xl:py-12 2xl:py-12 rounded-card"
+        aria-label="Vårt lager och sortiment"
+      >
+        <!-- Background image -->
+        <NuxtImg
+          src="/images/services/screen-printing-embroidery/store.jpg"
+          alt=""
+          width="1280"
+          height="854"
+          format="webp"
+          quality="80"
+          sizes="xl:100vw 1280px"
+          densities="x1 x2"
+          loading="lazy"
+          decoding="async"
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+        <!-- Dark overlay for text legibility -->
+        <div class="absolute inset-0 bg-black/70" aria-hidden="true" />
+        <div class="container relative z-10 mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <header class="mb-8 md:mb-12">
+            <h2 class="font-display text-white">Textiler i butik och på lager</h2>
+          </header>
+          <div class="mx-auto max-w-3xl space-y-4">
+            <p class="leading-relaxed text-white">
+              Vi har alla sorters textiler hos oss på Öregrundsgatan 24 i Stockholm på Gärdet.
+              <br>
+              Använd designverktyget i
+              <NuxtLink to="/custom-design" class="font-semibold text-white underline hover:text-primary-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">DESIGNA SJÄLV</NuxtLink>
+              för att designa dina textilier och se hur de kommer att se ut.
               Skicka sedan en offertförfrågan via formuläret så återkommer vi med en offert så snart som möjligt.
             </p>
-          </template>
-        </ServiceCard>
-      </div>
-      </Section>
+          </div>
+        </div>
+      </section>
+
     </div>
   </div>
 </template>

@@ -24,6 +24,7 @@ import {
   createResizeControlRender,
 } from '@/utils/customControlRenders'
 import { getRotateImage, getTrashCanImage, getResizeImage } from '@/utils/customImageIcons'
+import IconTextButton from '~/components/common/IconTextButton.vue'
 
 // Lazy-load QuoteForm so Zod and nanoid are kept out of the shared synchronous bundle
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
@@ -389,19 +390,52 @@ function addText(): void {
 
     <!-- Sections -->
     <div class="layout-container">
+      <!-- Intro -->
+      <Section
+        id="intro"
+        title="Skapa din egen design"
+        aria-label="Hur du använder designverktyget"
+        align="center"
+         padding-y="pt-4 md:pt-6 lg:pt-8 xl:pt-12 2xl:pt-16"
+      >
+        <div class="mx-auto max-w-3xl space-y-4">
+          <p class="leading-relaxed">
+            Med vårt designverktyg kan du skapa exakt den produkt du drömmer om:
+          </p>
+          <ol class="list-decimal list-inside space-y-2 text-left leading-relaxed text-base md:text-lg lg:text-xl leading-relaxed text-layout-text-on-light">
+            <li>Välj en produkt från
+              <a
+                href="https://www.jobmantexet.se"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="underline hover:text-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+              >Jobman Texets produktkatalog</a>
+            </li>
+            <li>Välj sedan samma produkt i designverktyget (t.ex. T-Shirt om du har valt en T-Shirt)</li>
+            <li>Ladda upp bilder &amp; lägg till text och se hur det kommer att se ut innan du beställer</li>
+            <li>Designa både fram- och baksida för en helt personlig produkt</li>
+          </ol>
+          <p class="leading-relaxed">
+            Efter att du är nöjd med din design skickar du en offertförfrågan direkt från verktyget.
+            Vi återkommer snabbt med pris och leveranstid. Det är så enkelt!
+          </p>
+        </div>
+      </Section>
+
+      <!-- Design Tool -->
       <Section 
         id="services" 
-        title="Design Verktyg" 
         align="center"
         aria-label="Design Verktyg"
+        
       >
         <BackgroundSelector
           @custom-image-selected="handleCustomImageSelected"
         />
-        <div class="designer flex flex-col sm:flex-row gap-4 items-center justify-center">
+        <div class="designer grid grid-cols-1 sm:grid-cols-[1fr_minmax(350px,800px)_1fr] gap-4 items-start">
           <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
-          <div class="w-[0px] md:w-[48px]" />
-          <div ref="canvasWrapperRef" class="relative flex-1 w-full min-w-[350px] max-w-[800px] max-h-[1000px]" :style="{ aspectRatio: canvasStore.aspectRatio }">
+          <div class="hidden sm:block md:w-[48px]" />
+          <div ref="canvasWrapperRef" class="relative w-full max-h-[1000px]" :style="{ aspectRatio: canvasStore.aspectRatio }">
             <div
               v-for="key in canvasStore.sideKeys"
               v-show="activeSide === key"
@@ -416,26 +450,60 @@ function addText(): void {
             </div>
           </div>
           <div class="flex flex-row sm:flex-col justify-center gap-3">
-            <IconButton
-              aria-label="Upload image design"
-              variant="primary"
-              size="fit"
-              @click="uploadImage()"
-            >
-              <template #icon>
-                <ImageIcon class="!w-6 !h-6" />
-              </template>
-            </IconButton>
+            <div class="xl:hidden">
+              <IconButton
+                aria-label="Upload image design"
+                variant="primary"
+                size="fit"
+                class="w-fit"
+                @click="uploadImage()"
+              >
+                <template #icon>
+                  <ImageIcon class="!w-6 !h-6" />
+                </template>
+              </IconButton>
+            </div>
+            <div class="hidden xl:inline">
+              <IconTextButton
+                aria-label="Upload image design"
+                variant="primary"
+                size="fit"
+                class="w-fit hidden xl:flex"
+                label="Lägg till bild"
+                @click="uploadImage()"
+              >
+                <template #icon>
+                  <ImageIcon class="!w-6 !h-6" />
+                </template>
+              </IconTextButton>
+            </div>
+            <div class="xl:hidden">
             <IconButton
               aria-label="Add text design"
               variant="primary"
               size="fit"
+              class="w-fit"
               @click="addText()"
             >
               <template #icon>
                 <TextIcon class="!w-6 !h-6" />
               </template>
             </IconButton>
+            </div>
+             <div class="hidden xl:inline">
+            <IconTextButton
+              aria-label="Add text design"
+              variant="primary"
+              size="fit"
+              class="w-fit"
+              label="Lägg till text"
+              @click="addText()"
+            >
+              <template #icon>
+                <TextIcon class="!w-6 !h-6" />
+              </template>
+            </IconTextButton>
+            </div>
           </div>
         </div>
         <TextboxControls :canvas="activeCanvas" />
