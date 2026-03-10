@@ -103,7 +103,7 @@ const imageCards = computed<CardItem[]>(() =>
       <!-- Store section -->
       <section
         id="store"
-        class="relative overflow-hidden py-4 md:py-6 lg:py-8 xl:py-12 2xl:py-12 rounded"
+        class="relative overflow-hidden py-4 md:py-6 lg:py-8 xl:py-12 2xl:py-12 rounded-card"
         aria-label="Vårt lager och sortiment"
       >
         <!-- Background image -->
