@@ -6,7 +6,8 @@ import type { CardItem, IServiceCardContent } from '~/types/CardContent'
 import services from '~/assets/json/services/printed-matter/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import TextButton from '~/components/common/TextButton.vue'
+import Carousel from '~/components/common/Carousel.vue'
+import CtaSection from '~/components/features/CtaSection.vue'
 import { useResponsivePerPage } from '~/composables/useResponsivePerPage'
 import { defineAsyncComponent } from 'vue'
 const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
@@ -70,7 +71,7 @@ const serviceCards = computed<CardItem[]>(() =>
           <strong>Alla typer av trycksaker.</strong>
         </p>
         <p class="font-body font-medium text-base sm:text-lg lg:text-xl text-white/90">
-          Vi har valt att fokusera på ett otroligt brett utbud av trycksaker tack vare våra över 25 års erfarenhet i branschen. Hos oss hittar du alltid produkter med hög kvalitét och fantastiska tryckresultat.
+          Vi har valt att fokusera på ett otroligt brett utbud av trycksaker tack vare vår långa erfarenhet i branschen. Hos oss hittar du alltid produkter med hög kvalitét och fantastiska tryckresultat.
         </p>
       </template>
     </HeroImage>
@@ -118,27 +119,10 @@ const serviceCards = computed<CardItem[]>(() =>
       </Section>
 
       <!-- CTA -->
-      <Section
-        id="contact-cta"
-        aria-label="Kontakta oss"
-        background-color="bg-primary-600"
-        text-color="text-white"
-        align="center"
-        class="px-4 md:px-8 lg:px-16 rounded"
-      >
-        <div class="space-y-4 text-center">
-          <h2 class="font-display text-white">Hittar du inte vad du letar efter?</h2>
-          <p class="mx-auto max-w-xl leading-relaxed text-primary-100">
-            Vi trycker på i princip alla material och kan ta fram skräddarsydda lösningar.
-            Berätta vad du behöver så återkommer vi med ett förslag.
-          </p>
-          <div class="flex flex-wrap justify-center gap-4 pt-2">
-            <NuxtLink to="/contact">
-              <TextButton class="border">Kontakta oss</TextButton>
-            </NuxtLink>
-          </div>
-        </div>
-      </Section>
+      <CtaSection
+        heading="Hittar du inte vad du letar efter?"
+        text="Vi trycker på i princip alla material och kan ta fram skräddarsydda lösningar. Berätta vad du behöver så återkommer vi med ett förslag."
+      />
 
     </div>
   </div>

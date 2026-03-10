@@ -3,7 +3,7 @@
 import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import TextButton from '~/components/common/TextButton.vue'
+import CtaSection from '~/components/features/CtaSection.vue'
 import type { CardItem, IServiceCardContent } from '~/types/CardContent'
 import decorationFoilingServicesData from '~/assets/json/services/decoration-foiling/services.json'
 
@@ -114,27 +114,10 @@ const decorationFoilingCards = computed<CardItem[]>(() =>
       </Section>
 
       <!-- CTA -->
-      <Section
-        id="contact-cta"
-        aria-label="Kontakta oss"
-        background-color="bg-primary-600"
-        text-color="text-white"
-        align="center"
-        class="px-4 md:px-8 lg:px-16 rounded"
-      >
-        <div class="space-y-4 text-center">
-          <h2 class="font-display text-white">Intresserad? Hör av dig!</h2>
-          <p class="mx-auto max-w-xl leading-relaxed text-primary-100">
-            Berätta om ditt fordon eller din yta – vi hjälper dig att välja rätt material
-            och utförande, och sätter ihop en lösning som passar din budget.
-          </p>
-          <div class="flex flex-wrap justify-center gap-4 pt-2">
-            <NuxtLink to="/contact">
-              <TextButton class="border">Kontakta oss</TextButton>
-            </NuxtLink>
-          </div>
-        </div>
-      </Section>
+      <CtaSection
+        heading="Intresserad? Hör av dig!"
+        text="Berätta om ditt fordon eller din yta – vi hjälper dig att välja rätt material och utförande, och sätter ihop en lösning som passar din budget."
+      />
 
     </div>
   </div>

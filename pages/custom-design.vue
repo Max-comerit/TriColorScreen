@@ -399,11 +399,21 @@ function addText(): void {
       >
         <div class="mx-auto max-w-3xl space-y-4">
           <p class="leading-relaxed">
-            Med vårt designverktyg kan du skapa exakt den produkt du drömmer om. Välj en
-            produkt från våra textilier, ladda upp en bild, lägg till text och se hur det
-            kommer att se ut innan du beställer. Designa båda fram- och baksidan för en
-            helt personlig produkt.
+            Med vårt designverktyg kan du skapa exakt den produkt du drömmer om:
           </p>
+          <ol class="list-decimal list-inside space-y-2 text-left leading-relaxed lg:text-lg">
+            <li>Välj en produkt från
+              <a
+                href="https://www.jobmantexet.se"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="underline hover:text-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+              >Jobman Texets produktkatalog</a>
+            </li>
+            <li>Välj sedan samma produkt i designverktyget (t.ex. T-Shirt om du har valt en T-Shirt)</li>
+            <li>Ladda upp bilder &amp; lägg till text och se hur det kommer att se ut innan du beställer</li>
+            <li>Designa både fram- och baksida för en helt personlig produkt</li>
+          </ol>
           <p class="leading-relaxed">
             Efter att du är nöjd med din design skickar du en offertförfrågan direkt från verktyget.
             Vi återkommer snabbt med pris och leveranstid. Det är så enkelt!
@@ -442,7 +452,7 @@ function addText(): void {
               aria-label="Upload image design"
               variant="primary"
               size="fit"
-              class="w-full"
+              class="w-fit"
               @click="uploadImage()"
             >
               <template #icon>
@@ -454,7 +464,7 @@ function addText(): void {
               aria-label="Add text design"
               variant="primary"
               size="fit"
-              class="w-full"
+              class="w-fit"
               @click="addText()"
             >
               <template #icon>

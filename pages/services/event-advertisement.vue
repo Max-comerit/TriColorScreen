@@ -3,7 +3,7 @@
 import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import TextButton from '~/components/common/TextButton.vue'
+import CtaSection from '~/components/features/CtaSection.vue'
 import type { CardItem, IServiceCardContent } from '~/types/CardContent'
 import servicesData from '~/assets/json/services/event-advertisement/services.json'
 
@@ -115,28 +115,10 @@ const serviceCards = computed<CardItem[]>(() =>
       </Section>
 
       <!-- CTA -->
-      <Section
-        id="contact-cta"
-        aria-label="Kontakta oss"
-        background-color="bg-primary-600"
-        text-color="text-white"
-        align="center"
-        class="px-4 md:px-8 lg:px-16 rounded"
-      >
-        <div class="space-y-4 text-center">
-          <h2 class="font-display text-white">Redo inför nästa event?</h2>
-          <p class="mx-auto max-w-xl leading-relaxed text-primary-100">
-            Berätta om ditt event och vad du behöver.
-            Vi tar fram ett förslag som passar din tidplan och budget.
-            Enkelt, snabbt och personligt.
-          </p>
-          <div class="flex flex-wrap justify-center gap-4 pt-2">
-            <NuxtLink to="/contact">
-              <TextButton class="border">Kontakta oss</TextButton>
-            </NuxtLink>
-          </div>
-        </div>
-      </Section>
+      <CtaSection
+        heading="Redo inför nästa event?"
+        text="Berätta om ditt event och vad du behöver. Vi tar fram ett förslag som passar din tidplan och budget. Enkelt, snabbt och personligt."
+      />
 
     </div>
   </div>

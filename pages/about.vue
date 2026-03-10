@@ -6,7 +6,7 @@ import type { CardItem } from '~/types/CardContent'
 import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
-import TextButton from '~/components/common/TextButton.vue'
+import CtaSection from '~/components/features/CtaSection.vue'
 
 // ===== COMPOSABLES =====
 useHead({
@@ -152,29 +152,10 @@ const valueCards = computed<CardItem[]>(() => [
       </Section>
 
       <!-- CTA -->
-      <Section
-        id="contact-cta"
-        aria-label="Kontakta oss"
-        background-color="bg-primary-600"
-        text-color="text-white"
-        align="center"
-        class="px-4 md:px-8 lg:px-16 rounded"
-      >
-        <div class="space-y-4 text-center">
-          <h2 class="font-display text-white">Låt oss hjälpa dig</h2>
-          <p class="mx-auto max-w-xl leading-relaxed text-primary-100">
-            Vi tror på enkla samtal och ärliga råd. Berätta vad du behöver så hittar vi
-            tillsammans den bästa lösningen för dig och ditt företag.
-          </p>
-          <div class="flex flex-wrap justify-center gap-4 pt-2">
-            <NuxtLink
-              to="/contact"
-            >
-              <TextButton class="border">Kontakta oss</TextButton>
-            </NuxtLink>
-          </div>
-        </div>
-      </Section>
+      <CtaSection
+        heading="Låt oss hjälpa dig"
+        text="Vi tror på enkla samtal och ärliga råd. Berätta vad du behöver så hittar vi tillsammans den bästa lösningen för dig och ditt företag."
+      />
 
     </div>
   </div>
