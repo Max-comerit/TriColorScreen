@@ -473,6 +473,72 @@ watch(isChanged, (newValue) => {
         class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
       >
 
+      <!-- ── Product ID (optional) ─────────────────────────── -->
+      <div>
+        <label
+          for="quote-product-id"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Produkt ID <span class="text-neutral-500 text-xs sm:text-sm">(valfritt)</span>
+        </label>
+        <input
+          id="quote-product-id"
+          v-model="formData.productId"
+          type="text"
+          name="product_id"
+          autocomplete="off"
+          placeholder="T.ex. 3410020"
+          :aria-invalid="!!getFieldError('productId')"
+          :aria-describedby="getFieldError('productId') ? 'product-id-error' : undefined"
+          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('productId') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('productId')"
+          @input="handleInput('productId')"
+        >
+        <p
+          v-if="getFieldError('productId')"
+          id="product-id-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('productId') }}
+        </p>
+      </div>
+
+      <!-- ── Size (optional) ───────────────────────────────── -->
+      <div>
+        <label
+          for="quote-size"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Storlek <span class="text-neutral-500 text-xs sm:text-sm">(valfritt)</span>
+        </label>
+        <input
+          id="quote-size"
+          v-model="formData.size"
+          type="text"
+          name="size"
+          autocomplete="off"
+          placeholder="T.ex. M, XL, 10, 31/32"
+          :aria-invalid="!!getFieldError('size')"
+          :aria-describedby="getFieldError('size') ? 'size-error' : undefined"
+          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('size') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('size')"
+          @input="handleInput('size')"
+        >
+        <p
+          v-if="getFieldError('size')"
+          id="size-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('size') }}
+        </p>
+      </div>
+
       <!-- ── Product count ──────────────────────────────────── -->
       <div>
         <label

@@ -48,6 +48,18 @@ export const quoteFormSchema = z.object({
     .string()
     .optional()
     .or(z.literal('')),
+  productId: z
+    .string()
+    .regex(/^[A-Za-z0-9_-]+$/, 'Produkt ID får endast innehålla bokstäver, siffror, _ och -')
+    .max(20, 'Produkt ID får inte vara längre än 20 tecken')
+    .optional()
+    .or(z.literal('')),
+  size: z
+    .string()
+    .regex(/^[A-Za-z0-9.,/\-xX]+$/, 'Storlek får endast innehålla bokstäver, siffror, . , / och -')
+    .max(10, 'Storlek får inte vara längre än 10 tecken')
+    .optional()
+    .or(z.literal('')),
   productCount: z
     .number({
       required_error: 'Ange antal',
@@ -108,6 +120,8 @@ export function useQuoteForm() {
     subject: 'Offert förfrågan',
     productCategory: '',
     product: '',
+    productId: '',
+    size: '',
     productCount: undefined as unknown as number,
     images: [],
     message: '',
@@ -223,6 +237,8 @@ export function useQuoteForm() {
     formData.value.email = ''
     formData.value.phone = ''
     formData.value.customerType = '' as 'Privatperson' | 'Företag'
+    formData.value.productId = ''
+    formData.value.size = ''
     formData.value.productCount = undefined as unknown as number
     formData.value.message = ''
     formData.value.gdprConsent = false
@@ -259,6 +275,12 @@ export function useQuoteForm() {
       }
       if (formData.value.product) {
         formDataToSubmit.append('product', formData.value.product)
+      }
+      if (formData.value.productId) {
+        formDataToSubmit.append('product_id', formData.value.productId)
+      }
+      if (formData.value.size) {
+        formDataToSubmit.append('size', formData.value.size)
       }
       formDataToSubmit.append('product_count', String(formData.value.productCount))
       formData.value.images?.forEach((file, index) => {
