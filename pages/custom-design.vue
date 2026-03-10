@@ -24,6 +24,7 @@ import {
   createResizeControlRender,
 } from '@/utils/customControlRenders'
 import { getRotateImage, getTrashCanImage, getResizeImage } from '@/utils/customImageIcons'
+import IconTextButton from '~/components/common/IconTextButton.vue'
 
 // Lazy-load QuoteForm so Zod and nanoid are kept out of the shared synchronous bundle
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
@@ -432,7 +433,8 @@ function addText(): void {
           @custom-image-selected="handleCustomImageSelected"
         />
         <div class="designer grid grid-cols-1 sm:grid-cols-[1fr_minmax(350px,800px)_1fr] gap-4 items-start">
-          <div class="hidden sm:block" />
+          <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
+          <div class="hidden sm:block md:w-[48px]" />
           <div ref="canvasWrapperRef" class="relative w-full max-h-[1000px]" :style="{ aspectRatio: canvasStore.aspectRatio }">
             <div
               v-for="key in canvasStore.sideKeys"
@@ -448,18 +450,34 @@ function addText(): void {
             </div>
           </div>
           <div class="flex flex-row sm:flex-col justify-center gap-3">
-            <IconButton
-              aria-label="Upload image design"
-              variant="primary"
-              size="fit"
-              class="w-fit"
-              @click="uploadImage()"
-            >
-              <template #icon>
-                <ImageIcon class="!w-6 !h-6" />
-              </template>
-              <span class="hidden xl:inline">Lägg till bild</span>
-            </IconButton>
+            <div class="xl:hidden">
+              <IconButton
+                aria-label="Upload image design"
+                variant="primary"
+                size="fit"
+                class="w-fit"
+                @click="uploadImage()"
+              >
+                <template #icon>
+                  <ImageIcon class="!w-6 !h-6" />
+                </template>
+              </IconButton>
+            </div>
+            <div class="hidden xl:inline">
+              <IconTextButton
+                aria-label="Upload image design"
+                variant="primary"
+                size="fit"
+                class="w-fit hidden xl:flex"
+                label="Lägg till bild"
+                @click="uploadImage()"
+              >
+                <template #icon>
+                  <ImageIcon class="!w-6 !h-6" />
+                </template>
+              </IconTextButton>
+            </div>
+            <div class="xl:hidden">
             <IconButton
               aria-label="Add text design"
               variant="primary"
@@ -470,8 +488,22 @@ function addText(): void {
               <template #icon>
                 <TextIcon class="!w-6 !h-6" />
               </template>
-              <span class="hidden xl:inline">Lägg till text</span>
             </IconButton>
+            </div>
+             <div class="hidden xl:inline">
+            <IconTextButton
+              aria-label="Add text design"
+              variant="primary"
+              size="fit"
+              class="w-fit"
+              label="Lägg till text"
+              @click="addText()"
+            >
+              <template #icon>
+                <TextIcon class="!w-6 !h-6" />
+              </template>
+            </IconTextButton>
+            </div>
           </div>
         </div>
         <TextboxControls :canvas="activeCanvas" />

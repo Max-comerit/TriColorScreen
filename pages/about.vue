@@ -87,7 +87,7 @@ const valueCards = computed<CardItem[]>(() => [
     <HeroImage
       src="/images/about/hero.jpg"
       title="Om Oss"
-      description="Lär känna teamet bakom Tricolor Screen – över 28 år av passion för tryck och design."
+      description="Lär känna teamet bakom Tricolor Screen – mer än 25 år av passion för tryck och design."
       :width="1280"
       :height="854"
       alt="Tricolor Screen-teamet i verkstaden"
