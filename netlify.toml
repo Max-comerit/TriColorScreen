@@ -6,6 +6,9 @@
 [build.environment]
   NUXT_PUBLIC_SITE_URL = "https://tricolorscreen.netlify.app"
 
+[context.production.environment]
+  NUXT_PUBLIC_SITE_URL = "https://tricolorscreen.se"
+
 # Note: No SPA catch-all redirect — this is SSG (nuxt generate).
 # All routes are pre-rendered to their own index.html files.
 # Unknown routes correctly return 404 via Nuxt's error page.
