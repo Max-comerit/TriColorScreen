@@ -34,6 +34,7 @@ onMounted(() => {
           <source srcset="/images/header/tcs-logo-100.webp 1x, /images/header/tcs-logo-200.webp 2x" type="image/webp">
           <img
             src="/images/header/tcs-logo-100.png"
+            srcset="/images/header/tcs-logo-200.png 2x"
             :width="scrolled ? 60 : 100"
             :height="scrolled ? 60 : 100"
             loading="eager"
