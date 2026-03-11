@@ -100,3 +100,76 @@
   src: url('~/assets/fonts/custom-design/Merriweather-Bold.woff2') format('woff2'),
        url('~/assets/fonts/custom-design/Merriweather-Bold.woff') format('woff');
 }
+
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/PlayfairDisplay-Regular.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/PlayfairDisplay-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/PlayfairDisplay-Bold.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/PlayfairDisplay-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/Poppins-Regular.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/Poppins-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/Poppins-Bold.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/Poppins-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/Roboto-Regular.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/Roboto-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/Roboto-Bold.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/Roboto-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/SpaceGrotesk-Regular.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/SpaceGrotesk-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/SpaceGrotesk-Bold.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/SpaceGrotesk-Bold.woff') format('woff');
+}

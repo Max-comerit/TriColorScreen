@@ -14,7 +14,7 @@
 
   /* Base font family for better performance and reduced CLS */
   body {
-    font-family: 'Source Sans 3', 'sans-serif', 'system-ui';
+    font-family: 'Inter', 'sans-serif', 'system-ui';
   }
 
   /* Typography - WCAG AA compliant defaults for headings and paragraphs */

@@ -110,7 +110,7 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Poppins', 'sans-serif', 'system-ui'],
+        display: ['Space Grotesk', 'sans-serif', 'system-ui'],
         body: ['Inter', 'sans-serif', 'system-ui'],
       },
       fontSize: {
