@@ -110,8 +110,8 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Playfair Display', 'sans-serif', 'system-ui'],
-        body: ['Source Sans 3', 'sans-serif', 'system-ui'],
+        display: ['Poppins', 'sans-serif', 'system-ui'],
+        body: ['Inter', 'sans-serif', 'system-ui'],
       },
       fontSize: {
         sm: ['15px', { lineHeight: '1.25rem' }],

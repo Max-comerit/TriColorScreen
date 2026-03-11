@@ -25,6 +25,7 @@ const GF_URL =
   '&family=Pacifico' +
   '&family=Bebas+Neue' +
   '&family=Oswald:wght@400;700' +
+  '&family=Poppins:wght@400;700' +
   '&display=swap'
 
 // User-agents: modern Chrome for woff2, old Chrome for woff

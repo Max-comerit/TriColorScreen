@@ -148,6 +148,24 @@
 }
 
 @font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/Poppins-Regular.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/Poppins-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/Poppins-Bold.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/Poppins-Bold.woff') format('woff');
+}
+
+@font-face {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
@@ -163,4 +181,22 @@
   font-display: swap;
   src: url('~/assets/fonts/custom-design/Roboto-Bold.woff2') format('woff2'),
        url('~/assets/fonts/custom-design/Roboto-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/SourceSans3-Regular.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/SourceSans3-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/SourceSans3-Bold.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/SourceSans3-Bold.woff') format('woff');
 }
