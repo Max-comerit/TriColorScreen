@@ -32,8 +32,7 @@ const QuoteForm = defineAsyncComponent(() => import('~/components/features/Quote
 
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
-console.log('siteUrl:', siteUrl) // Debug log to verify composable import
-console.log('process.env.DEPLOY_PRIME_URL:', process.env.DEPLOY_PRIME_URL)
+
 useHead({
   title: 'Designa eget tryck på T-shirts, Kepsar & Arbetskläder',
   meta: [
