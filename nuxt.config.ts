@@ -78,10 +78,6 @@ export default defineNuxtConfig({
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'Tricolor Screen' },
         { property: 'og:locale', content: 'sv_SE' },
-        {
-          property: 'og:image',
-          content: `${siteUrl}/images/index/hero.jpg`,
-        },
         { name: 'twitter:card', content: 'summary_large_image' },
       ],
       link: [
