@@ -42,7 +42,7 @@ const emit = defineEmits<{
         <p class="mb-2 text-base">
           När du kontaktar oss via formuläret samlar vi in följande uppgifter:
         </p>
-        <ul class="list-disc list-inside space-y-1 ml-2">
+        <ul class="list-disc list-inside space-y-1 ml-2 text-base">
           <li>Namn</li>
           <li>E-postadress</li>
           <li>Telefonnummer (om angivet)</li>
@@ -58,7 +58,7 @@ const emit = defineEmits<{
           Vi behandlar dina personuppgifter för att kunna svara på din förfrågan och tillhandahålla våra tjänster. 
           Den rättsliga grunden för behandlingen är:
         </p>
-        <ul class="list-disc list-inside space-y-1 ml-2">
+        <ul class="list-disc list-inside space-y-1 ml-2 text-base">
           <li><strong>Avtal:</strong> För att kunna fullgöra avtal eller vidta åtgärder innan avtal ingås</li>
           <li><strong>Samtycke:</strong> Genom att fylla i och skicka formuläret ger du ditt samtycke till behandlingen</li>
           <li><strong>Berättigat intresse:</strong> För att kunna bedriva och utveckla vår verksamhet</li>
@@ -78,7 +78,7 @@ const emit = defineEmits<{
         <p class="text-base mb-2">
           Enligt dataskyddsförordningen (GDPR) har du följande rättigheter:
         </p>
-        <ul class="list-disc list-inside space-y-1 ml-2">
+        <ul class="list-disc list-inside space-y-1 ml-2 text-base">
           <li><strong>Rätt till tillgång:</strong> Du har rätt att få information om vilka uppgifter vi behandlar om dig</li>
           <li><strong>Rätt till rättelse:</strong> Du kan begära att felaktiga uppgifter rättas</li>
           <li><strong>Rätt till radering:</strong> Du kan begära att dina uppgifter raderas</li>
