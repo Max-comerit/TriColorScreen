@@ -12,10 +12,10 @@ defineProps<Props>()
 
 <template>
   <article
-    class="w-full min-w-fit p-3 sm:p-4 transition-all duration-300
+    class="w-full p-2 sm:p-3 transition-all duration-300
            hover:bg-primary-800 flex items-center"
   >
-    <div class="flex items-center gap-2 sm:gap-4">
+    <div class="flex items-center gap-2 sm:gap-2 min-w-0">
       <div
         class="flex-shrink-0 text-primary"
         aria-hidden="true"
@@ -26,7 +26,7 @@ defineProps<Props>()
         />
       </div>
 
-      <p class="m-0 text-lg sm:text-xl text-white font-semibold">
+      <p class="m-0 text-lg  text-white font-semibold min-w-0">
         {{ text }}
       </p>
     </div>
