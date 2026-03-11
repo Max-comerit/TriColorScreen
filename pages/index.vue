@@ -16,7 +16,7 @@ const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel
 
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
-console.log(`Using site URL: ${siteUrl}`)
+
 useHead({
   title: 'Tricolor Screen - Reklam, Profiltryck, Brodyr & Grafisk Design i Stockholm',
   titleTemplate: '%s',
