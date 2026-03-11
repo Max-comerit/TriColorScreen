@@ -29,7 +29,7 @@ useHead({
       name: 'keywords',
       content: 'reklam, profiltryck, textiltryck, brodyr, screentryck, bilfoliering, bildekor, trycksaker, visitkort, broschyrer, affischer, foldrar, dekaler, grafisk design, tryckeri Stockholm',
     },
-    { property: 'og:title', content: 'Tricolor Screen - Professionella Trycklösningar för Företag, Organisationer & Privatpersoner' },
+    { property: 'og:title', content: 'Tricolor Screen - Professionella Trycklösningar för Företag, Organisationer, Föreningar, Entreprenörer & Privatpersoner' },
     {
       property: 'og:description',
       content: 'Kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper företag, organisationer, föreningar, entreprenörer & privatpersoner att sticka ut!',
@@ -39,7 +39,7 @@ useHead({
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
-    { name: 'twitter:title', content: 'Tricolor Screen - Professionella Trycklösningar för Företag, Organisationer & Privatpersoner' },
+    { name: 'twitter:title', content: 'Tricolor Screen - Professionella Trycklösningar för Företag, Organisationer, Föreningar, Entreprenörer & Privatpersoner' },
     {
       name: 'twitter:description',
       content: 'Kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper företag, organisationer, föreningar, entreprenörer & privatpersoner att sticka ut!',
