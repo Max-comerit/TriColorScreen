@@ -27,6 +27,8 @@ import {
 import { getRotateImage, getTrashCanImage, getResizeImage } from '@/utils/customImageIcons'
 import IconTextButton from '~/components/common/IconTextButton.vue'
 
+console.log('useSiteUrl:', useSiteUrl()) // Debug log to verify composable import
+
 // Lazy-load QuoteForm so Zod and nanoid are kept out of the shared synchronous bundle
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
 
