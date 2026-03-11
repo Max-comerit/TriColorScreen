@@ -12,10 +12,6 @@ jobs:
     steps:
       # 1. Clone the repo into the GitHub Actions runner
       - uses: actions/checkout@v4
-      - name: Use secret
-        run: echo "NUXT_PUBLIC_SITE_URL key is ${{ secrets.NUXT_PUBLIC_SITE_URL }}"
-        env:
-          NUXT_PUBLIC_SITE_URL: ${{ secrets.NUXT_PUBLIC_SITE_URL }}
 
       # 2. Install correct Node version in this machine
       - uses: actions/setup-node@v4
