@@ -110,12 +110,13 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        serif: ['Merriweather', 'Georgia', 'serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-        display: ['Poppins', 'sans-serif'],
-        body: ['Open Sans', 'sans-serif'],
+        display: ['Playfair Display', 'sans-serif', 'system-ui'],
+        body: ['Source Sans 3', 'sans-serif', 'system-ui'],
       },
+      fontSize: {
+        sm: ['15px', { lineHeight: '1.25rem' }],
+      },
+
       borderRadius: {
         button: '0.5rem', // 8px - standard button radius
         card: '1rem', // 16px - card container radius

@@ -1,9 +1,11 @@
 /**
  * Site-wide font declarations — self-hosted woff2/woff
  *
- * Inter        → font-sans (Tailwind)
- * Open Sans    → font-body (Tailwind)
- * Merriweather → font-serif (Tailwind)
+ * Inter           → font-sans (Tailwind)
+ * Source Sans 3   → font-body (Tailwind) + global body font
+ * Playfair Display → font-display (Tailwind)
+ * Open Sans       → available for optional usage
+ * Merriweather    → font-serif (Tailwind)
  *
  * All font files live in assets/fonts/custom-design/ and are shared
  * with the custom-design page (which imports its own full CSS).
@@ -25,6 +27,42 @@
   font-display: swap;
   src: url('~/assets/fonts/custom-design/Inter-Bold.woff2') format('woff2'),
        url('~/assets/fonts/custom-design/Inter-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/SourceSans3-Regular.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/SourceSans3-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/SourceSans3-Bold.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/SourceSans3-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('~/assets/fonts/custom-design/PlayfairDisplay-Regular.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/PlayfairDisplay-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url('~/assets/fonts/custom-design/PlayfairDisplay-Bold.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/PlayfairDisplay-Bold.woff') format('woff');
 }
 
 @font-face {

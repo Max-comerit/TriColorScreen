@@ -15,6 +15,7 @@ mkdirSync(FONTS_DIR, { recursive: true })
 
 const GF_URL =
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;700' +
+  '&family=Source+Sans+3:wght@400;700' +
   '&family=Open+Sans:wght@400;700' +
   '&family=Roboto:wght@400;700' +
   '&family=Merriweather:wght@400;700' +
