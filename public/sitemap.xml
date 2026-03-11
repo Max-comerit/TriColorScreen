@@ -2,55 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://tricolorscreen.se/</loc>
+    <loc>https://www.tricolorscreen.se/</loc>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://tricolorscreen.se/about</loc>
+    <loc>https://www.tricolorscreen.se/about</loc>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://tricolorscreen.se/contact</loc>
+    <loc>https://www.tricolorscreen.se/contact</loc>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://tricolorscreen.se/custom-design</loc>
+    <loc>https://www.tricolorscreen.se/custom-design</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://tricolorscreen.se/services/decoration-foiling</loc>
+    <loc>https://www.tricolorscreen.se/services/decoration-foiling</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://tricolorscreen.se/services/event-advertisement</loc>
+    <loc>https://www.tricolorscreen.se/services/event-advertisement</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://tricolorscreen.se/services/graphic-production</loc>
+    <loc>https://www.tricolorscreen.se/services/graphic-production</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://tricolorscreen.se/services/printed-matter</loc>
+    <loc>https://www.tricolorscreen.se/services/printed-matter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://tricolorscreen.se/services/screen-printing-embroidery</loc>
+    <loc>https://www.tricolorscreen.se/services/screen-printing-embroidery</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

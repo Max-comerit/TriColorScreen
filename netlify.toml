@@ -11,7 +11,19 @@
   SITE_URL = ""
 
 [context.production.environment]
-  SITE_URL = "https://tricolorscreen.se"
+  SITE_URL = "https://www.tricolorscreen.se"
+
+[[redirects]]
+from = "http://tricolorscreen.se/*"
+to = "https://www.tricolorscreen.se/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "https://tricolorscreen.se/*"
+to = "https://www.tricolorscreen.se/:splat"
+status = 301
+force = true
 
 # Note: No SPA catch-all redirect — this is SSG (nuxt generate).
 # All routes are pre-rendered to their own index.html files.

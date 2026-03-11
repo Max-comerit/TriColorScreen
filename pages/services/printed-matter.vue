@@ -42,9 +42,6 @@ useHead({
     },
     { name: 'twitter:image', content: `${siteUrl}/images/services/printed-matter/hero.jpg` },
   ],
-  link: [
-    { rel: 'canonical', href: `${siteUrl}/services/printed-matter` },
-  ],
 })
 
 const { perPage } = useResponsivePerPage()

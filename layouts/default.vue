@@ -4,12 +4,19 @@
 import AppHeader from '~/components/layout/AppHeader.vue'
 import AppFooter from '~/components/layout/AppFooter.vue'
 
+// Dynamic canonical — covers pages that don't define their own (e.g. about)
+// Pages setting their own canonical via useHead/useSeoMeta will override this.
+const siteUrl = useSiteUrl()
+const route = useRoute()
+
 // format-detection and preload - all other defaults live in nuxt.config.ts app.head
 useHead({
   meta: [
     { name: 'format-detection', content: 'telephone=no' },
   ],
-  link: [
+  link: computed(() => [
+    // Canonical — pages that define their own will override this
+    { rel: 'canonical', href: `${siteUrl}${route.path}` },
     // Preload tcs-wallpaper.webp image for eager loading
     {
       rel: 'preload',
@@ -18,7 +25,7 @@ useHead({
       type: 'image/webp',
       fetchpriority: 'low', // decorative → low priority
     },
-  ],
+  ]),
 })
 </script>
 

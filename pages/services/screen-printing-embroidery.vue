@@ -41,9 +41,6 @@ useHead({
     },
     { name: 'twitter:image', content: `${siteUrl}/images/services/screen-printing-embroidery/hero-v2.jpg` },
   ],
-  link: [
-    { rel: 'canonical', href: `${siteUrl}/services/screen-printing-embroidery` },
-  ],
 })
 
 const { perPage } = useResponsivePerPage()

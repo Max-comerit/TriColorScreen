@@ -40,9 +40,6 @@ useHead({
     },
     { name: 'twitter:image', content: `${siteUrl}/images/services/decoration-foiling/hero-v2.jpg` },
   ],
-  link: [
-    { rel: 'canonical', href: `${siteUrl}/services/decoration-foiling` },
-  ],
 })
 
 // ===== STATE =====

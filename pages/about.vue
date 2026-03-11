@@ -39,9 +39,6 @@ useHead({
     },
     { name: 'twitter:image', content: `${siteUrl}/images/about/hero.jpg` },
   ],
-  link: [
-    { rel: 'canonical', href: `${siteUrl}/about` },
-  ],
 })
 
 // ===== STATE =====

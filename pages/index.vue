@@ -46,9 +46,6 @@ useHead({
     },
     { name: 'twitter:image', content: `${siteUrl}/images/index/hero.jpg` },
   ],
-  link: [
-    { rel: 'canonical', href: `${siteUrl}/` },
-  ],
 })
 
 // ===== STATE (ref/reactive) =====

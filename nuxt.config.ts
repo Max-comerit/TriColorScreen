@@ -5,7 +5,7 @@
 import svgLoader from 'vite-svg-loader'
 
 // On Netlify deploy previews, SITE_URL is cleared so DEPLOY_PRIME_URL (the actual deploy URL) is used instead
-const siteUrl = process.env.SITE_URL || process.env.DEPLOY_PRIME_URL || 'https://tricolorscreen.se'
+const siteUrl = process.env.SITE_URL || process.env.DEPLOY_PRIME_URL || 'https://www.tricolorscreen.se'
 
 export default defineNuxtConfig({
   vite: {

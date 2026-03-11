@@ -48,9 +48,6 @@ useHead({
     },
     { name: 'twitter:image', content: `${siteUrl}/images/contact/hero.jpg` },
   ],
-  link: [
-    { rel: 'canonical', href: `${siteUrl}/contact` },
-  ],
 })
 
 // ===== METHODS =====

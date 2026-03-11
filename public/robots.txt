@@ -7,4 +7,4 @@ Allow: /
 # Disallow: /private/
 
 # Sitemap location
-Sitemap: https://tricolorscreen.se/sitemap.xml
+Sitemap: https://www.tricolorscreen.se/sitemap.xml
