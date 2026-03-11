@@ -10,6 +10,7 @@
  * All font files live in assets/fonts/custom-design/ and are shared
  * with the custom-design page (which imports its own full CSS).
  */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @font-face {
   font-family: 'Inter';
@@ -172,4 +173,22 @@
   font-display: swap;
   src: url('~/assets/fonts/custom-design/SpaceGrotesk-Bold.woff2') format('woff2'),
        url('~/assets/fonts/custom-design/SpaceGrotesk-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/Oswald-Regular.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/Oswald-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/Oswald-Bold.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/Oswald-Bold.woff') format('woff');
 }
