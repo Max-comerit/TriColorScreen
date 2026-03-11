@@ -3,24 +3,19 @@
 <script setup lang="ts">
 import AppHeader from '~/components/layout/AppHeader.vue'
 import AppFooter from '~/components/layout/AppFooter.vue'
+import { useSiteUrl } from '~/composables/useSiteUrl'
 
-// Base SEO meta tags for all pages
+// Dynamic canonical for all pages — built from siteUrl + current route path.
+const siteUrl = useSiteUrl()
+const route = useRoute()
+
+// format-detection and preload - all other defaults live in nuxt.config.ts app.head
 useHead({
-  htmlAttrs: {
-    lang: 'sv',
-  },
   meta: [
-    { charset: 'utf-8' },
-    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     { name: 'format-detection', content: 'telephone=no' },
-    { name: 'author', content: 'Tricolor Screen' },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:site_name', content: 'Tricolor Screen' },
-    { property: 'og:locale', content: 'sv_SE' },
-    { name: 'twitter:card', content: 'summary_large_image' },
   ],
-  link: [
-    { rel: 'canonical', href: 'https://tricolorscreen.se' },
+  link: computed(() => [
+    { rel: 'canonical', href: `${siteUrl}${route.path}` },
     // Preload tcs-wallpaper.webp image for eager loading
     {
       rel: 'preload',
@@ -29,7 +24,7 @@ useHead({
       type: 'image/webp',
       fetchpriority: 'low', // decorative → low priority
     },
-  ],
+  ]),
 })
 </script>
 

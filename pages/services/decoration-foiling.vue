@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
+import { useSiteUrl } from '~/composables/useSiteUrl'
 import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
@@ -10,29 +11,34 @@ import decorationFoilingServicesData from '~/assets/json/services/decoration-foi
 // ===== PROPS & EMITS =====
 
 // ===== COMPOSABLES & STORES =====
+const siteUrl = useSiteUrl()
 useHead({
-  title: 'Bildekor & Helfoliering i Stockholm | Tricolor Screen',
+  title: 'Bildekor & Helfoliering',
   meta: [
     {
       name: 'description',
-      content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
+      content: 'Tricolor Screen erbjuder professionell bildekor, fordonsdekor och helfoliering för privatpersoner och företag i Stockholm. Hög kvalitet och snabb leverans.',
     },
     {
-      property: 'og:title',
-      content: 'Dekor & foliering - Bildekor och helfoliering i Stockholm',
+      name: 'keywords',
+      content: 'bildekor, fordonsdekor, helfoliering, dekorfolie, bilfoliering, fönsterdekor, fasaddekor, Stockholm, reklam',
     },
+    { property: 'og:title', content: 'Bildekor & Helfoliering - Tricolor Screen' },
     {
       property: 'og:description',
-      content: 'Vi hjalper privatpersoner och foretag med bildekor, fordonsdekor och helfoliering i Stockholm.',
+      content: 'Professionell bildekor, fordonsdekor och helfoliering för privatpersoner och företag i Stockholm.',
     },
+    { property: 'og:url', content: `${siteUrl}/services/decoration-foiling` },
+    { property: 'og:image', content: `${siteUrl}/images/services/decoration-foiling/hero-v2.jpg` },
+    { property: 'og:image:width', content: '1280' },
+    { property: 'og:image:height', content: '2331' },
+    { property: 'og:image:type', content: 'image/jpeg' },
+    { name: 'twitter:title', content: 'Dekorfolie & Bilfoliering - Tricolor Screen' },
     {
-      property: 'og:type',
-      content: 'website',
+      name: 'twitter:description',
+      content: 'Professionell bildekor, fordonsdekor och helfoliering för privatpersoner och företag i Stockholm.',
     },
-    {
-      property: 'og:image',
-      content: '/images/services/decoration-foiling/hero.jpg',
-    },
+    { name: 'twitter:image', content: `${siteUrl}/images/services/decoration-foiling/hero-v2.jpg` },
   ],
 })
 
@@ -61,8 +67,8 @@ const decorationFoilingCards = computed<CardItem[]>(() =>
 <template>
   <div>
     <!-- Hero: full width -->
-    <HeroImage
-      src="/images/services/decoration-foiling/hero.jpg"
+    <HeroImage 
+      src="/images/services/decoration-foiling/hero-v2.jpg"
       :video-sources="[
         { src: '/videos/services/decoration-foiling/hero.webm', type: 'video/webm' },
         { src: '/videos/services/decoration-foiling/hero.mp4', type: 'video/mp4' }
@@ -116,7 +122,7 @@ const decorationFoilingCards = computed<CardItem[]>(() =>
       <!-- CTA -->
       <CtaSection
         heading="Intresserad? Hör av dig!"
-        text="Berätta om ditt fordon eller din yta – vi hjälper dig att välja rätt material och utförande, och sätter ihop en lösning som passar din budget."
+        text="Berätta om ditt fordon eller din yta - vi hjälper dig att välja rätt material och utförande, och sätter ihop en lösning som passar din budget."
       />
 
     </div>

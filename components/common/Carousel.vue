@@ -103,7 +103,7 @@ const embla = ref<EmblaCarouselType | null>(null)
 const selectedIndex = ref(0)
 const canScrollPrev = ref(false)
 const canScrollNext = ref(false)
-const scrollProgress = ref(0) // 0–1 scrollbar progress
+const scrollProgress = ref(0) // 0-1 scrollbar progress
 
 let lastClick = 0
 

@@ -3,6 +3,7 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import type { CardItem, IImageCardContent } from '~/types/CardContent'
+import { useSiteUrl } from '~/composables/useSiteUrl'
 import images from '~/assets/json/services/screen-printing-embroidery/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
@@ -10,9 +11,10 @@ import { useResponsivePerPage } from '~/composables/useResponsivePerPage'
 import { defineAsyncComponent } from 'vue'
 const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
 
-// ===== COMPOSABLES =====
+// ===== COMPOSABLES & STORES =====
+const siteUrl = useSiteUrl()
 useHead({
-  title: 'Screentryck, Brodyr & Textiltryck | Tricolor Screen',
+  title: 'Screentryck, Brodyr & Textiltryck',
   meta: [
     {
       name: 'description',
@@ -22,22 +24,22 @@ useHead({
       name: 'keywords',
       content: 'screentryck, brodyr, textiltryck, tricolor screen, tryckeri, profiltryck, reklammaterial, företagskläder, eventkläder',
     },
-    {
-      property: 'og:title',
-      content: 'Screentryck, Brodyr & Textiltryck | Tricolor Screen',
-    },
+    { property: 'og:title', content: 'Screentryck, Brodyr & Textiltryck - Tricolor Screen' },
     {
       property: 'og:description',
       content: 'Professionella lösningar inom screentryck, brodyr och textiltryck för företag och privatpersoner. Kontakta oss för skräddarsydda trycklösningar.',
     },
+    { property: 'og:url', content: `${siteUrl}/services/screen-printing-embroidery` },
+    { property: 'og:image', content: `${siteUrl}/images/services/screen-printing-embroidery/hero-v2.jpg` },
+    { property: 'og:image:width', content: '1280' },
+    { property: 'og:image:height', content: '1272' },
+    { property: 'og:image:type', content: 'image/jpeg' },
+    { name: 'twitter:title', content: 'Screentryck, Brodyr & Textiltryck - Tricolor Screen' },
     {
-      property: 'og:type',
-      content: 'website',
+      name: 'twitter:description',
+      content: 'Professionella lösningar inom screentryck, brodyr och textiltryck för företag och privatpersoner.',
     },
-    {
-      property: 'og:image',
-      content: '/images/services/screen-printing-embroidery/hero.jpg',
-    },
+    { name: 'twitter:image', content: `${siteUrl}/images/services/screen-printing-embroidery/hero-v2.jpg` },
   ],
 })
 
@@ -52,8 +54,8 @@ const imageCards = computed<CardItem[]>(() =>
 <template>
   <div>
     <!-- Hero: full width -->
-    <HeroImage
-      src="/images/services/screen-printing-embroidery/hero.jpg"
+    <HeroImage 
+      src="/images/services/screen-printing-embroidery/hero-v2.jpg"
       :video-sources="[
         { src: '/videos/services/screen-printing-embroidery/hero.webm', type: 'video/webm' },
         { src: '/videos/services/screen-printing-embroidery/hero.mp4', type: 'video/mp4' }

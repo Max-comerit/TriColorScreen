@@ -6,5 +6,5 @@ Allow: /
 # Disallow: /admin/
 # Disallow: /private/
 
-# Sitemap location (update if you have a sitemap)
-# Sitemap: https://yourdomain.com/sitemap.xml
+# Sitemap location
+Sitemap: https://www.tricolorscreen.se/sitemap.xml

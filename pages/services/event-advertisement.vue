@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
+import { useSiteUrl } from '~/composables/useSiteUrl'
 import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
@@ -10,33 +11,34 @@ import servicesData from '~/assets/json/services/event-advertisement/services.js
 // ===== PROPS & EMITS =====
 
 // ===== COMPOSABLES =====
+const siteUrl = useSiteUrl()
 useHead({
-  title: 'Allt för mässor & events | TriColorScreen',
+  title: 'Mässor & Events',
   meta: [
     {
       name: 'description',
-      content: 'Allt för mässor och events: skyltar, banderoller, dekaler, flaggor och profilkläder. TriColorScreen hjälper dig att skapa tydlig, professionell närvaro.',
+      content: 'Allt för mässor och events: skyltar, banderoller, dekaler, flaggor och profilkläder. Tricolor Screen hjälper dig att skapa tydlig, professionell närvaro.',
     },
     {
       name: 'keywords',
       content: 'mässor, events, skyltar, banderoller, dekaler, flaggor, profilkläder, roll-ups, byggskyltar, skyltning',
     },
-    {
-      property: 'og:title',
-      content: 'Allt för mässor & events | TriColorScreen',
-    },
+    { property: 'og:title', content: 'Mässor & Events - Tricolor Screen' },
     {
       property: 'og:description',
-      content: 'TriColorScreen hjälper dig att ta fram mässmaterial som skyltar, banderoller, dekaler, flaggor och profilkläder.',
+      content: 'Tricolor Screen hjälper dig att ta fram mässmaterial som skyltar, banderoller, dekaler, flaggor och profilkläder.',
     },
+    { property: 'og:url', content: `${siteUrl}/services/event-advertisement` },
+    { property: 'og:image', content: `${siteUrl}/images/services/event-advertisement/hero.jpg` },
+    { property: 'og:image:width', content: '1280' },
+    { property: 'og:image:height', content: '854' },
+    { property: 'og:image:type', content: 'image/jpeg' },
+    { name: 'twitter:title', content: 'Mässor & Events - Tricolor Screen' },
     {
-      property: 'og:type',
-      content: 'website',
+      name: 'twitter:description',
+      content: 'Tricolor Screen hjälper dig att ta fram mässmaterial som skyltar, banderoller, dekaler, flaggor och profilkläder.',
     },
-    {
-      property: 'og:image',
-      content: '/images/services/event-advertisement/hero.jpg',
-    },
+    { name: 'twitter:image', content: `${siteUrl}/images/services/event-advertisement/hero.jpg` },
   ],
 })
 

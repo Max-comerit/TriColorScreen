@@ -3,6 +3,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 import svgLoader from 'vite-svg-loader'
+
+// On Netlify deploy previews, SITE_URL is cleared so DEPLOY_PRIME_URL (the actual deploy URL) is used instead
+const siteUrl = process.env.SITE_URL || process.env.DEPLOY_PRIME_URL || 'https://www.tricolorscreen.se'
+
 export default defineNuxtConfig({
   vite: {
     plugins: [svgLoader()],
@@ -45,6 +49,12 @@ export default defineNuxtConfig({
     },
   },
 
+  runtimeConfig: {
+    public: {
+      appUrl: siteUrl,
+    },
+  },
+
   typescript: {
     strict: true, // enables strict type-checking
   },
@@ -54,12 +64,26 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'sv',
       },
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+      titleTemplate: '%s | Tricolor Screen',
       meta: [
+        { name: 'robots', content: 'index, follow' },
         {
-          name: 'robots',
-          content: 'index, follow'
-        }
-      ]
+          name: 'description',
+          content:
+            'Tricolor Screen erbjuder kompletta trycklösningar: screentryck, brodyr, textiltryck, bildekor, bilfoliering och grafisk design. Mer än 25 år av expertis i Stockholm.',
+        },
+        { name: 'theme-color', content: '#009fe3' },
+        { name: 'author', content: 'Tricolor Screen' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'Tricolor Screen' },
+        { property: 'og:locale', content: 'sv_SE' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      ],
     },
   },
 
