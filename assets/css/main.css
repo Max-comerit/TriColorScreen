@@ -34,7 +34,7 @@
 
   /* Subsection headings */
   h3 {
-    @apply text-xl font-body md:text-2xl lg:text-3xl font-semibold leading-snug text-layout-text-on-light;
+    @apply text-xl font-display md:text-2xl lg:text-3xl font-semibold leading-snug text-layout-text-on-light;
     @apply mb-4 mt-6;
   }
 
