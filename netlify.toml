@@ -6,6 +6,10 @@
 [build.environment]
   NUXT_PUBLIC_SITE_URL = "https://tricolorscreen.netlify.app"
 
+[context.deploy-preview.environment]
+  # Clear so nuxt.config.ts falls back to process.env.URL (the actual deploy preview URL)
+  NUXT_PUBLIC_SITE_URL = ""
+
 [context.production.environment]
   NUXT_PUBLIC_SITE_URL = "https://tricolorscreen.se"
 
