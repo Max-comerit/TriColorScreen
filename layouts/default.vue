@@ -3,9 +3,9 @@
 <script setup lang="ts">
 import AppHeader from '~/components/layout/AppHeader.vue'
 import AppFooter from '~/components/layout/AppFooter.vue'
+import { useSiteUrl } from '~/composables/useSiteUrl'
 
-// Dynamic canonical — covers pages that don't define their own (e.g. about)
-// Pages setting their own canonical via useHead/useSeoMeta will override this.
+// Dynamic canonical for all pages — built from siteUrl + current route path.
 const siteUrl = useSiteUrl()
 const route = useRoute()
 
@@ -15,7 +15,6 @@ useHead({
     { name: 'format-detection', content: 'telephone=no' },
   ],
   link: computed(() => [
-    // Canonical — pages that define their own will override this
     { rel: 'canonical', href: `${siteUrl}${route.path}` },
     // Preload tcs-wallpaper.webp image for eager loading
     {
