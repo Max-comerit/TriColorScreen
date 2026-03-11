@@ -72,7 +72,7 @@ export default defineNuxtConfig({
         {
           name: 'description',
           content:
-            'Tricolor Screen erbjuder kompletta trycklösningar: screentryck, brodyr, textiltryck, bildekor, bilfoliering och grafisk design. 28 år av expertis i Stockholm.',
+            'Tricolor Screen erbjuder kompletta trycklösningar: screentryck, brodyr, textiltryck, bildekor, bilfoliering och grafisk design. Mer än 25 år av expertis i Stockholm.',
         },
         { name: 'theme-color', content: '#009fe3' },
         { name: 'author', content: 'Tricolor Screen' },

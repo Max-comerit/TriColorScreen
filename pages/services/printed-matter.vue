@@ -19,7 +19,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Tricolor Screen erbjuder högkvalitativ trycksaksproduktion: foldrar, broschyrer, visitkort, affischer, etiketter, kuvert, klistermärken, menyer och dekaler. 28 år av expertis i tryckbranschen.',
+      content: 'Tricolor Screen erbjuder högkvalitativ trycksaksproduktion: foldrar, broschyrer, visitkort, affischer, etiketter, kuvert, klistermärken, menyer och dekaler. Mer än 25 år av expertis i tryckbranschen.',
     },
     {
       name: 'keywords',
