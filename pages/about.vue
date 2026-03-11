@@ -4,30 +4,40 @@
 // ===== IMPORTS =====
 import type { CardItem } from '~/types/CardContent'
 import CardGrid from '~/components/common/CardGrid.vue'
+import { useSiteUrl } from '~/composables/useSiteUrl'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import CtaSection from '~/components/features/CtaSection.vue'
 
 // ===== COMPOSABLES =====
+const siteUrl = useSiteUrl()
 useHead({
-  title: 'Om Oss – Tricolor Screen',
+  title: 'Om oss',
   meta: [
     {
       name: 'description',
-      content: 'Lär känna Tricolor Screen – ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
+      content: 'Lär känna Tricolor Screen - ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
     },
     {
-      property: 'og:title',
-      content: 'Om oss – Tricolor Screen',
+      name: 'keywords',
+      content: 'om oss, tricolor screen, familjeföretag, reklam, profiltryck, brodyr, textiltryck, bildekor, bilfoliering, tryckeri Stockholm',
     },
+    { property: 'og:title', content: 'Om oss - Tricolor Screen' },
     {
       property: 'og:description',
-      content: 'Lär känna Tricolor Screen – ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
+      content: 'Lär känna Tricolor Screen - ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
     },
+    { property: 'og:url', content: `${siteUrl}/about` },
+    { property: 'og:image', content: `${siteUrl}/images/about/hero.jpg` },
+    { name: 'twitter:title', content: 'Om oss - Tricolor Screen' },
     {
-      property: 'og:image',
-      content: '/images/about/hero.jpg',
+      name: 'twitter:description',
+      content: 'Lär känna Tricolor Screen - ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
     },
+    { name: 'twitter:image', content: `${siteUrl}/images/about/hero.jpg` },
+  ],
+  link: [
+    { rel: 'canonical', href: `${siteUrl}/about` },
   ],
 })
 
@@ -63,7 +73,7 @@ const valueCards = computed<CardItem[]>(() => [
     type: 'text',
     data: {
       title: 'Snabba leveranser',
-      description: 'Vi vet att deadlines är viktiga. Med effektiva processer levererar vi i tid – varje gång.',
+      description: 'Vi vet att deadlines är viktiga. Med effektiva processer levererar vi i tid - varje gång.',
       align: 'center',
       backgroundColor: "bg-primary-50"
     },
@@ -87,7 +97,7 @@ const valueCards = computed<CardItem[]>(() => [
     <HeroImage
       src="/images/about/hero.jpg"
       title="Om Oss"
-      description="Lär känna teamet bakom Tricolor Screen – mer än 25 år av passion för tryck och design."
+      description="Lär känna teamet bakom Tricolor Screen - mer än 25 år av passion för tryck och design."
       :width="1280"
       :height="854"
       alt="Tricolor Screen-teamet i verkstaden"
@@ -104,8 +114,8 @@ const valueCards = computed<CardItem[]>(() => [
       >
         <div class="mx-auto max-w-3xl space-y-4">
           <p class="leading-relaxed">
-            Tricolor Screen grundades 1996 med en enkel men stark övertygelse: att alla företag –
-            stora som små – förtjänar professionellt tryckt profilmaterial till ett rättvist pris.
+            Tricolor Screen grundades 1996 med en enkel men stark övertygelse: att alla företag -
+            stora som små - förtjänar professionellt tryckt profilmaterial till ett rättvist pris.
             Vad som startade som ett litet screentryckeri har vuxit till ett fullserviceföretag
             inom reklam- och profiltryck.
           </p>
@@ -139,7 +149,7 @@ const valueCards = computed<CardItem[]>(() => [
       <Section
         id="values"
         title="Våra värderingar"
-        description="Det här är principerna som vägleder allt vi gör – från hur vi möter kunder till hur vi hanterar varje order."
+        description="Det här är principerna som vägleder allt vi gör - från hur vi möter kunder till hur vi hanterar varje order."
         align="center"
         aria-label="Våra kärnvärderingar"
       >

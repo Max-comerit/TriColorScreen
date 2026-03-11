@@ -4,6 +4,7 @@
 // ===== IMPORTS =====
 import '~/assets/css/custom-design-fonts.css'
 import { Canvas, type FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
+import { useSiteUrl } from '~/composables/useSiteUrl'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import HeroImage from '~/components/common/HeroImage.vue'
@@ -30,33 +31,34 @@ import IconTextButton from '~/components/common/IconTextButton.vue'
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
 
 // ===== COMPOSABLES =====
+const siteUrl = useSiteUrl()
 useHead({
-  title: 'Designa eget tryck på t-shirts och kepsar | Custom Design Tool | Tricolor Screen',
+  title: 'Designa eget tryck på t-shirts & kepsar',
   meta: [
     {
       name: 'description',
-      content: 'Skapa och designa egna trikåprodukter med vårt designverktyg. Uppladera bilder, lägg till text och se resultatet innan produktion. Professionell textiltryck och brodyr på t-shirts, kepsar, arbetskläder och andra trikåprodukter.',
+      content: 'Skapa och designa egna trikåprodukter med vårt designverktyg. Ladda upp bilder, lägg till text och se resultatet innan produktion. Professionellt textiltryck och brodyr på t-shirts, kepsar och arbetskläder.',
     },
     {
       name: 'keywords',
       content: 'design t-shirt, custom t-shirt, eget tryck, textiltryck, brodyr, designverktyg, kepsar, arbetskläder, trikåprodukter, skjorttryck',
     },
-    {
-      property: 'og:title',
-      content: 'Designa eget tryck på t-shirts och kepsar - Custom Design Tool',
-    },
+    { property: 'og:title', content: 'Designa eget tryck på t-shirts & kepsar - Tricolor Screen' },
     {
       property: 'og:description',
-      content: 'Skapa unika trikåprodukter med eget tryck. Använd vårt designverktyg för att uppladera bilder och text. Professionell produktion av textiltryck och brodyr på arbetskläder och andra produkter.',
+      content: 'Skapa unika trikåprodukter med eget tryck. Använd vårt designverktyg för att ladda upp bilder och text. Professionell produktion av textiltryck och brodyr.',
     },
+    { property: 'og:url', content: `${siteUrl}/custom-design` },
+    { property: 'og:image', content: `${siteUrl}/images/custom-design/hero.jpg` },
+    { name: 'twitter:title', content: 'Designa eget tryck på t-shirts & kepsar - Tricolor Screen' },
     {
-      property: 'og:type',
-      content: 'website',
+      name: 'twitter:description',
+      content: 'Skapa unika trikåprodukter med eget tryck. Använd vårt designverktyg för att ladda upp bilder och text.',
     },
-    {
-      property: 'og:image',
-      content: '/images/custom-design/hero.jpg',
-    },
+    { name: 'twitter:image', content: `${siteUrl}/images/custom-design/hero.jpg` },
+  ],
+  link: [
+    { rel: 'canonical', href: `${siteUrl}/custom-design` },
   ],
 })
 

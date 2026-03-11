@@ -164,7 +164,7 @@ async function dataUrlToFile(dataUrl: string, filename: string): Promise<File> {
 }
 
 /**
- * Compress a data URL to JPEG at the given quality (0–1).
+ * Compress a data URL to JPEG at the given quality (0-1).
  * Reduces file size significantly compared to the raw PNG canvas export.
  */
 async function compressDataUrl(dataUrl: string, quality = 0.75): Promise<string> {

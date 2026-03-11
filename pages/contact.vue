@@ -3,6 +3,7 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { defineAsyncComponent } from 'vue'
+import { useSiteUrl } from '~/composables/useSiteUrl'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import ContactPanel from '~/components/features/ContactPanel.vue'
@@ -17,14 +18,35 @@ let nextRoute: string | null = null
 
 // ===== COMPOSABLES =====
 const router = useRouter()
+const siteUrl = useSiteUrl()
 
 useHead({
-  title: 'Tricolor Screen - Vi hjälper dig med allt inom reklam/profiltryck, brodyr/ textiltryck/ bildekor/ bilfoliering',
+  title: 'Kontakta oss',
   meta: [
     {
       name: 'description',
-      content: 'Tricolor Screen erbjuder reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Professionella lösningar för företag och privatpersoner.',
+      content: 'Kontakta Tricolor Screen för reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper dig med professionella lösningar för företag och privatpersoner.',
     },
+    {
+      name: 'keywords',
+      content: 'kontakt, tricolor screen, offert, reklam, profiltryck, brodyr, textiltryck, bilfoliering, Stockholm',
+    },
+    { property: 'og:title', content: 'Kontakta oss - Tricolor Screen' },
+    {
+      property: 'og:description',
+      content: 'Kontakta Tricolor Screen för reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Vi ser fram emot ditt ärende!',
+    },
+    { property: 'og:url', content: `${siteUrl}/contact` },
+    { property: 'og:image', content: `${siteUrl}/images/contact/hero.jpg` },
+    { name: 'twitter:title', content: 'Kontakta oss - Tricolor Screen' },
+    {
+      name: 'twitter:description',
+      content: 'Kontakta Tricolor Screen för reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
+    },
+    { name: 'twitter:image', content: `${siteUrl}/images/contact/hero.jpg` },
+  ],
+  link: [
+    { rel: 'canonical', href: `${siteUrl}/contact` },
   ],
 })
 

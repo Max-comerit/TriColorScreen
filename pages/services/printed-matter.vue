@@ -3,6 +3,7 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import type { CardItem, IServiceCardContent } from '~/types/CardContent'
+import { useSiteUrl } from '~/composables/useSiteUrl'
 import services from '~/assets/json/services/printed-matter/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
@@ -12,8 +13,9 @@ import { defineAsyncComponent } from 'vue'
 const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
 
 // ===== COMPOSABLES =====
+const siteUrl = useSiteUrl()
 useHead({
-  title: 'Professionell trycksaksproduktion | Foldrar, Broschyrer, Visitkort | Tricolor Screen',
+  title: 'Trycksaker',
   meta: [
     {
       name: 'description',
@@ -23,22 +25,22 @@ useHead({
       name: 'keywords',
       content: 'trycksaker, foldrar, broschyrer, visitkort, affischer, etiketter, kuvert, klistermärken, menyer, dekaler, tryckeri, profiltryck, reklammaterial',
     },
-    {
-      property: 'og:title',
-      content: 'Professionell trycksaksproduktion - Foldrar, Broschyrer & Visitkort',
-    },
+    { property: 'og:title', content: 'Trycksaker - Foldrar, Broschyrer & Visitkort' },
     {
       property: 'og:description',
       content: 'Högkvalitativa trycksaker för alla ändamål. Från designkoncept till leverans - Tricolor Screen har löst allt sedan 1998.',
     },
+    { property: 'og:url', content: `${siteUrl}/services/printed-matter` },
+    { property: 'og:image', content: `${siteUrl}/images/services/printed-matter/hero.jpg` },
+    { name: 'twitter:title', content: 'Trycksaker - Foldrar, Broschyrer & Visitkort' },
     {
-      property: 'og:type',
-      content: 'website',
+      name: 'twitter:description',
+      content: 'Högkvalitativa trycksaker för alla ändamål. Från designkoncept till leverans - Tricolor Screen har löst allt sedan 1998.',
     },
-    {
-      property: 'og:image',
-      content: '/images/services/printed-matter/hero.jpg',
-    },
+    { name: 'twitter:image', content: `${siteUrl}/images/services/printed-matter/hero.jpg` },
+  ],
+  link: [
+    { rel: 'canonical', href: `${siteUrl}/services/printed-matter` },
   ],
 })
 

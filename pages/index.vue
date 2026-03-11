@@ -3,6 +3,7 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import type { CardItem, IServiceCardContent, IReviewCardContent } from '~/types/CardContent'
+import { useSiteUrl } from '~/composables/useSiteUrl'
 import serviceCategories from '~/assets/json/index/serviceCategories.json'
 import reviews from '~/assets/json/index/reviews.json'
 import { defineAsyncComponent } from 'vue'
@@ -14,8 +15,11 @@ import CardGrid from '~/components/common/CardGrid.vue'
 const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
 
 // ===== COMPOSABLES =====
+const siteUrl = useSiteUrl()
+console.log(`Using site URL: ${siteUrl}`)
 useHead({
-  title: 'Tricolor Screen - Reklam-, Profil- och Textiltryck | Brodyr | Bilfoliering | Grafisk Design',
+  title: 'Tricolor Screen - Reklam, Profiltryck, Brodyr & Grafisk Design i Stockholm',
+  titleTemplate: '%s',
   meta: [
     {
       name: 'description',
@@ -25,22 +29,22 @@ useHead({
       name: 'keywords',
       content: 'reklam, profiltryck, textiltryck, brodyr, screentryck, bilfoliering, bildekor, trycksaker, visitkort, broschyrer, affischer, foldrar, dekaler, grafisk design, tryckeri Stockholm',
     },
-    {
-      property: 'og:title',
-      content: 'Tricolor Screen - Professionella Trycklösningar för Företag',
-    },
+    { property: 'og:title', content: 'Tricolor Screen - Professionella Trycklösningar för Företag' },
     {
       property: 'og:description',
       content: 'Kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper ditt företag att sticka ut!',
     },
+    { property: 'og:url', content: `${siteUrl}/` },
+    { property: 'og:image', content: `${siteUrl}/images/index/hero.jpg` },
+    { name: 'twitter:title', content: 'Tricolor Screen - Professionella Trycklösningar för Företag' },
     {
-      property: 'og:type',
-      content: 'website',
+      name: 'twitter:description',
+      content: 'Kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper ditt företag att sticka ut!',
     },
-    {
-      property: 'og:image',
-      content: '/images/index/hero.jpg',
-    },
+    { name: 'twitter:image', content: `${siteUrl}/images/index/hero.jpg` },
+  ],
+  link: [
+    { rel: 'canonical', href: `${siteUrl}/` },
   ],
 })
 

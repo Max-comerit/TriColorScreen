@@ -3,6 +3,7 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import type { CardItem, IServiceCardContent, ITextCardContent } from '~/types/CardContent'
+import { useSiteUrl } from '~/composables/useSiteUrl'
 import services from '~/assets/json/services/graphic-production/services.json'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
@@ -14,8 +15,9 @@ import CtaSection from '~/components/features/CtaSection.vue'
 // (Page component - no props/emits needed)
 
 // ===== COMPOSABLES & STORES =====
+const siteUrl = useSiteUrl()
 useHead({
-  title: 'Design och Grafisk Produktion | Logotyper, Broschyrer, Visitkort | Tricolor Screen',
+  title: 'Grafisk Design & Produktion',
   meta: [
     {
       name: 'description',
@@ -25,22 +27,22 @@ useHead({
       name: 'keywords',
       content: 'logotyper, broschyrer, folders, affischer, skyltar, rollups, banderoller, visitkort, kuvert, presentationsmaterial, menyer, grafisk design, trycksaker, varumärkesdesign',
     },
-    {
-      property: 'og:title',
-      content: 'Design och Grafisk Produktion - Logotyper, Broschyrer & Visitkort',
-    },
+    { property: 'og:title', content: 'Grafisk Design & Produktion - Logotyper, Broschyrer & Visitkort' },
     {
       property: 'og:description',
-      content: 'Vi designar logotyper, broschyrer, affischer och all sorts grafiska material. Från budskap till färdiga trycksaker med rätt papper och kommunikativ design.',
+      content: 'Vi designar logotyper, broschyrer, affischer och all sorts grafiskt material. Från budskap till färdiga trycksaker med rätt papper och kommunikativ design.',
     },
+    { property: 'og:url', content: `${siteUrl}/services/graphic-production` },
+    { property: 'og:image', content: `${siteUrl}/images/services/graphic-production/hero.jpg` },
+    { name: 'twitter:title', content: 'Grafisk Design & Produktion - Logotyper, Broschyrer & Visitkort' },
     {
-      property: 'og:type',
-      content: 'website',
+      name: 'twitter:description',
+      content: 'Vi designar logotyper, broschyrer, affischer och all sorts grafiskt material. Från budskap till färdiga trycksaker.',
     },
-    {
-      property: 'og:image',
-      content: '/images/services/graphic-production/hero.jpg',
-    },
+    { name: 'twitter:image', content: `${siteUrl}/images/services/graphic-production/hero.jpg` },
+  ],
+  link: [
+    { rel: 'canonical', href: `${siteUrl}/services/graphic-production` },
   ],
 })
 
