@@ -31,6 +31,9 @@ useHead({
     },
     { property: 'og:url', content: `${siteUrl}/services/screen-printing-embroidery` },
     { property: 'og:image', content: `${siteUrl}/images/services/screen-printing-embroidery/hero-v2.jpg` },
+    { property: 'og:image:width', content: '1280' },
+    { property: 'og:image:height', content: '1272' },
+    { property: 'og:image:type', content: 'image/jpeg' },
     { name: 'twitter:title', content: 'Screentryck, Brodyr & Textiltryck - Tricolor Screen' },
     {
       name: 'twitter:description',

@@ -50,6 +50,9 @@ useHead({
     },
     { property: 'og:url', content: `${siteUrl}/custom-design` },
     { property: 'og:image', content: `${siteUrl}/images/custom-design/hero-v2.jpg` },
+    { property: 'og:image:width', content: '1280' },
+    { property: 'og:image:height', content: '854' },
+    { property: 'og:image:type', content: 'image/jpeg' },
     { name: 'twitter:title', content: 'Designa eget tryck på T-shirts, Kepsar & Arbetskläder - Tricolor Screen' },
     {
       name: 'twitter:description',

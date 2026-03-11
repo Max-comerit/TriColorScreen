@@ -32,6 +32,9 @@ useHead({
     },
     { property: 'og:url', content: `${siteUrl}/services/printed-matter` },
     { property: 'og:image', content: `${siteUrl}/images/services/printed-matter/hero.jpg` },
+    { property: 'og:image:width', content: '1280' },
+    { property: 'og:image:height', content: '854' },
+    { property: 'og:image:type', content: 'image/jpeg' },
     { name: 'twitter:title', content: 'Trycksaker - Foldrar, Broschyrer & Visitkort' },
     {
       name: 'twitter:description',

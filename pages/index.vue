@@ -36,6 +36,9 @@ useHead({
     },
     { property: 'og:url', content: `${siteUrl}/` },
     { property: 'og:image', content: `${siteUrl}/images/index/hero.jpg` },
+    { property: 'og:image:width', content: '1280' },
+    { property: 'og:image:height', content: '854' },
+    { property: 'og:image:type', content: 'image/jpeg' },
     { name: 'twitter:title', content: 'Tricolor Screen - Professionella Trycklösningar för Företag, Organisationer & Privatpersoner' },
     {
       name: 'twitter:description',

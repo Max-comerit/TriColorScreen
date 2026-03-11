@@ -30,6 +30,9 @@ useHead({
     },
     { property: 'og:url', content: `${siteUrl}/services/decoration-foiling` },
     { property: 'og:image', content: `${siteUrl}/images/services/decoration-foiling/hero-v2.jpg` },
+    { property: 'og:image:width', content: '1280' },
+    { property: 'og:image:height', content: '2331' },
+    { property: 'og:image:type', content: 'image/jpeg' },
     { name: 'twitter:title', content: 'Dekorfolie & Bilfoliering - Tricolor Screen' },
     {
       name: 'twitter:description',

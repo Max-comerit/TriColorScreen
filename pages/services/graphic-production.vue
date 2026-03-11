@@ -34,6 +34,9 @@ useHead({
     },
     { property: 'og:url', content: `${siteUrl}/services/graphic-production` },
     { property: 'og:image', content: `${siteUrl}/images/services/graphic-production/hero.jpg` },
+    { property: 'og:image:width', content: '1280' },
+    { property: 'og:image:height', content: '854' },
+    { property: 'og:image:type', content: 'image/jpeg' },
     { name: 'twitter:title', content: 'Design & Grafisk Produktion - Logotyper, Broschyrer & Visitkort' },
     {
       name: 'twitter:description',

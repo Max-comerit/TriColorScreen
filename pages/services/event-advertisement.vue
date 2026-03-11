@@ -30,6 +30,9 @@ useHead({
     },
     { property: 'og:url', content: `${siteUrl}/services/event-advertisement` },
     { property: 'og:image', content: `${siteUrl}/images/services/event-advertisement/hero.jpg` },
+    { property: 'og:image:width', content: '1280' },
+    { property: 'og:image:height', content: '854' },
+    { property: 'og:image:type', content: 'image/jpeg' },
     { name: 'twitter:title', content: 'Mässor & Events - Tricolor Screen' },
     {
       name: 'twitter:description',
