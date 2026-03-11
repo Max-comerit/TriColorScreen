@@ -4,7 +4,7 @@
 import AppHeader from '~/components/layout/AppHeader.vue'
 import AppFooter from '~/components/layout/AppFooter.vue'
 
-// format-detection and preload — all other defaults live in nuxt.config.ts app.head
+// format-detection and preload - all other defaults live in nuxt.config.ts app.head
 useHead({
   meta: [
     { name: 'format-detection', content: 'telephone=no' },

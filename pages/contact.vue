@@ -21,7 +21,7 @@ const router = useRouter()
 const siteUrl = useSiteUrl()
 
 useHead({
-  title: 'Kontakta oss',
+  title: 'Kontakta Oss',
   meta: [
     {
       name: 'description',
@@ -31,14 +31,14 @@ useHead({
       name: 'keywords',
       content: 'kontakt, tricolor screen, offert, reklam, profiltryck, brodyr, textiltryck, bilfoliering, Stockholm',
     },
-    { property: 'og:title', content: 'Kontakta oss - Tricolor Screen' },
+    { property: 'og:title', content: 'Kontakta Oss - Tricolor Screen' },
     {
       property: 'og:description',
       content: 'Kontakta Tricolor Screen för reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Vi ser fram emot ditt ärende!',
     },
     { property: 'og:url', content: `${siteUrl}/contact` },
     { property: 'og:image', content: `${siteUrl}/images/contact/hero.jpg` },
-    { name: 'twitter:title', content: 'Kontakta oss - Tricolor Screen' },
+    { name: 'twitter:title', content: 'Kontakta Oss - Tricolor Screen' },
     {
       name: 'twitter:description',
       content: 'Kontakta Tricolor Screen för reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',

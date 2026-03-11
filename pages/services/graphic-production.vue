@@ -17,7 +17,7 @@ import CtaSection from '~/components/features/CtaSection.vue'
 // ===== COMPOSABLES & STORES =====
 const siteUrl = useSiteUrl()
 useHead({
-  title: 'Grafisk Design & Produktion',
+  title: 'Design & Grafisk Produktion',
   meta: [
     {
       name: 'description',
@@ -27,14 +27,14 @@ useHead({
       name: 'keywords',
       content: 'logotyper, broschyrer, folders, affischer, skyltar, rollups, banderoller, visitkort, kuvert, presentationsmaterial, menyer, grafisk design, trycksaker, varumärkesdesign',
     },
-    { property: 'og:title', content: 'Grafisk Design & Produktion - Logotyper, Broschyrer & Visitkort' },
+    { property: 'og:title', content: 'Design & Grafisk Produktion - Logotyper, Broschyrer & Visitkort' },
     {
       property: 'og:description',
       content: 'Vi designar logotyper, broschyrer, affischer och all sorts grafiskt material. Från budskap till färdiga trycksaker med rätt papper och kommunikativ design.',
     },
     { property: 'og:url', content: `${siteUrl}/services/graphic-production` },
     { property: 'og:image', content: `${siteUrl}/images/services/graphic-production/hero.jpg` },
-    { name: 'twitter:title', content: 'Grafisk Design & Produktion - Logotyper, Broschyrer & Visitkort' },
+    { name: 'twitter:title', content: 'Design & Grafisk Produktion - Logotyper, Broschyrer & Visitkort' },
     {
       name: 'twitter:description',
       content: 'Vi designar logotyper, broschyrer, affischer och all sorts grafiskt material. Från budskap till färdiga trycksaker.',

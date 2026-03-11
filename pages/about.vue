@@ -12,7 +12,7 @@ import CtaSection from '~/components/features/CtaSection.vue'
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
 useHead({
-  title: 'Om oss',
+  title: 'Om Oss',
   meta: [
     {
       name: 'description',
@@ -22,14 +22,14 @@ useHead({
       name: 'keywords',
       content: 'om oss, tricolor screen, familjeföretag, reklam, profiltryck, brodyr, textiltryck, bildekor, bilfoliering, tryckeri Stockholm',
     },
-    { property: 'og:title', content: 'Om oss - Tricolor Screen' },
+    { property: 'og:title', content: 'Om Oss - Tricolor Screen' },
     {
       property: 'og:description',
       content: 'Lär känna Tricolor Screen - ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
     },
     { property: 'og:url', content: `${siteUrl}/about` },
     { property: 'og:image', content: `${siteUrl}/images/about/hero.jpg` },
-    { name: 'twitter:title', content: 'Om oss - Tricolor Screen' },
+    { name: 'twitter:title', content: 'Om Oss - Tricolor Screen' },
     {
       name: 'twitter:description',
       content: 'Lär känna Tricolor Screen - ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
