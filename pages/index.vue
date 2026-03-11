@@ -29,17 +29,17 @@ useHead({
       name: 'keywords',
       content: 'reklam, profiltryck, textiltryck, brodyr, screentryck, bilfoliering, bildekor, trycksaker, visitkort, broschyrer, affischer, foldrar, dekaler, grafisk design, tryckeri Stockholm',
     },
-    { property: 'og:title', content: 'Tricolor Screen - Professionella Trycklösningar för Företag' },
+    { property: 'og:title', content: 'Tricolor Screen - Professionella Trycklösningar för Företag, Organisationer & Privatpersoner' },
     {
       property: 'og:description',
-      content: 'Kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper ditt företag att sticka ut!',
+      content: 'Kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper företag, organisationer, föreningar, entreprenörer & privatpersoner att sticka ut!',
     },
     { property: 'og:url', content: `${siteUrl}/` },
     { property: 'og:image', content: `${siteUrl}/images/index/hero.jpg` },
-    { name: 'twitter:title', content: 'Tricolor Screen - Professionella Trycklösningar för Företag' },
+    { name: 'twitter:title', content: 'Tricolor Screen - Professionella Trycklösningar för Företag, Organisationer & Privatpersoner' },
     {
       name: 'twitter:description',
-      content: 'Kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper ditt företag att sticka ut!',
+      content: 'Kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper företag, organisationer, föreningar, entreprenörer & privatpersoner att sticka ut!',
     },
     { name: 'twitter:image', content: `${siteUrl}/images/index/hero.jpg` },
   ],
@@ -69,7 +69,7 @@ const reviewCards = computed<CardItem[]>(() =>
     <HeroImage 
       src="/images/index/hero.jpg"
       title="Tricolor Screen"
-      description="Vi hjälper dig med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering."
+      description="Vi hjälper företag, organisationer, föreningar, entreprenörer & privatpersoner med allt inom reklam / profiltryck, brodyr / textiltryck / bildekor / bilfoliering."
       :width="1280"
       :height="854"
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
