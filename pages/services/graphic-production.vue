@@ -27,7 +27,7 @@ useHead({
       name: 'keywords',
       content: 'logotyper, broschyrer, folders, affischer, skyltar, rollups, banderoller, visitkort, kuvert, presentationsmaterial, menyer, grafisk design, trycksaker, varumärkesdesign',
     },
-    { property: 'og:title', content: 'Design & Grafisk Produktion - Logotyper, Broschyrer & Visitkort' },
+    { property: 'og:title', content: 'Design & Grafisk Produktion - Tricolor Screen' },
     {
       property: 'og:description',
       content: 'Vi designar logotyper, broschyrer, affischer och all sorts grafiskt material. Från budskap till färdiga trycksaker med rätt papper och kommunikativ design.',
@@ -37,7 +37,7 @@ useHead({
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
-    { name: 'twitter:title', content: 'Design & Grafisk Produktion - Logotyper, Broschyrer & Visitkort' },
+    { name: 'twitter:title', content: 'Design & Grafisk Produktion - Tricolor Screen' },
     {
       name: 'twitter:description',
       content: 'Vi designar logotyper, broschyrer, affischer och all sorts grafiskt material. Från budskap till färdiga trycksaker.',

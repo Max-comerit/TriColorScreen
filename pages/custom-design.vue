@@ -34,7 +34,7 @@ const QuoteForm = defineAsyncComponent(() => import('~/components/features/Quote
 const siteUrl = useSiteUrl()
 
 useHead({
-  title: 'Designa eget tryck på T-shirts, Kepsar & Arbetskläder',
+  title: 'Designa själv',
   meta: [
     {
       name: 'description',
@@ -44,7 +44,7 @@ useHead({
       name: 'keywords',
       content: 'design t-shirt, custom t-shirt, eget tryck, textiltryck, brodyr, designverktyg, kepsar, arbetskläder, trikåprodukter, skjorttryck',
     },
-    { property: 'og:title', content: 'Designa eget tryck på T-shirts, Kepsar & Arbetskläder - Tricolor Screen' },
+    { property: 'og:title', content: 'Designa själv - Tricolor Screen' },
     {
       property: 'og:description',
       content: 'Skapa unika trikåprodukter med eget tryck. Använd vårt designverktyg för att ladda upp bilder och text. Professionell produktion av textiltryck och brodyr.',
@@ -54,7 +54,7 @@ useHead({
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
-    { name: 'twitter:title', content: 'Designa eget tryck på T-shirts, Kepsar & Arbetskläder - Tricolor Screen' },
+    { name: 'twitter:title', content: 'Designa själv - Tricolor Screen' },
     {
       name: 'twitter:description',
       content: 'Skapa unika trikåprodukter med eget tryck. Använd vårt designverktyg för att ladda upp bilder och text.',

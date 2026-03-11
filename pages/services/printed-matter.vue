@@ -25,7 +25,7 @@ useHead({
       name: 'keywords',
       content: 'trycksaker, foldrar, broschyrer, visitkort, affischer, etiketter, kuvert, klistermärken, menyer, dekaler, tryckeri, profiltryck, reklammaterial',
     },
-    { property: 'og:title', content: 'Trycksaker - Foldrar, Broschyrer & Visitkort' },
+    { property: 'og:title', content: 'Trycksaker - Tricolor Screen' },
     {
       property: 'og:description',
       content: 'Högkvalitativa trycksaker för alla ändamål. Från designkoncept till leverans - Tricolor Screen har löst allt sedan 1998.',
@@ -35,7 +35,7 @@ useHead({
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
-    { name: 'twitter:title', content: 'Trycksaker - Foldrar, Broschyrer & Visitkort' },
+    { name: 'twitter:title', content: 'Trycksaker - Tricolor Screen' },
     {
       name: 'twitter:description',
       content: 'Högkvalitativa trycksaker för alla ändamål. Från designkoncept till leverans - Tricolor Screen har löst allt sedan 1998.',
