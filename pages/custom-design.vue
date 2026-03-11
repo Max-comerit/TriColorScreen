@@ -61,9 +61,6 @@ useHead({
     },
     { name: 'twitter:image', content: `${siteUrl}/images/custom-design/hero-v2.jpg` },
   ],
-  link: [
-    { rel: 'canonical', href: `${siteUrl}/custom-design` },
-  ],
 })
 
 const { addImageToCanvas } = useCustomImage()
