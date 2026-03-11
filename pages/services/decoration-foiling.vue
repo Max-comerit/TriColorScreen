@@ -98,7 +98,7 @@ const decorationFoilingCards = computed<CardItem[]>(() =>
           <p class="leading-relaxed">
             Foliering och dekor handlar inte bara om reklam. Det kan lika gärna röra sig
             om insynsskydd i konferensrum, informativa säkerhetsdekaler eller en hel
-            glasfasad – vi hittar rätt lösning för just ditt behov.
+            glasfasad - vi hittar rätt lösning för just ditt behov.
           </p>
         </div>
       </Section>
@@ -112,7 +112,7 @@ const decorationFoilingCards = computed<CardItem[]>(() =>
       >
         <CardGrid
           :card-content-arr="decorationFoilingCards"
-          :min-item-width="360"
+          :min-item-width="280"
           :gap="24"
           aria-label="Tjänster inom foliering och bildekor"
           section-id="decoration-foiling-services"

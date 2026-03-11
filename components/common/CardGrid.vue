@@ -70,7 +70,7 @@ const gridStyle = computed(() => ({
     <!-- Responsive grid container with auto-fill -->
     <div :style="gridStyle" class="card-grid w-full">
       <!-- Render ServiceCard or ReviewCard based on item type -->
-      <template v-for="(card, index) in props.cardContentArr" :key="card.type === 'service' ? card.data.title : `${card.data.date}:${card.data.name}`">
+      <template v-for="(card, index) in props.cardContentArr" :key="`${card.type}-${index}`">
         <ServiceCard
           v-if="card.type === 'service'"
           :image-src="card.data.imageSrc"
@@ -80,7 +80,7 @@ const gridStyle = computed(() => ({
           :link="card.data.link"
           :alt="card.data.alt"
           :background-color="(index % 2 === 0 ? 'bg-primary-50' : 'bg-secondary-50') + ' sm:bg-primary-50'"
-          img-sizes="80vw sm:335px lg:290px xl:255px"
+          img-sizes="80vw sm:240px md:255px lg:267px xl:248px"
         />
         <ReviewCard
           v-else-if="card.type === 'review'"

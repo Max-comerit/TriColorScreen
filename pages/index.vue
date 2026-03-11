@@ -110,7 +110,7 @@ const reviewCards = computed<CardItem[]>(() =>
         <!-- Service categories card grid -->
         <CardGrid
           :card-content-arr="serviceCards"
-          :min-item-width="320"
+          :min-item-width="280"
           :gap="24"
           aria-label="Tjänstekategorier"
         />
