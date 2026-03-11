@@ -29,13 +29,13 @@ useHead({
       content: 'Professionell bildekor, fordonsdekor och helfoliering för privatpersoner och företag i Stockholm.',
     },
     { property: 'og:url', content: `${siteUrl}/services/decoration-foiling` },
-    { property: 'og:image', content: `${siteUrl}/images/services/decoration-foiling/hero.jpg` },
-    { name: 'twitter:title', content: 'Bildekor & Helfoliering - Tricolor Screen' },
+    { property: 'og:image', content: `${siteUrl}/images/services/decoration-foiling/hero-v2.jpg` },
+    { name: 'twitter:title', content: 'Dekorfolie & Bilfoliering - Tricolor Screen' },
     {
       name: 'twitter:description',
       content: 'Professionell bildekor, fordonsdekor och helfoliering för privatpersoner och företag i Stockholm.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/services/decoration-foiling/hero.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}/images/services/decoration-foiling/hero-v2.jpg` },
   ],
   link: [
     { rel: 'canonical', href: `${siteUrl}/services/decoration-foiling` },
@@ -67,8 +67,8 @@ const decorationFoilingCards = computed<CardItem[]>(() =>
 <template>
   <div>
     <!-- Hero: full width -->
-    <HeroImage
-      src="/images/services/decoration-foiling/hero.jpg"
+    <HeroImage 
+      src="/images/services/decoration-foiling/hero-v2.jpg"
       :video-sources="[
         { src: '/videos/services/decoration-foiling/hero.webm', type: 'video/webm' },
         { src: '/videos/services/decoration-foiling/hero.mp4', type: 'video/mp4' }

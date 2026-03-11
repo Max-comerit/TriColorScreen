@@ -49,13 +49,13 @@ useHead({
       content: 'Skapa unika trikåprodukter med eget tryck. Använd vårt designverktyg för att ladda upp bilder och text. Professionell produktion av textiltryck och brodyr.',
     },
     { property: 'og:url', content: `${siteUrl}/custom-design` },
-    { property: 'og:image', content: `${siteUrl}/images/custom-design/hero.jpg` },
+    { property: 'og:image', content: `${siteUrl}/images/custom-design/hero-v2.jpg` },
     { name: 'twitter:title', content: 'Designa eget tryck på T-shirts, Kepsar & Arbetskläder - Tricolor Screen' },
     {
       name: 'twitter:description',
       content: 'Skapa unika trikåprodukter med eget tryck. Använd vårt designverktyg för att ladda upp bilder och text.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/custom-design/hero.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}/images/custom-design/hero-v2.jpg` },
   ],
   link: [
     { rel: 'canonical', href: `${siteUrl}/custom-design` },
@@ -382,7 +382,7 @@ function addText(): void {
 
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/custom-design/hero.jpg"
+      src="/images/custom-design/hero-v2.jpg"
       title="Designa produkter med eget tryck"
       description="Skapa unika textilprodukter med vårt design verktyg. Ladda upp dina bilder, lägg till egen text och se resultatet innan produktion."
       :width="1280"

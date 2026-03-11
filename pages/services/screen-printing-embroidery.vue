@@ -30,13 +30,13 @@ useHead({
       content: 'Professionella lösningar inom screentryck, brodyr och textiltryck för företag och privatpersoner. Kontakta oss för skräddarsydda trycklösningar.',
     },
     { property: 'og:url', content: `${siteUrl}/services/screen-printing-embroidery` },
-    { property: 'og:image', content: `${siteUrl}/images/services/screen-printing-embroidery/hero.jpg` },
+    { property: 'og:image', content: `${siteUrl}/images/services/screen-printing-embroidery/hero-v2.jpg` },
     { name: 'twitter:title', content: 'Screentryck, Brodyr & Textiltryck - Tricolor Screen' },
     {
       name: 'twitter:description',
       content: 'Professionella lösningar inom screentryck, brodyr och textiltryck för företag och privatpersoner.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/services/screen-printing-embroidery/hero.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}/images/services/screen-printing-embroidery/hero-v2.jpg` },
   ],
   link: [
     { rel: 'canonical', href: `${siteUrl}/services/screen-printing-embroidery` },
@@ -54,8 +54,8 @@ const imageCards = computed<CardItem[]>(() =>
 <template>
   <div>
     <!-- Hero: full width -->
-    <HeroImage
-      src="/images/services/screen-printing-embroidery/hero.jpg"
+    <HeroImage 
+      src="/images/services/screen-printing-embroidery/hero-v2.jpg"
       :video-sources="[
         { src: '/videos/services/screen-printing-embroidery/hero.webm', type: 'video/webm' },
         { src: '/videos/services/screen-printing-embroidery/hero.mp4', type: 'video/mp4' }
