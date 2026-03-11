@@ -4,14 +4,14 @@
   publish = "dist/"
 
 [build.environment]
-  NUXT_PUBLIC_APP_URL = "https://tricolorscreen.netlify.app"
+  SITE_URL = "https://tricolorscreen.netlify.app"
 
 [context.deploy-preview.environment]
-  # Empty string → falls through to process.env.URL (the actual deploy preview URL)
-  NUXT_PUBLIC_APP_URL = ""
+  # Empty: falls through to process.env.URL (the actual deploy preview URL) in nuxt.config.ts
+  SITE_URL = ""
 
 [context.production.environment]
-  NUXT_PUBLIC_APP_URL = "https://tricolorscreen.se"
+  SITE_URL = "https://tricolorscreen.se"
 
 # Note: No SPA catch-all redirect — this is SSG (nuxt generate).
 # All routes are pre-rendered to their own index.html files.

@@ -4,8 +4,8 @@
 
 import svgLoader from 'vite-svg-loader'
 
-// On Netlify deploy previews, use the deploy URL so og:image points to the correct domain
-const siteUrl = process.env.NUXT_PUBLIC_APP_URL || process.env.URL || 'https://tricolorscreen.se'
+// On Netlify deploy previews, SITE_URL is cleared so process.env.URL (the actual deploy URL) is used instead
+const siteUrl = process.env.SITE_URL || process.env.URL || 'https://tricolorscreen.se'
 
 export default defineNuxtConfig({
   vite: {
