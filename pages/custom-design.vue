@@ -425,7 +425,7 @@ function addText(): void {
               <li>Sedan skickar du en offertförfrågan direkt från verktyget</li>
           </ol>
           <p class="leading-relaxed">
-            Vi återkommer snabbt med pris och leveranstid. Det är så enkelt!
+            Vi återkommer snabbt med pris och leveranstid.
           </p>
         </div>
       </Section>
