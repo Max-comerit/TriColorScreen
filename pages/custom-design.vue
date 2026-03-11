@@ -27,13 +27,13 @@ import {
 import { getRotateImage, getTrashCanImage, getResizeImage } from '@/utils/customImageIcons'
 import IconTextButton from '~/components/common/IconTextButton.vue'
 
-console.log('useSiteUrl:', useSiteUrl()) // Debug log to verify composable import
-
 // Lazy-load QuoteForm so Zod and nanoid are kept out of the shared synchronous bundle
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
 
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
+console.log('siteUrl:', siteUrl) // Debug log to verify composable import
+
 useHead({
   title: 'Designa eget tryck på T-shirts, Kepsar & Arbetskläder',
   meta: [

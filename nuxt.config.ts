@@ -5,7 +5,7 @@
 import svgLoader from 'vite-svg-loader'
 
 // On Netlify deploy previews, use the deploy URL so og:image points to the correct domain
-const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || process.env.URL || 'https://tricolorscreen.se'
+const siteUrl = process.env.NUXT_PUBLIC_APP_URL || process.env.URL || 'https://tricolorscreen.se'
 
 export default defineNuxtConfig({
   vite: {
@@ -51,7 +51,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      siteUrl,
+      appUrl: siteUrl,
     },
   },
 
