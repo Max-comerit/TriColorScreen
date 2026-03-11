@@ -29,7 +29,11 @@ onMounted(() => {
   <header class="min-h-[80px] bg-neutral-900 sticky top-0 z-50 shadow-[0_4px_10px_rgba(0,0,0,0.25)] shadow-black/50 transition-all duration-300" :class="scrolled ? 'min-h-[60px]' : 'min-h-[80px]'">
     <div class="min-w-[100px] mx-auto max-w-full px-3 lg:px-5 flex items-center justify-between">
       <!-- Logo -->
-      <NuxtLink to="/" aria-label="Gå till hemsida" class="logo-link">
+      <NuxtLink
+        to="/"
+        aria-label="Gå till hemsida"
+        class="flex items-center transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-layout-text-on-dark focus-visible:outline-offset-4 focus-visible:rounded"
+      >
         <picture class="py-[10px]">
           <source srcset="/images/header/tcs-logo-100.webp 1x, /images/header/tcs-logo-200.webp 2x" type="image/webp">
           <img
@@ -61,18 +65,3 @@ onMounted(() => {
     </div>
   </header>
 </template>
-
-<style scoped>
-/* Logo link - custom styles for opacity transition */
-.logo-link {
-  @apply flex items-center transition-opacity duration-200;
-}
-
-.logo-link:hover {
-  opacity: 0.8;
-}
-
-.logo-link:focus-visible {
-  @apply outline-2 outline-layout-text-on-dark outline-offset-4 rounded;
-}
-</style>
