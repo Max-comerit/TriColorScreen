@@ -209,3 +209,20 @@
   src: url('~/assets/fonts/custom-design/BarlowCondensed-Bold.woff2') format('woff2'),
        url('~/assets/fonts/custom-design/BarlowCondensed-Bold.woff') format('woff');
 }
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/BarlowSemiCondensed-Regular.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/BarlowSemiCondensed-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/BarlowSemiCondensed-Bold.woff2') format('woff2'),
+       url('~/assets/fonts/custom-design/BarlowSemiCondensed-Bold.woff') format('woff');
+}

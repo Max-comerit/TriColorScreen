@@ -27,7 +27,8 @@ const GF_URL =
   '&family=Oswald:wght@400;700' +
   '&family=Poppins:wght@400;700' +
   '&family=Space+Grotesk:wght@400;700' +
-  '&family=Barlow+Condensed:wght@400;700' +
+  '&family=Barlow+Semi+Condensed:wght@400;700' +
+
   '&display=swap'
 
 // User-agents: modern Chrome for woff2, old Chrome for woff
