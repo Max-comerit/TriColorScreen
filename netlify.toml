@@ -6,6 +6,10 @@
 [build.environment]
   NUXT_PUBLIC_APP_URL = "https://tricolorscreen.netlify.app"
 
+[context.deploy-preview.environment]
+  # Empty string → falls through to process.env.URL (the actual deploy preview URL)
+  NUXT_PUBLIC_APP_URL = ""
+
 [context.production.environment]
   NUXT_PUBLIC_APP_URL = "https://tricolorscreen.se"
 
