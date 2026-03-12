@@ -79,7 +79,7 @@
 
   /* Strong / bold inline text */
   strong {
-    @apply font-semibold text-layout-text-on-light;
+    @apply font-bold text-layout-text-on-light;
   }
 
   /* Fine print and helper text - one step smaller than base */

@@ -43,7 +43,7 @@ Always follow this order in `<script setup>`:
 - Use utility classes in template, avoid custom CSS unless necessary
 - Class order: Layout → Box Model → Typography → Visual → Misc
 - **Theme colors**: Use `primary`, `secondary`, `success`, `warning`, `error` from theme
-- **Fonts**: Use `font-sans`, `font-display`, `font-mono` as defined in theme
+- **Fonts**: Use `font-body`, `font-display` as defined in theme
 - **Border radius**: Use semantic values like `rounded-button`, `rounded-card`, `rounded-input`
 - Always use theme values instead of arbitrary colors/sizes
 

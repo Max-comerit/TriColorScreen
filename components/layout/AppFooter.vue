@@ -12,7 +12,7 @@
   <footer class="min-h-[200px] h-auto bg-neutral-900 text-white py-6 mt-12 justify-center px-5">
     <div class="flex items-top justify-between text-sm md:text-base max-w-screen-xl mx-auto">
       <div>
-        <h2 class="text-lg my-2 mb-4 text-inherit">Kontakt Info</h2>
+        <h2 class="text-lg my-2 mb-4 text-inherit font-semibold">Kontakt Info</h2>
         <ul class="space-y-1 text-white">
           <li class="flex items-center">
             <MapMarker class="w-6 h-6 text-accent-400 mr-2" aria-hidden="true" />
@@ -29,7 +29,7 @@
         </ul>
       </div>
       <div>
-        <h2 class="text-lg my-2 mb-4 text-inherit">Sociala Medier</h2>
+        <h2 class="text-lg my-2 mb-4 text-inherit font-semibold">Sociala Medier</h2>
         <ul class="flex flex-wrap sm:flex-nowrap gap-3">
           <li>
             <a

@@ -1034,15 +1034,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // Sans serif (primary)
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        // Serif (for headings or special content)
-        serif: ['Merriweather', 'Georgia', 'serif'],
-        // Mono (for code blocks)
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-        // Custom brand fonts
-        display: ['Poppins', 'sans-serif'],
-        body: ['Open Sans', 'sans-serif'],
+        display: ['DM Sans', 'sans-serif', 'system-ui'],
+        body: ['Inter', 'sans-serif', 'system-ui'],
       },
       fontSize: {
         // Custom font sizes if needed
