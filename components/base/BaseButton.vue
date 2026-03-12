@@ -55,9 +55,9 @@ const isDisabled = computed(() => props.disabled || props.busy)
 
 /** Base button classes shared across all variants */
 const baseClasses =
-  'base-button inline-flex items-center justify-center font-medium rounded-button transition overflow-hidden ' +
+  'base-button inline-flex items-center justify-center font-medium rounded-button transition-all duration-100 overflow-hidden ' +
   'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ' +
-  'disabled:opacity-50 disabled:cursor-not-allowed'
+  'active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'
 
 /** Variant-specific styling (colors, text, shadows) */
 const variantClasses: Record<Variant, string> = {
@@ -123,7 +123,9 @@ const buttonClasses = computed(() => {
  * --btn-bg-hover: hover background color (if backgroundColorHover prop is a CSS value)
  */
 const buttonStyle = computed(() => {
-  const style: Record<string, string> = {}
+  const style: Record<string, string | number> = {
+    userSelect: 'none',
+  }
 
   // Only use CSS variables if the values don't look like Tailwind classes
   if (props.backgroundColor && !props.backgroundColor.includes('-')) {

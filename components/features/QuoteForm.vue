@@ -130,6 +130,9 @@ async function handleFocusOut(event: FocusEvent): Promise<void> {
  * Handle form submission
  */
 async function handleSubmit(): Promise<void> {
+  // Delay validation 100ms to allow button :active state to complete
+  await new Promise(resolve => setTimeout(resolve, 100))
+  
   const success = await submitForm()
 
   if (success) {

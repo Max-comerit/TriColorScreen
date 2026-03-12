@@ -357,6 +357,11 @@ watch(
   @apply outline-2 outline-layout-text-on-dark -outline-offset-2;
 }
 
+.nav-link:active {
+  @apply scale-95 transition-all duration-100;
+  user-select: none;
+}
+
 .nav-link.active {
   @apply text-accent-400;
   border-bottom-color: theme('colors.accent.400');
@@ -380,6 +385,11 @@ watch(
 .dropdown-link:focus-visible {
   @apply outline-2 outline-layout-text-on-dark -outline-offset-2;
 }
+
+.dropdown-link:active {
+  @apply scale-95 transition-all duration-100;
+  user-select: none;
+} 
 
 .dropdown-link.active {
   @apply text-accent-400;
