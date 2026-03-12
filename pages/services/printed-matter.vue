@@ -68,8 +68,8 @@ const serviceCards = computed<CardItem[]>(() =>
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
     >
       <template #description>
-        <p class="text-accent-400 font-medium text-base sm:text-lg lg:text-xl mb-3">
-          <strong>Alla typer av trycksaker.</strong>
+        <p>
+          <strong class="text-accent-400 font-medium text-base sm:text-lg lg:text-xl mb-3 font-semibold">Alla typer av trycksaker.</strong>
         </p>
         <p class="font-body font-medium text-base sm:text-lg lg:text-xl text-white/90">
           Vi har valt att fokusera på ett otroligt brett utbud av trycksaker tack vare vår långa erfarenhet i branschen. Hos oss hittar du alltid produkter med hög kvalitét och fantastiska tryckresultat.

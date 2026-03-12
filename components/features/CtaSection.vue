@@ -33,7 +33,7 @@ defineProps<Props>()
       </p>
       <div class="flex flex-wrap justify-center gap-4 pt-2">
         <NuxtLink to="/contact">
-          <TextButton class="border">Kontakta oss</TextButton>
+          <TextButton class="border">Kontakta Oss</TextButton>
         </NuxtLink>
       </div>
     </div>

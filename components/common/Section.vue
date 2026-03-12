@@ -74,7 +74,7 @@ const alignClass = computed(() => {
         <!-- Section description -->
         <p
           v-if="description"
-          class="mt-4 font-sans leading-relaxed"
+          class="mt-4 leading-relaxed"
           :class="{ 'mx-auto max-w-3xl': align === 'center' }"
         >
           {{ description }}
