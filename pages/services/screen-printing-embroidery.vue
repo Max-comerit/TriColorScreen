@@ -118,6 +118,7 @@ const imageCards = computed<CardItem[]>(() =>
           quality="70"
           sizes="100vw sm:768px md:1024px lg:1280px 2xl:1280px"
           densities="x1"
+          fit="cover"
           loading="lazy"
           decoding="async"
           class="absolute inset-0 w-full h-full object-cover"

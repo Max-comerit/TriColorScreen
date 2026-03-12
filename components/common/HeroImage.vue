@@ -118,6 +118,7 @@ onMounted(() => {
       quality="80"
       sizes="100vw sm:768px md:1024px lg:1280px 2xl:1280px"
       densities="x1 x2"
+      fit="cover"
       loading="eager"
       fetchpriority="high"
       decoding="async"

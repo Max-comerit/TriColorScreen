@@ -157,7 +157,9 @@ const handleCardClick = () => {
               format="webp"
               sizes="544px sm:240px lg:325px xl:400px 2xl:400px"
               densities="x1"
-              loading="lazy" 
+              fit="cover"
+              loading="lazy"
+              fetchpriority="low"
               width="400" 
               height="300" />
           </div>
@@ -198,8 +200,10 @@ const handleCardClick = () => {
             class="w-full object-cover transition-transform duration-300" 
             format="webp"
             sizes="544px sm:240px lg:325px xl:400px 2xl:400px"
-            densities="x1" 
-            loading="lazy" 
+            densities="x1"
+            fit="cover"
+            loading="lazy"
+            fetchpriority="low"
             width="400" 
             height="300" />
         </div>
