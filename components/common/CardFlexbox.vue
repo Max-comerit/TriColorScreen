@@ -101,7 +101,7 @@ const flexboxStyle = computed(() => ({
     <!-- Flexbox container -->
     <div :class="flexboxClasses" :style="flexboxStyle" class="card-flexbox">
       <!-- Render ServiceCard or ReviewCard based on item type -->
-      <template v-for="(card, index) in props.cardContentArr" :key="card.type === 'service' ? card.data.title : `${card.data.date}:${card.data.name}`">
+      <template v-for="(card, index) in props.cardContentArr" :key="`${card.type}-${index}`">
         <ServiceCard
           v-if="card.type === 'service'"
           :image-src="card.data.imageSrc"

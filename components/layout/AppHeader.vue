@@ -29,20 +29,33 @@ onMounted(() => {
   <header class="min-h-[80px] bg-neutral-900 sticky top-0 z-50 shadow-[0_4px_10px_rgba(0,0,0,0.25)] shadow-black/50 transition-all duration-300" :class="scrolled ? 'min-h-[60px]' : 'min-h-[80px]'">
     <div class="min-w-[100px] mx-auto max-w-full px-3 lg:px-5 flex items-center justify-between">
       <!-- Logo -->
-      <NuxtLink to="/" aria-label="Gå till hemsida" class="logo-link">
+      <NuxtLink
+        to="/"
+        aria-label="Gå till hemsida"
+        class="flex items-center transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-layout-text-on-dark focus-visible:outline-offset-4 focus-visible:rounded"
+      >
         <picture class="py-[10px]">
-          <source srcset="/images/header/tcs-logo-100.webp 1x, /images/header/tcs-logo-200.webp 2x" type="image/webp">
+          <!-- WebP -->
+          <source
+            type="image/webp"
+            srcset="
+              /images/header/tcs-logo-100.webp 1x,
+              /images/header/tcs-logo-200.webp 2x
+            "
+          >
+          <!-- PNG fallback -->
           <img
             src="/images/header/tcs-logo-100.png"
+            srcset="/images/header/tcs-logo-200.png 2x"
             :width="scrolled ? 60 : 100"
             :height="scrolled ? 60 : 100"
             loading="eager"
             fetchpriority="high"
-            alt="Tricolor Screen logotyp"
             decoding="async"
+            alt="Tricolor Screen logotyp"
             class="object-contain transition-all duration-300"
             :class="scrolled ? 'min-w-[60px]' : 'min-w-[100px]'"
-            style="image-rendering: crisp-edges;"
+            style="image-rendering: crisp-edges"
           >
         </picture>
       </NuxtLink>
@@ -60,18 +73,3 @@ onMounted(() => {
     </div>
   </header>
 </template>
-
-<style scoped>
-/* Logo link - custom styles for opacity transition */
-.logo-link {
-  @apply flex items-center transition-opacity duration-200;
-}
-
-.logo-link:hover {
-  opacity: 0.8;
-}
-
-.logo-link:focus-visible {
-  @apply outline-2 outline-layout-text-on-dark outline-offset-4 rounded;
-}
-</style>

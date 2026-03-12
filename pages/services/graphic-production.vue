@@ -107,7 +107,7 @@ const stepCards = computed<CardItem[]>(() => (
         <div class="mx-auto max-w-3xl space-y-4">
           <p class="leading-relaxed">
             Vi har producerat underlag för de flesta typer av grafiskt material. Oavsett vad du
-            behöver – logotyp, broschyr, skylt eller visitkort – kan vi med största sannolikhet
+            behöver - logotyp, broschyr, skylt eller visitkort - kan vi med största sannolikhet
             lösa det åt dig, från idé till färdig trycksak.
           </p>
           <p class="leading-relaxed">
@@ -122,7 +122,7 @@ const stepCards = computed<CardItem[]>(() => (
       <Section
         id="process"
         title="Hur vi arbetar"
-        description="En enkel process från brief till leverans – vi guidar dig hela vägen."
+        description="En enkel process från brief till leverans - vi guidar dig hela vägen."
         align="center"
         aria-label="Vår arbetsprocess"
         class="p-4"
@@ -153,7 +153,7 @@ const stepCards = computed<CardItem[]>(() => (
       <!-- CTA -->
       <CtaSection
         heading="Har du ett projekt i åtanke?"
-        text="Berätta om ditt varumärke och vad du behöver – vi återkommer med ett förslag som passar ditt ändamål och din budget."
+        text="Berätta om ditt varumärke och vad du behöver - vi återkommer med ett förslag som passar ditt ändamål och din budget."
       />
 
     </div>

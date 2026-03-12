@@ -109,7 +109,7 @@ const serviceCards = computed<CardItem[]>(() =>
       >
         <CardGrid
           :card-content-arr="serviceCards"
-          :min-item-width="360"
+          :min-item-width="280"
           :gap="24"
           aria-label="Tjänster för mässor och event"
           section-id="event-advertisement-services"
