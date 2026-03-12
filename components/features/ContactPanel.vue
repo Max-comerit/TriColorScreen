@@ -4,10 +4,10 @@
     <div class="flex flex-col gap-2">
       <h3 class="m-0 text-lg font-semibold font-display text-primary">Telefon</h3>
       <address class="flex flex-col gap-1 text-base text-neutral-700">
-        <a href="tel:+46866530595" class="font-bold hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 rounded">
+        <a href="tel:+46866530595" class="font-bold text-neutral-700 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 rounded">
           (+46) 08 665 30 95
         </a>
-        <a href="tel:+46704964958" class="font-bold hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 rounded">
+        <a href="tel:+46704964958" class="font-bold text-neutral-700 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 rounded">
           (+46) 070 496 4958
         </a>
       </address>

@@ -110,7 +110,7 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Barlow Semi Condensed', 'sans-serif', 'system-ui'],
+        display: ['DM Sans', 'sans-serif', 'system-ui'],
         body: ['Inter', 'sans-serif', 'system-ui'],
       },
       fontSize: {

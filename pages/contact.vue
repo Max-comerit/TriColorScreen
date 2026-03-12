@@ -119,7 +119,7 @@ onBeforeRouteLeave((to, _from) => {
     <div class="layout-container">
       <Section 
         id="contact"
-        title="Kontakta oss" 
+        title="Kontakta Oss" 
         align="center"
         aria-label="Kontakta oss och skicka förfrågan"
       >
@@ -137,7 +137,7 @@ onBeforeRouteLeave((to, _from) => {
       </Section>
       <Section 
         id="testimonials" 
-        title="Hitta oss" 
+        title="Hitta Oss" 
         align="center"
         aria-label="Hitta oss på Tricolor Screen"
       >

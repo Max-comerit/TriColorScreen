@@ -74,7 +74,7 @@
   a {
     @apply text-primary-700 transition-colors duration-150;
     @apply hover:text-primary-600;
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 rounded-sm;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2;
   }
 
   /* Strong / bold inline text */
