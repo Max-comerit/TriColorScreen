@@ -116,7 +116,7 @@ const imageCards = computed<CardItem[]>(() =>
           height="400"
           format="webp"
           quality="70"
-          sizes="100vw sm:640px md:768px lg:1024px"
+          sizes="100vw sm:768px md:1024px lg:1280px 2xl:1280px"
           densities="x1"
           loading="lazy"
           decoding="async"
