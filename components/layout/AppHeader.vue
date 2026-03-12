@@ -35,7 +35,15 @@ onMounted(() => {
         class="flex items-center transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-layout-text-on-dark focus-visible:outline-offset-4 focus-visible:rounded"
       >
         <picture class="py-[10px]">
-          <source srcset="/images/header/tcs-logo-100.webp 1x, /images/header/tcs-logo-200.webp 2x" type="image/webp">
+          <!-- WebP -->
+          <source
+            type="image/webp"
+            srcset="
+              /images/header/tcs-logo-100.webp 1x,
+              /images/header/tcs-logo-200.webp 2x
+            "
+          >
+          <!-- PNG fallback -->
           <img
             src="/images/header/tcs-logo-100.png"
             srcset="/images/header/tcs-logo-200.png 2x"
@@ -43,11 +51,11 @@ onMounted(() => {
             :height="scrolled ? 60 : 100"
             loading="eager"
             fetchpriority="high"
-            alt="Tricolor Screen logotyp"
             decoding="async"
+            alt="Tricolor Screen logotyp"
             class="object-contain transition-all duration-300"
             :class="scrolled ? 'min-w-[60px]' : 'min-w-[100px]'"
-            style="image-rendering: crisp-edges;"
+            style="image-rendering: crisp-edges"
           >
         </picture>
       </NuxtLink>
