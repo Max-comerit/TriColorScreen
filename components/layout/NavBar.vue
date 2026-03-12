@@ -338,7 +338,7 @@ watch(
 <style scoped>
 /* Nav links and buttons - custom styles that can't be fully replaced with Tailwind */
 .nav-link {
-  @apply flex items-center p-3 lg:px-6 text-layout-text-on-dark font-medium text-sm lg:text-base;
+  @apply flex items-center p-3 sm:px-2 lg:px-6 text-layout-text-on-dark font-medium text-sm lg:text-base;
   @apply no-underline whitespace-nowrap min-h-[44px] bg-transparent cursor-pointer transition-colors duration-200;
   border: none;
   border-bottom: 3px solid transparent;
