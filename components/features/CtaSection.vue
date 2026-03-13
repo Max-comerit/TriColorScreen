@@ -3,8 +3,12 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import Section from '~/components/common/Section.vue'
+<<<<<<< HEAD
 import TextButton from '~/components/common/TextButton.vue'
 import { TAP_ANIMATION_TIME } from '~/constants/ui'
+=======
+import LinkButton from '~/components/common/LinkButton.vue'
+>>>>>>> b8e8702 (Created LinkButton in order to not nest a button in an <a> element. Increased contrast on some color combinations. Added aria attributes on some hidden inputs)
 
 // ===== TYPES =====
 interface Props {

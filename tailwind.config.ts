@@ -32,7 +32,7 @@ export default {
           300: '#7dd5fc',
           400: '#38bff8',
           500: '#0ea5e9',
-          600: '#009fe3', // Logo Cyan - WCAG AA on white (3.12:1 for large text)
+          600: '#019bdd', // Logo Cyan - WCAG AA on white (3.12:1 for large text)
           700: '#017db5',
           800: '#066694',
           900: '#0b567a',

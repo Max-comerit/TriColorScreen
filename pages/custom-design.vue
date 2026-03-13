@@ -376,10 +376,13 @@ function addText(): void {
     <input
       ref="fileInputRef"
       type="file"
-      accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
       class="hidden"
+      aria-hidden="true"
+      tabindex="-1"
+      accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
       @change="handleImageSelected"
     >
+
 
     <!-- Hero: full width -->
     <HeroImage 
@@ -422,6 +425,8 @@ function addText(): void {
                 href="https://www.jobmantexet.se"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-hidden="true"
+                tabindex="-1"
                 class="underline outline-visible-spaced-link"
               >Jobman Texets produktkatalog</a>
               i formuläret nedan</li>

@@ -154,6 +154,7 @@ function onClick(event: MouseEvent) {
     v-bind="$attrs"
     :type="props.type"
     :disabled="isDisabled"
+    :aria-disabled="isDisabled ? 'true' : undefined"
     :class="buttonClasses"
     :style="buttonStyle"
     :aria-busy="props.busy"
