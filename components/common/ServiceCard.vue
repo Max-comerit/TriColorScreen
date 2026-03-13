@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
   backgroundColor: 'bg-primary-50',
   textColor: 'black',
   link: '',
-  alt: 'Service Image',
+  alt: '',
   imgSizes: '80vw sm:50vw lg:33vw xl:25vw'
 })
 
@@ -113,7 +113,7 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
             width="300"
             height="200"
             format="webp"
-            :alt="alt || title"
+            :alt="alt"
             quality="75"
             :sizes="imgSizes"
             densities="x1"
@@ -156,7 +156,7 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
           width="300"
           height="200"
           format="webp"
-          :alt="alt || title"
+          :alt="alt"
           quality="75"
           :sizes="imgSizes"
           densities="x1"

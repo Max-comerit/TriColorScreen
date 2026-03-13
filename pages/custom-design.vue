@@ -486,6 +486,8 @@ function addText(): void {
                 size="fit"
                 class="w-fit hidden xl:flex"
                 label="Lägg till bild"
+                background-color="bg-primary-700"
+                color="white"
                 @click="uploadImage()"
               >
                 <template #icon>
@@ -513,6 +515,8 @@ function addText(): void {
               size="fit"
               class="w-fit"
               label="Lägg till text"
+              background-color="bg-primary-700"
+              color="white"
               @click="addText()"
             >
               <template #icon>

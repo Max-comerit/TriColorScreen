@@ -39,7 +39,7 @@ async function handleCtaClick(): Promise<void> {
   <Section
     id="contact-cta"
     aria-label="Kontakta oss"
-    background-color="bg-primary-600"
+    background-color="bg-primary-700"
     text-color="text-white"
     align="center"
     class="px-4 md:px-8 lg:px-16 rounded-card"

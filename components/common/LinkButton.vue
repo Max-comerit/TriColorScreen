@@ -43,7 +43,7 @@ const baseClasses =
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    'bg-primary-600 text-white hover:bg-primary-700 hover:text-white focus-visible:ring-primary-600 shadow-drop',
+    'bg-primary-700 text-white hover:bg-primary-800 hover:text-white focus-visible:ring-primary-600 shadow-drop',
   secondary:
     'bg-secondary-300 text-black hover:bg-secondary-400 hover:text-black focus-visible:ring-secondary-600 shadow-drop',
   outline:

@@ -967,6 +967,8 @@ watch(isChanged, (newValue) => {
           :disabled="isSubmitting"
           :busy="isSubmitting"
           :aria-label="isSubmitting ? 'Skickar offertförfrågan' : 'Skicka offertförfrågan'"
+          background-color="bg-primary-700"
+          color="white"
         >
           {{ isSubmitting ? 'Skickar...' : 'Skicka offertförfrågan' }}
         </TextButton>
