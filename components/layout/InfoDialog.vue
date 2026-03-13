@@ -8,7 +8,7 @@
 
 // ===== IMPORTS =====
 import BaseModal from '~/components/base/BaseModal.vue'
-import type { InnerBorderStyle } from '~/components/base/BaseModal.vue'
+import type { ModalInnerBorderStyle } from '~/components/base/BaseModal.vue'
 import TextButton from '../common/TextButton.vue'
 import { TAP_TRANSITION_TIME } from '~/constants/ui'
 
@@ -28,7 +28,7 @@ interface Props {
   /** Height of the modal */
   height?: string
   /** Inner border style for body - default: 'none' */
-  innerBorder?: InnerBorderStyle
+  innerBorder?: ModalInnerBorderStyle
 }
 
 // ===== PROPS & EMITS =====

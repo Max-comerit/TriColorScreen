@@ -115,6 +115,7 @@ const serviceCards = computed<CardItem[]>(() =>
           :loop="true"
           show-arrows
           show-dots
+          outer-border="bordered"
           aria-label="Trycksaker"
         />
       </Section>

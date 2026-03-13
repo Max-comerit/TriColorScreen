@@ -98,6 +98,7 @@ const imageCards = computed<CardItem[]>(() =>
           :loop="true"
           show-arrows
           show-dots
+          outer-border="bordered"
           aria-label="Tryckmetoder och resultat"
           class="mb-4"
         />

@@ -131,6 +131,7 @@ const reviewCards = computed<CardItem[]>(() =>
             :loop="true"
             show-arrows
             show-dots
+            outer-border="bordered"
             aria-label="Kundrecensioner"
           />
         </div>

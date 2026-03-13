@@ -13,7 +13,7 @@ import CloseIcon from '~/assets/images/common/close-icon.svg?component'
 
 // ===== TYPES =====
 /** Inner border style type */
-type InnerBorderStyle = 'none' | 'sunken'
+export type ModalInnerBorderStyle = 'none' | 'sunken'
 
 /** Props for BaseModal component */
 interface Props {
@@ -28,10 +28,8 @@ interface Props {
   /** Height of the modal */
   height?: string
   /** Inner border style for body - default: 'none' */
-  innerBorder?: InnerBorderStyle
+  innerBorder?: ModalInnerBorderStyle
 }
-
-export type { InnerBorderStyle }
 
 // ===== PROPS & EMITS =====
 const props = withDefaults(defineProps<Props>(), {
