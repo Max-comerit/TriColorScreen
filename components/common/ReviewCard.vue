@@ -32,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 const cardStyle = computed(() => ({
   width: typeof props.width === 'number' ? `${props.width}px` : props.width,
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
+  userSelect: 'none' as const,
 }))
 </script>
 

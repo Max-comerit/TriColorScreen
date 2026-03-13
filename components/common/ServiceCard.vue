@@ -124,7 +124,7 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
         </div>
 
         <!-- Text content section with title and description -->
-        <div class="flex flex-1 flex-col gap-1 ">
+        <div class="flex flex-1 flex-col gap-1" style="user-select: none;">
           <!-- Service title -->
           <h3 :class="['text-lg font-semibold line-clamp-1', textColorClass]">
             {{ title }}
@@ -166,7 +166,7 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
       </div>
 
       <!-- Text content section with title and description -->
-      <div class="flex flex-1 flex-col gap-1 ">
+      <div class="flex flex-1 flex-col gap-1" style="user-select: none;">
         <!-- Service title -->
         <h3 :class="['text-lg font-semibold line-clamp-1', textColorClass]">
           {{ title }}
