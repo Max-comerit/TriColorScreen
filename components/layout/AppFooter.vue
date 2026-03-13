@@ -6,6 +6,7 @@
   import InstagramIcon from '~/assets/images/footer/instagram-icon.svg'
   import LinkedInIcon from '~/assets/images/footer/linkedin-icon.svg'
   import TikTokIcon from '~/assets/images/footer/tiktok-icon.svg'
+  import { TAP_TRANSITION_TIME } from '~/constants/ui'
 </script>
 
 <template>
@@ -39,7 +40,7 @@
               aria-label="LinkedIn"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <LinkedInIcon class="w-7 h-7 text-neutral-900" aria-hidden="true" />
+              <LinkedInIcon class="w-7 h-7 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -50,7 +51,7 @@
               aria-label="Facebook"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <FacebookIcon class="w-7 h-7 text-neutral-900" aria-hidden="true" />
+              <FacebookIcon class="w-7 h-7 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -61,7 +62,7 @@
               aria-label="Instagram"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <InstagramIcon class="w-7 h-7 text-neutral-900" aria-hidden="true" />
+              <InstagramIcon class="w-7 h-7 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -72,7 +73,7 @@
               aria-label="TikTok"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <TikTokIcon class="w-7 h-7 text-neutral-900" aria-hidden="true" />
+              <TikTokIcon class="w-7 h-7 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
             </a>
           </li>
         </ul>
