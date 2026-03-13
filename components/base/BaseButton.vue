@@ -56,18 +56,18 @@ const isDisabled = computed(() => props.disabled || props.busy)
 
 /** Base button classes shared across all variants */
 const baseClasses =
-  'base-button inline-flex items-center justify-center font-medium rounded-button transition-all overflow-hidden ' +
+  'base-button inline-flex items-center justify-center font-medium rounded-button transition-all overflow-hidden shadow-drop ' +
   'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ' +
-  'active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'
+  'active:scale-95 active:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed'
 
 /** Variant-specific styling (colors, text, shadows) */
 const variantClasses: Record<Variant, string> = {
   primary:
-    'bg-primary-500 text-white hover:bg-primary-700 focus-visible:ring-primary-600 shadow-drop',
+    'bg-primary-500 text-white hover:bg-primary-700 focus-visible:ring-primary-600',
   secondary:
-    'bg-secondary-300 text-black hover:bg-secondary-400 focus-visible:ring-secondary-600 shadow-drop',
+    'bg-secondary-300 text-black hover:bg-secondary-400 focus-visible:ring-secondary-600',
   outline:
-    'border border-neutral-300 text-neutral-900 hover:bg-neutral-200 focus-visible:ring-neutral-400 shadow-drop',
+    'border border-neutral-300 text-neutral-900 hover:bg-neutral-200 focus-visible:ring-neutral-400',
   text: 'text-neutral-900 hover:bg-neutral-200 focus-visible:ring-neutral-400',
 }
 
