@@ -99,7 +99,7 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
     >
       <!-- Article wrapper for semantic content -->
       <article
-        class="flex flex-col p-5 overflow-hidden rounded-card shadow-drop transition-all active:scale-[0.97] active:shadow-none cursor-pointer"
+        class="flex flex-col p-5 overflow-hidden rounded-card shadow-drop transition-all active:scale-[0.98] active:shadow-none cursor-pointer"
         :class="backgroundColor"
         :style="cardStyle"
       >
