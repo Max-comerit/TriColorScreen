@@ -40,7 +40,7 @@
               aria-label="LinkedIn"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <LinkedInIcon class="w-7 h-7 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
+              <LinkedInIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -51,7 +51,7 @@
               aria-label="Facebook"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <FacebookIcon class="w-7 h-7 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
+              <FacebookIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -62,7 +62,7 @@
               aria-label="Instagram"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <InstagramIcon class="w-7 h-7 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
+              <InstagramIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -73,7 +73,7 @@
               aria-label="TikTok"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <TikTokIcon class="w-7 h-7 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
+              <TikTokIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
             </a>
           </li>
         </ul>
