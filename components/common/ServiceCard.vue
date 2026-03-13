@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, type CSSProperties } from 'vue'
+import { useRouter } from 'vue-router'
+import { TAP_TRANSITION_TIME } from '~/constants/ui'
 
 /**
  * ServiceCard Component
@@ -46,22 +48,18 @@ const props = withDefaults(defineProps<Props>(), {
   imgSizes: '80vw sm:50vw lg:33vw xl:25vw'
 })
 
-/** Emits 'click' event when the card is clicked or activated via keyboard */
-const emit = defineEmits<{
-  (e: 'click'): void
-}>()
-
 // ===== COMPOSABLES & STORES =====
-// (No composables or stores needed)
+const router = useRouter()
 
 // ===== STATE =====
 // (No additional state variables needed)
 
 // ===== COMPUTED =====
-/** Computes dynamic style object for card dimensions */
+/** Computes dynamic style object for card dimensions and transition duration */
 const cardStyle = computed(() => ({
   width: typeof props.width === 'number' ? `${props.width}px` : props.width,
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
+  '--tap-transition-time': `${TAP_TRANSITION_TIME}ms`,
 }))
 
 /** Formats the text color prop into a Tailwind class name */
@@ -79,9 +77,14 @@ const descriptionStyle = computed((): CSSProperties => {
 })
 
 // ===== METHODS =====
-/** Handles card click when no link is provided */
-const handleCardClick = () => {
-  emit('click')
+/**
+ * Handle NuxtLink click - delay navigation to allow tap animation to complete
+ */
+async function handleLinkClick(event: MouseEvent): Promise<void> {
+  event.preventDefault()
+  // Delay navigation TAP_TRANSITION_TIME ms to allow tap animation to complete
+  await new Promise(resolve => setTimeout(resolve, TAP_TRANSITION_TIME))
+  await router.push(props.link)
 }
 </script>
 
@@ -91,12 +94,13 @@ const handleCardClick = () => {
     <NuxtLink
       v-if="link"
       :key="`link-${link}`"
-      :to="link"
-      class="group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-card h-full block"
+      class="service-card-link group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-card h-full block"
+      style="user-select: none;"
+      @click="handleLinkClick"
     >
       <!-- Article wrapper for semantic content -->
       <article
-        class="flex flex-col p-5 overflow-hidden rounded-card shadow-drop transition-transform duration-200 hover:-translate-y-1 h-fulltranslate-y-1"
+        class="flex flex-col p-5 overflow-hidden rounded-card shadow-drop transition-all active:scale-[0.97] active:shadow-none cursor-pointer"
         :class="backgroundColor"
         :style="cardStyle"
       >
@@ -139,12 +143,9 @@ const handleCardClick = () => {
     <article
       v-else
       :key="`article-${title}`"
-      class="group flex flex-col p-5 overflow-hidden rounded-card shadow-drop transition-transform duration-200"
+      class="group flex flex-col p-5 overflow-hidden rounded-card"
       :class="backgroundColor"
       :style="cardStyle"
-      @click="handleCardClick"
-      @keydown.enter.prevent="handleCardClick"
-      @keydown.space.prevent="handleCardClick"
     >
       <!-- Note that width & height are set to reduce layout shifts -->
       <div class="w-full max-h-[75%] align-middle bg-gray-200 rounded-t-card overflow-hidden">
@@ -180,3 +181,10 @@ const handleCardClick = () => {
     </article>
   </div>
 </template>
+
+<style scoped>
+/* Apply transition duration from CSS custom property */
+article[style] {
+  transition-duration: var(--tap-transition-time);
+}
+</style>

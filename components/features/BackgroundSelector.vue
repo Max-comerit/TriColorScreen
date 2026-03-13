@@ -75,7 +75,7 @@ onMounted(() => {
 
 <template>
   <div class="w-full max-w-xl mx-auto my-4 px-4 justify-center flex">
-    <div class="flex items-stretch sm:items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg shadow-md justify-center flex-wrap">
+    <div class="flex items-stretch sm:items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg justify-center flex-wrap">
       <label class="flex items-center gap-3">
         <select
           :value="activeCategory"

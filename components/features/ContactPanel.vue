@@ -1,5 +1,5 @@
 <template>
-  <section class="w-fit flex flex-col gap-4 p-6 bg-accent-200 rounded-card shadow-drop overflow-hidden">
+  <section class="w-fit flex flex-col gap-4 p-6 bg-accent-200 rounded-card overflow-hidden">
     <!-- Telefon -->
     <div class="flex flex-col gap-2">
       <h3 class="m-0 text-lg font-semibold font-display text-primary">Telefon</h3>

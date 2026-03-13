@@ -9,6 +9,7 @@
 // ===== IMPORTS =====
 import BaseModal from '~/components/base/BaseModal.vue'
 import TextButton from '../common/TextButton.vue'
+import { TAP_TRANSITION_TIME } from '~/constants/ui'
 
 // ===== TYPES =====
 /** Props for ConfirmDialog component */
@@ -48,7 +49,10 @@ const emit = defineEmits<{
 /**
  * Handle cancel button click
  */
-function handleCancel(): void {
+async function handleCancel(): Promise<void> {
+  // Delay validation TAP_TRANSITION_TIME ms to allow button :active state to complete
+  await new Promise(resolve => setTimeout(resolve, TAP_TRANSITION_TIME))
+
   emit('cancel')
   emit('update:modelValue', false)
 }
@@ -56,7 +60,10 @@ function handleCancel(): void {
 /**
  * Handle confirm button click
  */
-function handleConfirm(): void {
+async function handleConfirm(): Promise<void> {
+  // Delay validation TAP_TRANSITION_TIME ms to allow button :active state to complete
+  await new Promise(resolve => setTimeout(resolve, TAP_TRANSITION_TIME))
+  
   emit('confirm')
   emit('update:modelValue', false)
 }

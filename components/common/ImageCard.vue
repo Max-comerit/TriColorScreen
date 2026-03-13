@@ -59,7 +59,7 @@ const handleClick = (): void => {
 <template>
   <div class="h-full w-full">
     <article
-      class="overflow-hidden rounded-card shadow-drop"
+      class="overflow-hidden rounded-card"
       :class="backgroundColor"
       :style="cardStyle"
       @click="handleClick"

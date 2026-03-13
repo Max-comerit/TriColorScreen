@@ -150,7 +150,7 @@ watch(isChanged, (newValue) => {
     netlify-honeypot="bot-field"
     enctype="multipart/form-data"
     autocomplete="off"
-    class="w-full max-w-2xl bg-primary-100 p-6 sm:p-8 rounded-card shadow-drop"
+    class="w-full max-w-2xl bg-primary-100 p-6 sm:p-8 rounded-card"
     aria-label="Kontaktformulär"
     @submit.prevent="handleSubmit"
   >
