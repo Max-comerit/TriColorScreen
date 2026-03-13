@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { TAP_TRANSITION_TIME } from '~/constants/ui'
 import LoadingSpinner from '../common/LoadingSpinner.vue'
 
 defineOptions({
@@ -122,12 +121,10 @@ const buttonClasses = computed(() => {
  * Uses CSS custom properties to allow styling in the <style> block
  * --btn-bg: primary background color (if backgroundColor prop is a CSS value)
  * --btn-bg-hover: hover background color (if backgroundColorHover prop is a CSS value)
- * --tap-transition-time: transition duration from TAP_TRANSITION_TIME constant
  */
 const buttonStyle = computed(() => {
   const style: Record<string, string | number> = {
     userSelect: 'none',
-    '--tap-transition-time': `${TAP_TRANSITION_TIME}ms`,
   }
 
   // Only use CSS variables if the values don't look like Tailwind classes
@@ -180,7 +177,7 @@ function onClick(event: MouseEvent) {
 <style scoped>
 /* Base styles for all buttons, including transition duration from CSS variable */
 .base-button {
-  transition-duration: var(--tap-transition-time);
+  transition-duration: var(--tap-duration);
 }
 
 /* Apply custom background color when has-custom-bg class is present */

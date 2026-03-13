@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, type CSSProperties } from 'vue'
 import { useRouter } from 'vue-router'
-import { TAP_TRANSITION_TIME } from '~/constants/ui'
+import { TAP_ANIMATION_TIME } from '~/constants/ui'
 
 /**
  * ServiceCard Component
@@ -59,7 +59,6 @@ const router = useRouter()
 const cardStyle = computed(() => ({
   width: typeof props.width === 'number' ? `${props.width}px` : props.width,
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
-  '--tap-transition-time': `${TAP_TRANSITION_TIME}ms`,
 }))
 
 /** Formats the text color prop into a Tailwind class name */
@@ -82,8 +81,8 @@ const descriptionStyle = computed((): CSSProperties => {
  */
 async function handleLinkClick(event: MouseEvent): Promise<void> {
   event.preventDefault()
-  // Delay navigation TAP_TRANSITION_TIME ms to allow tap animation to complete
-  await new Promise(resolve => setTimeout(resolve, TAP_TRANSITION_TIME))
+  // Delay navigation TAP_ANIMATION_TIME ms to allow tap animation to complete
+  await new Promise(resolve => setTimeout(resolve, TAP_ANIMATION_TIME))
   await router.push(props.link)
 }
 </script>
@@ -183,8 +182,8 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
 </template>
 
 <style scoped>
-/* Apply transition duration from CSS custom property */
-article[style] {
-  transition-duration: var(--tap-transition-time);
+/* Apply CSS variable transition duration to articles */
+article {
+  transition-duration: var(--tap-duration);
 }
 </style>

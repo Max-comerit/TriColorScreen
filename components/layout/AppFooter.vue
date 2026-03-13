@@ -6,7 +6,6 @@
   import InstagramIcon from '~/assets/images/footer/instagram-icon.svg'
   import LinkedInIcon from '~/assets/images/footer/linkedin-icon.svg'
   import TikTokIcon from '~/assets/images/footer/tiktok-icon.svg'
-  import { TAP_TRANSITION_TIME } from '~/constants/ui'
 </script>
 
 <template>
@@ -40,7 +39,7 @@
               aria-label="LinkedIn"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <LinkedInIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
+              <LinkedInIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -51,7 +50,7 @@
               aria-label="Facebook"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <FacebookIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
+              <FacebookIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -62,7 +61,7 @@
               aria-label="Instagram"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <InstagramIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
+              <InstagramIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -73,7 +72,7 @@
               aria-label="TikTok"
               class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
             >
-              <TikTokIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }" aria-hidden="true" />
+              <TikTokIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>
           </li>
         </ul>

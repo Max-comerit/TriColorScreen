@@ -12,7 +12,6 @@ import { useNavigationStore } from '~/stores/navigationStore'
 import type { INavItem } from '~/types/NavigationStore'
 import BurgerMenu from './BurgerMenu.vue'
 import BurgerButton from './BurgerButton.vue'
-import { TAP_TRANSITION_TIME } from '~/constants/ui'
 
 // ===== COMPOSABLES & STORES =====
 const navigationStore = useNavigationStore()
@@ -286,7 +285,7 @@ watch(
 </script>
 
 <template>
-  <nav class="flex flex-1 justify-end sm:justify-center" :class="{ 'is-touch-device': isTouchDevice }" :style="{ '--tap-transition-time': `${TAP_TRANSITION_TIME}ms` }" aria-label="Hovednavigering">
+  <nav class="flex flex-1 justify-end sm:justify-center" :class="{ 'is-touch-device': isTouchDevice }" aria-label="Huvudnavigering">
     <ul class="hidden sm:flex align-end items-center gap-0 list-none m-0 p-0">
       <li
       v-for="item in menuItems" :key="item.href" class="nav-item relative flex items-stretch"
@@ -360,7 +359,7 @@ watch(
 
 .nav-link:active {
   @apply scale-95 transition-all;
-  transition-duration: var(--tap-transition-time);
+  transition-duration: var(--tap-duration);
   user-select: none;
 }
 
@@ -390,7 +389,7 @@ watch(
 
 .dropdown-link:active {
   @apply scale-95 transition-all;
-  transition-duration: var(--tap-transition-time);
+  transition-duration: var(--tap-duration);
   user-select: none;
 } 
 

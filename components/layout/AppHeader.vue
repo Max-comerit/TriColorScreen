@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import NavBar from '~/components/layout/NavBar.vue'
 import { useNavigationStore } from '~/stores/navigationStore'
-import { TAP_TRANSITION_TIME } from '~/constants/ui'
 
 /**
  * AppHeader Component
@@ -35,7 +34,7 @@ onMounted(() => {
         aria-label="Gå till hemsida"
         class="flex items-center transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-layout-text-on-dark focus-visible:outline-offset-4 focus-visible:rounded"
       >
-        <picture class="py-[10px] active:scale-95 transition-all" :style="{ transitionDuration: `${TAP_TRANSITION_TIME}ms`, userSelect: 'none' }">
+        <picture class="py-[10px] active:scale-95 transition-all" style="transition-duration: var(--tap-duration);">
           <!-- WebP -->
           <source
             type="image/webp"

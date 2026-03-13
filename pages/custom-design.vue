@@ -411,7 +411,7 @@ function addText(): void {
                 href="https://www.jobmantexet.se"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="underline hover:text-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+                class="underline"
               >Jobman Texets produktkatalog</a>
             </li>
             <li>Välj sedan samma produkt i designverktyget (t.ex. T-Shirt om du har valt en T-Shirt)</li>
@@ -422,7 +422,7 @@ function addText(): void {
                 href="https://www.jobmantexet.se"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="underline hover:text-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+                class="underline"
               >Jobman Texets produktkatalog</a>
               i formuläret nedan</li>
               <li>Sedan skickar du en offertförfrågan direkt från verktyget</li>

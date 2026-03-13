@@ -1,5 +1,6 @@
 /* Font loading optimization to prevent CLS */
 @import './fonts.css';
+@import './variables.css';
 
 @tailwind base;
 @tailwind components;
@@ -72,9 +73,12 @@
 
   /* Inline links - primary brand colour with underline, accessible focus ring */
   a {
-    @apply text-primary-700 transition-colors duration-150;
+    @apply inline-flex items-center min-h-[44px] px-0 py-2 text-primary-700 transition-all;
     @apply hover:text-primary-600;
+    @apply active:scale-95;
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2;
+    transition-duration: var(--tap-duration);
+    user-select: none;
   }
 
   /* Strong / bold inline text */

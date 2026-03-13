@@ -1,0 +1,4 @@
+/* UI transition timing variables */
+:root {
+  --tap-duration: 200ms;
+}
