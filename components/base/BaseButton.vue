@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { TAP_TRANSITION_TIME } from '~/constants/ui'
 import LoadingSpinner from '../common/LoadingSpinner.vue'
 
 defineOptions({
@@ -55,7 +56,7 @@ const isDisabled = computed(() => props.disabled || props.busy)
 
 /** Base button classes shared across all variants */
 const baseClasses =
-  'base-button inline-flex items-center justify-center font-medium rounded-button transition-all duration-100 overflow-hidden ' +
+  'base-button inline-flex items-center justify-center font-medium rounded-button transition-all overflow-hidden ' +
   'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ' +
   'active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'
 
@@ -121,10 +122,12 @@ const buttonClasses = computed(() => {
  * Uses CSS custom properties to allow styling in the <style> block
  * --btn-bg: primary background color (if backgroundColor prop is a CSS value)
  * --btn-bg-hover: hover background color (if backgroundColorHover prop is a CSS value)
+ * --tap-transition-time: transition duration from TAP_TRANSITION_TIME constant
  */
 const buttonStyle = computed(() => {
   const style: Record<string, string | number> = {
     userSelect: 'none',
+    '--tap-transition-time': `${TAP_TRANSITION_TIME}ms`,
   }
 
   // Only use CSS variables if the values don't look like Tailwind classes
@@ -175,13 +178,20 @@ function onClick(event: MouseEvent) {
 </template>
 
 <style scoped>
+/* Base styles for all buttons, including transition duration from CSS variable */
+.base-button {
+  transition-duration: var(--tap-transition-time);
+}
+
 /* Apply custom background color when has-custom-bg class is present */
 .base-button.has-custom-bg {
   background-color: var(--btn-bg);
 }
+
 .base-button.has-custom-color {
   color: var(--btn-color);
 }
+
 /* Apply hover background color (fallback to primary bg if hover color not provided) */
 .base-button.has-custom-bg:hover:not(:disabled) {
   background-color: var(--btn-bg-hover, var(--btn-bg));

@@ -10,6 +10,7 @@
 import BaseModal from '~/components/base/BaseModal.vue'
 import type { InnerBorderStyle } from '~/components/base/BaseModal.vue'
 import TextButton from '../common/TextButton.vue'
+import { TAP_TRANSITION_TIME } from '~/constants/ui'
 
 // ===== TYPES =====
 /** Props for InfoDialog component */
@@ -50,8 +51,8 @@ const emit = defineEmits<{
  * Handle OK button click
  */
 async function handleOk(): Promise<void> {
-  // Delay validation 100ms to allow button :active state to complete
-  await new Promise(resolve => setTimeout(resolve, 100))
+  // Delay validation TAP_TRANSITION_TIME ms to allow button :active state to complete
+  await new Promise(resolve => setTimeout(resolve, TAP_TRANSITION_TIME))
 
   emit('close')
   emit('update:modelValue', false)

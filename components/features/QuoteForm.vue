@@ -11,6 +11,7 @@ import GdprDialog from '~/components/features/GdprDialog.vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { useCanvasExport } from '~/composables/useCanvasExport'
+import { TAP_TRANSITION_TIME } from '~/constants/ui'
 
 // ===== PROPS =====
 interface Props {
@@ -130,8 +131,8 @@ async function handleFocusOut(event: FocusEvent): Promise<void> {
  * Handle form submission
  */
 async function handleSubmit(): Promise<void> {
-  // Delay validation 100ms to allow button :active state to complete
-  await new Promise(resolve => setTimeout(resolve, 100))
+  // Delay validation TAP_TRANSITION_TIME ms to allow button :active state to complete
+  await new Promise(resolve => setTimeout(resolve, TAP_TRANSITION_TIME))
   
   const success = await submitForm()
 

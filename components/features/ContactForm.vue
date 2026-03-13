@@ -7,6 +7,7 @@ import type { ContactFormData } from '~/composables/useContactForm'
 import TextButton from '~/components/common/TextButton.vue'
 import GdprDialog from '~/components/features/GdprDialog.vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
+import { TAP_TRANSITION_TIME } from '~/constants/ui'
 
 // ===== EMITS =====
 const emit = defineEmits<{
@@ -102,8 +103,8 @@ function openGdprDialog(): void {
  * Handle form submission
  */
 async function handleSubmit(): Promise<void> {
-  // Delay validation 100ms to allow button :active state to complete
-  await new Promise(resolve => setTimeout(resolve, 100))
+  // Delay validation TAP_TRANSITION_TIME ms to allow button :active state to complete
+  await new Promise(resolve => setTimeout(resolve, TAP_TRANSITION_TIME))
   
   const success = await submitForm()
   
