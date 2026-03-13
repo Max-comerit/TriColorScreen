@@ -134,7 +134,10 @@ const imageCards = computed<CardItem[]>(() =>
             <p class="leading-relaxed text-white">
               <span class="block mb-3">Vi har alla sorters textiler hos oss på Öregrundsgatan 24 i Stockholm på Gärdet.</span>
               <span class="block">Använd designverktyget i
-              <NuxtLink to="/custom-design" class="font-semibold text-white underline hover:text-primary-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">DESIGNA SJÄLV</NuxtLink>
+              <NuxtLink
+                to="/custom-design"
+                class="font-semibold text-white underline hover:text-primary-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+              >DESIGNA SJÄLV</NuxtLink>
               för att designa dina textilier och se hur de kommer att se ut.
               Skicka sedan en offertförfrågan via formuläret så återkommer vi med en offert så snart som möjligt.</span>
             </p>
