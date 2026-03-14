@@ -87,7 +87,7 @@ const reviewCards = computed<CardItem[]>(() =>
         aria-label="Om Tricolor Screen"
         align="center"
       >
-        <div class="mx-auto max-w-3xl space-y-4" style="user-select: none; -webkit-user-drag: none;">
+        <div class="mx-auto max-w-3xl space-y-4">
           <p class="leading-relaxed">
             Sedan 1996 har vi levererat professionellt tryck och profilmaterial till företag och privatpersoner.
             Trycksaker, broderade kläder, skyltar, bildekor eller en ny grafisk profil - vi tar hand om hela processen från idé till färdig produkt.

@@ -8,6 +8,12 @@
 
 @layer base {
 
+  /* Prevent text selection and dragging on all elements */
+  * {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
   /* Global scrollbar gutter to prevent layout shifts when scrollbars appear */
   html {
     scrollbar-gutter: stable;

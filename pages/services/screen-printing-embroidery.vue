@@ -76,7 +76,7 @@ const imageCards = computed<CardItem[]>(() =>
       aria-label="Om våra tryckmetoder"
       align="center"
     >
-      <div class="mx-auto max-w-3xl space-y-4" style="user-select: none; -webkit-user-drag: none;">
+      <div class="mx-auto max-w-3xl space-y-4">
         <p class="leading-relaxed">
           Vi trycker på många typer av textilier och guidar dig genom hela processen,
           från val av plagg till färdig produkt. Olika material och användningsområden
@@ -126,7 +126,7 @@ const imageCards = computed<CardItem[]>(() =>
         />
         <!-- Dark overlay for text legibility -->
         <div class="absolute inset-0 bg-black/70" aria-hidden="true" />
-        <div class="container relative z-10 mx-auto text-center px-4 sm:px-6 lg:px-8" style="user-select: none; -webkit-user-drag: none;">
+        <div class="container relative z-10 mx-auto text-center px-4 sm:px-6 lg:px-8">
           <header class="mb-8 md:mb-12">
             <h2 class="font-display text-white">Textiler i butik och på lager</h2>
           </header>

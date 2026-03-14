@@ -85,7 +85,7 @@ const serviceCards = computed<CardItem[]>(() =>
         align="center"
         padding-y="pt-4 md:pt-6 lg:pt-8 xl:pt-12 2xl:pt-16 pb-2 md:pb-4 lg:pb-6 xl:pb-6 2xl:pb-8"
       >
-        <div class="mx-auto max-w-3xl space-y-4" style="user-select: none; -webkit-user-drag: none;">
+        <div class="mx-auto max-w-3xl space-y-4">
           <p class="leading-relaxed">
             På ett event konkurrerar du om uppmärksamheten med dussintals andra aktörer.
             Rätt profilmaterial gör skillnaden. Det lockar besökare, 
