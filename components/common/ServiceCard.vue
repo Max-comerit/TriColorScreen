@@ -95,7 +95,8 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
     <NuxtLink
       v-if="link"
       :key="`link-${link}`"
-      class="service-card-link group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-card h-full block"
+      tabindex="0"
+      class="py-0 service-card-link group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 rounded-card h-full block"
       @click="handleLinkClick"
     >
       <!-- Article wrapper for semantic content -->

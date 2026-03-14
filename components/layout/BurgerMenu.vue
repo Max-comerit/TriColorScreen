@@ -110,7 +110,7 @@ watch(
             v-if="!item.children"
             :to="item.href"
             draggable="false"
-            class="block px-6 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
+            class="px-6 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors focus-visible:-outline-offset-4 duration-200 min-h-[44px] flex items-center"
             :class="{ active: isActiveOrParent(item) }"
             @click="handleNavClick()"
           >
@@ -132,7 +132,7 @@ watch(
                 :key="child.href"
                 :to="child.href"
                 draggable="false"
-                class="block px-9 py-2 text-sm text-neutral-300 hover:text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
+                class="px-9 py-2 text-sm text-neutral-300 hover:text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
                 :class="{
               active: navigationStore.isRouteActive(child.href),
             }"

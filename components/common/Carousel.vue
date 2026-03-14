@@ -250,7 +250,8 @@ onMounted(() => {
     :style="{ maxWidth: carouselWidth }"
   >
     <!-- Embla viewport -->
-    <div ref="viewportRef" 
+    <div 
+      ref="viewportRef" 
       class="rounded-card mb-1 overflow-hidden"
       :class="innerBorderClasses"
     >
