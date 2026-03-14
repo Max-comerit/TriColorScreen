@@ -15,7 +15,7 @@ defineProps<Props>()
     class="w-full p-2 sm:p-3 transition-all duration-300
            hover:bg-primary-800 flex items-center md:justify-center"
   >
-    <div class="flex items-center gap-2 sm:gap-2 min-w-0">
+    <div class="flex items-center gap-2 sm:gap-2 min-w-0" style="user-select: none; -webkit-user-drag: none;">
       <div
         class="flex-shrink-0 text-primary"
         aria-hidden="true"
