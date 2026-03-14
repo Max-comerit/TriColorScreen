@@ -16,8 +16,6 @@ interface Props {
 const props = defineProps<Props>()
 
 // ===== COMPOSABLES & STORES =====
-const router = useRouter()
-
 /**
  * Set page metadata for error page
  * - robots: noindex, nofollow to prevent indexing error pages
@@ -29,14 +27,6 @@ useHead({
     { name: 'robots', content: 'noindex, nofollow' },
   ],
 })
-
-// ===== METHODS =====
-/**
- * Navigate to home page
- */
-const navigateHome = (): void => {
-  router.push('/')
-}
 
 // ===== COMPUTED =====
 /**
@@ -131,14 +121,14 @@ const imageSrc = computed(() => isNotFound.value ? 'error' : 'oops')
             <!-- Action Buttons -->
             <div class="mt-8 flex flex-wrap items-center gap-4">
               <!-- Back to Home Button -->
-              <TextButton
-                variant="primary"
-                size="fit"
-                aria-label="Gå tillbaka till startsidan"
-                @click="navigateHome"
-              >
-                Till Startsidan
-              </TextButton>
+              <NuxtLink to="/" aria-label="Gå tillbaka till startsidan" tabindex="-1">
+                <TextButton
+                  variant="primary"
+                  size="fit"
+                >
+                  Till Startsidan
+                </TextButton>
+              </NuxtLink>
 
               <!-- Contact Link -->
               <NuxtLink

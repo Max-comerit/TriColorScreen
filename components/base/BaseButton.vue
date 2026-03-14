@@ -182,11 +182,10 @@ function onClick(event: MouseEvent) {
 .base-button.has-custom-bg {
   background-color: var(--btn-bg);
 }
-
+/* Apply custom text color when has-custom-color class is present */
 .base-button.has-custom-color {
   color: var(--btn-color);
 }
-
 /* Apply hover background color (fallback to primary bg if hover color not provided) */
 .base-button.has-custom-bg:hover:not(:disabled) {
   background-color: var(--btn-bg-hover, var(--btn-bg));
