@@ -97,8 +97,9 @@ const imageSrc = computed(() => isNotFound.value ? 'error' : 'oops')
                 :alt="`Illustration för felsida ${statusCode}`"
                 width="900"
                 height="600"
-                class="w-full max-w-xl mx-auto mb-6 rounded-card object-cover"
+                draggable="false"
                 decoding="async"
+                class="w-full max-w-xl mx-auto mb-6 rounded-card object-cover"
               >
             </picture>
 

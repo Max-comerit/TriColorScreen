@@ -92,6 +92,7 @@ const iconSize = computed(() => {
           v-if="props.iconSrc"
           :src="props.iconSrc"
           :alt="props.iconAlt"
+          draggable="false"
           :class="iconSize"
           class="icon-image flex-shrink-0"
         >

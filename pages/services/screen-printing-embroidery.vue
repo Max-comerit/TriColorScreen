@@ -122,6 +122,7 @@ const imageCards = computed<CardItem[]>(() =>
           fit="cover"
           loading="lazy"
           decoding="async"
+          draggable="false"
           class="absolute inset-0 w-full h-full object-cover"
         />
         <!-- Dark overlay for text legibility -->

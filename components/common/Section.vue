@@ -67,7 +67,6 @@ const alignClass = computed(() => {
         <h2
           v-if="title"
           class="font-display"
-          style="user-select: none; -webkit-user-drag: none;"
         >
           {{ title }}
         </h2>
@@ -77,7 +76,6 @@ const alignClass = computed(() => {
           v-if="description"
           class="mt-4 leading-relaxed"
           :class="{ 'mx-auto max-w-3xl': align === 'center' }"
-          style="user-select: none; -webkit-user-drag: none;"
         >
           {{ description }}
         </p>

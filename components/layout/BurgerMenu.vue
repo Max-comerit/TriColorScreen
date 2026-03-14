@@ -109,9 +109,9 @@ watch(
           <NuxtLink
             v-if="!item.children"
             :to="item.href"
+            draggable="false"
             class="block px-6 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
             :class="{ active: isActiveOrParent(item) }"
-            style="user-select: none; -webkit-user-drag: none;"
             @click="handleNavClick()"
           >
             {{ item.label }}
@@ -122,7 +122,6 @@ watch(
             <summary 
               class="cursor-pointer px-3 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center font-medium" 
               :class="{ active: isActiveOrParent(item) }" 
-              style="user-select: none; -webkit-user-drag: none;"
             >
               {{ item.label }}
             </summary>
@@ -132,11 +131,11 @@ watch(
                 v-for="child in item.children"
                 :key="child.href"
                 :to="child.href"
+                draggable="false"
                 class="block px-9 py-2 text-sm text-neutral-300 hover:text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
                 :class="{
               active: navigationStore.isRouteActive(child.href),
             }"
-                style="user-select: none; -webkit-user-drag: none;"
                 @click="handleNavClick()"
               >
                 {{ child.label }}

@@ -295,7 +295,6 @@ watch(
         v-if="item.children" type="button" class="nav-link" :class="{ active: isActiveOrParent(item) }"
           :aria-expanded="openDropdown === item.href" 
           :aria-haspopup="true" 
-          style="user-select: none; -webkit-user-drag: none;"
           @click="handleNavClick($event, item)"
           @keydown="handleDropdownKeydown($event, item); handleNavKeydown($event)" 
           @focus="handleNavFocus(item)"
@@ -307,7 +306,7 @@ watch(
         <NuxtLink
         v-else :to="item.href" class="nav-link" 
           :class="{ active: isActiveOrParent(item) }"
-          style="user-select: none; -webkit-user-drag: none;"
+          draggable="false"
           @click="handleNavClick($event, item)" 
           @keydown="handleNavKeydown($event)" 
           @focus="handleNavFocus(item)"
@@ -328,7 +327,7 @@ watch(
               :class="{
                 active: navigationStore.isRouteActive(child.href),
               }" 
-              style="user-select: none; -webkit-user-drag: none;"
+              draggable="false"
               @click.prevent="handleNavigation(child.href)"
               @keydown="handleDropdownItemKeydown($event, item.href, index, item.children.length)"
               @focus="openDropdownMenu(item.href)"
@@ -373,7 +372,6 @@ watch(
 .nav-link:active {
   @apply scale-95 transition-all;
   transition-duration: var(--tap-duration);
-  user-select: none;
 }
 
 .nav-link.active {
@@ -403,7 +401,6 @@ watch(
 .dropdown-link:active {
   @apply scale-95 transition-all;
   transition-duration: var(--tap-duration);
-  user-select: none;
 } 
 
 .dropdown-link.active {

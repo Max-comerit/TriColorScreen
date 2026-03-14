@@ -10,14 +10,21 @@
 
   /* Prevent text selection on interactive elements for better UX */
   button,
-  a,
-  .nav-item,
-  .icon {
+  summary,
+  select,
+  options {
     user-select: none;
   }
 
-  /* Prevent dragging of images for better UX and to avoid accidental drags */
-  img {
+  /* Prevent dragging and text selection of images and links for better UX and to avoid accidental interactions */
+  img,
+  NuxtImg,
+  NuxtLink,
+  a,
+  nav,
+  .nav-item,
+  .nav-link {
+    user-select: none;
     -webkit-user-drag: none;
   }
 

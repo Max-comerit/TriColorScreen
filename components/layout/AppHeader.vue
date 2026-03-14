@@ -53,9 +53,10 @@ onMounted(() => {
             loading="eager"
             fetchpriority="high"
             decoding="async"
+            draggable="false"
             class="object-contain transition-all duration-300"
             :class="scrolled ? 'min-w-[60px]' : 'min-w-[100px]'"
-            style="image-rendering: crisp-edges; user-select: none; -webkit-user-drag: none;"
+            style="image-rendering: crisp-edges;"
           >
         </picture>
       </NuxtLink>

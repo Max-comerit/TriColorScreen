@@ -161,7 +161,9 @@ const handleCardClick = () => {
               loading="lazy"
               fetchpriority="low"
               width="400" 
-              height="300" />
+              height="300" 
+              draggable="false" 
+            />
           </div>
 
           <!-- Content container -->
@@ -205,7 +207,9 @@ const handleCardClick = () => {
             loading="lazy"
             fetchpriority="low"
             width="400" 
-            height="300" />
+            height="300" 
+            draggable="false" 
+          />
         </div>
 
         <!-- Content container -->
