@@ -68,6 +68,8 @@ const cardStyle = computed(() => ({
         fit="cover"
         loading="lazy"
         fetchpriority="low"
+        draggable="false"
+        style="user-select: none; -webkit-user-drag: none;"
         class="w-full object-cover"
       />
     </article>

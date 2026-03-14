@@ -72,6 +72,8 @@ const descriptionStyle = computed((): CSSProperties => {
   }
   style['-webkit-box-orient'] = 'vertical'
   style['-webkit-line-clamp'] = props.maxLines
+  style['user-select'] = 'none'
+  style['-webkit-user-drag'] = 'none'
   return style as CSSProperties
 })
 
@@ -94,7 +96,6 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
       v-if="link"
       :key="`link-${link}`"
       class="service-card-link group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-card h-full block"
-      style="user-select: none;"
       @click="handleLinkClick"
     >
       <!-- Article wrapper for semantic content -->
@@ -118,14 +119,16 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
             fit="cover"
             loading="lazy"
             fetchpriority="low"
+            draggable="false"
+            style="user-select: none; -webkit-user-drag: none;"
             class="w-full object-cover transition-transform duration-300 overflow-hidden rounded-t-card"
           />
         </div>
 
         <!-- Text content section with title and description -->
-        <div class="flex flex-1 flex-col gap-1" style="user-select: none;">
+        <div class="flex flex-1 flex-col gap-1">
           <!-- Service title -->
-          <h3 :class="['text-lg font-semibold line-clamp-1', textColorClass]">
+          <h3 :class="['text-lg font-semibold line-clamp-1', textColorClass]" style="user-select: none; -webkit-user-drag: none;">
             {{ title }}
           </h3>
           <!-- Service description -->
@@ -160,14 +163,16 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
           fit="cover"
           loading="lazy"
           fetchpriority="low"
+          draggable="false"
+          style="user-select: none; -webkit-user-drag: none;"
           class="w-full object-cover transition-transform duration-300 overflow-hidden rounded-t-card"
         />
       </div>
 
       <!-- Text content section with title and description -->
-      <div class="flex flex-1 flex-col gap-1" style="user-select: none;">
+      <div class="flex flex-1 flex-col gap-1">
         <!-- Service title -->
-        <h3 :class="['text-lg font-semibold line-clamp-1', textColorClass]">
+        <h3 :class="['text-lg font-semibold line-clamp-1', textColorClass]" style="user-select: none; -webkit-user-drag: none;">
           {{ title }}
         </h3>
         <!-- Service description -->

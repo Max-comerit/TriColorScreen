@@ -111,6 +111,7 @@ watch(
             :to="item.href"
             class="block px-6 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
             :class="{ active: isActiveOrParent(item) }"
+            style="user-select: none; -webkit-user-drag: none;"
             @click="handleNavClick()"
           >
             {{ item.label }}
@@ -118,7 +119,11 @@ watch(
 
           <!-- Menu item with children (submenu) -->
           <details v-else class="group px-3 py-1">
-            <summary class="cursor-pointer px-3 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center font-medium" :class="{ active: isActiveOrParent(item) }">
+            <summary 
+              class="cursor-pointer px-3 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center font-medium" 
+              :class="{ active: isActiveOrParent(item) }" 
+              style="user-select: none; -webkit-user-drag: none;"
+            >
               {{ item.label }}
             </summary>
             <!-- Submenu items -->
@@ -131,6 +136,7 @@ watch(
                 :class="{
               active: navigationStore.isRouteActive(child.href),
             }"
+                style="user-select: none; -webkit-user-drag: none;"
                 @click="handleNavClick()"
               >
                 {{ child.label }}
