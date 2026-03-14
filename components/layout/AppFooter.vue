@@ -37,7 +37,7 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
+              class="p-0 rounded"
             >
               <LinkedInIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>
@@ -48,7 +48,7 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
-              class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
+              class="p-0 rounded"
             >
               <FacebookIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>
@@ -59,7 +59,7 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
+              class="p-0 rounded"
             >
               <InstagramIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>
@@ -70,7 +70,7 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="TikTok"
-              class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
+              class="p-0 rounded"
             >
               <TikTokIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>

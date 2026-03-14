@@ -16,6 +16,8 @@ interface Props {
 const props = defineProps<Props>()
 
 // ===== COMPOSABLES & STORES =====
+const router = useRouter()
+
 /**
  * Set page metadata for error page
  * - robots: noindex, nofollow to prevent indexing error pages
@@ -27,6 +29,14 @@ useHead({
     { name: 'robots', content: 'noindex, nofollow' },
   ],
 })
+
+// ===== METHODS =====
+/**
+ * Navigate to home page
+ */
+const navigateHome = (): void => {
+  router.push('/')
+}
 
 // ===== COMPUTED =====
 /**
@@ -121,19 +131,19 @@ const imageSrc = computed(() => isNotFound.value ? 'error' : 'oops')
             <!-- Action Buttons -->
             <div class="mt-8 flex flex-wrap items-center gap-4">
               <!-- Back to Home Button -->
-              <NuxtLink to="/" aria-label="Gå tillbaka till startsidan">
-                <TextButton
-                  variant="primary"
-                  size="fit"
-                >
-                  Till Startsidan
-                </TextButton>
-              </NuxtLink>
+              <TextButton
+                variant="primary"
+                size="fit"
+                aria-label="Gå tillbaka till startsidan"
+                @click="navigateHome"
+              >
+                Till Startsidan
+              </TextButton>
 
               <!-- Contact Link -->
               <NuxtLink
                 to="/contact"
-                class="font-semibold text-base text-primary-700 text-base md:text-lg lg:text-xl underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-600 ml-auto"
+                class="font-semibold text-base text-primary-700 md:text-lg lg:text-xl underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-600 ml-auto"
               >
                 Kontakta Oss
               </NuxtLink>

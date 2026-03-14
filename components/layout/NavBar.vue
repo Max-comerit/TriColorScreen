@@ -366,7 +366,7 @@ watch(
 }
 
 .nav-link:focus-visible {
-  @apply outline-2 outline-layout-text-on-dark -outline-offset-2;
+  @apply -outline-offset-4;
 }
 
 .nav-link:active {
@@ -395,7 +395,7 @@ watch(
 }
 
 .dropdown-link:focus-visible {
-  @apply outline-2 outline-layout-text-on-dark -outline-offset-2;
+  @apply -outline-offset-4;
 }
 
 .dropdown-link:active {

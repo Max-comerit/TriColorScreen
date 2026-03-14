@@ -137,7 +137,7 @@ const imageCards = computed<CardItem[]>(() =>
               <span class="block">Använd designverktyget i
               <NuxtLink
                 to="/custom-design"
-                class="font-semibold text-white underline hover:text-primary-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
+                class="font-semibold text-white underline hover:text-primary-200"
               >DESIGNA SJÄLV</NuxtLink>
               för att designa dina textilier och se hur de kommer att se ut.
               Skicka sedan en offertförfrågan via formuläret så återkommer vi med en offert så snart som möjligt.</span>

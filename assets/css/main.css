@@ -8,14 +8,6 @@
 
 @layer base {
 
-  /* Prevent text selection on interactive elements for better UX */
-  button,
-  summary,
-  select,
-  options {
-    user-select: none;
-  }
-
   /* Prevent dragging and text selection of images and links for better UX and to avoid accidental interactions */
   img,
   NuxtImg,
@@ -26,6 +18,14 @@
   .nav-link {
     user-select: none;
     -webkit-user-drag: none;
+  }
+
+  /* Prevent text selection on interactive elements for better UX */
+  button,
+  summary,
+  select,
+  options {
+    user-select: none;
   }
 
   /* Global scrollbar gutter to prevent layout shifts when scrollbars appear */
@@ -91,14 +91,12 @@
     @apply list-outside text-base md:text-lg lg:text-xl leading-relaxed text-layout-text-on-light;
   }
 
-  /* Inline links - primary brand colour with underline, accessible focus ring */
+  /* Inline links - primary brand color with underline, accessible focus ring */
   a {
-    @apply inline-flex items-center min-h-[44px] px-0 py-2 text-primary-700 transition-all;
-    @apply hover:text-primary-600;
-    @apply active:scale-95;
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2;
+    @apply inline-flex items-center min-h-[44px] px-0 py-2;
+    @apply text-primary-700 hover:text-primary-600;
+    @apply transition-all active:scale-95;
     transition-duration: var(--tap-duration);
-    user-select: none;
   }
 
   /* Strong / bold inline text */

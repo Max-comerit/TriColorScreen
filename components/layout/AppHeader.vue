@@ -26,15 +26,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <header class="min-h-[80px] bg-neutral-900 sticky top-0 z-50 shadow-[0_4px_10px_rgba(0,0,0,0.25)] shadow-black/50 transition-all duration-300" :class="scrolled ? 'min-h-[60px]' : 'min-h-[80px]'">
+  <header class="py-[10px] min-h-[80px] bg-neutral-900 sticky top-0 z-50 shadow-[0_4px_10px_rgba(0,0,0,0.25)] shadow-black/50 transition-all duration-300" :class="scrolled ? 'min-h-[60px]' : 'min-h-[80px]'">
     <div class="min-w-[100px] mx-auto max-w-full px-3 lg:px-5 flex items-center justify-between">
       <!-- Logo -->
       <NuxtLink
         to="/"
         aria-label="Gå till hemsida"
-        class="flex items-center transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-layout-text-on-dark focus-visible:outline-offset-4 focus-visible:rounded"
+        class="p-0 flex items-center transition-opacity duration-200 hover:opacity-80 focus-visible:rounded"
       >
-        <picture class="py-[10px] active:scale-95 transition-all" style="transition-duration: var(--tap-duration);">
+        <picture class=" active:scale-95 transition-all" style="transition-duration: var(--tap-duration);">
           <!-- WebP -->
           <source
             type="image/webp"
