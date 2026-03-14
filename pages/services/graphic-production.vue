@@ -104,7 +104,7 @@ const stepCards = computed<CardItem[]>(() => (
         aria-label="Om vår grafiska produktion"
         align="center"
       >
-        <div class="mx-auto max-w-3xl space-y-4">
+        <div class="mx-auto max-w-3xl space-y-4" style="user-select: none; -webkit-user-drag: none;">
           <p class="leading-relaxed">
             Vi har producerat underlag för de flesta typer av grafiskt material. Oavsett vad du
             behöver - logotyp, broschyr, skylt eller visitkort - kan vi med största sannolikhet

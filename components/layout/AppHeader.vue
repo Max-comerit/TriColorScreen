@@ -47,15 +47,15 @@ onMounted(() => {
           <img
             src="/images/header/tcs-logo-100.png"
             srcset="/images/header/tcs-logo-200.png 2x"
+            alt="Tricolor Screen logotyp"
             :width="scrolled ? 60 : 100"
             :height="scrolled ? 60 : 100"
             loading="eager"
             fetchpriority="high"
             decoding="async"
-            alt="Tricolor Screen logotyp"
+            draggable="false"
             class="object-contain transition-all duration-300"
             :class="scrolled ? 'min-w-[60px]' : 'min-w-[100px]'"
-            draggable="false"
             style="image-rendering: crisp-edges; user-select: none; -webkit-user-drag: none;"
           >
         </picture>

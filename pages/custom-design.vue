@@ -401,7 +401,7 @@ function addText(): void {
         align="center"
          padding-y="pt-4 md:pt-6 lg:pt-8 xl:pt-12 2xl:pt-16"
       >
-        <div class="mx-auto max-w-3xl space-y-4">
+        <div class="mx-auto max-w-3xl space-y-4" style="user-select: none; -webkit-user-drag: none;">
           <p class="leading-relaxed">
             Med vårt designverktyg kan du skapa exakt den produkt du drömmer om:
           </p>

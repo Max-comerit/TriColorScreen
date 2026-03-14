@@ -107,10 +107,10 @@ onBeforeRouteLeave((to, _from) => {
       :center="false"
     >
       <template #description>
-        <p class="mb-0 font-body font-medium text-base sm:text-lg lg:text-xl text-white/90">
+        <p class="mb-0 font-body font-medium text-base sm:text-lg lg:text-xl text-white/90" style="user-select: none; -webkit-user-drag: none;">
           Fyll i formuläret nedan så återkommer vi så snart som möjligt.
         </p>
-        <p class="mb-0 font-body font-medium text-base sm:text-lg lg:text-xl text-white/90">
+        <p class="mb-0 font-body font-medium text-base sm:text-lg lg:text-xl text-white/90" style="user-select: none; -webkit-user-drag: none;">
           Vi ser fram emot att höra från dig!
         </p>
       </template>
@@ -123,7 +123,7 @@ onBeforeRouteLeave((to, _from) => {
         align="center"
         aria-label="Kontakta oss och skicka förfrågan"
       >
-        <div class="flex flex-col justify-center items-center gap-12">
+        <div class="flex flex-col justify-center items-center gap-12" style="user-select: none; -webkit-user-drag: none;">
           <div class="flex flex-col lg:flex-row justify-center lg:justify-around items-center lg:mb-8 lg:items-stretch gap-8">
             <div class="max-w-full sm:max-w-[50%]">
               <h3 class="text-center lg:text-left">Vad behöver ni hjälp med?</h3>

@@ -122,7 +122,9 @@ onMounted(() => {
       loading="eager"
       fetchpriority="high"
       decoding="async"
+      draggable="false"
       class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+      style="user-select: none; -webkit-user-drag: none;"
     />
 
     <!-- Video – injected after the page load event so it does not compete with LCP -->
@@ -132,6 +134,7 @@ onMounted(() => {
       muted
       playsinline
       class="absolute inset-0 w-full h-full object-cover"
+      style="user-select: none; -webkit-user-drag: none;"
       @canplay="videoCanPlay = true"
     >
       <source
@@ -144,13 +147,15 @@ onMounted(() => {
 
     <!-- Text Overlay -->
     <div class="overlay" role="presentation">
-      <h1 class="title">
+      <h1 class="title" style="user-select: none; -webkit-user-drag: none;">
         <slot name="title">
           {{ props.title }}
         </slot>
       </h1>
       <slot name="description">
-        <p class="description">{{ props.description }}</p>
+        <p class="description" style="user-select: none; -webkit-user-drag: none;">
+          {{ props.description }}
+        </p>
       </slot>
     </div>
   </section>

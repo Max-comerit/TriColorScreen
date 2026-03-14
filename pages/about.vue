@@ -112,7 +112,7 @@ const valueCards = computed<CardItem[]>(() => [
         aria-label="Vår historia och bakgrund"
         align="center"
       >
-        <div class="mx-auto max-w-3xl space-y-4">
+        <div class="mx-auto max-w-3xl space-y-4" style="user-select: none; -webkit-user-drag: none;">
           <p class="leading-relaxed">
             Tricolor Screen grundades 1996 med en enkel men stark övertygelse: att alla företag -
             stora som små - förtjänar professionellt tryckt profilmaterial till ett rättvist pris.
@@ -137,7 +137,7 @@ const valueCards = computed<CardItem[]>(() => [
         aria-label="Nyckeltal och milstolpar"
         background-color="bg-primary-50"
       >
-        <ul class="grid grid-cols-2 gap-6 text-center md:grid-cols-4" role="list">
+        <ul class="grid grid-cols-2 gap-6 text-center md:grid-cols-4" role="list" style="user-select: none; -webkit-user-drag: none;">
           <li v-for="stat in stats" :key="stat.label" class="space-y-1">
             <h3 class="font-display text-4xl font-bold text-primary-600" :aria-label="stat.ariaLabel">{{ stat.value }}</h3>
             <p class="text-neutral-600">{{ stat.label }}</p>

@@ -63,13 +63,14 @@ const alignClass = computed(() =>
     <p
       v-if="prefix"
       :class="[prefixColor, 'mb-3 font-display text-3xl font-bold']"
+      style="user-select: none; -webkit-user-drag: none;"
       aria-hidden="true"
     >
       {{ prefix }}
     </p>
 
     <!-- Title -->
-    <h3 class="mb-10 flex items-center justify-center h-[4rem] line-clamp-2 font-display font-semibold">
+    <h3 class="mb-10 flex items-center justify-center h-[4rem] line-clamp-2 font-display font-semibold" style="user-select: none; -webkit-user-drag: none;">
       {{ title }}
     </h3>
 
@@ -77,6 +78,7 @@ const alignClass = computed(() =>
     <p
       v-if="description"
       class="text-base leading-relaxed"
+      style="user-select: none; -webkit-user-drag: none;"
     >
       {{ description }}
     </p>

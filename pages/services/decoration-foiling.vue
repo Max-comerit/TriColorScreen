@@ -89,7 +89,7 @@ const decorationFoilingCards = computed<CardItem[]>(() =>
         aria-label="Om våra dekor- och folieringstjänster"
         align="center"
       >
-        <div class="mx-auto max-w-3xl space-y-4">
+        <div class="mx-auto max-w-3xl space-y-4" style="user-select: none; -webkit-user-drag: none;">
           <p class="leading-relaxed">
             Vi hjälper privatpersoner och företag med allt från enstaka bildekor till
             komplett helfoliering. Välj bland ett brett utbud av utföranden: blank, matt,

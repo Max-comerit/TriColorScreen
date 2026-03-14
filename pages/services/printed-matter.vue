@@ -68,10 +68,10 @@ const serviceCards = computed<CardItem[]>(() =>
       alt="Professional screen printing equipment and process at TriColor Screen workshop"
     >
       <template #description>
-        <p>
+        <p style="user-select: none; -webkit-user-drag: none;">
           <strong class="text-accent-400 font-medium text-base sm:text-lg lg:text-xl mb-3 font-semibold">Alla typer av trycksaker.</strong>
         </p>
-        <p class="font-body font-medium text-base sm:text-lg lg:text-xl text-white/90">
+        <p class="font-body font-medium text-base sm:text-lg lg:text-xl text-white/90" style="user-select: none; -webkit-user-drag: none;">
           Vi har valt att fokusera på ett otroligt brett utbud av trycksaker tack vare vår långa erfarenhet i branschen. Hos oss hittar du alltid produkter med hög kvalitét och fantastiska tryckresultat.
         </p>
       </template>
@@ -86,7 +86,7 @@ const serviceCards = computed<CardItem[]>(() =>
         aria-label="Om våra trycksaker"
         align="center"
       >
-        <div class="mx-auto max-w-3xl space-y-4">
+        <div class="mx-auto max-w-3xl space-y-4" style="user-select: none; -webkit-user-drag: none;">
           <p class="leading-relaxed">
             Från visitkort till hela broschyrkampanjer.
             Vi tar hand om hela processen, från idé till färdig trycksak.

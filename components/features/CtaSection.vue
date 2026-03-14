@@ -40,8 +40,10 @@ async function handleCtaClick(): Promise<void> {
     class="px-4 md:px-8 lg:px-16 rounded-card"
   >
     <div class="space-y-4 text-center">
-      <h2 class="font-display text-white">{{ heading }}</h2>
-      <p class="mx-auto max-w-xl leading-relaxed text-primary-100">
+      <h2 class="font-display text-white" style="user-select: none; -webkit-user-drag: none;">
+        {{ heading }}
+      </h2>
+      <p class="mx-auto max-w-xl leading-relaxed text-primary-100" style="user-select: none; -webkit-user-drag: none;">
         {{ text }}
       </p>
       <div class="flex flex-wrap justify-center gap-4 pt-2">

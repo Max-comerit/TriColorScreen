@@ -164,8 +164,8 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
           loading="lazy"
           fetchpriority="low"
           draggable="false"
-          style="user-select: none; -webkit-user-drag: none;"
           class="w-full object-cover transition-transform duration-300 overflow-hidden rounded-t-card"
+          style="user-select: none; -webkit-user-drag: none;"
         />
       </div>
 
