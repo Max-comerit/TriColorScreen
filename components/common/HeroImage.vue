@@ -122,7 +122,6 @@ onMounted(() => {
       loading="eager"
       fetchpriority="high"
       decoding="async"
-      draggable="false"
       class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
       style="user-select: none; -webkit-user-drag: none;"
     />

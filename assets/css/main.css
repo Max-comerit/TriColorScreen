@@ -8,9 +8,16 @@
 
 @layer base {
 
-  /* Prevent text selection and dragging on all elements */
-  * {
+  /* Prevent text selection on interactive elements for better UX */
+  button,
+  a,
+  .nav-item,
+  .icon {
     user-select: none;
+  }
+
+  /* Prevent dragging of images for better UX and to avoid accidental drags */
+  img {
     -webkit-user-drag: none;
   }
 

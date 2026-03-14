@@ -119,7 +119,6 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
             fit="cover"
             loading="lazy"
             fetchpriority="low"
-            draggable="false"
             style="user-select: none; -webkit-user-drag: none;"
             class="w-full object-cover transition-transform duration-300 overflow-hidden rounded-t-card"
           />
@@ -163,7 +162,6 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
           fit="cover"
           loading="lazy"
           fetchpriority="low"
-          draggable="false"
           class="w-full object-cover transition-transform duration-300 overflow-hidden rounded-t-card"
           style="user-select: none; -webkit-user-drag: none;"
         />
