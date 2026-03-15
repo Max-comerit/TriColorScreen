@@ -56,7 +56,7 @@ const isDisabled = computed(() => props.disabled || props.busy)
 /** Base button classes shared across all variants */
 const baseClasses =
   'base-button inline-flex items-center justify-center font-medium rounded-button transition-all overflow-hidden shadow-drop ' +
-  'outline-page-button ' +
+  'outline-visible-spaced-button ' +
   'active:scale-95 active:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed'
 
 /** Variant-specific styling (colors, text, shadows) */

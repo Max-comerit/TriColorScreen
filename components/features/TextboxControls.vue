@@ -220,7 +220,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
       </label>
       <button
         type="button"
-        class="min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer hover:bg-gray-100 form-button-base outline-form-button"
+        class="min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer hover:bg-gray-100 form-button-base outline-tight-button"
         title="Close"
         aria-label="Close circular text mode"
         @click="closeCircularMode"
@@ -238,7 +238,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
           type="text"
           autocomplete="off"
           placeholder="Enter text"
-          class="flex-1 min-w-0 h-11 px-3 py-2 border-gray-300 form-input-base outline-form-input"
+          class="flex-1 min-w-0 h-11 px-3 py-2 border-gray-300 form-input-base outline-tight-input"
           @input="updateText"
         >
       </label>
@@ -248,7 +248,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
         <!-- Font Family -->
         <select
           v-model="fontFamily"
-          class="h-11 px-2 py-1 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-form-select min-w-[120px] sm:min-w-[140px]"
+          class="h-11 px-2 py-1 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-tight-select min-w-[120px] sm:min-w-[140px]"
           @change="updateFontFamily"
         >
           <optgroup label="Sans-Serif">
@@ -275,7 +275,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
         <button
           type="button"
           :class="{ 'bg-gray-800 text-white border-gray-800': isBold, 'bg-gray-50 text-gray-800 border-gray-300 hover:bg-gray-100': !isBold }"
-          class="min-w-[44px] min-h-[44px] px-3 py-2 font-bold cursor-pointer form-button-base outline-form-button"
+          class="min-w-[44px] min-h-[44px] px-3 py-2 font-bold cursor-pointer form-button-base outline-tight-button"
           title="Bold"
           aria-label="Toggle bold"
           @click="toggleBold"
@@ -287,7 +287,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
         <button
           type="button"
           :class="{ 'bg-gray-800 text-white border-gray-800': isItalic, 'bg-gray-50 text-gray-800 border-gray-300 hover:bg-gray-100': !isItalic }"
-          class="min-w-[44px] min-h-[44px] px-3 py-2 italic cursor-pointer form-button-base outline-form-button"
+          class="min-w-[44px] min-h-[44px] px-3 py-2 italic cursor-pointer form-button-base outline-tight-button"
           title="Italic"
           aria-label="Toggle italic"
           @click="toggleItalic"
@@ -298,7 +298,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
         <!-- Alignment Cycle -->
         <button
           type="button"
-          class="min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer hover:bg-gray-100 form-button-base outline-form-button"
+          class="min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer hover:bg-gray-100 form-button-base outline-tight-button"
           title="Text Alignment"
           aria-label="Cycle text alignment"
           @click="cycleAlignment"
@@ -327,7 +327,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
         <input
           v-model="fill"
           type="color"
-          class="min-w-[44px] min-h-[44px] h-11 w-11 border-gray-300 cursor-pointer bg-gray-50 form-input-base outline-form-input"
+          class="min-w-[44px] min-h-[44px] h-11 w-11 border-gray-300 cursor-pointer bg-gray-50 form-input-base outline-tight-input"
           title="Text Color"
           aria-label="Choose text color"
           @input="updateColor"
@@ -336,7 +336,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
         <!-- Circular Text -->
         <button
           type="button"
-          class="min-w-[44px] min-h-[44px] flex items-center justify-center px-2 py-1 border-gray-300 bg-gray-50 cursor-pointer hover:bg-gray-100 form-button-base outline-form-button"
+          class="min-w-[44px] min-h-[44px] flex items-center justify-center px-2 py-1 border-gray-300 bg-gray-50 cursor-pointer hover:bg-gray-100 form-button-base outline-tight-button"
           title="Circular Text"
           aria-label="Apply circular text effect"
           @click="updateRadius"

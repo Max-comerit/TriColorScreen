@@ -130,7 +130,7 @@ const handleCardClick = () => {
       v-if="link"
       :key="`link-${link}`"
       :to="link"
-      class="group h-full block outline-page-card"
+      class="group h-full block outline-visible-spaced-card"
     >
       <!-- Article wrapper for semantic content -->
       <article
