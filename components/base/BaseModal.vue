@@ -110,7 +110,7 @@ function handleKeyDown(e: KeyboardEvent): void {
   const modalElement = document.querySelector('dialog[open]')
   if (e.key === 'Tab' && modalElement) {
     const focusableElements = modalElement.querySelectorAll(
-      'button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])'
+      'button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]):not([readonly]), [tabindex]:not([tabindex="-1"]):not([disabled])'
     )
     const focusableArray = Array.from(focusableElements) as HTMLElement[]
 
@@ -216,7 +216,7 @@ watch(
         <section 
           id="modal-body" 
           ref="modalBodyRef"
-          class="pb-5 text-neutral-700 flex-grow overflow-y-auto min-h-0"
+          class="pb-5 text-neutral-700 flex-grow overflow-y-auto min-h-0 overscroll-contain"
           :class="[
             props.innerBorder === 'sunken'
               ? 'border border-neutral-300 p-5 shadow-[inset_2px_2px_3px_rgba(0,0,0,0.2)] bg-neutral-50'
