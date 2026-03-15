@@ -738,7 +738,7 @@ export default {
     text-base font-semibold text-white
     bg-blue-600 hover:bg-blue-700
     transition-colors duration-200
-    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+    outline-page-button
     disabled:opacity-50 disabled:cursor-not-allowed
   "
   >
@@ -1693,12 +1693,7 @@ const closeModal = () => {
 <template>
   <!-- Focus visible styles -->
   <button
-    class="
-      focus:outline-none 
-      focus:ring-2 
-      focus:ring-primary-500 
-      focus:ring-offset-2
-    "
+    class="outline-page-button"
     @click="openModal"
   >
     Open Modal

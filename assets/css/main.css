@@ -1,5 +1,6 @@
 /* Font loading optimization to prevent CLS */
 @import './fonts.css';
+@import './utilities.css';
 @import './variables.css';
 
 @tailwind base;

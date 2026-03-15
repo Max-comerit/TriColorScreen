@@ -133,7 +133,7 @@ const imageSrc = computed(() => isNotFound.value ? 'error' : 'oops')
               <!-- Contact Link -->
               <NuxtLink
                 to="/contact"
-                class="font-semibold text-base text-primary-700 md:text-lg lg:text-xl underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-600 ml-auto"
+                class="font-semibold text-base text-primary-700 md:text-lg lg:text-xl underline underline-offset-4 outline-page-link ml-auto"
               >
                 Kontakta Oss
               </NuxtLink>

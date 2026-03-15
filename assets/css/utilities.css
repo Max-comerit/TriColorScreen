@@ -1,0 +1,49 @@
+@tailwind utilities;
+
+/* Base form input styling (borders, transitions, radius) */
+.form-input-base {
+  @apply border transition-colors rounded-input;
+}
+
+.form-select-base {
+  @apply border transition-colors rounded-input;
+}
+
+.form-button-base {
+  @apply border transition-colors rounded-input;
+}
+
+/* Utilities for focus outlines on interactive elements */
+
+.outline-page-link {
+  @apply rounded focus-visible:outline-none focus-visible:outline-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2;
+}
+
+.outline-page-button {
+  @apply rounded-button focus-visible:outline-none focus-visible:outline-primary-600 focus-visible:ring-2 focus-visible:ring-offset-2;
+}
+ 
+.outline-page-card {
+  @apply rounded-card focus-visible:outline-none focus-visible:ring-primary-600 focus-visible:ring-2 focus-visible:ring-offset-4;
+}
+
+.outline-form-input {
+  @apply focus:outline-none focus:ring-primary-600 focus:border-transparent focus:ring-2 focus:ring-offset-0;
+}
+
+.outline-form-select {
+  @apply focus:outline-none focus:ring-primary-600 focus:border-transparent focus:ring-2 focus:ring-offset-0
+}
+
+.outline-form-button {
+  @apply focus:outline-none focus:ring-primary-600 focus:border-transparent focus:ring-2 focus:ring-offset-0;
+}
+
+.outline-form-button-error {
+  @apply rounded transition-colors focus:outline-none focus:ring-error focus:ring-2 focus:ring-offset-0;
+}
+
+.outline-form-link {
+  @apply rounded focus-visible:outline-none focus-visible:outline-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2;
+}
+

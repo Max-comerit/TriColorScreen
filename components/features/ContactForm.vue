@@ -184,7 +184,7 @@ watch(isChanged, (newValue) => {
           autocomplete="name"
           :aria-invalid="!!getFieldError('name')"
           :aria-describedby="getFieldError('name') ? 'name-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-form-input disabled:opacity-50 disabled:cursor-not-allowed"
           :class="[
             getFieldError('name')
               ? 'border-error focus:ring-error'
@@ -221,7 +221,7 @@ watch(isChanged, (newValue) => {
           autocomplete="email"
           :aria-invalid="!!getFieldError('email')"
           :aria-describedby="getFieldError('email') ? 'email-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-form-input disabled:opacity-50 disabled:cursor-not-allowed"
           :class="[
             getFieldError('email')
               ? 'border-error focus:ring-error'
@@ -258,7 +258,7 @@ watch(isChanged, (newValue) => {
           placeholder="+46 70 123 4567 (eller +Landskod Nummer)"
           :aria-invalid="!!getFieldError('phone')"
           :aria-describedby="getFieldError('phone') ? 'phone-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-form-input disabled:opacity-50 disabled:cursor-not-allowed"
           :class="[
             getFieldError('phone')
               ? 'border-error focus:ring-error'
@@ -294,7 +294,7 @@ watch(isChanged, (newValue) => {
           autocomplete="off"
           :aria-invalid="!!getFieldError('customerType')"
           :aria-describedby="getFieldError('customerType') ? 'customer-type-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-form-input disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
           :class="[
             getFieldError('customerType')
               ? 'border-error focus:ring-error'
@@ -335,7 +335,7 @@ watch(isChanged, (newValue) => {
           autocomplete="off"
           :aria-invalid="!!getFieldError('subject')"
           :aria-describedby="getFieldError('subject') ? 'subject-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-form-input disabled:opacity-50 disabled:cursor-not-allowed"
           :class="[
             getFieldError('subject')
               ? 'border-error focus:ring-error'
@@ -379,7 +379,7 @@ watch(isChanged, (newValue) => {
         >
         <button
           type="button"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed text-left bg-white flex items-center justify-between"
+          class="w-full px-4 py-2.5 text-base form-button-base outline-form-button disabled:opacity-50 disabled:cursor-not-allowed text-left bg-white flex items-center justify-between"
           :class="[
             getFieldError('image')
               ? 'border-error focus:ring-error'
@@ -393,7 +393,7 @@ watch(isChanged, (newValue) => {
           <button
             v-if="fileInputLabel !== 'Ingen fil vald'"
             type="button"
-            class="ml-2 p-1 text-neutral-500 hover:text-error focus:outline-none focus:ring-2 focus:ring-error rounded transition-colors"
+            class="ml-2 p-1 text-neutral-500 hover:text-error outline-form-button-error"
             :aria-label="'Rensa vald fil: ' + fileInputLabel"
             :disabled="isSubmitting"
             @click.stop="handleClearFile"
@@ -428,7 +428,7 @@ watch(isChanged, (newValue) => {
           placeholder="Skriv ditt meddelande här…"
           :aria-invalid="!!getFieldError('message')"
           :aria-describedby="getFieldError('message') ? 'message-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed resize-y min-h-[100px]"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-form-input disabled:opacity-50 disabled:cursor-not-allowed resize-y min-h-[100px]"
           :class="[
             getFieldError('message')
               ? 'border-error focus:ring-error'
@@ -471,7 +471,7 @@ watch(isChanged, (newValue) => {
             Jag godkänner behandling av mina personuppgifter enligt 
             <button
               type="button"
-              class="text-primary-600 underline hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 rounded"
+              class="text-primary-600 underline hover:text-primary-700 outline-form-link"
               @click.prevent="openGdprDialog"
             >
               integritetspolicyn

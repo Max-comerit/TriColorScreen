@@ -130,7 +130,7 @@ const handleCardClick = () => {
       v-if="link"
       :key="`link-${link}`"
       :to="link"
-      class="group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-card h-full block"
+      class="group h-full block outline-page-card"
     >
       <!-- Article wrapper for semantic content -->
       <article
