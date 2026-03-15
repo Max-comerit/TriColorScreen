@@ -47,7 +47,7 @@ async function handleCtaClick(): Promise<void> {
         {{ text }}
       </p>
       <div class="flex flex-wrap justify-center gap-4 pt-2">
-        <TextButton class="border" @click="handleCtaClick">Kontakta Oss</TextButton>
+        <TextButton class="border outline-visible-spaced-button focus-visible:outline-neutral-950" @click="handleCtaClick">Kontakta Oss</TextButton>
       </div>
     </div>
   </Section>
