@@ -13,7 +13,7 @@ defineProps<Props>()
 <template>
   <article
     class="w-full p-2 sm:p-3 transition-all duration-300
-           hover:bg-primary-800 flex items-center md:justify-center"
+           flex items-center md:justify-center bg-primary-700 hover:bg-primary-800 "
   >
     <div class="flex items-center gap-2 sm:gap-2 min-w-0" style="user-select: none; -webkit-user-drag: none;">
       <div

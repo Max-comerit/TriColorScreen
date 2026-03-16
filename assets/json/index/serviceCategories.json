@@ -3,7 +3,6 @@
     "title": "Trycksaker",
     "description": "Vi skapar trycksaker som förstärker ditt budskap och gör ett professionellt intryck. Allt från visitkort och foldrar till broschyrer och affischer anpassas efter dina behov.",
     "imageSrc": "/images/index/printed-matter.jpg",
-    "alt": "Trycksaker",
     "link": "/services/printed-matter",
     "maxLines": 6
   },
@@ -11,7 +10,6 @@
     "title": "Screentryck och Brodyr",
     "description": "Vi ger dina kläder och textilier ett personligt uttryck. Från profil- och arbetskläder till eventtröjor kan vi skapa design som syns och håller över tid.",
     "imageSrc": "/images/index/screen-printing-embroidery.jpg",
-    "alt": "Screentryck och Brodyr",
     "link": "/services/screen-printing-embroidery",
     "maxLines": 6
   },
@@ -19,7 +17,6 @@
     "title": "Dekoration och Foliering",
     "description": "Vi gör ytor levande med dekor och foliering, från fönster och kontor till fordon och mässmontrar. Kreativa lösningar som förstärker din kommunikation.",
     "imageSrc": "/images/index/decoration-foiling.jpg",
-    "alt": "Dekoration och Foliering",
     "link": "/services/decoration-foiling",
     "maxLines": 6
   },
@@ -27,7 +24,6 @@
     "title": "Grafisk Produktion",
     "description": "Vi hjälper dig att skapa grafiska uttryck som lyfter ditt varumärke. Logotyper, grafiska profiler och trycksaker tas fram med fokus på tydlighet och kvalitet.",
     "imageSrc": "/images/index/graphic-production.jpg",
-    "alt": "Grafisk Produktion",
     "link": "/services/graphic-production",
     "maxLines": 6
   },
@@ -35,7 +31,6 @@
     "title": "Event och Reklam",
     "description": "Vi gör ditt event synligt med effektfulla lösningar. Fasadvepor, banderoller och fönsterdekor hjälper dig att fånga uppmärksamheten och stärka ditt varumärke.",
     "imageSrc": "/images/index/event-advertisement.jpg",
-    "alt": "Event och Reklam",
     "link": "/services/event-advertisement",
     "maxLines": 6
   }
