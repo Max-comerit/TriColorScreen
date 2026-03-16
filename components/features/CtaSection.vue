@@ -4,6 +4,7 @@
 // ===== IMPORTS =====
 import Section from '~/components/common/Section.vue'
 import TextButton from '~/components/common/TextButton.vue'
+import { TAP_ANIMATION_TIME } from '~/constants/ui'
 
 // ===== TYPES =====
 interface Props {
@@ -24,8 +25,8 @@ const router = useRouter()
  * Handle CTA button click with 100ms delay to show active state
  */
 async function handleCtaClick(): Promise<void> {
-  // Delay navigation 100ms to allow button :active state to complete
-  await new Promise(resolve => setTimeout(resolve, 100))
+  // Delay navigation TAP_ANIMATION_TIME ms to allow button :active state to complete
+  await new Promise(resolve => setTimeout(resolve, TAP_ANIMATION_TIME))
   await router.push('/contact')
 }
 </script>
