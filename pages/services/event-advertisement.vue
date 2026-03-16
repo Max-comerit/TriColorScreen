@@ -69,7 +69,7 @@ const serviceCards = computed<CardItem[]>(() =>
     <HeroImage
       src="/images/services/event-advertisement/hero.jpg"
       title="Allt för Mässor & Events"
-      description="Vid mässor, konferenser och andra event är det många olika bitar som skall fungera. TriColorScreen hjälper dig att ta fram mässmaterial som t.ex. skyltar, banderoller, dekaler, flaggor och profilkläder."
+      description="Mässmaterial som skyltar, banderoller, dekaler, flaggor och profilkläder. Vi får dig att synas!"
       :width="1280"
       :height="854"
       alt="Monter och profilmaterial för mässor och events"

@@ -74,7 +74,7 @@ const decorationFoilingCards = computed<CardItem[]>(() =>
         { src: '/videos/services/decoration-foiling/hero.mp4', type: 'video/mp4' }
       ]"
       title="Dekor & Foliering"
-      description="Foliering är det smarta sättet att få fram budskap på ytor som annars är svårtillgängliga för marknadsföring, exempelvis på glas och karosser."
+      description="Bildekor, helfoliering, glasfasader och insynsskydd. Ditt budskap på ytor som syns."
       :width="1280"
       :height="854"
       alt="Bilfoliering och fordonsdekoration utförd av Tricolor Screen"
