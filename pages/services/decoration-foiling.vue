@@ -77,7 +77,7 @@ const decorationFoilingCards = computed<CardItem[]>(() =>
       description="Bildekor, helfoliering, glasfasader och insynsskydd. Ditt budskap på ytor som syns."
       :width="1280"
       :height="854"
-      alt="Bilfoliering och fordonsdekoration utförd av Tricolor Screen"
+      alt=""
     />
 
     <div class="layout-container">

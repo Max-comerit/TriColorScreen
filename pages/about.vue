@@ -100,7 +100,7 @@ const valueCards = computed<CardItem[]>(() => [
       description="Lär känna teamet bakom Tricolor Screen - mer än 25 år av passion för tryck och design."
       :width="1280"
       :height="854"
-      alt="Tricolor Screen-teamet i verkstaden"
+      alt=""
     />
 
     <div class="layout-container">
@@ -139,8 +139,8 @@ const valueCards = computed<CardItem[]>(() => [
       >
         <ul class="grid grid-cols-2 gap-6 text-center md:grid-cols-4" role="list">
           <li v-for="stat in stats" :key="stat.label" class="space-y-1">
-            <h3 class="font-display text-4xl font-bold text-primary-600" :aria-label="stat.ariaLabel">{{ stat.value }}</h3>
-            <p class="text-neutral-600">{{ stat.label }}</p>
+            <h3 class="font-display text-4xl font-bold text-primary-700" :aria-label="stat.ariaLabel">{{ stat.value }}</h3>
+            <p class="text-neutral-800">{{ stat.label }}</p>
           </li>
         </ul>
       </Section>

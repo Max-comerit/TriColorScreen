@@ -35,7 +35,7 @@ async function handleCtaClick(): Promise<void> {
   <Section
     id="contact-cta"
     aria-label="Kontakta oss"
-    background-color="bg-primary-600"
+    background-color="bg-primary-700"
     text-color="text-white"
     align="center"
     class="px-4 md:px-8 lg:px-16 rounded-card"
@@ -44,11 +44,13 @@ async function handleCtaClick(): Promise<void> {
       <h2 class="font-display text-white">
         {{ heading }}
       </h2>
-      <p class="mx-auto max-w-xl leading-relaxed text-primary-100">
+      <p class="mx-auto max-w-xl leading-relaxed text-white">
         {{ text }}
       </p>
       <div class="flex flex-wrap justify-center gap-4 pt-2">
-        <TextButton class="border outline-visible-spaced-button focus-visible:outline-neutral-950" @click="handleCtaClick">Kontakta Oss</TextButton>
+        <TextButton 
+          class="border outline-visible-spaced-button focus-visible:outline-neutral-950" 
+          @click="handleCtaClick" >Kontakta Oss</TextButton>
       </div>
     </div>
   </Section>

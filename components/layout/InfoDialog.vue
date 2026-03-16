@@ -78,8 +78,6 @@ async function handleOk(): Promise<void> {
     <template #footer>
       <TextButton
         :label="props.okLabel"
-        :background-color="'bg-primary-600'"
-        :background-color-hover="'hover:bg-primary-700'"
         :color="'text-white'"
         size="fit"
         :aria-label="props.okLabel"

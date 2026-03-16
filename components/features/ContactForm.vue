@@ -247,7 +247,7 @@ watch(isChanged, (newValue) => {
           for="contact-phone" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Telefon <span class="text-neutral-500 text-xs sm:text-sm">(valfritt)</span>
+          Telefon <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <input
           id="contact-phone"
@@ -361,7 +361,7 @@ watch(isChanged, (newValue) => {
           for="contact-image" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ladda upp bild <span class="text-neutral-500 text-xs sm:text-sm">(valfritt, max 7MB)</span>
+          Ladda upp bild <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 7MB)</span>
         </label>
         <input
           id="contact-image"
@@ -393,7 +393,7 @@ watch(isChanged, (newValue) => {
           <button
             v-if="fileInputLabel !== 'Ingen fil vald'"
             type="button"
-            class="ml-2 p-1 text-neutral-500 hover:text-error outline-tight-button-error"
+            class="ml-2 p-1 text-neutral-600 hover:text-error outline-tight-button-error"
             :aria-label="'Rensa vald fil: ' + fileInputLabel"
             :disabled="isSubmitting"
             @click.stop="handleClearFile"
@@ -417,7 +417,7 @@ watch(isChanged, (newValue) => {
           for="contact-message" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ditt meddelande <span class="text-neutral-500 text-xs sm:text-sm">(valfritt)</span>
+          Ditt meddelande <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <textarea
           id="contact-message"
@@ -471,7 +471,7 @@ watch(isChanged, (newValue) => {
             Jag godkänner behandling av mina personuppgifter enligt 
             <button
               type="button"
-              class="text-primary-600 underline hover:text-primary-700 outline-visible-tight-link"
+              class="text-primary-800 underline hover:text-primary-900 outline-visible-tight-link"
               @click.prevent="openGdprDialog"
             >
               integritetspolicyn

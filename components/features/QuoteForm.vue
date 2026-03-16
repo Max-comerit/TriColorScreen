@@ -355,7 +355,7 @@ watch(isChanged, (newValue) => {
           for="quote-phone"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Telefon <span class="text-neutral-500 text-xs sm:text-sm">(valfritt)</span>
+          Telefon <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <input
           id="quote-phone"
@@ -483,7 +483,7 @@ watch(isChanged, (newValue) => {
           for="quote-product-id"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Produkt ID <span class="text-neutral-500 text-xs sm:text-sm">(valfritt)</span>
+          Produkt ID <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <input
           id="quote-product-id"
@@ -516,7 +516,7 @@ watch(isChanged, (newValue) => {
           for="quote-size"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Storlek <span class="text-neutral-500 text-xs sm:text-sm">(valfritt)</span>
+          Storlek <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <input
           id="quote-size"
@@ -866,7 +866,7 @@ watch(isChanged, (newValue) => {
           for="quote-message"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Meddelande <span class="text-neutral-500 text-xs sm:text-sm">(valfritt)</span>
+          Meddelande <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <textarea
           id="quote-message"
@@ -916,7 +916,7 @@ watch(isChanged, (newValue) => {
             Jag godkänner behandling av mina personuppgifter enligt
             <button
               type="button"
-              class="text-primary-600 underline hover:text-primary-700 outline-visible-tight-link"
+              class="text-primary-800 underline hover:text-primary-900 outline-visible-tight-link"
               @click.prevent="openGdprDialog"
             >
               integritetspolicyn

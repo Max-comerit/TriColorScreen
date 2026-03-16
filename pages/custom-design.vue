@@ -376,10 +376,13 @@ function addText(): void {
     <input
       ref="fileInputRef"
       type="file"
-      accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
       class="hidden"
+      aria-hidden="true"
+      tabindex="-1"
+      accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
       @change="handleImageSelected"
     >
+
 
     <!-- Hero: full width -->
     <HeroImage 
@@ -388,7 +391,7 @@ function addText(): void {
       description="Skapa unika textilprodukter med vårt design verktyg. Ladda upp dina bilder, lägg till egen text och se resultatet innan produktion."
       :width="1280"
       :height="854"
-      alt="Professional screen printing equipment and process at TriColor Screen workshop"
+      alt=""
     />
 
     <!-- Sections -->
@@ -422,6 +425,8 @@ function addText(): void {
                 href="https://www.jobmantexet.se"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-hidden="true"
+                tabindex="-1"
                 class="underline outline-visible-spaced-link"
               >Jobman Texets produktkatalog</a>
               i formuläret nedan</li>
@@ -481,6 +486,8 @@ function addText(): void {
                 size="fit"
                 class="w-fit hidden xl:flex"
                 label="Lägg till bild"
+                background-color="bg-primary-700"
+                color="white"
                 @click="uploadImage()"
               >
                 <template #icon>
@@ -508,6 +515,8 @@ function addText(): void {
               size="fit"
               class="w-fit"
               label="Lägg till text"
+              background-color="bg-primary-700"
+              color="white"
               @click="addText()"
             >
               <template #icon>

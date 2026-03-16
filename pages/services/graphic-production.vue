@@ -92,7 +92,7 @@ const stepCards = computed<CardItem[]>(() => (
       description="Vi hjälper dig att designa din logotyp och allt annat som är kopplat till ditt varumärke på ett sätt som förför dina kunder."
       :width="1280"
       :height="854"
-      alt="Grafisk design och tryckmaterial med klistermärken, färgprover, klädmockups och varumärkesprofilering."
+      alt=""
     />
 
     <div class="layout-container">

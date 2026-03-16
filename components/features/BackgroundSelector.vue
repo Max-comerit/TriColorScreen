@@ -76,10 +76,9 @@ onMounted(() => {
 <template>
   <div class="w-full max-w-xl mx-auto my-4 px-4 justify-center flex">
     <div class="flex items-stretch sm:items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg justify-center flex-wrap">
-      <label class="flex items-center gap-3">
         <select
           :value="activeCategory"
-          class="h-11 px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-tight-select"
+          class="flex items-center gap-3 h-11 px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-tight-select"
           aria-label="Select product category"
           @change="onCategoryChange(Number(($event.target as HTMLSelectElement).value))"
         >
@@ -91,11 +90,9 @@ onMounted(() => {
             {{ category.label }}
           </option>
         </select>
-      </label>
-      <label class="flex items-center gap-3">
         <select
           :value="activeProduct"
-          class="h-11 px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-tight-select"
+          class="flex sm:w-auto self-center h-11 px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-tight-select"
           aria-label="Select product"
           @change="onProductChange(
             $event.target ? Number(($event.target as HTMLSelectElement).value) : 0,
@@ -111,11 +108,9 @@ onMounted(() => {
             {{ product.label }}
           </option>
         </select>
-      </label>
-      <label class="flex sm:w-auto items-center gap-3">
         <select
           :value="activeSide"
-          class="h-11 px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-tight-select"
+          class="flex sm:w-auto self-center h-11 px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-tight-select"
           aria-label="Select side"
           @change="onSideChange(Number(($event.target as HTMLSelectElement).value))"
         >
@@ -127,23 +122,25 @@ onMounted(() => {
             {{ sideOption.label }}
           </option>
         </select>
-      </label>
 
       <button
         v-if="isCustomSelected"
         class="inline-flex items-center justify-center h-11 px-4 text-sm font-semibold bg-primary-600 text-white shadow-sm transition hover:bg-primary-700 outline-visible-spaced-button"
         type="button"
+        aria-label="Ladda upp egen bild för produkten"
         @click="openCustomFileDialog"
       >
         Ladda Upp Egen Bild
       </button>
-      <input
-        ref="customFileInputRef"
-        type="file"
-        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
-        class="hidden"
-        @change="handleCustomFileSelected"
-      >
+        <input
+          ref="customFileInputRef"
+          aria-hidden="true"
+          tabindex="-1"
+          type="file"
+          accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+          class="hidden"
+          @change="handleCustomFileSelected"
+        >
     </div>
   </div>
 </template>
