@@ -96,9 +96,6 @@ async function handleConfirm(): Promise<void> {
       />
       <TextButton
         :label="props.confirmLabel"
-        :background-color="'bg-primary-600'"
-        :background-color-hover="'hover:bg-primary-700'"
-        :color="'text-white'"
         size="fit"
         :aria-label="props.confirmLabel"
         @click="handleConfirm"

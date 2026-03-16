@@ -50,9 +50,6 @@ async function handleCtaClick(): Promise<void> {
       <div class="flex flex-wrap justify-center gap-4 pt-2">
         <TextButton 
           class="border outline-visible-spaced-button focus-visible:outline-neutral-950" 
-          background-color="bg-primary-700"
-          background-color-hover="hover:bg-primary-800"
-
           @click="handleCtaClick" >Kontakta Oss</TextButton>
       </div>
     </div>

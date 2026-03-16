@@ -62,7 +62,7 @@ const baseClasses =
 /** Variant-specific styling (colors, text, shadows) */
 const variantClasses: Record<Variant, string> = {
   primary:
-    'bg-primary-500 text-white hover:bg-primary-700 focus-visible:ring-primary-600',
+    'bg-primary-700 text-white hover:bg-primary-800 focus-visible:ring-primary-600',
   secondary:
     'bg-secondary-300 text-black hover:bg-secondary-400 focus-visible:ring-secondary-600',
   outline:
@@ -85,9 +85,8 @@ const buttonClasses = computed(() => {
 
   // Only apply variant classes if not using custom background or color
   const hasCustomBg = props.backgroundColor && props.backgroundColor.includes('-')
-  const hasCustomColor = props.color && props.color.includes('-')
 
-  if (!hasCustomBg && !hasCustomColor) {
+  if (!hasCustomBg) {
     classes.push(variantClasses[props.variant])
   }
 
@@ -146,6 +145,7 @@ function onClick(event: MouseEvent) {
   if (isDisabled.value) return
   emit('click', event)
 }
+
 </script>
 
 <template>

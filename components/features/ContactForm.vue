@@ -522,10 +522,6 @@ watch(isChanged, (newValue) => {
           :disabled="isSubmitting"
           :busy="isSubmitting"
           :aria-label="isSubmitting ? 'Skickar kontaktformulär' : 'Skicka kontaktformulär'"
-          background-color="bg-primary-700"
-          background-color-hover="hover:bg-primary-800"
-
-          color="white"
         >
           {{ isSubmitting ? 'Skickar...' : 'Skicka' }}
         </TextButton>
