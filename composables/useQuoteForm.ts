@@ -116,26 +116,9 @@ export function useQuoteForm() {
   const quoteFormStore = useQuoteFormStore()
 
   // ===== STATE =====
-  const formData = ref<QuoteFormData>({
-    name: '',
-    email: '',
-    phone: '',
-    customerType: '' as 'Privatperson' | 'Företag',
-    subject: 'Offertförfrågan',
-    productCategory: '',
-    product: '',
-    productId: '',
-    size: '',
-    productCount: undefined as unknown as number,
-    images: [],
-    message: '',
-    gdprConsent: false,
-  })
+  const formData = ref<QuoteFormData>({ ...quoteFormStore.formData })
 
-  // Load persisted form data from IndexedDB on init
-  quoteFormStore.loadFromIndexedDB().then(() => {
-    formData.value = { ...quoteFormStore.formData }
-  })
+
 
   const initialFormData = ref<Omit<QuoteFormData, 'images'>>(
     (({ images: _i, ...rest }) => rest)(formData.value),
@@ -315,8 +298,9 @@ export function useQuoteForm() {
 
       formState.value = 'success'
       initialFormData.value = (({ images: _i, ...rest }) => rest)(formData.value)
-      // Clear persisted data after successful submission
-      await quoteFormStore.clearFromIndexedDB()
+      // Reset form after successful submission
+      quoteFormStore.resetForm()
+      formData.value = { ...quoteFormStore.formData }
 
       return true
     }

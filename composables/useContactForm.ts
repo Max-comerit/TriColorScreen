@@ -81,21 +81,9 @@ export function useContactForm() {
   const contactFormStore = useContactFormStore()
 
   // ===== STATE =====
-  const formData = ref<ContactFormData>({
-    name: '',
-    email: '',
-    phone: '',
-    customerType: '' as 'Privatperson' | 'Företag',
-    subject: '',
-    message: '',
-    image: null as File | null,
-    gdprConsent: false,
-  })
+  const formData = ref<ContactFormData>({ ...contactFormStore.formData })
 
-  // Load persisted form data from IndexedDB on init
-  contactFormStore.loadFromIndexedDB().then(() => {
-    formData.value = { ...contactFormStore.formData }
-  })
+
 
   const initialFormData = ref<ContactFormData>(JSON.parse(JSON.stringify(formData.value)))
   const formState = ref<FormState>('idle')
@@ -259,8 +247,9 @@ export function useContactForm() {
       // Success
       formState.value = 'success'
       initialFormData.value = JSON.parse(JSON.stringify(formData.value))
-      // Clear persisted data after successful submission
-      await contactFormStore.clearFromIndexedDB()
+      // Reset form after successful submission
+      contactFormStore.resetForm()
+      formData.value = { ...contactFormStore.formData }
 
       return true
     }
