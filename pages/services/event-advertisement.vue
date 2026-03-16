@@ -72,7 +72,7 @@ const serviceCards = computed<CardItem[]>(() =>
       description="Mässmaterial som skyltar, banderoller, dekaler, flaggor och profilkläder. Vi får dig att synas!"
       :width="1280"
       :height="854"
-      alt="Monter och profilmaterial för mässor och events"
+      alt=""
     />
 
     <div class="layout-container">

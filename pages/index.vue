@@ -72,7 +72,7 @@ const reviewCards = computed<CardItem[]>(() =>
       description="Vi hjälper dig med allt inom reklam, profiltryck, brodyr, textiltryck, bildekor och bilfoliering."
       :width="1280"
       :height="854"
-      alt="Screentrycksprocess och professionell utrustning i Tricolor Screens verkstad"
+      alt=""
     />
 
     <!-- Brag Bar -->

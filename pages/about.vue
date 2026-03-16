@@ -100,7 +100,7 @@ const valueCards = computed<CardItem[]>(() => [
       description="Lär känna teamet bakom Tricolor Screen - mer än 25 år av passion för tryck och design."
       :width="1280"
       :height="854"
-      alt="Tricolor Screen-teamet i verkstaden"
+      alt=""
     />
 
     <div class="layout-container">
