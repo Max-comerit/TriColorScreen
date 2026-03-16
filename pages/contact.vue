@@ -11,7 +11,6 @@ import ContactPanel from '~/components/features/ContactPanel.vue'
 const ContactForm = defineAsyncComponent(() => import('~/components/features/ContactForm.vue'))
 
 // ===== COMPOSABLES =====
-const router = useRouter()
 const siteUrl = useSiteUrl()
 
 useHead({
@@ -110,4 +109,3 @@ useHead({
     </div>
   </div>
 </template>
-
