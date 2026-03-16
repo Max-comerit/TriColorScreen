@@ -128,14 +128,14 @@ async function handleFocusOut(event: FocusEvent): Promise<void> {
 }
 
 /**
- * Clear all objects from canvases
+ * Clear all objects from canvases and trigger immediate redraw
  */
 function clearCanvasObjects(): void {
   for (const canvas of props.canvasMap) {
     if (!canvas) continue
     canvas.remove(...canvas.getObjects())
     canvas.discardActiveObject()
-    canvas.requestRenderAll()
+    canvas.renderAll()
   }
 }
 
