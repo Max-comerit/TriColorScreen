@@ -13,6 +13,10 @@
   @apply border transition-colors rounded-input;
 }
 
+.form-checkbox-base {
+  @apply border transition-colors rounded;
+}
+
 /* Utilities for focus outlines on interactive elements */
 
 .outline-visible-spaced-link {
