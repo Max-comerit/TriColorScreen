@@ -8,8 +8,9 @@
 
 // ===== IMPORTS =====
 import BaseModal from '~/components/base/BaseModal.vue'
-import type { InnerBorderStyle } from '~/components/base/BaseModal.vue'
+import type { ModalInnerBorderStyle } from '~/components/base/BaseModal.vue'
 import TextButton from '../common/TextButton.vue'
+import { TAP_ANIMATION_TIME } from '~/constants/ui'
 
 // ===== TYPES =====
 /** Props for InfoDialog component */
@@ -27,7 +28,7 @@ interface Props {
   /** Height of the modal */
   height?: string
   /** Inner border style for body - default: 'none' */
-  innerBorder?: InnerBorderStyle
+  innerBorder?: ModalInnerBorderStyle
 }
 
 // ===== PROPS & EMITS =====
@@ -49,7 +50,10 @@ const emit = defineEmits<{
 /**
  * Handle OK button click
  */
-function handleOk(): void {
+async function handleOk(): Promise<void> {
+  // Delay validation TAP_ANIMATION_TIME ms to allow tap animation to complete
+  await new Promise(resolve => setTimeout(resolve, TAP_ANIMATION_TIME))
+
   emit('close')
   emit('update:modelValue', false)
 }

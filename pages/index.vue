@@ -90,7 +90,7 @@ const reviewCards = computed<CardItem[]>(() =>
         <div class="mx-auto max-w-3xl space-y-4">
           <p class="leading-relaxed">
             Sedan 1996 har vi levererat professionellt tryck och profilmaterial till företag och privatpersoner.
-            Trycksaker, broderade kläder, skyltar, bildekor eller en ny grafisk profil – vi tar hand om hela processen från idé till färdig produkt.
+            Trycksaker, broderade kläder, skyltar, bildekor eller en ny grafisk profil - vi tar hand om hela processen från idé till färdig produkt.
           </p>
           <p class="leading-relaxed">
             Med över 25 års erfarenhet vet vi vad som krävs för ett resultat som håller och gör intryck.
@@ -131,6 +131,7 @@ const reviewCards = computed<CardItem[]>(() =>
             :loop="true"
             show-arrows
             show-dots
+            outer-border="bordered"
             aria-label="Kundrecensioner"
           />
         </div>

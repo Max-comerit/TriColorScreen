@@ -97,8 +97,9 @@ const imageSrc = computed(() => isNotFound.value ? 'error' : 'oops')
                 :alt="`Illustration för felsida ${statusCode}`"
                 width="900"
                 height="600"
-                class="w-full max-w-xl mx-auto mb-6 rounded-card object-cover"
+                draggable="false"
                 decoding="async"
+                class="w-full max-w-xl mx-auto mb-6 rounded-card object-cover"
               >
             </picture>
 
@@ -120,7 +121,7 @@ const imageSrc = computed(() => isNotFound.value ? 'error' : 'oops')
             <!-- Action Buttons -->
             <div class="mt-8 flex flex-wrap items-center gap-4">
               <!-- Back to Home Button -->
-              <NuxtLink to="/" aria-label="Gå tillbaka till startsidan">
+              <NuxtLink to="/" aria-label="Gå tillbaka till startsidan" tabindex="-1">
                 <TextButton
                   variant="primary"
                   size="fit"
@@ -132,7 +133,7 @@ const imageSrc = computed(() => isNotFound.value ? 'error' : 'oops')
               <!-- Contact Link -->
               <NuxtLink
                 to="/contact"
-                class="font-semibold text-base text-primary-700 text-base md:text-lg lg:text-xl underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-600 ml-auto"
+                class="font-semibold text-base text-primary-700 md:text-lg lg:text-xl underline underline-offset-4 outline-visible-spaced-link ml-auto"
               >
                 Kontakta Oss
               </NuxtLink>

@@ -98,6 +98,7 @@ const imageCards = computed<CardItem[]>(() =>
           :loop="true"
           show-arrows
           show-dots
+          outer-border="bordered"
           aria-label="Tryckmetoder och resultat"
           class="mb-4"
         />
@@ -121,6 +122,7 @@ const imageCards = computed<CardItem[]>(() =>
           fit="cover"
           loading="lazy"
           decoding="async"
+          draggable="false"
           class="absolute inset-0 w-full h-full object-cover"
         />
         <!-- Dark overlay for text legibility -->
@@ -133,7 +135,10 @@ const imageCards = computed<CardItem[]>(() =>
             <p class="leading-relaxed text-white">
               <span class="block mb-3">Vi har alla sorters textiler hos oss på Öregrundsgatan 24 i Stockholm på Gärdet.</span>
               <span class="block">Använd designverktyget i
-              <NuxtLink to="/custom-design" class="font-semibold text-white underline hover:text-primary-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">DESIGNA SJÄLV</NuxtLink>
+              <NuxtLink
+                to="/custom-design"
+                class="font-semibold text-white underline hover:text-primary-200 outline-visible-spaced-link focus-visible:outline-white"
+              >DESIGNA SJÄLV</NuxtLink>
               för att designa dina textilier och se hur de kommer att se ut.
               Skicka sedan en offertförfrågan via formuläret så återkommer vi med en offert så snart som möjligt.</span>
             </p>

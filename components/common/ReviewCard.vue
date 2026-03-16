@@ -32,12 +32,14 @@ const props = withDefaults(defineProps<Props>(), {
 const cardStyle = computed(() => ({
   width: typeof props.width === 'number' ? `${props.width}px` : props.width,
   height: typeof props.height === 'number' ? `${props.height}px` : props.height,
+  userSelect: 'none' as const,
+  ['-webkit-user-drag']: 'none',
 }))
 </script>
 
 <template>
   <!-- Review card container -->
-  <article class="flex flex-col gap-2 p-4 md:p-6 rounded-card shadow-drop" :class="backgroundColor" :style="cardStyle" aria-label="Customer review">
+  <article class="flex flex-col gap-2 p-4 md:p-6 rounded-card" :class="backgroundColor" :style="cardStyle" aria-label="Customer review">
     <!-- Review text section -->
     <div class="flex-1">
       <blockquote class="text-sm md:text-base leading-relaxed text-gray-700 italic">

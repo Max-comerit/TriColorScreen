@@ -1,13 +1,13 @@
 <template>
-  <section class="w-fit flex flex-col gap-4 p-6 bg-accent-200 rounded-card shadow-drop overflow-hidden">
+  <section class="w-fit flex flex-col gap-4 p-6 bg-accent-200 rounded-card overflow-hidden">
     <!-- Telefon -->
     <div class="flex flex-col gap-2">
       <h3 class="m-0 text-lg font-semibold font-display text-primary">Telefon</h3>
       <address class="flex flex-col gap-1 text-base text-neutral-700">
-        <a href="tel:+46866530595" class="font-bold text-neutral-700 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 rounded">
+        <a href="tel:+46866530595" class="font-bold outline-visible-tight-link w-fit">
           (+46) 08 665 30 95
         </a>
-        <a href="tel:+46704964958" class="font-bold text-neutral-700 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 rounded">
+        <a href="tel:+46704964958" class="font-bold outline-visible-tight-link w-fit">
           (+46) 070 496 4958
         </a>
       </address>
@@ -17,7 +17,7 @@
     <div class="flex flex-col gap-2">
       <h3 class="m-0 text-lg font-semibold font-display text-primary">Email</h3>
       <address class="flex flex-col gap-1 text-base text-neutral-700">
-        <a href="mailto:info@tricolorscreen.se" class="font-bold text-base text-neutral-700 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 rounded w-fit">
+        <a href="mailto:info@tricolorscreen.se" class="font-bold outline-visible-tight-link w-fit">
           info@tricolorscreen.se
         </a>
       </address>

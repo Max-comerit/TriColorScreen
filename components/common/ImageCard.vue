@@ -33,11 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
   imgSizes: "80vw sm:370px lg:330px xl:400px"
 })
 
-/** Emits 'click' event when the card is clicked */
-const emit = defineEmits<{
-  click: []
-}>()
-
 // ===== COMPOSABLES & STORES =====
 // (No composables or stores needed)
 
@@ -51,18 +46,15 @@ const cardStyle = computed(() => ({
 }))
 
 // ===== METHODS =====
-const handleClick = (): void => {
-  emit('click')
-}
+
 </script>
 
 <template>
   <div class="h-full w-full">
     <article
-      class="overflow-hidden rounded-card shadow-drop"
+      class="overflow-hidden rounded-card"
       :class="backgroundColor"
       :style="cardStyle"
-      @click="handleClick"
     >
       <NuxtImg
         :src="imageSrc"
@@ -76,6 +68,7 @@ const handleClick = (): void => {
         fit="cover"
         loading="lazy"
         fetchpriority="low"
+        draggable="false"
         class="w-full object-cover"
       />
     </article>

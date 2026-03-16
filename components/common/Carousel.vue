@@ -50,10 +50,17 @@ copies or substantial portions of the Software.
  *   show-arrows
  *   show-dots
  *   carousel-width="1200px"
- *   @card-click="onServiceClick"
  * />
  */
 
+
+// ====================
+// Types
+// ====================
+/** Outer border style type */
+export type CarouselOuterBorderStyle = 'none' | 'raised' | 'sunken' | 'bordered' | 'minimal'
+/** Inner border style type */
+export type CarouselInnerBorderStyle = 'none' | 'raised' | 'sunken' | 'bordered' | 'minimal'
 
 // ====================
 // Props & Emits
@@ -79,6 +86,12 @@ interface Props {
 
   /** Maximum width of the carousel container (CSS value or pixel number) */
   carouselWidth?: string | number
+
+  /** Outer border style for body - default: 'none' */
+  outerBorder?: CarouselOuterBorderStyle
+
+  /** Inner border style for body - default: 'none' */
+  innerBorder?: CarouselInnerBorderStyle
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -88,11 +101,9 @@ const props = withDefaults(defineProps<Props>(), {
   showArrows: true,
   showDots: true,
   carouselWidth: '100%',
+  outerBorder: 'none',
+  innerBorder: 'none',
 })
-
-const emit = defineEmits<{
-  (e: 'card-click', item: CardItem, index: number): void
-}>()
 
 // ====================
 // State
@@ -132,6 +143,20 @@ const useScrollbar = computed(() =>
   props.items.length > 10
 )
 
+const getBorderClasses = (borderStyle: CarouselOuterBorderStyle | CarouselInnerBorderStyle, padding: 'p-1' | 'p-3'): string => {
+  const borderConfig: Record<string, string> = {
+    none: '',
+    sunken: `border border-neutral-300 ${padding} shadow-[inset_2px_2px_4px_rgba(0,0,0,0.15)] bg-white`,
+    raised: `border border-neutral-300 ${padding} shadow-drop bg-white`,
+    bordered: `border border-neutral-400 ${padding} bg-white`,
+    minimal: `border border-neutral-200 ${padding} bg-white`,
+  }
+  return borderConfig[borderStyle] || ''
+}
+
+const outerBorderClasses = computed(() => getBorderClasses(props.outerBorder, 'p-3'))
+const innerBorderClasses = computed(() => getBorderClasses(props.innerBorder, 'p-1'))
+
 
 // ====================
 // Methods
@@ -153,10 +178,6 @@ function handleClick(fn: () => void): void {
   if (now - lastClick < 50) return
   lastClick = now
   fn()
-}
-
-function onCardClick(item: CardItem, index: number): void {
-  emit('card-click', item, index)
 }
 
 function onScrollBarChange(event: Event): void {
@@ -224,11 +245,16 @@ onMounted(() => {
 
 <template>
   <section
-  class="mx-auto flex flex-col md:relative md:block"
-  :style="{ maxWidth: carouselWidth }"
->
+    class="rounded-card mx-auto flex flex-col md:relative md:block"
+    :class="outerBorderClasses"
+    :style="{ maxWidth: carouselWidth }"
+  >
     <!-- Embla viewport -->
-    <div ref="viewportRef" class="overflow-hidden">
+    <div 
+      ref="viewportRef" 
+      class="rounded-card mb-1 overflow-hidden"
+      :class="innerBorderClasses"
+    >
       <div class="flex">
         <div
           v-for="(item, idx) in props.items"
@@ -248,7 +274,6 @@ onMounted(() => {
             img-sizes="528px sm:264px md:328px lg:285px 2xl:357px"
             background-color="bg-primary-50"
             text-color="black"
-            @click="onCardClick(item, idx)"
           />
 
           <!-- Review Card -->
@@ -265,7 +290,6 @@ onMounted(() => {
             :image-src="item.data.imageSrc"
             :alt="item.data.alt"
             img-sizes="480px sm:340px md:468px lg:392px 2xl:397px"
-            @click="onCardClick(item, idx)"
           />
         </div>
       </div>

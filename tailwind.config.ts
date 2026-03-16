@@ -124,7 +124,8 @@ export default {
         modal: '1.5rem', // 24px - modal dialog radius
       },
       boxShadow: {
-        drop: '4px 4px 5px rgba(0, 0, 0, 0.2)', // Subtle drop shadow for elevated elements
+        'drop-sm': '2px 2px 4px rgba(0, 0, 0, 0.15)', // Subtle drop shadow for minimally elevated elements
+        drop: '4px 4px 5px rgba(0, 0, 0, 0.2)', // Standard drop shadow for elevated elements
       },
     },
   },

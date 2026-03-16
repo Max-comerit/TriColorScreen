@@ -11,6 +11,7 @@ import GdprDialog from '~/components/features/GdprDialog.vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { useCanvasExport } from '~/composables/useCanvasExport'
+import { TAP_ANIMATION_TIME } from '~/constants/ui'
 
 // ===== PROPS =====
 interface Props {
@@ -130,6 +131,9 @@ async function handleFocusOut(event: FocusEvent): Promise<void> {
  * Handle form submission
  */
 async function handleSubmit(): Promise<void> {
+  // Delay validation TAP_ANIMATION_TIME ms to allow tap animation to complete
+  await new Promise(resolve => setTimeout(resolve, TAP_ANIMATION_TIME))
+  
   const success = await submitForm()
 
   if (success) {
@@ -258,7 +262,7 @@ watch(isChanged, (newValue) => {
     netlify-honeypot="bot-field"
     enctype="multipart/form-data"
     autocomplete="off"
-    class="w-full max-w-2xl bg-primary-100 p-6 sm:p-8 rounded-card shadow-drop"
+    class="w-full max-w-2xl bg-primary-100 p-6 sm:p-8 rounded-card"
     aria-label="Offertförfrågningsformulär"
     tabindex="-1"
     @submit.prevent="handleSubmit"
@@ -296,7 +300,7 @@ watch(isChanged, (newValue) => {
           autocomplete="name"
           :aria-invalid="!!getFieldError('name')"
           :aria-describedby="getFieldError('name') ? 'name-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
           :class="getFieldError('name') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('name')"
@@ -329,7 +333,7 @@ watch(isChanged, (newValue) => {
           autocomplete="email"
           :aria-invalid="!!getFieldError('email')"
           :aria-describedby="getFieldError('email') ? 'email-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
           :class="getFieldError('email') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('email')"
@@ -362,7 +366,7 @@ watch(isChanged, (newValue) => {
           placeholder="+46 70 123 4567 (eller +Landskod Nummer)"
           :aria-invalid="!!getFieldError('phone')"
           :aria-describedby="getFieldError('phone') ? 'phone-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
           :class="getFieldError('phone') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('phone')"
@@ -394,7 +398,7 @@ watch(isChanged, (newValue) => {
           autocomplete="off"
           :aria-invalid="!!getFieldError('customerType')"
           :aria-describedby="getFieldError('customerType') ? 'customer-type-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
           :class="getFieldError('customerType') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('customerType')"
@@ -490,7 +494,7 @@ watch(isChanged, (newValue) => {
           placeholder="T.ex. 3410020"
           :aria-invalid="!!getFieldError('productId')"
           :aria-describedby="getFieldError('productId') ? 'product-id-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
           :class="getFieldError('productId') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('productId')"
@@ -523,7 +527,7 @@ watch(isChanged, (newValue) => {
           placeholder="T.ex. M, XL, 10, 31/32"
           :aria-invalid="!!getFieldError('size')"
           :aria-describedby="getFieldError('size') ? 'size-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
           :class="getFieldError('size') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('size')"
@@ -560,7 +564,7 @@ watch(isChanged, (newValue) => {
           placeholder="Ange önskat antal"
           :aria-invalid="!!getFieldError('productCount')"
           :aria-describedby="getFieldError('productCount') ? 'product-count-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
           :class="getFieldError('productCount') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('productCount')"
@@ -843,7 +847,7 @@ watch(isChanged, (newValue) => {
           Tillagda designbilder
         </p>
         <ul
-          class="w-full px-4 py-2.5 text-sm border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none"
+          class="w-full px-4 py-2.5 text-sm border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
           aria-label="Designbilder som biläggs formuläret"
         >
           <li
@@ -873,7 +877,7 @@ watch(isChanged, (newValue) => {
           placeholder="Skriv ditt meddelande här…"
           :aria-invalid="!!getFieldError('message')"
           :aria-describedby="getFieldError('message') ? 'message-error' : undefined"
-          class="w-full px-4 py-2.5 text-base border rounded-input transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed resize-y min-h-[100px]"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input resize-y min-h-[100px]"
           :class="getFieldError('message') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('message')"
@@ -901,7 +905,7 @@ watch(isChanged, (newValue) => {
             autocomplete="off"
             :aria-invalid="!!getFieldError('gdprConsent')"
             :aria-describedby="getFieldError('gdprConsent') ? 'gdpr-error' : undefined"
-            class="mt-1 w-4 h-4 rounded border-neutral-300 text-primary-600 focus:ring-2 focus:ring-primary-600 focus:ring-offset-0 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            class="w-11 h-11 flex-shrink-0 border-neutral-300 text-primary-600 form-checkbox-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
             :disabled="isSubmitting"
             @change="handleInput('gdprConsent')"
           >
@@ -912,7 +916,7 @@ watch(isChanged, (newValue) => {
             Jag godkänner behandling av mina personuppgifter enligt
             <button
               type="button"
-              class="text-primary-600 underline hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 rounded"
+              class="text-primary-600 underline hover:text-primary-700 outline-visible-tight-link"
               @click.prevent="openGdprDialog"
             >
               integritetspolicyn

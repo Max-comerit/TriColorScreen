@@ -55,18 +55,18 @@ const isDisabled = computed(() => props.disabled || props.busy)
 
 /** Base button classes shared across all variants */
 const baseClasses =
-  'base-button inline-flex items-center justify-center font-medium rounded-button transition overflow-hidden ' +
-  'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ' +
-  'disabled:opacity-50 disabled:cursor-not-allowed'
+  'base-button inline-flex items-center justify-center font-medium rounded-button transition-all overflow-hidden shadow-drop ' +
+  'outline-visible-spaced-button ' +
+  'active:scale-95 active:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed'
 
 /** Variant-specific styling (colors, text, shadows) */
 const variantClasses: Record<Variant, string> = {
   primary:
-    'bg-primary-500 text-white hover:bg-primary-700 focus-visible:ring-primary-600 shadow-drop',
+    'bg-primary-500 text-white hover:bg-primary-700 focus-visible:ring-primary-600',
   secondary:
-    'bg-secondary-300 text-black hover:bg-secondary-400 focus-visible:ring-secondary-600 shadow-drop',
+    'bg-secondary-300 text-black hover:bg-secondary-400 focus-visible:ring-secondary-600',
   outline:
-    'border border-neutral-300 text-neutral-900 hover:bg-neutral-200 focus-visible:ring-neutral-400 shadow-drop',
+    'border border-neutral-300 text-neutral-900 hover:bg-neutral-200 focus-visible:ring-neutral-400',
   text: 'text-neutral-900 hover:bg-neutral-200 focus-visible:ring-neutral-400',
 }
 
@@ -123,7 +123,7 @@ const buttonClasses = computed(() => {
  * --btn-bg-hover: hover background color (if backgroundColorHover prop is a CSS value)
  */
 const buttonStyle = computed(() => {
-  const style: Record<string, string> = {}
+  const style: Record<string, string | number> = {}
 
   // Only use CSS variables if the values don't look like Tailwind classes
   if (props.backgroundColor && !props.backgroundColor.includes('-')) {
@@ -173,10 +173,16 @@ function onClick(event: MouseEvent) {
 </template>
 
 <style scoped>
+/* Base styles for all buttons, including transition duration from CSS variable */
+.base-button {
+  transition-duration: var(--tap-duration);
+}
+
 /* Apply custom background color when has-custom-bg class is present */
 .base-button.has-custom-bg {
   background-color: var(--btn-bg);
 }
+/* Apply custom text color when has-custom-color class is present */
 .base-button.has-custom-color {
   color: var(--btn-color);
 }

@@ -109,7 +109,8 @@ watch(
           <NuxtLink
             v-if="!item.children"
             :to="item.href"
-            class="block px-6 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
+            draggable="false"
+            class="px-6 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors focus-visible:-outline-offset-4 duration-200 min-h-[44px] flex items-center"
             :class="{ active: isActiveOrParent(item) }"
             @click="handleNavClick()"
           >
@@ -118,7 +119,10 @@ watch(
 
           <!-- Menu item with children (submenu) -->
           <details v-else class="group px-3 py-1">
-            <summary class="cursor-pointer px-3 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center font-medium" :class="{ active: isActiveOrParent(item) }">
+            <summary 
+              class="cursor-pointer px-3 py-3 text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center font-medium" 
+              :class="{ active: isActiveOrParent(item) }" 
+            >
               {{ item.label }}
             </summary>
             <!-- Submenu items -->
@@ -127,7 +131,8 @@ watch(
                 v-for="child in item.children"
                 :key="child.href"
                 :to="child.href"
-                class="block px-9 py-2 text-sm text-neutral-300 hover:text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
+                draggable="false"
+                class="px-9 py-2 text-sm text-neutral-300 hover:text-neutral-100 hover:bg-neutral-700 transition-colors duration-200 min-h-[44px] flex items-center"
                 :class="{
               active: navigationStore.isRouteActive(child.href),
             }"

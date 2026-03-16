@@ -293,15 +293,24 @@ watch(
         <!-- Parent menu item with dropdown -->
         <button
         v-if="item.children" type="button" class="nav-link" :class="{ active: isActiveOrParent(item) }"
-          :aria-expanded="openDropdown === item.href" :aria-haspopup="true" @click="handleNavClick($event, item)"
-          @keydown="handleDropdownKeydown($event, item); handleNavKeydown($event)" @focus="handleNavFocus(item)">
+          :aria-expanded="openDropdown === item.href" 
+          :aria-haspopup="true" 
+          @click="handleNavClick($event, item)"
+          @keydown="handleDropdownKeydown($event, item); handleNavKeydown($event)" 
+          @focus="handleNavFocus(item)"
+        >
           {{ item.label }}
         </button>
 
         <!-- Regular nav link (no children) -->
         <NuxtLink
-        v-else :to="item.href" class="nav-link" :class="{ active: isActiveOrParent(item) }"
-          @click="handleNavClick($event, item)" @keydown="handleNavKeydown($event)" @focus="handleNavFocus(item)">
+        v-else :to="item.href" class="nav-link" 
+          :class="{ active: isActiveOrParent(item) }"
+          draggable="false"
+          @click="handleNavClick($event, item)" 
+          @keydown="handleNavKeydown($event)" 
+          @focus="handleNavFocus(item)"
+        >
           {{ item.label }}
         </NuxtLink>
 
@@ -314,12 +323,15 @@ watch(
           :aria-label="`${item.label} undermeny`">
           <li v-for="(child, index) in item.children" :key="child.href" class="dropdown-item flex">
             <NuxtLink
-              :to="child.href" class="dropdown-link" :class="{
+              :to="child.href" class="dropdown-link" 
+              :class="{
                 active: navigationStore.isRouteActive(child.href),
               }" 
+              draggable="false"
               @click.prevent="handleNavigation(child.href)"
               @keydown="handleDropdownItemKeydown($event, item.href, index, item.children.length)"
-              @focus="openDropdownMenu(item.href)">
+              @focus="openDropdownMenu(item.href)"
+            >
               {{ child.label }}
             </NuxtLink>
           </li>
@@ -354,7 +366,12 @@ watch(
 }
 
 .nav-link:focus-visible {
-  @apply outline-2 outline-layout-text-on-dark -outline-offset-2;
+  @apply -outline-offset-4;
+}
+
+.nav-link:active {
+  @apply scale-95 transition-all;
+  transition-duration: var(--tap-duration);
 }
 
 .nav-link.active {
@@ -378,8 +395,13 @@ watch(
 }
 
 .dropdown-link:focus-visible {
-  @apply outline-2 outline-layout-text-on-dark -outline-offset-2;
+  @apply -outline-offset-4;
 }
+
+.dropdown-link:active {
+  @apply scale-95 transition-all;
+  transition-duration: var(--tap-duration);
+} 
 
 .dropdown-link.active {
   @apply text-accent-400;

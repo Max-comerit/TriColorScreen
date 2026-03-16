@@ -122,6 +122,7 @@ onMounted(() => {
       loading="eager"
       fetchpriority="high"
       decoding="async"
+      draggable="false"
       class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
     />
 
@@ -131,6 +132,7 @@ onMounted(() => {
       autoplay
       muted
       playsinline
+      draggable="false"
       class="absolute inset-0 w-full h-full object-cover"
       @canplay="videoCanPlay = true"
     >
@@ -150,7 +152,9 @@ onMounted(() => {
         </slot>
       </h1>
       <slot name="description">
-        <p class="description">{{ props.description }}</p>
+        <p class="description">
+          {{ props.description }}
+        </p>
       </slot>
     </div>
   </section>

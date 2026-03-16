@@ -37,9 +37,9 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
+              class="p-0 rounded"
             >
-              <LinkedInIcon class="w-7 h-7 text-neutral-900" aria-hidden="true" />
+              <LinkedInIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -48,9 +48,9 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
-              class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
+              class="p-0 rounded"
             >
-              <FacebookIcon class="w-7 h-7 text-neutral-900" aria-hidden="true" />
+              <FacebookIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -59,9 +59,9 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
+              class="p-0 rounded"
             >
-              <InstagramIcon class="w-7 h-7 text-neutral-900" aria-hidden="true" />
+              <InstagramIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>
           </li>
           <li>
@@ -70,9 +70,9 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="TikTok"
-              class="hover:underline focus-visible:outline-offset-2 focus-visible:outline-2 focus-visible:outline-primary rounded"
+              class="p-0 rounded"
             >
-              <TikTokIcon class="w-7 h-7 text-neutral-900" aria-hidden="true" />
+              <TikTokIcon class="size-9 sm:size-11 text-neutral-900 active:scale-95 transition-all" style="transition-duration: var(--tap-duration);" aria-hidden="true" />
             </a>
           </li>
         </ul>
