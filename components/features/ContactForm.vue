@@ -460,7 +460,7 @@ watch(isChanged, (newValue) => {
             autocomplete="off"
             :aria-invalid="!!getFieldError('gdprConsent')"
             :aria-describedby="getFieldError('gdprConsent') ? 'gdpr-error' : undefined"
-            class="mt-1 w-11 h-11 border-neutral-300 text-primary-600 form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+            class="w-11 h-11 flex-shrink-0 border-neutral-300 text-primary-600 form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
             :disabled="isSubmitting"
             @change="handleInput('gdprConsent')"
           >
