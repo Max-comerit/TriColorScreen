@@ -318,7 +318,7 @@ export function useQuoteForm() {
 
   // ===== WATCHERS =====
   /**
-   * Sync formData changes to Pinia store for IndexedDB persistence
+   * Sync formData changes to Pinia store for session persistence
    */
   watch(formData, (newData) => {
     quoteFormStore.setFormData(newData)

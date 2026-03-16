@@ -269,7 +269,7 @@ export function useContactForm() {
 
   // ===== WATCHERS =====
   /**
-   * Sync formData changes to Pinia store for IndexedDB persistence
+   * Sync formData changes to Pinia store for session persistence
    */
   watch(formData, (newData) => {
     contactFormStore.setFormData(newData)
