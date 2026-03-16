@@ -103,7 +103,7 @@ onBeforeRouteLeave((to, _from) => {
       title="Kontakta Oss På TCS"
       :width="1280"
       :height="854"
-      alt="Kontakta oss på Tricolor Screen"
+      alt="Tricolor Screens kontor och lokaler i Stockholm"
       :center="false"
     >
       <template #description>

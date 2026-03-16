@@ -64,7 +64,7 @@ const imageCards = computed<CardItem[]>(() =>
       description="Vi använder alla sorters metoder för att trycka er design på valt underlag."
       :width="1280"
       :height="1276"
-      alt="Professional screen printing equipment and process at TriColor Screen workshop"
+      alt="Screentryck och brodyrprocess hos Tricolor Screen"
     />
 
     <div class="layout-container">

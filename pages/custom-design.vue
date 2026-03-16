@@ -391,7 +391,7 @@ function addText(): void {
       description="Skapa unika textilprodukter med vårt design verktyg. Ladda upp dina bilder, lägg till egen text och se resultatet innan produktion."
       :width="1280"
       :height="854"
-      alt="Professional screen printing equipment and process at TriColor Screen workshop"
+      alt="Produkter med eget tryck och anpassad design hos Tricolor Screen"
     />
 
     <!-- Sections -->

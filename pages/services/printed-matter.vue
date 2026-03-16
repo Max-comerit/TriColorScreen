@@ -65,7 +65,7 @@ const serviceCards = computed<CardItem[]>(() =>
       title="Designa produkter med eget tryck"
       :width="1280"
       :height="854"
-      alt="Professional screen printing equipment and process at TriColor Screen workshop"
+      alt="Professionella trycksaker och tryckmaterial hos Tricolor Screen"
     >
       <template #description>
         <p>
