@@ -471,7 +471,7 @@ watch(isChanged, (newValue) => {
             Jag godkänner behandling av mina personuppgifter enligt 
             <button
               type="button"
-              class="text-primary-700 underline hover:text-primary-800 outline-visible-tight-link"
+              class="text-primary-800 underline hover:text-primary-900 outline-visible-tight-link"
               @click.prevent="openGdprDialog"
             >
               integritetspolicyn
@@ -522,6 +522,10 @@ watch(isChanged, (newValue) => {
           :disabled="isSubmitting"
           :busy="isSubmitting"
           :aria-label="isSubmitting ? 'Skickar kontaktformulär' : 'Skicka kontaktformulär'"
+          background-color="bg-primary-700"
+          background-color-hover="hover:bg-primary-800"
+
+          color="white"
         >
           {{ isSubmitting ? 'Skickar...' : 'Skicka' }}
         </TextButton>
