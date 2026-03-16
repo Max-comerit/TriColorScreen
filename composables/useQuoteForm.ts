@@ -8,6 +8,7 @@
  */
 
 import { z } from 'zod'
+import { useQuoteFormStore } from '~/stores/quoteFormStore'
 
 // ===== CONSTANTS =====
 /** Maximum file size: 7MB */
@@ -111,6 +112,9 @@ type FormState = 'idle' | 'submitting' | 'success' | 'error'
  * Quote form composable with validation and state management
  */
 export function useQuoteForm() {
+  // ===== STORE =====
+  const quoteFormStore = useQuoteFormStore()
+
   // ===== STATE =====
   const formData = ref<QuoteFormData>({
     name: '',
@@ -126,6 +130,11 @@ export function useQuoteForm() {
     images: [],
     message: '',
     gdprConsent: false,
+  })
+
+  // Load persisted form data from IndexedDB on init
+  quoteFormStore.loadFromIndexedDB().then(() => {
+    formData.value = { ...quoteFormStore.formData }
   })
 
   const initialFormData = ref<Omit<QuoteFormData, 'images'>>(
@@ -247,6 +256,7 @@ export function useQuoteForm() {
     initialFormData.value = (({ images: _i, ...rest }) => rest)(formData.value)
     clearErrors()
     formState.value = 'idle'
+    quoteFormStore.resetForm()
   }
 
   /**
@@ -305,6 +315,8 @@ export function useQuoteForm() {
 
       formState.value = 'success'
       initialFormData.value = (({ images: _i, ...rest }) => rest)(formData.value)
+      // Clear persisted data after successful submission
+      await quoteFormStore.clearFromIndexedDB()
 
       return true
     }
@@ -319,6 +331,14 @@ export function useQuoteForm() {
       return false
     }
   }
+
+  // ===== WATCHERS =====
+  /**
+   * Sync formData changes to Pinia store for IndexedDB persistence
+   */
+  watch(formData, (newData) => {
+    quoteFormStore.setFormData(newData)
+  }, { deep: true })
 
   return {
     // State

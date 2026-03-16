@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { STORAGE } from '~/constants/storage'
 import type { ContactFormData } from '~/composables/useContactForm'
 
 // ===== CONSTANTS =====
-const DB_NAME = 'tricolordb'
-const STORE_NAME = 'contactForm'
-const FORM_DATA_KEY = 'formData'
-const IMAGE_FILE_KEY = 'imageFile'
+const DB_NAME = STORAGE.DB_NAME
+const DB_VERSION = STORAGE.DB_VERSION
+const STORE_NAME = STORAGE.STORES.CONTACT_FORM
+const FORM_DATA_KEY = STORAGE.CONTACT_FORM.FORM_DATA_KEY
+const IMAGE_FILE_KEY = STORAGE.CONTACT_FORM.IMAGE_FILE_KEY
 
 /**
  * Contact Form Pinia Store
@@ -127,13 +129,17 @@ export const useContactFormStore = defineStore('contactForm', () => {
         return
       }
 
-      const request = indexedDB.open(DB_NAME, 1)
+      const request = indexedDB.open(DB_NAME, DB_VERSION)
       request.onerror = () => reject(request.error)
       request.onsuccess = () => resolve(request.result)
       request.onupgradeneeded = (event) => {
         const db = (event.target as IDBOpenDBRequest).result
-        if (!db.objectStoreNames.contains(STORE_NAME)) {
-          db.createObjectStore(STORE_NAME)
+        if (!db.objectStoreNames.contains(STORAGE.STORES.CONTACT_FORM)) {
+          db.createObjectStore(STORAGE.STORES.CONTACT_FORM)
+        }
+        // Also ensure quoteForm store exists
+        if (!db.objectStoreNames.contains(STORAGE.STORES.QUOTE_FORM)) {
+          db.createObjectStore(STORAGE.STORES.QUOTE_FORM)
         }
       }
     })
