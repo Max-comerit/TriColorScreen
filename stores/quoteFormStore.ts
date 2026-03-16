@@ -51,7 +51,8 @@ export const useQuoteFormStore = defineStore('quoteForm', () => {
   }
 
   /**
-   * Reset form to initial state
+   * Reset form to initial state.
+   * Preserves subject, productCategory, and product as they are controlled by parent.
    */
   function resetForm(): void {
     formData.value = {
@@ -59,9 +60,9 @@ export const useQuoteFormStore = defineStore('quoteForm', () => {
       email: '',
       phone: '',
       customerType: '' as 'Privatperson' | 'Företag',
-      subject: 'Offertförfrågan',
-      productCategory: '',
-      product: '',
+      subject: formData.value.subject,
+      productCategory: formData.value.productCategory,
+      product: formData.value.product,
       productId: '',
       size: '',
       productCount: undefined as unknown as number,

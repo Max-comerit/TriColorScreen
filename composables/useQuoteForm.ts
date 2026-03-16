@@ -222,20 +222,20 @@ export function useQuoteForm() {
 
   /**
    * Reset all user-editable fields to their initial state.
-   * Prop-injected fields (subject, productCategory, product, files) are preserved.
+   * Prop-injected fields (subject, productCategory, product, images) are preserved by the store.
    */
   function resetForm(): void {
     formData.value.name = ''
     formData.value.email = ''
     formData.value.phone = ''
     formData.value.customerType = '' as 'Privatperson' | 'Företag'
+    // subject, productCategory, product and images are intentionally NOT reset —
+    // they are controlled by the parent component via props.
     formData.value.productId = ''
     formData.value.size = ''
     formData.value.productCount = undefined as unknown as number
     formData.value.message = ''
     formData.value.gdprConsent = false
-    // subject, productCategory, product and images are intentionally NOT reset —
-    // they are controlled by the parent component via props.
     initialFormData.value = (({ images: _i, ...rest }) => rest)(formData.value)
     clearErrors()
     formState.value = 'idle'
