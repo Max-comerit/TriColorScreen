@@ -95,7 +95,7 @@
   /* Inline links - primary brand color with underline, accessible focus ring */
   a {
     @apply inline-flex items-center min-h-[44px] px-0 py-2;
-    @apply text-primary-700 hover:text-primary-600;
+    @apply text-primary-800 hover:text-primary-700;
     @apply transition-all active:scale-95;
     transition-duration: var(--tap-duration);
   }

@@ -3,12 +3,8 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import Section from '~/components/common/Section.vue'
-<<<<<<< HEAD
 import TextButton from '~/components/common/TextButton.vue'
 import { TAP_ANIMATION_TIME } from '~/constants/ui'
-=======
-import LinkButton from '~/components/common/LinkButton.vue'
->>>>>>> b8e8702 (Created LinkButton in order to not nest a button in an <a> element. Increased contrast on some color combinations. Added aria attributes on some hidden inputs)
 
 // ===== TYPES =====
 interface Props {
@@ -48,11 +44,16 @@ async function handleCtaClick(): Promise<void> {
       <h2 class="font-display text-white">
         {{ heading }}
       </h2>
-      <p class="mx-auto max-w-xl leading-relaxed text-primary-100">
+      <p class="mx-auto max-w-xl leading-relaxed text-white">
         {{ text }}
       </p>
       <div class="flex flex-wrap justify-center gap-4 pt-2">
-        <TextButton class="border outline-visible-spaced-button focus-visible:outline-neutral-950" @click="handleCtaClick">Kontakta Oss</TextButton>
+        <TextButton 
+          class="border outline-visible-spaced-button focus-visible:outline-neutral-950" 
+          background-color="bg-primary-700"
+          background-color-hover="hover:bg-primary-800"
+
+          @click="handleCtaClick" >Kontakta Oss</TextButton>
       </div>
     </div>
   </Section>
