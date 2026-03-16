@@ -128,6 +128,18 @@ async function handleFocusOut(event: FocusEvent): Promise<void> {
 }
 
 /**
+ * Clear all objects from canvases
+ */
+function clearCanvasObjects(): void {
+  for (const canvas of props.canvasMap) {
+    if (!canvas) continue
+    canvas.remove(...canvas.getObjects())
+    canvas.discardActiveObject()
+    canvas.requestRenderAll()
+  }
+}
+
+/**
  * Handle form submission
  */
 async function handleSubmit(): Promise<void> {
@@ -144,6 +156,7 @@ async function handleSubmit(): Promise<void> {
     // Auto-hide success message after 5 seconds then reset user-editable fields
     setTimeout(() => {
       showSuccessMessage.value = false
+      clearCanvasObjects()
       resetForm()
     }, 5000)
   }
