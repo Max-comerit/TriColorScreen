@@ -101,19 +101,19 @@ onMounted(() => {
           :options="categoryOptions"
           :model-value="activeCategory"
           label="Select product category"
-          @change="(val) => onCategoryChange(val)"
+          @change="(val) => onCategoryChange(Number(val))"
         />
         <BaseDropdown
           :options="productOptions"
           :model-value="activeProduct"
           label="Select product"
-          @change="(val, dataKey) => onProductChange(val, dataKey)"
+          @change="(val, dataKey) => onProductChange(Number(val), dataKey)"
         />
         <BaseDropdown
           :options="sideOptions"
           :model-value="activeSide"
           label="Select side"
-          @change="(val) => onSideChange(val)"
+          @change="(val) => onSideChange(Number(val))"
         />
 
       <button

@@ -161,7 +161,7 @@ onBeforeUnmount(() => {
       aria-haspopup="listbox"
       :aria-expanded="isOpen"
       :aria-controls="listId"
-      class="flex items-center justify-between gap-2 h-11 min-w-28 w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-input text-sm text-gray-900 cursor-pointer transition-colors hover:bg-gray-100 outline-tight-button"
+      class="flex items-center gap-2 h-11 min-w-28 w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-input text-sm text-left text-gray-900 cursor-pointer transition-colors hover:bg-gray-100 outline-tight-button"
       @click="toggle"
       @keydown="handleTriggerKeydown"
     >
@@ -209,7 +209,7 @@ onBeforeUnmount(() => {
           <template v-for="group in groups" :key="group.label">
             <li
               role="presentation"
-              class="px-3 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wide select-none"
+              class="px-3 pt-2 pb-1 text-xs font-semibold text-neutral-800 uppercase tracking-wide select-none"
             >
               {{ group.label }}
             </li>
@@ -221,7 +221,7 @@ onBeforeUnmount(() => {
               :aria-selected="option.value === modelValue"
               tabindex="0"
               :style="option.style"
-              class="pl-5 pr-3 py-2 text-sm cursor-pointer focus:outline-none"
+              class="pl-5 pr-3 min-h-[44px] flex items-center text-sm cursor-pointer focus:outline-none"
               :class="
                 option.value === modelValue
                   ? 'bg-neutral-700 text-primary-100 font-medium'
@@ -244,7 +244,7 @@ onBeforeUnmount(() => {
             :aria-selected="option.value === modelValue"
             tabindex="0"
             :style="option.style"
-            class="px-3 py-2 text-sm cursor-pointer focus:outline-none"
+            class="px-3 min-h-[44px] flex items-center text-sm cursor-pointer focus:outline-none"
             :class="
               option.value === modelValue
                 ? 'bg-neutral-700 text-primary-100 font-medium'
