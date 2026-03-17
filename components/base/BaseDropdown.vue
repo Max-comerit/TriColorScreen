@@ -222,7 +222,7 @@ onBeforeUnmount(() => {
               :class="
                 option.value === modelValue
                   ? 'bg-neutral-700 text-primary-100 font-medium'
-                  : 'text-gray-900 hover:bg-gray-100 focus:bg-gray-100'
+                  : 'text-gray-900 hover:bg-gray-200 focus:bg-gray-300'
               "
               @click="select(option)"
               @keydown="handleOptionKeydown($event, option)"
@@ -245,7 +245,7 @@ onBeforeUnmount(() => {
             :class="
               option.value === modelValue
                 ? 'bg-neutral-700 text-primary-100 font-medium'
-                : 'text-gray-900 hover:bg-gray-300 focus:bg-gray-400'
+                : 'text-gray-900 hover:bg-gray-200 focus:bg-gray-300'
             "
             @click="select(option)"
             @keydown="handleOptionKeydown($event, option)"
