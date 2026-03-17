@@ -127,6 +127,7 @@ export const useCanvasStore = defineStore('canvas', {
     /** Clear all canvas content while preserving side structure */
     clear() {
       this.sides = createInitialSides()
+      console.log('sideKeys', this.sideKeys)
       this.sideKeys.forEach(key => this.ensureSide(key))
     },
     setAspectRatio(ratio: string) {
