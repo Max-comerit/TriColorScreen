@@ -136,6 +136,7 @@ async function handleSubmit(): Promise<void> {
   
   const success = await submitForm()
 
+  console.log('success', success)
   if (success) {
     showSuccessMessage.value = true
     showErrorMessage.value = false
