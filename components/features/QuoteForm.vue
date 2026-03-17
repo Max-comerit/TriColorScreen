@@ -16,12 +16,10 @@ import { TAP_ANIMATION_TIME } from '~/constants/ui'
 // ===== PROPS =====
 interface Props {
   canvasMap?: (Canvas | undefined)[]
-  activeCanvas?: Canvas | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
   canvasMap: () => [],
-  activeCanvas: null,
 })
 
 // ===== EMITS =====
@@ -143,12 +141,9 @@ async function handleSubmit(): Promise<void> {
     showErrorMessage.value = false
     emit('success')
 
-    // Clear canvases immediately as it takes some time to clear the active canvas object
+    console.log('Clear Canvas')
+    // Clear canvases immediately as it takes some time to clear the canvas object
     canvasStore.clear()
-    // Re-render active canvas after clearing
-    if (props.activeCanvas) {
-      props.activeCanvas.renderAll()
-    }
 
     // Auto-hide success message after 5 seconds then reset user-editable fields
     setTimeout(() => {
