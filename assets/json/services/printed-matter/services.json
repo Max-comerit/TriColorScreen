@@ -2,46 +2,55 @@
   {
     "title": "Foldrar",
     "description": "Vi har lång erfarenhet av att trycka foldrar och vägleder er gärna till en säljande och attraktiv slutprodukt. Levereras vikta och färdiga i  kartong. Redo att börja göra nytta för er direkt.",
-    "imageSrc": "/images/services/printed-matter/folders.jpg"
+    "imageSrc": "/images/services/printed-matter/folders.jpg",
+    "alt": "Två uppvikta foldrar som exempel på tryckta foldrar redo för marknadsföring"
   },
   {
     "title": "Broschyrer",
     "description": "När ni har lite mer att säga. Det är inte för inte som broschyren är en klassiker. Där står allt vad kunden behöver veta och snyggt presenterat är det också.",
-    "imageSrc": "/images/services/printed-matter/brochures.jpg"
+    "imageSrc": "/images/services/printed-matter/brochures.jpg",
+    "alt": "Exempel på en broschyr som presenterar information på ett tydligt och professionellt sätt"
   },
   {
     "title": "Affischer",
     "description": "Här ser du ett urval av våra tjänster, men kom ihåg att du kan fråga oss om allt tryck. Från början till slut.",
-    "imageSrc": "/images/services/printed-matter/posters.jpg"
+    "imageSrc": "/images/services/printed-matter/posters.jpg",
+    "alt": "Exempel på en affisch som visar tryckt material för marknadsföring och information"
   },
   {
     "title": "Visitkort",
     "description": "Visitkort är mer än ett enkelt papper med kontaktinformation. Ett visitkort är ett första intryck, ett media som säger mycket om företaget bakom kortet, och kanske till och med om individen som delar ut kortet.",
-    "imageSrc": "/images/services/printed-matter/business-cards.jpg"
+    "imageSrc": "/images/services/printed-matter/business-cards.jpg",
+    "alt": "Hand som visar fram- och baksidan av ett visitkort för en designstudio, exempel på professionella visitkort"
   },
   {
     "title": "Etiketter",
     "description": "TCS utvecklar alltid etiketter ur användarnas perspektiv. Självhäftande etiketter för alla tillfällen: adressering, märkning, sortering och etikettering. I alla former, färger och format. Och för alla skrivare, med högsta bearbetningssäkerhet och bästa utskriftsresultat.",
-    "imageSrc": "/images/services/printed-matter/labels.jpg"
+    "imageSrc": "/images/services/printed-matter/labels.jpg",
+    "alt": "Två ölflaskor med etiketter 'IMPERIAL Western Pale Ale', exempel på självhäftande etiketter för produkter"
   },
   {
     "title": "Kuvert",
     "description": "Kuvert för alla ändamål. Stick ut i mottagarens brevskörd med tryck på dina kuvert. Med fantasins hjälp är möjligheterna oändliga.",
-    "imageSrc": "/images/services/printed-matter/envelopes.jpg"
+    "imageSrc": "/images/services/printed-matter/envelopes.jpg",
+    "alt": "Baksidan av ett kuvert med tryckt företagslogo och adress, exempel på tryckta kuvert"
   },
   {
     "title": "Klistermärken",
     "description": "Vi har ett brett utbud av klistermärken med tryck, som du kan få din egen text eller med text eller din logga. Om du mot förmodan inte hittar det du söker, kontakta oss så hittar vi tillsammans en lösning till dig.",
-    "imageSrc": "/images/services/printed-matter/stickers.jpg"
+    "imageSrc": "/images/services/printed-matter/stickers.jpg",
+    "alt": "Tillverkning av klistermärken med texten 'KVALET I KUNGSAN' för Idol 2022, exempel på tryckta klistermärken"
   },
   {
     "title": "Menyer & Bordsryttare",
     "description": "Ge hungriga kunder en titt på all fantastisk mat du erbjuder med praktiska och specialdesignade menyer. Lista alla dina alternativ och priser, lägg till din logotyp och kontaktinformation och krydda menyn med aptitretande foton av rätter som just tillagats i köket.",
-    "imageSrc": "/images/services/printed-matter/menus.jpg"
+    "imageSrc": "/images/services/printed-matter/menus.jpg",
+    "alt": "Meny för en pizzeria och hamburgerrestaurang med rätter, priser och logotyp, exempel på tryckta menyer och bordsryttare"
   },
   {
     "title": "Dekaler",
     "description": "Komplettera din grafiska profil med tryckta dekaler. Tryckta dekaler tillverkas på vinyl som sedan konturskärs efter önskad form och storlek. Kan användas på Fordon som skyltfönster.",
-    "imageSrc": "/images/services/printed-matter/decals.jpg"
+    "imageSrc": "/images/services/printed-matter/decals.jpg",
+    "alt": "Kollage med fyra bilder av fordonsdekaler på olika platser på en sportbil, exempel på tryckta dekaler för fordon"
   }
 ]
