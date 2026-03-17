@@ -7,17 +7,10 @@ import { useSiteUrl } from '~/composables/useSiteUrl'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import ContactPanel from '~/components/features/ContactPanel.vue'
-import ConfirmDialog from '~/components/layout/ConfirmDialog.vue'
 // Lazy-load ContactForm so Zod is kept out of the shared synchronous bundle
 const ContactForm = defineAsyncComponent(() => import('~/components/features/ContactForm.vue'))
 
-// ===== STATE =====
-const showConfirmDialog = ref(false)
-const hasFormChanges = ref(false)
-let nextRoute: string | null = null
-
 // ===== COMPOSABLES =====
-const router = useRouter()
 const siteUrl = useSiteUrl()
 
 useHead({
@@ -50,49 +43,7 @@ useHead({
   ],
 })
 
-// ===== METHODS =====
-/**
- * Handle confirm action when leaving page with form changes
- */
-function handleConfirm(): void {
-  const routeToNavigate = nextRoute
-  resetFormChanges() // Reset before navigating to allow the guard to pass
-  showConfirmDialog.value = false
-  if (routeToNavigate) {
-    router.push(routeToNavigate)
-  }
-}
 
-/**
- * Mark form as having changes
- */
-function markFormAsChanged(newValue: boolean): void {
-  hasFormChanges.value = newValue
-}
-
-/**
- * Reset form changes state
- */
-function resetFormChanges(): void {
-  hasFormChanges.value = false
-  nextRoute = null
-}
-
-// ===== LIFECYCLE HOOKS =====
-/**
- * Setup page leave guard using beforeRouteLeave
- */
-definePageMeta({
-  validate: async (_route) => true,
-})
-
-onBeforeRouteLeave((to, _from) => {
-  if (hasFormChanges.value) {
-    nextRoute = to.path
-    showConfirmDialog.value = true
-    return false
-  }
-})
 </script>
 
 <template>
@@ -131,7 +82,7 @@ onBeforeRouteLeave((to, _from) => {
             </div>
             <ContactPanel />
           </div>
-          <ContactForm @changed="markFormAsChanged" />
+          <ContactForm />
         </div>
 
       </Section>
@@ -156,19 +107,5 @@ onBeforeRouteLeave((to, _from) => {
         </figure>
       </Section>
     </div>
-
-    <!-- Navigation Guard: Confirm Dialog for unsaved form changes -->
-    <ConfirmDialog
-      v-model="showConfirmDialog"
-      title="Osparade ändringar"
-      cancel-label="Avbryt"
-      confirm-label="Fortsätt"
-      width="24rem"
-      @confirm="handleConfirm"
-    >
-      <p>Alla formulärdata kommer att gå förlorade om du fortsätter.</p>
-      <p>Är du säker på att du vill fortsätta?</p>
-    </ConfirmDialog>
   </div>
 </template>
-

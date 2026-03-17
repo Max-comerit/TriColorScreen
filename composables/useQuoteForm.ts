@@ -8,6 +8,7 @@
  */
 
 import { z } from 'zod'
+import { useQuoteFormStore } from '~/stores/quoteFormStore'
 
 // ===== CONSTANTS =====
 /** Maximum file size: 7MB */
@@ -111,22 +112,13 @@ type FormState = 'idle' | 'submitting' | 'success' | 'error'
  * Quote form composable with validation and state management
  */
 export function useQuoteForm() {
+  // ===== STORE =====
+  const quoteFormStore = useQuoteFormStore()
+
   // ===== STATE =====
-  const formData = ref<QuoteFormData>({
-    name: '',
-    email: '',
-    phone: '',
-    customerType: '' as 'Privatperson' | 'Företag',
-    subject: 'Offertförfrågan',
-    productCategory: '',
-    product: '',
-    productId: '',
-    size: '',
-    productCount: undefined as unknown as number,
-    images: [],
-    message: '',
-    gdprConsent: false,
-  })
+  const formData = ref<QuoteFormData>({ ...quoteFormStore.formData })
+
+
 
   const initialFormData = ref<Omit<QuoteFormData, 'images'>>(
     (({ images: _i, ...rest }) => rest)(formData.value),
@@ -230,23 +222,24 @@ export function useQuoteForm() {
 
   /**
    * Reset all user-editable fields to their initial state.
-   * Prop-injected fields (subject, productCategory, product, files) are preserved.
+   * Prop-injected fields (subject, productCategory, product, images) are preserved by the store.
    */
   function resetForm(): void {
     formData.value.name = ''
     formData.value.email = ''
     formData.value.phone = ''
     formData.value.customerType = '' as 'Privatperson' | 'Företag'
+    // subject, productCategory, product and images are intentionally NOT reset —
+    // they are controlled by the parent component via props.
     formData.value.productId = ''
     formData.value.size = ''
     formData.value.productCount = undefined as unknown as number
     formData.value.message = ''
     formData.value.gdprConsent = false
-    // subject, productCategory, product and images are intentionally NOT reset —
-    // they are controlled by the parent component via props.
     initialFormData.value = (({ images: _i, ...rest }) => rest)(formData.value)
     clearErrors()
     formState.value = 'idle'
+    quoteFormStore.resetForm()
   }
 
   /**
@@ -305,6 +298,9 @@ export function useQuoteForm() {
 
       formState.value = 'success'
       initialFormData.value = (({ images: _i, ...rest }) => rest)(formData.value)
+      // Reset form after successful submission
+      quoteFormStore.resetForm()
+      formData.value = { ...quoteFormStore.formData }
 
       return true
     }
@@ -319,6 +315,14 @@ export function useQuoteForm() {
       return false
     }
   }
+
+  // ===== WATCHERS =====
+  /**
+   * Sync formData changes to Pinia store for session persistence
+   */
+  watch(formData, (newData) => {
+    quoteFormStore.setFormData(newData)
+  }, { deep: true })
 
   return {
     // State

@@ -32,12 +32,15 @@ const {
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
-const fileInputLabel = ref<string>('Ingen fil vald')
 const showSuccessMessage = ref(false)
 const showErrorMessage = ref(false)
 const showGdprDialog = ref(false)
 
-// ===== METHODS =====
+// ===== COMPUTED =====
+/**
+ * Display label for file input showing filename or default text
+ */
+const fileInputLabel = computed(() => formData.value.image?.name ?? 'Ingen fil vald')
 /**
  * Handle input blur event and validate field
  */
@@ -62,7 +65,7 @@ function handleFileChange(event: Event): void {
   const file = target.files?.[0] || null
   
   formData.value.image = file
-  fileInputLabel.value = file ? file.name : 'Ingen fil vald'
+  // fileInputLabel is computed from formData.image, so label updates automatically
   
   // Validate file if selected
   if (file) {
@@ -88,7 +91,6 @@ function handleClearFile(): void {
     fileInputRef.value.value = ''
   }
   formData.value.image = null
-  fileInputLabel.value = 'Ingen fil vald'
   clearFieldError('image')
 }
 
@@ -117,7 +119,6 @@ async function handleSubmit(): Promise<void> {
     setTimeout(() => {
       showSuccessMessage.value = false
       resetForm()
-      fileInputLabel.value = 'Ingen fil vald'
     }, 5000)
   }
   else {

@@ -8,6 +8,7 @@
  */
 
 import { z } from 'zod'
+import { useContactFormStore } from '~/stores/contactFormStore'
 
 // ===== CONSTANTS =====
 /** Maximum file size: 7MB */
@@ -76,17 +77,13 @@ type FormState = 'idle' | 'submitting' | 'success' | 'error'
  * Contact form composable with validation and state management
  */
 export function useContactForm() {
+  // ===== STORE =====
+  const contactFormStore = useContactFormStore()
+
   // ===== STATE =====
-  const formData = ref<ContactFormData>({
-    name: '',
-    email: '',
-    phone: '',
-    customerType: '' as 'Privatperson' | 'Företag',
-    subject: '',
-    message: '',
-    image: null as File | null,
-    gdprConsent: false,
-  })
+  const formData = ref<ContactFormData>({ ...contactFormStore.formData })
+
+
 
   const initialFormData = ref<ContactFormData>(JSON.parse(JSON.stringify(formData.value)))
   const formState = ref<FormState>('idle')
@@ -201,6 +198,7 @@ export function useContactForm() {
     initialFormData.value = JSON.parse(JSON.stringify(formData.value))
     clearErrors()
     formState.value = 'idle'
+    contactFormStore.resetForm()
   }
 
   /**
@@ -249,6 +247,9 @@ export function useContactForm() {
       // Success
       formState.value = 'success'
       initialFormData.value = JSON.parse(JSON.stringify(formData.value))
+      // Reset form after successful submission
+      contactFormStore.resetForm()
+      formData.value = { ...contactFormStore.formData }
 
       return true
     }
@@ -265,6 +266,14 @@ export function useContactForm() {
       return false
     }
   }
+
+  // ===== WATCHERS =====
+  /**
+   * Sync formData changes to Pinia store for session persistence
+   */
+  watch(formData, (newData) => {
+    contactFormStore.setFormData(newData)
+  }, { deep: true })
 
   return {
     // State
