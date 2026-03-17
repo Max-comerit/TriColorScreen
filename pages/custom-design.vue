@@ -195,6 +195,7 @@ onBeforeUnmount(() => {
 watch(
   () => canvasStore.sides.map(v => v.backgroundSelection),
   async (newSelections, oldSelections) => {
+    console.log('Background selection changed:', { newSelections, oldSelections })
     for (let key = 0; key < newSelections.length; key++) {
       const selection = newSelections[key]
       if (selection === oldSelections?.[key]) continue
