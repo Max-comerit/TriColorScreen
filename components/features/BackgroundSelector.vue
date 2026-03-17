@@ -77,7 +77,7 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
     return
   }
   if (!file.type.startsWith('image/')) {
-    fileErrorMessage.value = 'Välj en giltig bildfil (PNG, JPEG, WEBP, GIF eller SVG).'
+    fileErrorMessage.value = 'Välj en giltig bildfil (PNG, JPEG, JFIF, PJP, JPE, PJPEG, WEBP, GIF, SVG eller SVGZ).'
     input.value = ''
     return
   }

@@ -115,10 +115,7 @@ function handleOptionKeydown(event: KeyboardEvent, option: DropdownOption): void
   }
   else if (event.key === 'ArrowUp') {
     event.preventDefault()
-    if (idx === 0) {
-      close()
-    }
-    else {
+    if (idx > 0) {
       const prev = flatOptions.value[idx - 1]
       if (prev) document.getElementById(optionId(prev.value))?.focus()
     }
@@ -248,7 +245,7 @@ onBeforeUnmount(() => {
             :class="
               option.value === modelValue
                 ? 'bg-neutral-700 text-primary-100 font-medium'
-                : 'text-gray-900 hover:bg-gray-100 focus:bg-gray-100'
+                : 'text-gray-900 hover:bg-gray-300 focus:bg-gray-400'
             "
             @click="select(option)"
             @keydown="handleOptionKeydown($event, option)"
