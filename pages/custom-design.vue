@@ -533,7 +533,7 @@ function addText(): void {
           class="mt-10 flex justify-center"
           aria-label="Offertformulär"
         >
-          <QuoteForm :canvas-map="canvasMap"/>
+          <QuoteForm :canvas-map="canvasMap" :active-canvas="activeCanvas"/>
         </div>
       </Section>
     </div>

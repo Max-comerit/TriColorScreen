@@ -16,10 +16,12 @@ import { TAP_ANIMATION_TIME } from '~/constants/ui'
 // ===== PROPS =====
 interface Props {
   canvasMap?: (Canvas | undefined)[]
+  activeCanvas?: Canvas | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
   canvasMap: () => [],
+  activeCanvas: null,
 })
 
 // ===== EMITS =====
@@ -128,18 +130,6 @@ async function handleFocusOut(event: FocusEvent): Promise<void> {
 }
 
 /**
- * Clear all objects from canvases and trigger immediate redraw
- */
-function clearCanvasObjects(): void {
-  for (const canvas of props.canvasMap) {
-    if (!canvas) continue
-    canvas.remove(...canvas.getObjects())
-    canvas.discardActiveObject()
-    canvas.renderAll()
-  }
-}
-
-/**
  * Handle form submission
  */
 async function handleSubmit(): Promise<void> {
@@ -153,8 +143,12 @@ async function handleSubmit(): Promise<void> {
     showErrorMessage.value = false
     emit('success')
 
-    // Clear canvases immediately as it takes some time to clear the canvas objects
-    clearCanvasObjects()
+    // Clear canvases immediately as it takes some time to clear the active canvas object
+    canvasStore.clear()
+    // Re-render active canvas after clearing
+    if (props.activeCanvas) {
+      props.activeCanvas.renderAll()
+    }
 
     // Auto-hide success message after 5 seconds then reset user-editable fields
     setTimeout(() => {
