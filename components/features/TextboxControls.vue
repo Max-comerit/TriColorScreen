@@ -268,6 +268,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
     <div v-else class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-2 p-3 sm:p-2 bg-white border border-gray-300 rounded-lg shadow-md">
       <!-- Text Input - Full width on mobile, flexible on larger screens -->
       <label class="flex items-center gap-2 flex-1 min-w-0">
+        <span class="sr-only">Text content</span>
         <input
           v-model="textValue"
           type="text"
@@ -296,6 +297,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
           class="min-w-[44px] min-h-[44px] px-3 py-2 font-bold cursor-pointer form-button-base outline-tight-button"
           title="Bold"
           aria-label="Toggle bold"
+          :aria-pressed="isBold"
           @click="toggleBold"
         >
           B
@@ -308,6 +310,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
           class="min-w-[44px] min-h-[44px] px-3 py-2 italic cursor-pointer form-button-base outline-tight-button"
           title="Italic"
           aria-label="Toggle italic"
+          :aria-pressed="isItalic"
           @click="toggleItalic"
         >
           I

@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 // 1. Imports
-import { computed, onBeforeUnmount, onMounted, nextTick, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, nextTick, ref, useId } from 'vue'
 
 // 2. Props & Emits
 defineOptions({ inheritAttrs: false })
@@ -37,7 +37,7 @@ const isOpen = ref(false)
 const direction = ref<'down' | 'up'>('down')
 const triggerRef = ref<HTMLButtonElement | null>(null)
 const dropdownRef = ref<HTMLDivElement | null>(null)
-const uid = Math.random().toString(36).slice(2)
+const uid = useId().replace(/[^a-z0-9_-]/gi, '_')
 const listId = `ddl-list-${uid}`
 
 // 5. Computed
@@ -144,11 +144,11 @@ function handleClickOutside(event: MouseEvent): void {
 
 // 7. Lifecycle hooks
 onMounted(() => {
-  document.addEventListener('mousedown', handleClickOutside)
+  document.addEventListener('pointerdown', handleClickOutside)
 })
 
 onBeforeUnmount(() => {
-  document.removeEventListener('mousedown', handleClickOutside)
+  document.removeEventListener('pointerdown', handleClickOutside)
 })
 </script>
 

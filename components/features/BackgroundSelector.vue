@@ -28,6 +28,7 @@ const { initProductCategories, onCategoryChange, onProductChange, onSideChange }
 
 // 4. State
 const customFileInputRef = ref<HTMLInputElement | null>(null)
+const fileErrorMessage = ref('')
 
 // 5. Computed
 const isCustomSelected = computed(() =>
@@ -71,17 +72,23 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
 
-  if (!file) return
+  if (!file) {
+    fileErrorMessage.value = ''
+    return
+  }
   if (!file.type.startsWith('image/')) {
-    alert('Please select an image file.')
+    fileErrorMessage.value = 'Välj en giltig bildfil (PNG, JPEG, WEBP, GIF eller SVG).'
+    input.value = ''
     return
   }
 
   try {
     const dataUrl = await readFileAsDataUrl(file)
     emit('customImageSelected', dataUrl)
+    fileErrorMessage.value = ''
   }
   catch (error) {
+    fileErrorMessage.value = 'Kunde inte läsa in bilden. Försök igen.'
     console.error('Failed to read custom background image:', error)
   }
 
@@ -100,19 +107,19 @@ onMounted(() => {
         <BaseDropdown
           :options="categoryOptions"
           :model-value="activeCategory"
-          label="Select product category"
+          label="Välj produktkategori"
           @change="(val) => onCategoryChange(Number(val))"
         />
         <BaseDropdown
           :options="productOptions"
           :model-value="activeProduct"
-          label="Select product"
+          label="Välj produkt"
           @change="(val, dataKey) => onProductChange(Number(val), dataKey)"
         />
         <BaseDropdown
           :options="sideOptions"
           :model-value="activeSide"
-          label="Select side"
+          label="Välj sida"
           @change="(val) => onSideChange(Number(val))"
         />
 
@@ -121,6 +128,8 @@ onMounted(() => {
         class="inline-flex items-center justify-center h-11 px-4 text-sm font-semibold bg-primary-600 text-white shadow-sm transition hover:bg-primary-700 outline-visible-spaced-button"
         type="button"
         aria-label="Ladda upp egen bild för produkten"
+        :aria-describedby="fileErrorMessage ? 'custom-file-error' : undefined"
+        :aria-invalid="Boolean(fileErrorMessage)"
         @click="openCustomFileDialog"
       >
         Ladda Upp Egen Bild
@@ -134,6 +143,15 @@ onMounted(() => {
           class="hidden"
           @change="handleCustomFileSelected"
         >
+        <p
+          v-if="fileErrorMessage"
+          id="custom-file-error"
+          class="w-full text-sm text-error"
+          role="status"
+          aria-live="polite"
+        >
+          {{ fileErrorMessage }}
+        </p>
     </div>
   </div>
 </template>
