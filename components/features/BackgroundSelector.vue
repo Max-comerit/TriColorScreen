@@ -9,6 +9,8 @@ import { CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 import { useBackgroundSelector } from '~/composables/useBackgroundSelector'
 import rawBackgroundOptions from '~/assets/json/custom-design/products.json'
 import type { ProductCategories } from '~/types/BackgroundSelector'
+import BaseDropdown from '~/components/base/BaseDropdown.vue'
+import type { DropdownOption } from '~/components/base/BaseDropdown.vue'
 
 const PRODUCT_CATEGORIES_OBJ = rawBackgroundOptions as ProductCategories
 const PRODUCT_CATEGORIES = PRODUCT_CATEGORIES_OBJ.productCategories
@@ -26,10 +28,30 @@ const { initProductCategories, onCategoryChange, onProductChange, onSideChange }
 
 // 4. State
 const customFileInputRef = ref<HTMLInputElement | null>(null)
+const fileErrorMessage = ref('')
 
 // 5. Computed
 const isCustomSelected = computed(() =>
   sides.value[activeSide.value]?.backgroundSelection === CUSTOM_BACKGROUND_ID,
+)
+
+const categoryOptions = computed<DropdownOption[]>(() =>
+  PRODUCT_CATEGORIES.map((cat, i) => ({ label: cat.label, value: i }))
+)
+
+const productOptions = computed<DropdownOption[]>(() =>
+  (PRODUCT_CATEGORIES[activeCategory.value]?.products ?? []).map((p, i) => ({
+    label: p.label,
+    value: i,
+    dataKey: p.label === 'Egen Produkt' ? CUSTOM_BACKGROUND_ID : p.label,
+  }))
+)
+
+const sideOptions = computed<DropdownOption[]>(() =>
+  (PRODUCT_CATEGORIES[activeCategory.value]?.products[activeProduct.value]?.sides ?? []).map((s, i) => ({
+    label: s.label,
+    value: i,
+  }))
 )
 
 // 6. Methods
@@ -50,17 +72,23 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
 
-  if (!file) return
+  if (!file) {
+    fileErrorMessage.value = ''
+    return
+  }
   if (!file.type.startsWith('image/')) {
-    alert('Please select an image file.')
+    fileErrorMessage.value = 'Välj en giltig bildfil (PNG, JPEG, JFIF, PJP, JPE, PJPEG, WEBP, GIF, SVG eller SVGZ).'
+    input.value = ''
     return
   }
 
   try {
     const dataUrl = await readFileAsDataUrl(file)
     emit('customImageSelected', dataUrl)
+    fileErrorMessage.value = ''
   }
   catch (error) {
+    fileErrorMessage.value = 'Kunde inte läsa in bilden. Försök igen.'
     console.error('Failed to read custom background image:', error)
   }
 
@@ -76,58 +104,32 @@ onMounted(() => {
 <template>
   <div class="w-full max-w-xl mx-auto my-4 px-4 justify-center flex">
     <div class="flex items-stretch sm:items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg justify-center flex-wrap">
-        <select
-          :value="activeCategory"
-          class="flex items-center gap-3 h-11 px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-tight-select"
-          aria-label="Select product category"
-          @change="onCategoryChange(Number(($event.target as HTMLSelectElement).value))"
-        >
-          <option
-            v-for="(category, i) in PRODUCT_CATEGORIES"
-            :key="category.label"
-            :value="i"
-          >
-            {{ category.label }}
-          </option>
-        </select>
-        <select
-          :value="activeProduct"
-          class="flex sm:w-auto self-center h-11 px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-tight-select"
-          aria-label="Select product"
-          @change="onProductChange(
-            $event.target ? Number(($event.target as HTMLSelectElement).value) : 0,
-            $event.target ? ($event.target as HTMLSelectElement).options[($event.target as HTMLSelectElement).selectedIndex]?.getAttribute('data-key') : null
-          )"
-        >
-          <option
-            v-for="(product, i) in PRODUCT_CATEGORIES[activeCategory]?.products || []"
-            :key="product.label"
-            :value="i"
-            :data-key="product.label === 'Egen Produkt' ? CUSTOM_BACKGROUND_ID : product.label"
-          >
-            {{ product.label }}
-          </option>
-        </select>
-        <select
-          :value="activeSide"
-          class="flex sm:w-auto self-center h-11 px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-tight-select"
-          aria-label="Select side"
-          @change="onSideChange(Number(($event.target as HTMLSelectElement).value))"
-        >
-          <option
-            v-for="(sideOption, i) in PRODUCT_CATEGORIES[activeCategory]?.products[activeProduct]?.sides ?? []"
-            :key="sideOption.label"
-            :value="i"
-          >
-            {{ sideOption.label }}
-          </option>
-        </select>
+        <BaseDropdown
+          :options="categoryOptions"
+          :model-value="activeCategory"
+          label="Välj produktkategori"
+          @change="(val) => onCategoryChange(Number(val))"
+        />
+        <BaseDropdown
+          :options="productOptions"
+          :model-value="activeProduct"
+          label="Välj produkt"
+          @change="(val, dataKey) => onProductChange(Number(val), dataKey)"
+        />
+        <BaseDropdown
+          :options="sideOptions"
+          :model-value="activeSide"
+          label="Välj sida"
+          @change="(val) => onSideChange(Number(val))"
+        />
 
       <button
         v-if="isCustomSelected"
         class="inline-flex items-center justify-center h-11 px-4 text-sm font-semibold bg-primary-600 text-white shadow-sm transition hover:bg-primary-700 outline-visible-spaced-button"
         type="button"
         aria-label="Ladda upp egen bild för produkten"
+        :aria-describedby="fileErrorMessage ? 'custom-file-error' : undefined"
+        :aria-invalid="Boolean(fileErrorMessage)"
         @click="openCustomFileDialog"
       >
         Ladda Upp Egen Bild
@@ -141,6 +143,15 @@ onMounted(() => {
           class="hidden"
           @change="handleCustomFileSelected"
         >
+        <p
+          v-if="fileErrorMessage"
+          id="custom-file-error"
+          class="w-full text-sm text-error"
+          role="status"
+          aria-live="polite"
+        >
+          {{ fileErrorMessage }}
+        </p>
     </div>
   </div>
 </template>

@@ -69,7 +69,7 @@ const serviceCards = computed<CardItem[]>(() =>
     >
       <template #description>
         <p>
-          <strong class="text-accent-400 font-medium text-base sm:text-lg lg:text-xl mb-3 font-semibold">Alla typer av trycksaker.</strong>
+          <strong class="text-accent-400 text-base sm:text-lg lg:text-xl mb-3">Alla typer av trycksaker.</strong>
         </p>
         <p class="font-body font-medium text-base sm:text-lg lg:text-xl text-white/90">
           Otroligt brett utbud med höga kvalitetsstandarder och fantastiska tryckresultat.

@@ -6,6 +6,8 @@ import { type Canvas, Textbox, ActiveSelection } from 'fabric'
 import { ref, shallowRef, computed, watch, onMounted, onUnmounted } from 'vue'
 import { setTextboxTextRadius, MAX_TEXT_RADIUS } from '@/utils/customDesign'
 import { CircularTextbox } from '~/utils/circularTextbox'
+import BaseDropdown from '~/components/base/BaseDropdown.vue'
+import type { DropdownGroup } from '~/components/base/BaseDropdown.vue'
 
 // Font names used for eager preloading on mount
 const FONT_NAMES = [
@@ -40,6 +42,39 @@ let attachedCanvas: Canvas | null = null
 
 // 5. Computed
 const hasSelection = computed(() => selectedTextboxes.value.length > 0)
+
+const fontGroups: DropdownGroup[] = [
+  {
+    label: 'Sans-Serif',
+    options: [
+      { label: 'Inter', value: "'Inter', sans-serif", style: "font-family: 'Inter', sans-serif" },
+      { label: 'Open Sans', value: "'Open Sans', sans-serif", style: "font-family: 'Open Sans', sans-serif" },
+      { label: 'Roboto', value: "'Roboto', sans-serif", style: "font-family: 'Roboto', sans-serif" },
+    ],
+  },
+  {
+    label: 'Serif',
+    options: [
+      { label: 'Merriweather', value: "'Merriweather', serif", style: "font-family: 'Merriweather', serif" },
+      { label: 'Playfair Display', value: "'Playfair Display', serif", style: "font-family: 'Playfair Display', serif" },
+      { label: 'PT Serif', value: "'PT Serif', serif", style: "font-family: 'PT Serif', serif" },
+    ],
+  },
+  {
+    label: 'Script',
+    options: [
+      { label: 'Dancing Script', value: "'Dancing Script', cursive", style: "font-family: 'Dancing Script', cursive" },
+      { label: 'Pacifico', value: "'Pacifico', cursive", style: "font-family: 'Pacifico', cursive" },
+    ],
+  },
+  {
+    label: 'Display',
+    options: [
+      { label: 'Bebas Neue', value: "'Bebas Neue', sans-serif", style: "font-family: 'Bebas Neue', sans-serif" },
+      { label: 'Oswald', value: "'Oswald', sans-serif", style: "font-family: 'Oswald', sans-serif" },
+    ],
+  },
+]
 
 // 6. Methods
 function isTextbox(obj: unknown): obj is Textbox {
@@ -233,6 +268,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
     <div v-else class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-2 p-3 sm:p-2 bg-white border border-gray-300 rounded-lg shadow-md">
       <!-- Text Input - Full width on mobile, flexible on larger screens -->
       <label class="flex items-center gap-2 flex-1 min-w-0">
+        <span class="sr-only">Text content</span>
         <input
           v-model="textValue"
           type="text"
@@ -246,30 +282,13 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
       <!-- Controls Container - Wraps on small screens -->
       <div class="flex flex-wrap items-center gap-2">
         <!-- Font Family -->
-        <select
-          v-model="fontFamily"
-          class="h-11 px-2 py-1 border-gray-300 bg-gray-50 cursor-pointer form-select-base outline-tight-select min-w-[120px] sm:min-w-[140px]"
-          @change="updateFontFamily"
-        >
-          <optgroup label="Sans-Serif">
-            <option value="'Inter', sans-serif">Inter</option>
-            <option value="'Open Sans', sans-serif">Open Sans</option>
-            <option value="'Roboto', sans-serif">Roboto</option>
-          </optgroup>
-          <optgroup label="Serif">
-            <option value="'Merriweather', serif">Merriweather</option>
-            <option value="'Playfair Display', serif">Playfair Display</option>
-            <option value="'PT Serif', serif">PT Serif</option>
-          </optgroup>
-          <optgroup label="Script">
-            <option value="'Dancing Script', cursive">Dancing Script</option>
-            <option value="'Pacifico', cursive">Pacifico</option>
-          </optgroup>
-          <optgroup label="Display">
-            <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
-            <option value="'Oswald', sans-serif">Oswald</option>
-          </optgroup>
-        </select>
+        <BaseDropdown
+          :groups="fontGroups"
+          :model-value="fontFamily"
+          label="Select font family"
+          class="min-w-[120px] sm:min-w-[140px]"
+          @change="(val) => { fontFamily = String(val); updateFontFamily() }"
+        />
 
         <!-- Bold -->
         <button
@@ -278,6 +297,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
           class="min-w-[44px] min-h-[44px] px-3 py-2 font-bold cursor-pointer form-button-base outline-tight-button"
           title="Bold"
           aria-label="Toggle bold"
+          :aria-pressed="isBold"
           @click="toggleBold"
         >
           B
@@ -290,6 +310,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
           class="min-w-[44px] min-h-[44px] px-3 py-2 italic cursor-pointer form-button-base outline-tight-button"
           title="Italic"
           aria-label="Toggle italic"
+          :aria-pressed="isItalic"
           @click="toggleItalic"
         >
           I
@@ -348,18 +369,4 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
     </div>
   </div>
 </template>
-
-<style scoped>
-/* Font preview in select options — Chrome only; Firefox/Safari ignore this */
-select option[value*="Inter"] { font-family: 'Inter', sans-serif; }
-select option[value*="Open Sans"] { font-family: 'Open Sans', sans-serif; }
-select option[value*="Roboto"] { font-family: 'Roboto', sans-serif; }
-select option[value*="Merriweather"] { font-family: 'Merriweather', serif; }
-select option[value*="Playfair Display"] { font-family: 'Playfair Display', serif; }
-select option[value*="PT Serif"] { font-family: 'PT Serif', serif; }
-select option[value*="Dancing Script"] { font-family: 'Dancing Script', cursive; }
-select option[value*="Pacifico"] { font-family: 'Pacifico', cursive; }
-select option[value*="Bebas Neue"] { font-family: 'Bebas Neue', sans-serif; }
-select option[value*="Oswald"] { font-family: 'Oswald', sans-serif; }
-</style>
 
