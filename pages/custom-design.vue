@@ -195,13 +195,20 @@ onBeforeUnmount(() => {
 watch(
   () => canvasStore.sides.map(v => v.backgroundSelection),
   async (newSelections, oldSelections) => {
-    console.log('Background selection changed:', { newSelections, oldSelections })
     for (let key = 0; key < newSelections.length; key++) {
       const selection = newSelections[key]
       if (selection === oldSelections?.[key]) continue
-      if (!selection) continue
       const canvas = canvasMap.value[key]
       if (!canvas) continue
+
+      if (!selection) {
+        // Selection was explicitly cleared — wipe objects and background from the live canvas
+        canvas.remove(...canvas.getObjects())
+        canvas.backgroundImage = undefined
+        canvas.requestRenderAll()
+        continue
+      }
+
       canvas.remove(...canvas.getObjects())
       if (selection === CUSTOM_BACKGROUND_ID) {
         const customDataUrl = canvasStore.sides[key]?.customBackgroundDataUrl
@@ -224,6 +231,19 @@ watch(
     }
   },
   { deep: true },
+)
+
+// Remove user-added objects from all live canvases when the store is cleared
+watch(
+  () => canvasStore.clearSeq,
+  () => {
+    for (const canvas of canvasMap.value) {
+      if (canvas) {
+        canvas.remove(...canvas.getObjects())
+        canvas.requestRenderAll()
+      }
+    }
+  },
 )
 
 // Initialize new canvases and dispose removed ones when the product's side count changes
