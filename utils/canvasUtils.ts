@@ -116,7 +116,7 @@ export function clearCanvasObjects(canvas: Canvas): void {
   canvas.remove(...canvas.getObjects())
 }
 
-export function clearLiveCanvas(canvas: Canvas, clearBackground = false): void {
+export function clearCanvas(canvas: Canvas, clearBackground = false): void {
   clearCanvasObjects(canvas)
   if (clearBackground) {
     canvas.backgroundImage = undefined

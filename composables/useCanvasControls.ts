@@ -3,7 +3,7 @@
 import { FabricImage, Textbox } from 'fabric'
 import type { Canvas, FabricObject } from 'fabric'
 import { CircularTextbox } from '~/utils/circularTextbox'
-import { setTextboxTextRadius } from '~/utils/customDesign'
+import { setTextboxTextRadius } from '~/utils/canvasUtils'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
 

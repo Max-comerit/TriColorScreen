@@ -22,10 +22,10 @@ import IconTextButton from '~/components/common/IconTextButton.vue'
 import { configureActiveSelectionDefaults } from '@/utils/canvasSetup'
 import {
   clearCanvasObjects,
-  clearLiveCanvas,
+  clearCanvas,
   getInitialBackgroundUrl,
   rescaleCanvas,
-} from '@/utils/customDesign'
+} from '~/utils/canvasUtils'
 
 // Lazy-load QuoteForm so Zod and nanoid are kept out of the shared synchronous bundle
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
@@ -194,7 +194,7 @@ watch(
 
       if (!selection) {
         // Selection was explicitly cleared — wipe objects and background from the live canvas
-        clearLiveCanvas(canvas, true)
+        clearCanvas(canvas, true)
         continue
       }
 
@@ -210,7 +210,7 @@ watch(
   () => {
     for (const canvas of canvasMap.value) {
       if (canvas) {
-        clearLiveCanvas(canvas)
+        clearCanvas(canvas)
       }
     }
   },

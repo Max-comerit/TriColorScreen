@@ -4,7 +4,7 @@
 // 1. Imports
 import { type Canvas, Textbox, ActiveSelection } from 'fabric'
 import { ref, shallowRef, computed, watch, onMounted, onUnmounted } from 'vue'
-import { setTextboxTextRadius, MAX_TEXT_RADIUS } from '@/utils/customDesign'
+import { setTextboxTextRadius, MAX_TEXT_RADIUS } from '~/utils/canvasUtils'
 import { CircularTextbox } from '~/utils/circularTextbox'
 import BaseDropdown from '~/components/base/BaseDropdown.vue'
 import type { DropdownGroup } from '~/components/base/BaseDropdown.vue'
