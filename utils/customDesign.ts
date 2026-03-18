@@ -113,16 +113,15 @@ export function getInitialBackgroundUrl(
 }
 
 /**
- * Resizes a Fabric canvas to new dimensions, rescales the background image to fill,
- * and proportionally repositions all canvas objects via the provided rescaleObjects function.
+ * Resizes a Fabric canvas to new dimensions and rescales the background image to fill.
+ * Lazy-loads useCanvasRescale so it stays out of the synchronous bundle (Lighthouse optimization).
  */
-export function rescaleCanvas(
+export async function rescaleCanvas(
   canvasInstance: Canvas,
   ratio: number,
   newWidth: number,
   newHeight: number,
-  rescaleObjects: (canvas: Canvas, ratio: number) => void,
-): void {
+): Promise<void> {
   canvasInstance.setDimensions({ width: newWidth, height: newHeight })
   const bg = canvasInstance.backgroundImage as FabricImage | undefined
   if (bg) {
@@ -130,6 +129,8 @@ export function rescaleCanvas(
     bg.scaleToHeight(newHeight)
     bg.set({ left: newWidth / 2, top: newHeight / 2 })
   }
+  const { useCanvasRescale } = await import('~/composables/useCanvasRescale')
+  const { rescaleObjects } = useCanvasRescale()
   rescaleObjects(canvasInstance, ratio)
   canvasInstance.requestRenderAll()
 }

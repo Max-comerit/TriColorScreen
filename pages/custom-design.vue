@@ -13,7 +13,6 @@ import IconButton from '~/components/common/IconButton.vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
-import { useCanvasRescale } from '~/composables/useCanvasRescale'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { storeToRefs } from 'pinia'
 import { useCustomBackground, loadBackgroundOnCanvas, CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
@@ -61,7 +60,6 @@ useHead({
 
 const { addImageToCanvas } = useCustomImage()
 const { addTextToCanvas } = useCustomText()
-const { rescaleObjects } = useCanvasRescale()
 const canvasStore = useCanvasStore()
 const { activeSide } = storeToRefs(canvasStore)
 
@@ -112,7 +110,7 @@ onMounted(async () => {
     if (previousWidth > 0 && (width !== previousWidth || height !== currentCanvasHeight)) {
       const ratio = width / previousWidth
       for (const canvas of canvasMap.value) {
-        if (canvas) rescaleCanvas(canvas, ratio, width, height, rescaleObjects)
+        if (canvas) void rescaleCanvas(canvas, ratio, width, height)
       }
     }
 
