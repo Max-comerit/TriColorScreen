@@ -2,21 +2,25 @@
   {
     "title": "Logotyper",
     "description": "En logotyp som speglar ditt varumärke. Har du en idé eller ingen alls tar vi fram en design som passar din verksamhet.",
-    "imageSrc": "/images/services/graphic-production/logos.jpg"
+    "imageSrc": "/images/services/graphic-production/logos.jpg",
+    "alt": "Exempel på logotypdesign som representerar ett varumärke"
   },
   {
     "title": "Broschyrer & Mappar",
     "description": "Broschyrer, folders och affischer som presenterar ditt företag tydligt och professionellt. Passar både för marknadsföring och information.",
-    "imageSrc": "/images/services/graphic-production/folders.jpg"
+    "imageSrc": "/images/services/graphic-production/folders.jpg",
+    "alt": "Två uppvikta folders som exempel på broschyrer och trycksaker för företagets marknadsföring"
   },
   {
     "title": "Skyltar & Banderoller",
     "description": "Skyltar, rollups och banderoller som gör din verksamhet synlig. Perfekt för kontor, butiker och mässor.",
-    "imageSrc": "/images/services/graphic-production/rollups.jpg"
+    "imageSrc": "/images/services/graphic-production/rollups.jpg",
+    "alt": "Fyra rollups för kontor och mässor"
   },
   {
     "title": "Visitkort & Kuvert",
     "description": "Visitkort, kuvert och presentationsmaterial med en genomtänkt design som stärker intrycket av ditt företag.",
-    "imageSrc": "/images/services/graphic-production/business-cards.jpg"
+    "imageSrc": "/images/services/graphic-production/business-cards.jpg",
+    "alt": "Bunt med visitkort och kuvert för professionell presentation"
   }
 ]

@@ -2,16 +2,19 @@
   {
     "title": "Fönsterdekor",
     "description": "Med fönsterdekor kan du skapa insynsskydd, solskydd eller förstärka din marknadsföring. Logotyper, kampanjbudskap och dekorativa mönster gör att ditt budskap syns tydligare. Våra fönsterdekaler monteras på insidan av glaset och påverkas inte av väder och vind.",
-    "imageSrc": "/images/services/decoration-foiling/window-decor.jpg"
+    "imageSrc": "/images/services/decoration-foiling/window-decor.jpg",
+    "alt": "Två fönsterdekaler med evenemangstexter för Idol 2023"
   },
   {
     "title": "Bildekor",
     "description": "Vi väljer dekormaterial efter ditt behov. Med ett brett utbud av skärfolier och printvinyler kan vi skapa dekorer i många färger och utföranden: transparenta, hålade eller translucent. Vi levererar allt från temporära lösningar till dekor som håller i flera år.",
-    "imageSrc": "/images/services/decoration-foiling/car-decor.jpg"
+    "imageSrc": "/images/services/decoration-foiling/car-decor.jpg",
+    "alt": "Jeep med bildekor på höger framdörr, exempel på dekorlösning för fordon"
   },
   {
     "title": "Foliering av fordon",
     "description": "Vi hjälper både privatpersoner och företag med bildekor, fordonsdekor och helfoliering. Välj mellan många utföranden som blank, matt, metallic eller print. Vi erbjuder även stripning, dekaler och solfilm.",
-    "imageSrc": "/images/services/decoration-foiling/car-wrapping.jpg"
+    "imageSrc": "/images/services/decoration-foiling/car-wrapping.jpg",
+    "alt": "Opel helfolierad i grön metallic, exempel på fordonsfoliering med olika utföranden"
   }
 ]

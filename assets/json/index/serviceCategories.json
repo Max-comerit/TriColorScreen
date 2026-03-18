@@ -3,6 +3,7 @@
     "title": "Trycksaker",
     "description": "Vi skapar trycksaker som förstärker ditt budskap och gör ett professionellt intryck. Allt från visitkort och foldrar till broschyrer och affischer anpassas efter dina behov.",
     "imageSrc": "/images/index/printed-matter.jpg",
+    "alt": "Hand som visar två visitkort som representerar trycksaker som visitkort, broschyrer och affischer",
     "link": "/services/printed-matter",
     "maxLines": 6
   },
@@ -10,6 +11,7 @@
     "title": "Screentryck och Brodyr",
     "description": "Vi ger dina kläder och textilier ett personligt uttryck. Från profil- och arbetskläder till eventtröjor kan vi skapa design som syns och håller över tid.",
     "imageSrc": "/images/index/screen-printing-embroidery.jpg",
+    "alt": "Brodyr på textil som visar hållbar profilering och personlig design",
     "link": "/services/screen-printing-embroidery",
     "maxLines": 6
   },
@@ -17,6 +19,7 @@
     "title": "Dekoration och Foliering",
     "description": "Vi gör ytor levande med dekor och foliering, från fönster och kontor till fordon och mässmontrar. Kreativa lösningar som förstärker din kommunikation.",
     "imageSrc": "/images/index/decoration-foiling.jpg",
+    "alt": "Jeep med bildekor på dörren som visar dekor och foliering för fordon",
     "link": "/services/decoration-foiling",
     "maxLines": 6
   },
@@ -24,6 +27,7 @@
     "title": "Grafisk Produktion",
     "description": "Vi hjälper dig att skapa grafiska uttryck som lyfter ditt varumärke. Logotyper, grafiska profiler och trycksaker tas fram med fokus på tydlighet och kvalitet.",
     "imageSrc": "/images/index/graphic-production.jpg",
+    "alt": "Person som arbetar med färgkartor, laptop och surfplattor för grafisk produktion och design",
     "link": "/services/graphic-production",
     "maxLines": 6
   },
@@ -31,6 +35,7 @@
     "title": "Event och Reklam",
     "description": "Vi gör ditt event synligt med effektfulla lösningar. Fasadvepor, banderoller och fönsterdekor hjälper dig att fånga uppmärksamheten och stärka ditt varumärke.",
     "imageSrc": "/images/index/event-advertisement.jpg",
+    "alt": "Café med tydlig fasadskylt som synliggör varumärket vid ute- och inomhusservering",
     "link": "/services/event-advertisement",
     "maxLines": 6
   }

@@ -2,26 +2,31 @@
   {
     "title": "Skyltning Inomhus",
     "description": "Vi gör alltid en koll på plats där vi undersöker förutsättningarna för att kunna göra bästa val av material och infästningar.",
-    "imageSrc": "/images/services/event-advertisement/indoor-advertisement.jpg"
+    "imageSrc": "/images/services/event-advertisement/indoor-advertisement.jpg",
+    "alt": "Väggskylt med fasadlampa som exempel på utomhusskyltning och belysning"
   },
   {
     "title": "Byggskyltar",
     "description": "Klassiska byggskyltar monterade på olika typer av byggställningar. Tillverkad i bockad och hålad aluminiumplåt.",
-    "imageSrc": "/images/services/event-advertisement/construction-signs.jpg"
+    "imageSrc": "/images/services/event-advertisement/construction-signs.jpg",
+    "alt": "Byggskylt på en byggplats"
   },
   {
     "title": "Banderoller",
     "description": "Banderoller och vepor är perfekt för tillfällig skyltning och när ni vill byta budskap ofta. Det finns ett antal olika fästanordningar till dem beroende på era önskemål och hur de skall sitta.",
-    "imageSrc": "/images/services/event-advertisement/banners.jpg"
+    "imageSrc": "/images/services/event-advertisement/banners.jpg",
+    "alt": "Maskin som tillverkar banderoller och vepor, exempel på produktion av tillfälliga skyltar och vepor"
   },
   {
     "title": "Roll-Ups",
     "description": "Fantastiskt lätt att bära med sig och ställa upp på mässan, evenemanget eller föreläsningen. Enkelsidig eller dubbelsidig, det finns även tillbehör som hyllor och broschyrhållare för en mer komplett minimonter.",
-    "imageSrc": "/images/services/event-advertisement/roll-ups.jpg"
+    "imageSrc": "/images/services/event-advertisement/roll-ups.jpg",
+    "alt": "Tre uppställda roll-ups sida vid sida, exempel på portabla skyltlösningar för mässor och evenemang"
   },
   {
     "title": "Flaggor",
     "description": "OLIKA MODELLER AV FLAGGOR: Beachflaggor, butiksflaggor, kioskflaggor, vepor till stänger och lyktstolpar. Vi hjälper dig hitta rätt alternativ för dina syften.",
-    "imageSrc": "/images/services/event-advertisement/beach-flags.jpg"
+    "imageSrc": "/images/services/event-advertisement/beach-flags.jpg",
+    "alt": "Flaggor av olika modeller, exempel på skyltlösningar för olika tillfällen"
   }
 ]
