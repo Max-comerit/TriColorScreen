@@ -9,6 +9,8 @@ import InfoDialog from '~/components/layout/InfoDialog.vue'
 interface Props {
   /** Controls modal visibility via v-model */
   modelValue: boolean
+  /** Form type: 'Contact' or 'Quote' */
+  form?: 'Contact' | 'Quote'
 }
 
 // ===== PROPS & EMITS =====
@@ -42,13 +44,31 @@ const emit = defineEmits<{
         <p class="mb-2 text-base">
           När du kontaktar oss via formuläret samlar vi in följande uppgifter:
         </p>
-        <ul class="list-disc list-inside space-y-1 ml-2 text-base">
+        <!-- Quote Form Fields -->
+        <ul v-if="form === 'Quote'" class="list-disc list-inside space-y-1 ml-2 text-base">
           <li>Namn</li>
           <li>E-postadress</li>
           <li>Telefonnummer (om angivet)</li>
           <li>Kundtyp (privatperson eller företag)</li>
-          <li>Ämne och meddelande</li>
+          <li>Ämne</li>
+          <li>Produkt Kategori</li>
+          <li>Produkt</li>
+          <li>Produkt ID och storlek (om angivet)</li>
+          <li>Antal</li>
+          <li>Tillagda design bilder</li>
+          <li>Meddelande (om angivet)</li>
+          <li>GDPR samtycke</li>
+        </ul>
+        <!-- Default (Contact Form Fields) -->
+        <ul v-else class="list-disc list-inside space-y-1 ml-2 text-base">
+          <li>Namn</li>
+          <li>E-postadress</li>
+          <li>Telefonnummer (om angivet)</li>
+          <li>Kundtyp (privatperson eller företag)</li>
+          <li>Ämne</li>
           <li>Eventuell bifogad bild</li>
+          <li>Meddelande (om angivet)</li>
+          <li>GDPR samtycke</li>
         </ul>
       </section>
 
