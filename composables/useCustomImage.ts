@@ -9,7 +9,7 @@ import {
   createBringToFrontControlRender,
 } from '@/utils/customControlRenders'
 import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
-import { toggleObjectZOrder } from '@/utils/customDesign'
+import { toggleObjectZOrder } from '~/utils/canvasUtils'
 
 interface Transform {
   target?: unknown

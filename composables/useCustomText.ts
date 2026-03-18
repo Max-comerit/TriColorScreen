@@ -9,7 +9,7 @@ import {
   createBringToFrontControlRender,
 } from '@/utils/customControlRenders'
 import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
-import { toggleObjectZOrder, setTextboxTextRadius } from '@/utils/customDesign'
+import { toggleObjectZOrder, setTextboxTextRadius } from '~/utils/canvasUtils'
 import { CircularTextbox } from '~/utils/circularTextbox'
 
 interface FabricCanvasLike {
