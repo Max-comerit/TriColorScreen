@@ -112,6 +112,18 @@ export function getInitialBackgroundUrl(
   return defaults[sideKey] ?? ''
 }
 
+export function clearCanvasObjects(canvas: Canvas): void {
+  canvas.remove(...canvas.getObjects())
+}
+
+export function clearLiveCanvas(canvas: Canvas, clearBackground = false): void {
+  clearCanvasObjects(canvas)
+  if (clearBackground) {
+    canvas.backgroundImage = undefined
+  }
+  canvas.requestRenderAll()
+}
+
 /**
  * Resizes a Fabric canvas to new dimensions and rescales the background image to fill.
  * Lazy-loads useCanvasRescale so it stays out of the synchronous bundle (Lighthouse optimization).

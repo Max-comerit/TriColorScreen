@@ -20,7 +20,12 @@ import { computed, defineAsyncComponent, nextTick, ref, shallowRef, onMounted, o
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
 import IconTextButton from '~/components/common/IconTextButton.vue'
 import { configureActiveSelectionDefaults } from '@/utils/canvasSetup'
-import { getInitialBackgroundUrl, rescaleCanvas } from '@/utils/customDesign'
+import {
+  clearCanvasObjects,
+  clearLiveCanvas,
+  getInitialBackgroundUrl,
+  rescaleCanvas,
+} from '@/utils/customDesign'
 
 // Lazy-load QuoteForm so Zod and nanoid are kept out of the shared synchronous bundle
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
@@ -83,6 +88,45 @@ const {
 /** Assign or remove a canvas element ref from the template v-for */
 function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
   canvasElMap[key] = el ?? undefined
+}
+
+function syncAspectRatioFromBackground(side: number, width: number, height: number): void {
+  if (side === canvasStore.activeSide && width > 0 && height > 0) {
+    canvasStore.setAspectRatio(`${width} / ${height}`)
+  }
+}
+
+async function applyBackgroundSelection(
+  side: number,
+  canvas: Canvas,
+  selection: string | null | undefined,
+  clearObjects = true,
+): Promise<void> {
+  if (clearObjects) {
+    clearCanvasObjects(canvas)
+  }
+
+  if (!selection) {
+    canvas.backgroundImage = undefined
+    canvas.requestRenderAll()
+    return
+  }
+
+  if (selection === CUSTOM_BACKGROUND_ID) {
+    const customDataUrl = canvasStore.sides[side]?.customBackgroundDataUrl
+    if (!customDataUrl) {
+      canvas.backgroundImage = undefined
+      canvas.requestRenderAll()
+      return
+    }
+
+    const bg = await loadBackgroundOnCanvas(canvas, customDataUrl)
+    syncAspectRatioFromBackground(side, bg.width, bg.height)
+    return
+  }
+
+  const bg = await loadBackgroundOnCanvas(canvas, selection)
+  syncAspectRatioFromBackground(side, bg.width, bg.height)
 }
 
 // ===== COMPUTED =====
@@ -150,31 +194,11 @@ watch(
 
       if (!selection) {
         // Selection was explicitly cleared — wipe objects and background from the live canvas
-        canvas.remove(...canvas.getObjects())
-        canvas.backgroundImage = undefined
-        canvas.requestRenderAll()
+        clearLiveCanvas(canvas, true)
         continue
       }
 
-      canvas.remove(...canvas.getObjects())
-      if (selection === CUSTOM_BACKGROUND_ID) {
-        const customDataUrl = canvasStore.sides[key]?.customBackgroundDataUrl
-        if (customDataUrl) {
-          const bg = await loadBackgroundOnCanvas(canvas, customDataUrl)
-          if (key === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
-            canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
-          }
-        }
-        else {
-          canvas.backgroundImage = undefined
-          canvas.requestRenderAll()
-        }
-      } else {
-        const bg = await loadBackgroundOnCanvas(canvas, selection)
-        if (key === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
-          canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
-        }
-      }
+      await applyBackgroundSelection(key, canvas, selection)
     }
   },
   { deep: true },
@@ -186,8 +210,7 @@ watch(
   () => {
     for (const canvas of canvasMap.value) {
       if (canvas) {
-        canvas.remove(...canvas.getObjects())
-        canvas.requestRenderAll()
+        clearLiveCanvas(canvas)
       }
     }
   },
@@ -241,19 +264,13 @@ async function initializeCanvas(side: number, el: HTMLCanvasElement, width: numb
     if (sideState?.backgroundSelection === CUSTOM_BACKGROUND_ID) {
       // Restore a previously uploaded custom image; otherwise leave the canvas blank.
       if (sideState.customBackgroundDataUrl) {
-        const bg = await loadBackgroundOnCanvas(canvasInstance, sideState.customBackgroundDataUrl)
-        if (side === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
-          canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
-        }
+        await applyBackgroundSelection(side, canvasInstance, CUSTOM_BACKGROUND_ID, false)
       }
     }
     else {
       const initialBackgroundUrl = getInitialBackgroundUrl(canvasStore.sides, side)
       if (initialBackgroundUrl) {
-        const bg = await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl)
-        if (side === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
-          canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
-        }
+        await applyBackgroundSelection(side, canvasInstance, initialBackgroundUrl, false)
         if (!sideState?.backgroundSelection) {
           canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
         }
