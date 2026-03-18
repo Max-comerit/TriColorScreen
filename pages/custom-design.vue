@@ -3,7 +3,7 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import '~/assets/css/custom-design-fonts.css'
-import { Canvas, type FabricImage, ActiveSelection, Control, controlsUtils } from 'fabric'
+import { Canvas } from 'fabric'
 import { useSiteUrl } from '~/composables/useSiteUrl'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
@@ -19,13 +19,9 @@ import { storeToRefs } from 'pinia'
 import { useCustomBackground, loadBackgroundOnCanvas, CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 import { computed, defineAsyncComponent, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
-import {
-  createRotateControlRender,
-  createTrashControlRender,
-  createResizeControlRender,
-} from '@/utils/customControlRenders'
-import { getRotateImage, getTrashCanImage, getResizeImage } from '@/utils/customImageIcons'
 import IconTextButton from '~/components/common/IconTextButton.vue'
+import { configureActiveSelectionDefaults } from '@/utils/canvasSetup'
+import { getInitialBackgroundUrl, rescaleCanvas } from '@/utils/customDesign'
 
 // Lazy-load QuoteForm so Zod and nanoid are kept out of the shared synchronous bundle
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
@@ -104,54 +100,7 @@ onMounted(async () => {
   }
 
   // Configure ActiveSelection controls (box-select / multi-select)
-  ActiveSelection.ownDefaults.controls = {
-    deleteIcon: new Control({
-      x: 0.5,
-      y: -0.5,
-      offsetX: 12,
-      offsetY: -12,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'pointer',
-      render: createTrashControlRender(getTrashCanImage()),
-      mouseUpHandler: (_eventData, transform) => {
-        const target = transform?.target as ActiveSelection | undefined
-        if (target) {
-          const c = target.canvas
-          if (c) {
-            target.getObjects().forEach(obj => c.remove(obj))
-            c.discardActiveObject()
-            c.requestRenderAll()
-          }
-        }
-      },
-    }),
-    rotateIcon: new Control({
-      x: 0,
-      y: -0.5,
-      offsetY: -50,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'pointer',
-      render: createRotateControlRender(getRotateImage()),
-      withConnection: true,
-      actionHandler: controlsUtils.rotationWithSnapping,
-    }),
-    resizeIcon: new Control({
-      x: 0.5,
-      y: 0.5,
-      offsetX: 12,
-      offsetY: 12,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'nwse-resize',
-      render: createResizeControlRender(getResizeImage()),
-      actionHandler: controlsUtils.scalingEqually,
-    }),
-  }
-  ActiveSelection.ownDefaults.borderColor = 'blue'
-  ActiveSelection.ownDefaults.borderScaleFactor = 1
-  ActiveSelection.ownDefaults.borderDashArray = [5, 5]
+  configureActiveSelectionDefaults()
 
   // Observe the wrapper div — CSS controls its size, we sync Fabric to it
   resizeObserver = new ResizeObserver((entries) => {
@@ -163,7 +112,7 @@ onMounted(async () => {
     if (previousWidth > 0 && (width !== previousWidth || height !== currentCanvasHeight)) {
       const ratio = width / previousWidth
       for (const canvas of canvasMap.value) {
-        if (canvas) rescaleCanvas(canvas, ratio, width, height)
+        if (canvas) rescaleCanvas(canvas, ratio, width, height, rescaleObjects)
       }
     }
 
@@ -301,7 +250,7 @@ async function initializeCanvas(side: number, el: HTMLCanvasElement, width: numb
       }
     }
     else {
-      const initialBackgroundUrl = getInitialBackgroundUrl(side)
+      const initialBackgroundUrl = getInitialBackgroundUrl(canvasStore.sides, side)
       if (initialBackgroundUrl) {
         const bg = await loadBackgroundOnCanvas(canvasInstance, initialBackgroundUrl)
         if (side === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
@@ -317,36 +266,6 @@ async function initializeCanvas(side: number, el: HTMLCanvasElement, width: numb
   canvasInstance.on('object:added', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
   canvasInstance.on('object:modified', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
   canvasInstance.on('object:removed', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
-}
-
-/** Returns the initial background URL for a side: uses the stored selection, or a hardcoded default for the first two sides */
-function getInitialBackgroundUrl(sideKey: number): string {
-  const state = canvasStore.sides[sideKey]
-  if (state?.backgroundSelection && state.backgroundSelection !== CUSTOM_BACKGROUND_ID) {
-    return state.backgroundSelection
-  }
-  // Fallback defaults for the first two sides on a blank first visit
-  const defaults: string[] = [
-    '/images/custom-design/t-shirt-front.png',
-    '/images/custom-design/t-shirt-back.png',
-  ]
-  return defaults[sideKey] ?? ''
-}
-
-function rescaleCanvas(canvasInstance: Canvas, ratio: number, newWidth: number, newHeight: number): void {
-  canvasInstance.setDimensions({ width: newWidth, height: newHeight })
-
-  // Rescale background image to fill new dimensions
-  const bg = canvasInstance.backgroundImage as FabricImage | undefined
-  if (bg) {
-    bg.scaleToWidth(newWidth)
-    bg.scaleToHeight(newHeight)
-    bg.set({ left: newWidth / 2, top: newHeight / 2 })
-  }
-
-  // Proportionally rescale and reposition all objects
-  rescaleObjects(canvasInstance, ratio)
-  canvasInstance.requestRenderAll()
 }
 
 /** Bridges the BackgroundSelector emit to applyCustomBackground, injecting the active canvas. */

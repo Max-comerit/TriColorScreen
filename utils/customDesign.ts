@@ -3,9 +3,10 @@
  * 
  * This module provides functions to manipulate the z-order of Fabric objects and to set a circular text path for Textbox objects based on a specified radius. The circular path is created using SVG path syntax and is centered at the origin. The module also includes a function to check if the radius value is within a valid range for creating a circular path.
  */
-import type { FabricObject, Canvas } from 'fabric'
+import type { FabricObject, Canvas, FabricImage } from 'fabric'
 import type { CircularTextbox } from './circularTextbox'
 import { Path } from 'fabric'
+import { CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 
 // Valid range for text radius to create a circular path
 export const MIN_TEXT_RADIUS = 25
@@ -89,4 +90,46 @@ export function setTextboxTextRadius(textbox: CircularTextbox, radius: number): 
   })
   textbox.controls.resize.visible = !hasPath(radius)
   textbox.setCoords()
+}
+
+/**
+ * Returns the initial background URL for a given canvas side.
+ * Uses the stored selection if present, otherwise falls back to hardcoded defaults
+ * for the first two sides.
+ */
+export function getInitialBackgroundUrl(
+  sides: Array<{ backgroundSelection: string | null } | undefined>,
+  sideKey: number,
+): string {
+  const state = sides[sideKey]
+  if (state?.backgroundSelection && state.backgroundSelection !== CUSTOM_BACKGROUND_ID) {
+    return state.backgroundSelection
+  }
+  const defaults: string[] = [
+    '/images/custom-design/t-shirt-front.png',
+    '/images/custom-design/t-shirt-back.png',
+  ]
+  return defaults[sideKey] ?? ''
+}
+
+/**
+ * Resizes a Fabric canvas to new dimensions, rescales the background image to fill,
+ * and proportionally repositions all canvas objects via the provided rescaleObjects function.
+ */
+export function rescaleCanvas(
+  canvasInstance: Canvas,
+  ratio: number,
+  newWidth: number,
+  newHeight: number,
+  rescaleObjects: (canvas: Canvas, ratio: number) => void,
+): void {
+  canvasInstance.setDimensions({ width: newWidth, height: newHeight })
+  const bg = canvasInstance.backgroundImage as FabricImage | undefined
+  if (bg) {
+    bg.scaleToWidth(newWidth)
+    bg.scaleToHeight(newHeight)
+    bg.set({ left: newWidth / 2, top: newHeight / 2 })
+  }
+  rescaleObjects(canvasInstance, ratio)
+  canvasInstance.requestRenderAll()
 }
