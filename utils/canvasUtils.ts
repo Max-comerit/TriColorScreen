@@ -12,6 +12,9 @@ import { CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 export const MIN_TEXT_RADIUS = 25
 export const MAX_TEXT_RADIUS = 300
 
+const BASELINE_PATH_OFFSET_Y = -10
+const ASCENDER_PATH_OFFSET_Y = 18
+
 /**
  * Toggles the z-order of a single Fabric object.
  * If the object is at the front, sends it to the back. Otherwise, brings it to the front.
@@ -52,7 +55,21 @@ function hasPath(radius: number): boolean {
  * 
  * @param radius - The radius of the circular path
  */
-function createCircularTextPath(radius: number) : Path {
+function getCircularTextPathAlign(radius: number): 'baseline' | 'center' | 'ascender' | 'descender' {
+  // Upward warps need the path to sit above the glyphs instead of below them,
+  // otherwise the letters collapse into the inside of the arc too quickly.
+  return radius < 0 ? 'ascender' : 'baseline'
+}
+
+function getCircularTextPathOffset(radius: number, pathAlign: 'baseline' | 'center' | 'ascender' | 'descender'): Point {
+  const offsetY = pathAlign === 'ascender'
+    ? -radius + ASCENDER_PATH_OFFSET_Y
+    : -radius + BASELINE_PATH_OFFSET_Y
+
+  return new Point(0, offsetY)
+}
+
+function createCircularTextPath(radius: number, pathAlign: 'baseline' | 'center' | 'ascender' | 'descender') : Path {
   const absRadius = Math.abs(radius)
   if(hasPath(radius)) {
     // Create a circle path centered at origin (0, 0), rotated 90 degrees
@@ -65,7 +82,7 @@ function createCircularTextPath(radius: number) : Path {
       );
     // Anchor the text path to the tangent point instead of the circle center.
     // This keeps the curved text closer to the original text position.
-    path.pathOffset = new Point(0, -radius - 10)
+    path.pathOffset = getCircularTextPathOffset(radius, pathAlign)
     return path
   } else {
     return undefined as unknown as Path; // Return undefined if radius is out of bounds, but cast to Path to satisfy return type
@@ -87,6 +104,7 @@ export function setTextboxTextRadius(textbox: CircularTextbox, radius: number): 
   const center = textbox.getCenterPoint()
   const nextHasPath = hasPath(radius)
   const currentHasPath = hasPath(textbox.textRadius)
+  const pathAlign = getCircularTextPathAlign(radius)
 
   if (!textbox.baseWidth || textbox.baseWidth <= 0) {
     textbox.baseWidth = textbox.width
@@ -99,9 +117,11 @@ export function setTextboxTextRadius(textbox: CircularTextbox, radius: number): 
   textbox.set({
     width: textbox.baseWidth,
     textRadius: radius,
-    path: nextHasPath ? createCircularTextPath(radius) : undefined,
+    path: nextHasPath ? createCircularTextPath(radius, pathAlign) : undefined,
     pathSide: radius >= 0 ? 'left' : 'right',
+    pathAlign,
     pathStartOffset: 0,
+    objectCaching: !nextHasPath,
   })
 
   if (!nextHasPath) {
