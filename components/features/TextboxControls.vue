@@ -4,7 +4,7 @@
 // 1. Imports
 import { type Canvas, Textbox, ActiveSelection } from 'fabric'
 import { ref, shallowRef, computed, watch, onMounted, onUnmounted } from 'vue'
-import { setTextboxTextRadius, MAX_TEXT_RADIUS } from '~/utils/canvasUtils'
+import { setTextboxTextRadius, MIN_TEXT_RADIUS, MAX_TEXT_RADIUS } from '~/utils/canvasUtils'
 import { CircularTextbox } from '~/utils/circularTextbox'
 import BaseDropdown from '~/components/base/BaseDropdown.vue'
 import type { DropdownGroup } from '~/components/base/BaseDropdown.vue'
@@ -34,9 +34,29 @@ const isBold = ref(false)
 const isItalic = ref(false)
 const textAlign = ref<'left' | 'center' | 'right'>('left')
 const fill = ref('#000000')
-const textRadius = ref(0)
+// warpSlider: -100 to 100, where 0 = no warp, ±100 = maximum warp.
+// Positive = text curves upward (left side of arc), negative = downward (right side).
+const warpSlider = ref(0)
 const textValue = ref('')
 const circularMode = ref(false)
+
+// Maps slider intensity (0–100) → fabric radius (MAX → MIN, i.e. larger slider = tighter arc = more warp).
+function sliderToRadius(v: number): number {
+  if (v === 0) return 0
+  const sign = v > 0 ? 1 : -1
+  return sign * (MAX_TEXT_RADIUS - (Math.abs(v) / 100) * (MAX_TEXT_RADIUS - MIN_TEXT_RADIUS))
+}
+
+// Inverse of sliderToRadius: converts stored fabric radius back to slider intensity.
+function radiusToSlider(r: number): number {
+  if (r === 0) return 0
+  const absR = Math.abs(r)
+  if (absR < MIN_TEXT_RADIUS || absR > MAX_TEXT_RADIUS) return 0
+  const sign = r > 0 ? 1 : -1
+  const v = Math.round(((MAX_TEXT_RADIUS - absR) / (MAX_TEXT_RADIUS - MIN_TEXT_RADIUS)) * 100)
+  // Clamp to at least ±1 so an existing path isn't silently dropped
+  return sign * Math.max(v, 1)
+}
 
 let attachedCanvas: Canvas | null = null
 
@@ -137,7 +157,7 @@ function syncFromFirst() {
   textAlign.value = (first.textAlign as 'left' | 'center' | 'right') ?? 'left'
   fill.value = (first.fill as string) ?? '#000000'
   textValue.value = first.text ?? ''
-  textRadius.value = first instanceof CircularTextbox ? first.textRadius : 0
+  warpSlider.value = first instanceof CircularTextbox ? radiusToSlider(first.textRadius) : 0
 }
 
 function applyToAll(updater: (tb: Textbox) => void) {
@@ -204,7 +224,7 @@ function closeCircularMode() {
 function applyCircularRadius() {
   applyToAll((tb) => {
     if (tb instanceof CircularTextbox) {
-      setTextboxTextRadius(tb, textRadius.value)
+      setTextboxTextRadius(tb, sliderToRadius(warpSlider.value))
     }
   })
 }
@@ -243,15 +263,18 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
       <label class="flex-1 flex flex-col gap-2">
         <span class="text-sm font-medium text-gray-700">Cirkulär textradie</span>
         <input
-          v-model.number="textRadius"
+          v-model.number="warpSlider"
           type="range"
-          :min="-MAX_TEXT_RADIUS"
-          :max="MAX_TEXT_RADIUS"
+          min="-100"
+          max="100"
+          step="1"
           class="h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500"
           @input="applyCircularRadius"
           @change="applyCircularRadius"
         >
-        <span class="text-xs text-gray-600">{{ textRadius }}px</span>
+        <span class="text-xs text-gray-600">
+          {{ warpSlider === 0 ? 'Ingen böjning' : (warpSlider > 0 ? `${warpSlider}%` : `${Math.abs(warpSlider)}%`) }}
+        </span>
       </label>
       <button
         type="button"

@@ -5,12 +5,12 @@
  */
 import type { FabricObject, Canvas, FabricImage } from 'fabric'
 import type { CircularTextbox } from './circularTextbox'
-import { Path } from 'fabric'
+import { Path, Point } from 'fabric'
 import { CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 
 // Valid range for text radius to create a circular path
 export const MIN_TEXT_RADIUS = 25
-export const MAX_TEXT_RADIUS = 100
+export const MAX_TEXT_RADIUS = 300
 
 /**
  * Toggles the z-order of a single Fabric object.
@@ -56,13 +56,17 @@ function createCircularTextPath(radius: number) : Path {
   const absRadius = Math.abs(radius)
   if(hasPath(radius)) {
     // Create a circle path centered at origin (0, 0), rotated 90 degrees
-    return new Path(
+    const path = new Path(
         `M 0 ${radius} 
         A ${absRadius} ${absRadius} 0 1 1 0  ${-radius} 
         A ${absRadius} ${absRadius} 0 1 1 0  ${radius} 
         Z`,
-        { offset: { x: 0, y: radius }, fill: '', stroke: 'blue', strokeWidth: 1, strokeDashArray: [5, 5], visible: false }
+        { fill: '', stroke: 'blue', strokeWidth: 1, strokeDashArray: [5, 5], visible: false }
       );
+    // Anchor the text path to the tangent point instead of the circle center.
+    // This keeps the curved text closer to the original text position.
+    path.pathOffset = new Point(0, -radius - 10)
+    return path
   } else {
     return undefined as unknown as Path; // Return undefined if radius is out of bounds, but cast to Path to satisfy return type
   }
@@ -80,15 +84,33 @@ function createCircularTextPath(radius: number) : Path {
  * @param radius - The desired text radius, which determines the circular path
  */
 export function setTextboxTextRadius(textbox: CircularTextbox, radius: number): void {
-  const circumference = 2 * Math.PI * Math.abs(radius)
+  const center = textbox.getCenterPoint()
+  const nextHasPath = hasPath(radius)
+  const currentHasPath = hasPath(textbox.textRadius)
+
+  if (!textbox.baseWidth || textbox.baseWidth <= 0) {
+    textbox.baseWidth = textbox.width
+  }
+
+  if (!currentHasPath) {
+    textbox.baseWidth = textbox.width
+  }
+
   textbox.set({
-    width: hasPath(radius) ? circumference : textbox.width, // Update width based on whether text is on a path
+    width: textbox.baseWidth,
     textRadius: radius,
-    path: createCircularTextPath(radius),
+    path: nextHasPath ? createCircularTextPath(radius) : undefined,
     pathSide: radius >= 0 ? 'left' : 'right',
     pathStartOffset: 0,
   })
-  textbox.controls.resize.visible = !hasPath(radius)
+
+  if (!nextHasPath) {
+    textbox.set('width', textbox.baseWidth)
+  }
+
+  textbox.initDimensions()
+  textbox.controls.resize.visible = !nextHasPath
+  textbox.setPositionByOrigin(center, 'center', 'center')
   textbox.setCoords()
 }
 

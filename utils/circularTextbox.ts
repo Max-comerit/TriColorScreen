@@ -10,6 +10,7 @@ import type { SerializedTextboxProps } from 'fabric'
  */
 export interface SerializedCircularTextboxProps extends SerializedTextboxProps {
   textRadius: number
+  baseWidth: number
 }
 
 /**
@@ -29,8 +30,12 @@ export class CircularTextbox extends Textbox {
   /** Radius of the circular text path. 0 means no path (normal text layout). */
   declare textRadius: number
 
+  /** Width to use for textbox layout independently of the circular path radius. */
+  declare baseWidth: number
+
   static override ownDefaults = {
     textRadius: 0,
+    baseWidth: 0,
   }
 
   static override getDefaults(): Record<string, unknown> {
@@ -49,7 +54,7 @@ export class CircularTextbox extends Textbox {
   // @ts-expect-error: see comment above — Fabric generic constraint prevents clean override
   override toObject(propertiesToInclude: string[] = []): SerializedCircularTextboxProps {
     const base = super.toObject(propertiesToInclude as never) as SerializedTextboxProps
-    return { ...base, textRadius: this.textRadius }
+    return { ...base, textRadius: this.textRadius, baseWidth: this.baseWidth }
   }
 
   /**
