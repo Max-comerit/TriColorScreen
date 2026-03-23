@@ -269,7 +269,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
     <!-- Circular Text Mode -->
     <div v-if="circularMode" class="flex items-center gap-3 p-3 sm:p-2 bg-white border border-gray-300 rounded-lg shadow-md">
       <label class="flex-1 flex flex-col gap-2">
-        <span class="text-sm font-medium text-gray-700">Cirkulär textradie</span>
+        <span class="text-sm font-medium text-gray-700">Böjning</span>
         <input
           v-model.number="warpSlider"
           type="range"
@@ -281,7 +281,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
           @change="applyCircularRadius"
         >
         <span class="text-xs text-gray-600">
-          {{ warpSlider === 0 ? 'Ingen böjning' : (warpSlider > 0 ? `${warpSlider}%` : `${Math.abs(warpSlider)}%`) }}
+          {{ warpSlider === 0 ? 'Ingen böjning' : `${warpSlider}%` }}
         </span>
       </label>
       <button
