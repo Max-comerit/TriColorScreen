@@ -17,6 +17,7 @@ export default defineNuxtConfig({
             // Split heavy dependencies into separate chunks
             if (id.includes('fabric')) return 'fabric'
             if (id.includes('zod')) return 'zod'
+            if (id.includes('embla-carousel')) return 'embla-carousel'
             
             // Extract Vue Router to shared chunk (used across app)
             if (id.includes('vue-router')) return 'vue-router'
