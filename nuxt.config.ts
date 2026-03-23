@@ -28,16 +28,6 @@ export default defineNuxtConfig({
             
             // Extract Vue Router to shared chunk (used across app)
             if (id.includes('vue-router')) return 'vue-router'
-            
-            // Isolate card display container components to prevent loading on non-service pages
-            if (id.includes('CardGrid.vue') || id.includes('CardFlexbox.vue') || id.includes('Carousel.vue')) {
-              return 'card-containers'
-            }
-            
-            // Group all card component types into one chunk for efficient loading
-            if (id.includes('ServiceCard.vue') || id.includes('ReviewCard.vue') || id.includes('TextCard.vue') || id.includes('ImageCard.vue')) {
-              return 'card-components'
-            }
           }
         }
       }
