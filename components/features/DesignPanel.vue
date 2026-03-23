@@ -3,6 +3,7 @@
 <script setup lang="ts">
 // 1. Imports
 import type { Canvas } from 'fabric'
+import { ref } from 'vue'
 import CanvasPanel from '~/components/features/CanvasPanel.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
