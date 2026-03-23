@@ -97,8 +97,6 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        // Preload critical fonts for custom-design page (but don't load on other pages)
-        // Fonts are loaded on-demand in custom-design.vue to avoid blocking first contentful paint
       ],
     },
   },
@@ -106,7 +104,7 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css',     // Critical: base resets
     '~/assets/css/layout.css',   // Critical: layout grid (prevents CLS)
-    // fonts.css deferred in app.vue to avoid render-blocking
+    '~/assets/css/fonts.css',    // Critical: font definitions
   ],
 
   image: {
