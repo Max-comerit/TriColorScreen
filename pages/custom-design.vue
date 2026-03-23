@@ -2,7 +2,6 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import '~/assets/css/custom-design-fonts.css'
 import type { Canvas } from 'fabric'
 import { defineAsyncComponent, ref } from 'vue'
 import { useSiteUrl } from '~/composables/useSiteUrl'
@@ -21,6 +20,11 @@ const QuoteForm = defineAsyncComponent(() => import('~/components/features/Quote
 
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
+
+// Dynamically import fonts to avoid blocking the main thread
+if (import.meta.client) {
+  import('~/assets/css/custom-design-fonts.css')
+}
 
 useHead({
   title: 'Designa själv',
