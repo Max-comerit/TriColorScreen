@@ -10,8 +10,8 @@ import { defineAsyncComponent } from 'vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import BragBar from '~/components/features/BragBar.vue'
 import Section from '~/components/common/Section.vue'
-// Lazy-load CardGrid & Carousel since they are below the fold and not critical for initial page paint
-const CardGrid = defineAsyncComponent(() => import('~/components/common/CardGrid.vue'))
+import CardGrid from '~/components/common/CardGrid.vue'
+// Lazy-load Carousel into its own chunk — it and Embla are only needed on mobile
 const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
 
 // ===== COMPOSABLES =====
