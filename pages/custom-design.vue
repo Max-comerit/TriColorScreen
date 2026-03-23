@@ -2,7 +2,6 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import '~/assets/css/custom-design-fonts.css'
 import type { Canvas } from 'fabric'
 import { defineAsyncComponent, ref } from 'vue'
 import { useSiteUrl } from '~/composables/useSiteUrl'
@@ -50,6 +49,14 @@ useHead({
     },
     { name: 'twitter:image', content: `${siteUrl}/images/custom-design/hero-v2.jpg` },
   ],
+  link: [
+    {
+      rel: 'stylesheet',
+      href: '/assets/css/custom-design-fonts.css',
+      media: 'print', // Load deferred
+      onload: "this.media='all'" // Apply after load
+    }
+  ]
 })
 
 
