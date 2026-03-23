@@ -97,10 +97,6 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        // Preload critical fonts used in hero/LCP element
-        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/assets/fonts/Inter-Bold.woff2', crossorigin: 'anonymous' },
-        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/assets/fonts/DMSans-Bold.woff2', crossorigin: 'anonymous' },
-        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/assets/fonts/DMSans-SemiBold.woff2', crossorigin: 'anonymous' },
       ],
     },
   },
