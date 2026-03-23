@@ -299,18 +299,20 @@ watch(
 </script>
 
 <template>
-  <div ref="canvasWrapperRef" class="relative w-full max-h-[1000px]" :style="{ aspectRatio: canvasStore.aspectRatio }">
-    <div
-      v-for="key in canvasStore.sideKeys"
-      v-show="activeSide === key"
-      :key="key"
-      class="absolute inset-0"
-      :aria-hidden="activeSide !== key"
-    >
-      <canvas
-        :ref="(el) => assignCanvasEl(key, el as HTMLCanvasElement | null)"
-        class="block w-full h-full border border-black rounded-card overflow-hidden"
-      />
+  <ClientOnly>
+    <div ref="canvasWrapperRef" class="relative w-full max-h-[1000px]" :style="{ aspectRatio: canvasStore.aspectRatio }">
+      <div
+        v-for="key in canvasStore.sideKeys"
+        v-show="activeSide === key"
+        :key="key"
+        class="absolute inset-0"
+        :aria-hidden="activeSide !== key"
+      >
+        <canvas
+          :ref="(el) => assignCanvasEl(key, el as HTMLCanvasElement | null)"
+          class="block w-full h-full border border-black rounded-card overflow-hidden"
+        />
+      </div>
     </div>
-  </div>
+  </ClientOnly>
 </template>
