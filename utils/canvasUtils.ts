@@ -10,7 +10,7 @@ import { CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 
 // Valid range for text radius to create a circular path
 export const MIN_TEXT_RADIUS = 25
-export const MAX_TEXT_RADIUS = 300
+export const MAX_TEXT_RADIUS = 3000
 
 const BASELINE_PATH_OFFSET_Y = -10
 const ASCENDER_PATH_OFFSET_Y = 18
