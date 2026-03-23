@@ -14,14 +14,19 @@ const navigationStore = useNavigationStore()
 // ===== STATE =====
 const scrolled = ref(false)
 
+// ===== METHODS =====
+const onScroll = () => {
+  scrolled.value = window.scrollY > 20
+  navigationStore.setHeaderScrolled(scrolled.value)
+}
+
 // ===== LIFECYCLE HOOKS =====
 onMounted(() => {
-  const onScroll = () => {
-    scrolled.value = window.scrollY > 20
-    navigationStore.setHeaderScrolled(scrolled.value)
-  }
   window.addEventListener('scroll', onScroll, { passive: true })
-  onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', onScroll)
 })
 </script>
 
