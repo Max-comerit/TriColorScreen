@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { QuoteFormData } from '~/composables/useQuoteForm'
+import type { QuoteFormData } from '~/types/Forms'
 
 /**
  * Quote Form Pinia Store

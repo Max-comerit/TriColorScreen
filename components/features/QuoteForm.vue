@@ -4,7 +4,7 @@
 // ===== IMPORTS =====
 import { nanoid } from 'nanoid'
 import type { Canvas } from 'fabric'
-import type { QuoteFormData } from '~/composables/useQuoteForm'
+import type { QuoteFormData } from '~/types/Forms'
 import { useQuoteForm, MAX_IMAGE_COUNT } from '~/composables/useQuoteForm'
 import TextButton from '~/components/common/TextButton.vue'
 import GdprDialog from '~/components/features/GdprDialog.vue'
@@ -69,9 +69,9 @@ const activeSideLabels = computed(
 /**
  * Handle input blur event and validate field
  */
-function handleBlur(field: keyof QuoteFormData): void {
+async function handleBlur(field: keyof QuoteFormData): Promise<void> {
   if (formData.value[field]) {
-    validateField(field)
+    await validateField(field)
   }
 }
 

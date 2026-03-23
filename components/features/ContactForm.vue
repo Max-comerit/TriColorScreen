@@ -3,7 +3,7 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { useContactForm } from '~/composables/useContactForm'
-import type { ContactFormData } from '~/composables/useContactForm'
+import type { ContactFormData } from '~/types/Forms'
 import TextButton from '~/components/common/TextButton.vue'
 import GdprDialog from '~/components/features/GdprDialog.vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
@@ -44,9 +44,9 @@ const fileInputLabel = computed(() => formData.value.image?.name ?? 'Ingen fil v
 /**
  * Handle input blur event and validate field
  */
-function handleBlur(field: keyof ContactFormData): void {
+async function handleBlur(field: keyof ContactFormData): Promise<void> {
   if (formData.value[field]) {
-    validateField(field)
+    await validateField(field)
   }
 }
 
@@ -60,7 +60,7 @@ function handleInput(field: keyof ContactFormData): void {
 /**
  * Handle file input change
  */
-function handleFileChange(event: Event): void {
+async function handleFileChange(event: Event): Promise<void> {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0] || null
   
@@ -69,7 +69,7 @@ function handleFileChange(event: Event): void {
   
   // Validate file if selected
   if (file) {
-    validateField('image')
+    await validateField('image')
   }
   else {
     clearFieldError('image')

@@ -10,6 +10,11 @@ const siteUrl = process.env.SITE_URL || process.env.DEPLOY_PRIME_URL || 'https:/
 export default defineNuxtConfig({
   vite: {
     plugins: [svgLoader()],
+    optimizeDeps: {
+      // Pre-bundle heavy dependencies at startup to avoid dev server reloads
+      // when they're discovered during development
+      include: ['zod', 'nanoid', 'fabric', 'embla-carousel'],
+    },
     build: {
       rollupOptions: {
         output: {
