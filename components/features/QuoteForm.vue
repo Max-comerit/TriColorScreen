@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
+import { computed, ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import type { Canvas } from 'fabric'
 import type { QuoteFormData } from '~/composables/useQuoteForm'
