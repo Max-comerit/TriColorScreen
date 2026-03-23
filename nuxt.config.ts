@@ -102,9 +102,9 @@ export default defineNuxtConfig({
   },
 
   css: [
-    '~/assets/css/fonts.css',    // Critical: font definitions
     '~/assets/css/main.css',     // Critical: base resets
     '~/assets/css/layout.css',   // Critical: layout grid (prevents CLS)
+    '~/assets/css/fonts.css',    // Critical: font definitions
   ],
 
   image: {
