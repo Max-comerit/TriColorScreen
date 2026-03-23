@@ -3,7 +3,8 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import '~/assets/css/custom-design-fonts.css'
-import { Canvas } from 'fabric'
+import type { Canvas } from 'fabric'
+import { defineAsyncComponent, ref } from 'vue'
 import { useSiteUrl } from '~/composables/useSiteUrl'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
@@ -11,21 +12,9 @@ import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
-import { useCustomImage } from '~/composables/useCustomImage'
-import { useCustomText } from '~/composables/useCustomText'
-import { useCanvasStore } from '@/stores/canvasStore'
-import { storeToRefs } from 'pinia'
-import { useCustomBackground, loadBackgroundOnCanvas, CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
-import { computed, defineAsyncComponent, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
+import CanvasPanel from '~/components/features/CanvasPanel.vue'
 import IconTextButton from '~/components/common/IconTextButton.vue'
-import { configureActiveSelectionDefaults } from '@/utils/canvasSetup'
-import {
-  clearCanvasObjects,
-  clearCanvas,
-  getInitialBackgroundUrl,
-  rescaleCanvas,
-} from '~/utils/canvasUtils'
 
 // Lazy-load QuoteForm so Zod and nanoid are kept out of the shared synchronous bundle
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
@@ -62,241 +51,44 @@ useHead({
     { name: 'twitter:image', content: `${siteUrl}/images/custom-design/hero-v2.jpg` },
   ],
 })
-const { addImageToCanvas } = useCustomImage()
-const { addTextToCanvas } = useCustomText()
-const { applyCustomBackground } = useCustomBackground()
-const canvasStore = useCanvasStore()
-const { activeSide } = storeToRefs(canvasStore)
+
 
 // ===== STATE =====
-const fileInputRef = ref<HTMLInputElement | null>(null)
-const canvasWrapperRef = ref<HTMLDivElement | null>(null)
-/** Plain (non-reactive) array of raw canvas elements, indexed by side number */
-const canvasElMap: (HTMLCanvasElement | undefined)[] = []
-/** Reactive array of initialized Fabric Canvas instances, indexed by side number */
-const canvasMap = shallowRef<(Canvas | undefined)[]>([])
-let resizeObserver: ResizeObserver | null = null
-let currentCanvasWidth = 0
-let currentCanvasHeight = 0
 
-// ===== COMPUTED =====
-const activeCanvas = computed(() => canvasMap.value[activeSide.value] ?? null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+const backgroundUrl = ref<string | undefined>()
+const image = ref<File | undefined>()
+const textCnt = ref<number>(0) // Incrementing number to trigger reactivity in CanvasPanel when adding text
+const canvasMap = ref<(Canvas | undefined)[]>([])
+const activeCanvas = ref<Canvas | null>(null)
 
 // ===== METHODS =====
-/** Assign or remove a canvas element ref from the template v-for */
-function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
-  canvasElMap[key] = el ?? undefined
-}
-
-function syncAspectRatioFromBackground(side: number, width: number, height: number): void {
-  if (side === canvasStore.activeSide && width > 0 && height > 0) {
-    canvasStore.setAspectRatio(`${width} / ${height}`)
-  }
-}
-
-async function applyBackgroundSelection(
-  side: number,
-  canvas: Canvas,
-  selection: string | null | undefined,
-  clearObjects = true,
-): Promise<void> {
-  if (clearObjects) {
-    clearCanvasObjects(canvas)
-  }
-
-  if (!selection) {
-    canvas.backgroundImage = undefined
-    canvas.requestRenderAll()
-    return
-  }
-
-  if (selection === CUSTOM_BACKGROUND_ID) {
-    const customDataUrl = canvasStore.sides[side]?.customBackgroundDataUrl
-    if (!customDataUrl) {
-      canvas.backgroundImage = undefined
-      canvas.requestRenderAll()
-      return
-    }
-
-    const bg = await loadBackgroundOnCanvas(canvas, customDataUrl)
-    syncAspectRatioFromBackground(side, bg.width, bg.height)
-    return
-  }
-
-  const bg = await loadBackgroundOnCanvas(canvas, selection)
-  syncAspectRatioFromBackground(side, bg.width, bg.height)
-}
-
-// ===== LIFECYCLE HOOKS =====
-onMounted(async () => {
-  await nextTick()
-  const wrapper = canvasWrapperRef.value
-
-  if (!wrapper) {
-    console.error('Canvas wrapper not found')
-    return
-  }
-
-  // Configure ActiveSelection controls (box-select / multi-select)
-  configureActiveSelectionDefaults()
-
-  // Observe the wrapper div — CSS controls its size, we sync Fabric to it
-  resizeObserver = new ResizeObserver((entries) => {
-    const width = Math.ceil(entries[0].contentRect.width)
-    const height = Math.ceil(entries[0].contentRect.height)
-    if (width <= 0 || height <= 0) return
-
-    const previousWidth = currentCanvasWidth
-    if (previousWidth > 0 && (width !== previousWidth || height !== currentCanvasHeight)) {
-      const ratio = width / previousWidth
-      for (const canvas of canvasMap.value) {
-        if (canvas) void rescaleCanvas(canvas, ratio, width, height)
-      }
-    }
-
-    currentCanvasWidth = width
-    currentCanvasHeight = height
-
-    for (const key of canvasStore.sideKeys) {
-      const el = canvasElMap[key]
-      if (el && !canvasMap.value[key]) {
-        void initializeCanvas(key, el, width, height)
-      }
-    }
-  })
-  resizeObserver.observe(wrapper)
-})
-
-onBeforeUnmount(() => {
-  resizeObserver?.disconnect()
-  for (const [key, canvas] of canvasMap.value.entries()) {
-    if (canvas) {
-      canvasStore.save(key, canvas, currentCanvasWidth)
-      canvas.dispose()
-    }
-  }
-})
-
-// ===== WATCHERS =====
-// Single watcher for all side backgroundSelections — only reacts to actual changes
-watch(
-  () => canvasStore.sides.map(v => v.backgroundSelection),
-  async (newSelections, oldSelections) => {
-    for (let key = 0; key < newSelections.length; key++) {
-      const selection = newSelections[key]
-      if (selection === oldSelections?.[key]) continue
-      const canvas = canvasMap.value[key]
-      if (!canvas) continue
-
-      if (!selection) {
-        // Selection was explicitly cleared — wipe objects and background from the live canvas
-        clearCanvas(canvas, true)
-        continue
-      }
-
-      await applyBackgroundSelection(key, canvas, selection)
-    }
-  },
-  { deep: true },
-)
-
-// Remove user-added objects from all live canvases when the store is cleared
-watch(
-  () => canvasStore.clearSeq,
-  () => {
-    for (const canvas of canvasMap.value) {
-      if (canvas) {
-        clearCanvas(canvas)
-      }
-    }
-  },
-)
-
-// Initialize new canvases and dispose removed ones when the product's side count changes
-watch(
-  () => canvasStore.sideCount,
-  async (newCount, oldCount) => {
-    await nextTick()
-    const newKeys = Array.from({ length: newCount }, (_, i) => i)
-    for (const key of newKeys) {
-      const el = canvasElMap[key]
-      if (el && !canvasMap.value[key] && currentCanvasWidth > 0) {
-        initializeCanvas(key, el, currentCanvasWidth, currentCanvasHeight).catch(console.error)
-      }
-    }
-    const oldKeys = Array.from({ length: oldCount ?? 0 }, (_, i) => i)
-    const removedKeys = oldKeys.filter(k => !newKeys.includes(k))
-    for (const key of removedKeys) {
-      const canvas = canvasMap.value[key]
-      if (canvas) {
-        canvas.dispose()
-        const newMap = [...canvasMap.value]
-        newMap[key] = undefined
-        canvasMap.value = newMap
-      }
-      canvasElMap[key] = undefined
-    }
-  },
-)
-
-async function initializeCanvas(side: number, el: HTMLCanvasElement, width: number, height: number): Promise<void> {
-  const canvasInstance = new Canvas(el, { selection: true })
-  if (!canvasInstance) {
-    console.error('Failed to initialize Fabric canvas')
-    return
-  }
-
-  const newMap = [...canvasMap.value]
-  newMap[side] = canvasInstance
-  canvasMap.value = newMap
-
-  canvasInstance.setDimensions({ width, height })
-  canvasInstance.enablePointerEvents = true
-
-  await canvasStore.restore(side, canvasInstance, width)
-
-  if (!canvasInstance.backgroundImage) {
-    const sideState = canvasStore.sides[side]
-    if (sideState?.backgroundSelection === CUSTOM_BACKGROUND_ID) {
-      // Restore a previously uploaded custom image; otherwise leave the canvas blank.
-      if (sideState.customBackgroundDataUrl) {
-        await applyBackgroundSelection(side, canvasInstance, CUSTOM_BACKGROUND_ID, false)
-      }
-    }
-    else {
-      const initialBackgroundUrl = getInitialBackgroundUrl(canvasStore.sides, side)
-      if (initialBackgroundUrl) {
-        await applyBackgroundSelection(side, canvasInstance, initialBackgroundUrl, false)
-        if (!sideState?.backgroundSelection) {
-          canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
-        }
-      }
-    }
-  }
-
-  canvasInstance.on('object:added', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
-  canvasInstance.on('object:modified', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
-  canvasInstance.on('object:removed', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
-}
 
 /** Bridges the BackgroundSelector emit to applyCustomBackground, injecting the active canvas. */
 async function handleCustomImageSelected(dataUrl: string): Promise<void> {
-  const canvas = activeCanvas.value
-  if (!canvas) return
-  await applyCustomBackground(canvas, dataUrl)
+  backgroundUrl.value = dataUrl
 }
 
+/**
+ * Trigger the hidden file input to open the file dialog for image selection.
+ * The actual handling of the selected file is done in handleImageSelected.
+ */
 function uploadImage(): void {
   // Trigger file input dialog
   fileInputRef.value?.click()
 }
 
+/**
+ * Handle image file selection, validate it's an image, and store it in state for the CanvasPanel to consume and add to the canvas.
+ * Resets the file input value to allow selecting the same file again if needed.
+ * 
+ * @param event 
+ */
 async function handleImageSelected(event: Event): Promise<void> {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
 
-  const canvasInstance = activeCanvas.value
-  if (!file || !canvasInstance) return
+  if (!file) return
 
   // Validate that it's an image
   if (!file.type.startsWith('image/')) {
@@ -304,20 +96,33 @@ async function handleImageSelected(event: Event): Promise<void> {
     return
   }
 
-  try {
-    await addImageToCanvas(canvasInstance, file)
-  } catch (error) {
-    alert('Failed to add image. Please try again.')
-    console.error('Error adding image:', error)
-  }
+  image.value = file
 
   // Reset input so same file can be selected again
   input.value = ''
 }
 
 function addText(): void {
-  addTextToCanvas(activeCanvas.value)
+  textCnt.value++
 }
+
+/**
+ * Handle canvas changed event and store the updated canvas map
+ */
+function handleCanvasChanged(newCanvasMap: (Canvas | undefined)[]): void {
+  canvasMap.value = newCanvasMap
+}
+
+/**
+ * Handle active canvas update event and store the updated active canvas
+ */
+function handleUpdateActiveCanvas(canvas: Canvas | null): void {
+  activeCanvas.value = canvas
+}
+
+// ===== LIFECYCLE HOOKS =====
+
+// ===== WATCHERS =====
 
 </script>
 
@@ -402,20 +207,7 @@ function addText(): void {
         <div class="designer grid grid-cols-1 sm:grid-cols-[1fr_minmax(350px,800px)_1fr] gap-4 items-start">
           <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
           <div class="hidden sm:block md:w-[48px]" />
-          <div ref="canvasWrapperRef" class="relative w-full max-h-[1000px]" :style="{ aspectRatio: canvasStore.aspectRatio }">
-            <div
-              v-for="key in canvasStore.sideKeys"
-              v-show="activeSide === key"
-              :key="key"
-              class="absolute inset-0"
-              :aria-hidden="activeSide !== key"
-            >
-              <canvas
-                :ref="(el) => assignCanvasEl(key, el as HTMLCanvasElement | null)"
-                class="block w-full h-full border border-black rounded-card overflow-hidden"
-              />
-            </div>
-          </div>
+          <CanvasPanel :background-url="backgroundUrl" :image="image" :text-cnt="textCnt" @changed="handleCanvasChanged" @update-active="handleUpdateActiveCanvas" />
           <div class="flex flex-row sm:flex-col justify-center gap-3">
             <div class="xl:hidden">
               <IconButton
@@ -477,14 +269,14 @@ function addText(): void {
             </div>
           </div>
         </div>
-        <TextboxControls :canvas="activeCanvas" />
+        <TextboxControls :canvas="activeCanvas as any" />
 
         <!-- Offertformulär -->
         <div
           class="mt-10 flex justify-center"
           aria-label="Offertformulär"
         >
-          <QuoteForm :canvas-map="canvasMap"/>
+          <QuoteForm :canvas-map="canvasMap as any"/>
         </div>
       </Section>
     </div>
