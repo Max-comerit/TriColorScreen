@@ -977,6 +977,6 @@ watch(isChanged, (newValue) => {
     </div>
 
     <!-- GDPR dialog -->
-    <GdprDialog v-if="showGdprDialog" v-model="showGdprDialog" form="Quote" />
+    <GdprDialog v-model="showGdprDialog" form="Quote" />
   </form>
 </template>

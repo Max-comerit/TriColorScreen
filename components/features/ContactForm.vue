@@ -530,6 +530,6 @@ watch(isChanged, (newValue) => {
     </div>
 
     <!-- GDPR Information Dialog -->
-    <GdprDialog v-if="showGdprDialog" v-model="showGdprDialog" form="Contact" />
+    <GdprDialog v-model="showGdprDialog" form="Contact" />
   </form>
 </template>
