@@ -16,14 +16,12 @@ import {
 
 // ===== TYPES =====
 interface Props {
-  backgroundUrl?: string
   image?: File
   textCnt: number
 }
 
 // ===== PROPS =====
 const props = withDefaults(defineProps<Props>(), {
-  backgroundUrl: undefined,
   image: undefined
 })
 
@@ -190,7 +188,7 @@ onBeforeUnmount(() => {
 
 // ===== WATCHERS =====
 
-watch(() => props.backgroundUrl, async (newBackgroundUrl) => {
+watch(() => canvasStore.sides[activeSide.value]?.customBackgroundDataUrl, async (newBackgroundUrl) => {
   if (newBackgroundUrl) {
     const canvas = activeCanvas.value
     if (canvas) {

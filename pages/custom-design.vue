@@ -56,18 +56,12 @@ useHead({
 // ===== STATE =====
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
-const backgroundUrl = ref<string | undefined>()
 const image = ref<File | undefined>()
 const textCnt = ref<number>(0) // Incrementing number to trigger reactivity in CanvasPanel when adding text
 const canvasMap = ref<(Canvas | undefined)[]>([])
 const activeCanvas = ref<Canvas | null>(null)
 
 // ===== METHODS =====
-
-/** Bridges the BackgroundSelector emit to applyCustomBackground, injecting the active canvas. */
-async function handleCustomImageSelected(dataUrl: string): Promise<void> {
-  backgroundUrl.value = dataUrl
-}
 
 /**
  * Trigger the hidden file input to open the file dialog for image selection.
@@ -203,13 +197,11 @@ function handleChangedActiveCanvas(canvas: Canvas | null): void {
         aria-label="Design Verktyg"
         
       >
-        <BackgroundSelector
-          @custom-image-selected="handleCustomImageSelected"
-        />
+        <BackgroundSelector />
         <div class="designer grid grid-cols-1 sm:grid-cols-[1fr_minmax(350px,800px)_1fr] gap-4 items-start">
           <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
           <div class="hidden sm:block md:w-[48px]" />
-          <CanvasPanel :background-url="backgroundUrl" :image="image" :text-cnt="textCnt" @changed:canvas-map="handleChangedCanvasMap" @changed:active-canvas="handleChangedActiveCanvas" />
+          <CanvasPanel :image="image" :text-cnt="textCnt" @changed:canvas-map="handleChangedCanvasMap" @changed:active-canvas="handleChangedActiveCanvas" />
           <div class="flex flex-row sm:flex-col justify-center gap-3">
             <div class="xl:hidden">
               <IconButton

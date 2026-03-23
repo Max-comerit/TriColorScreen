@@ -16,9 +16,6 @@ const PRODUCT_CATEGORIES_OBJ = rawBackgroundOptions as ProductCategories
 const PRODUCT_CATEGORIES = PRODUCT_CATEGORIES_OBJ.productCategories
 
 // 2. Props & Emits
-const emit = defineEmits<{
-  customImageSelected: [dataUrl: string]
-}>()
 
 // 3. Composables & Stores
 const canvasStore = useCanvasStore()
@@ -84,7 +81,8 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
 
   try {
     const dataUrl = await readFileAsDataUrl(file)
-    emit('customImageSelected', dataUrl)
+    canvasStore.setCustomBackgroundDataUrl(activeSide.value, dataUrl)
+    canvasStore.setBackgroundSelection(activeSide.value, CUSTOM_BACKGROUND_ID)
     fileErrorMessage.value = ''
   }
   catch (error) {
