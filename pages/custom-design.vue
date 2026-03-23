@@ -62,9 +62,9 @@ useHead({
     { name: 'twitter:image', content: `${siteUrl}/images/custom-design/hero-v2.jpg` },
   ],
 })
-
 const { addImageToCanvas } = useCustomImage()
 const { addTextToCanvas } = useCustomText()
+const { applyCustomBackground } = useCustomBackground()
 const canvasStore = useCanvasStore()
 const { activeSide } = storeToRefs(canvasStore)
 
@@ -79,12 +79,10 @@ let resizeObserver: ResizeObserver | null = null
 let currentCanvasWidth = 0
 let currentCanvasHeight = 0
 
-// ===== COMPOSABLES =====
+// ===== COMPUTED =====
 const activeCanvas = computed(() => canvasMap.value[activeSide.value] ?? null)
-const {
-  applyCustomBackground,
-} = useCustomBackground()
 
+// ===== METHODS =====
 /** Assign or remove a canvas element ref from the template v-for */
 function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
   canvasElMap[key] = el ?? undefined
@@ -128,8 +126,6 @@ async function applyBackgroundSelection(
   const bg = await loadBackgroundOnCanvas(canvas, selection)
   syncAspectRatioFromBackground(side, bg.width, bg.height)
 }
-
-// ===== COMPUTED =====
 
 // ===== LIFECYCLE HOOKS =====
 onMounted(async () => {
