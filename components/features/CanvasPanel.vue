@@ -7,6 +7,8 @@ import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { useCustomBackground, loadBackgroundOnCanvas, CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 import { configureActiveSelectionDefaults } from '@/utils/canvasSetup'
+import { useCustomImage } from '~/composables/useCustomImage'
+import { useCustomText } from '~/composables/useCustomText'
 import {
   clearCanvasObjects,
   clearCanvas,
