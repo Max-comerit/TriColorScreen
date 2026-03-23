@@ -104,9 +104,9 @@ export default defineNuxtConfig({
   },
 
   css: [
-    '~/assets/css/main.css',
-    '~/assets/css/fonts.css',
-    '~/assets/css/layout.css'
+    '~/assets/css/main.css',     // Critical: base resets
+    '~/assets/css/layout.css',   // Critical: layout grid (prevents CLS)
+    // fonts.css deferred in app.vue to avoid render-blocking
   ],
 
   image: {
