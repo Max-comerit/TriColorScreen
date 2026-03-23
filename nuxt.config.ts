@@ -97,6 +97,8 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        // Preload critical fonts for custom-design page (but don't load on other pages)
+        // Fonts are loaded on-demand in custom-design.vue to avoid blocking first contentful paint
       ],
     },
   },
