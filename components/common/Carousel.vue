@@ -244,164 +244,162 @@ onMounted(() => {
 </script>
 
 <template>
-  <ClientOnly>
-    <section
-      class="rounded-card mx-auto flex flex-col md:relative md:block"
-      :class="outerBorderClasses"
-      :style="{ maxWidth: carouselWidth }"
+  <section
+    class="rounded-card mx-auto flex flex-col md:relative md:block"
+    :class="outerBorderClasses"
+    :style="{ maxWidth: carouselWidth }"
+  >
+    <!-- Embla viewport -->
+    <div 
+      ref="viewportRef" 
+      class="rounded-card mb-1 overflow-hidden"
+      :class="innerBorderClasses"
     >
-      <!-- Embla viewport -->
-      <div 
-        ref="viewportRef" 
-        class="rounded-card mb-1 overflow-hidden"
-        :class="innerBorderClasses"
-      >
-        <div class="flex">
-          <div
-            v-for="(item, idx) in props.items"
-            :key="idx"
-            class="flex-shrink-0 box-border"
-            :style="{ width: `${100 / props.perPage!}%`, padding: `${props.gapPx! / 2}px` }"
-          >
-            <!-- Service Card -->
-            <ServiceCard
-              v-if="item.type === 'service'"
-              :image-src="item.data.imageSrc"
-              :title="item.data.title"
-              :description="item.data.description"
-              :max-lines="item.data.maxLines"
-              :link="item.data.link"
-              :alt="item.data.alt"
-              img-sizes="528px sm:264px md:328px lg:285px 2xl:357px"
-              background-color="bg-primary-50"
-              text-color="black"
-            />
+      <div class="flex">
+        <div
+          v-for="(item, idx) in props.items"
+          :key="idx"
+          class="flex-shrink-0 box-border"
+          :style="{ width: `${100 / props.perPage!}%`, padding: `${props.gapPx! / 2}px` }"
+        >
+          <!-- Service Card -->
+          <ServiceCard
+            v-if="item.type === 'service'"
+            :image-src="item.data.imageSrc"
+            :title="item.data.title"
+            :description="item.data.description"
+            :max-lines="item.data.maxLines"
+            :link="item.data.link"
+            :alt="item.data.alt"
+            img-sizes="528px sm:264px md:328px lg:285px 2xl:357px"
+            background-color="bg-primary-50"
+            text-color="black"
+          />
 
-            <!-- Review Card -->
-            <ReviewCard
-              v-else-if="item.type === 'review'"
-              :review="item.data.review"
-              :name="item.data.name"
-              :date="item.data.date"
-            />
+          <!-- Review Card -->
+          <ReviewCard
+            v-else-if="item.type === 'review'"
+            :review="item.data.review"
+            :name="item.data.name"
+            :date="item.data.date"
+          />
 
-            <!-- Image Card -->
-            <ImageCard
-              v-else-if="item.type === 'image'"
-              :image-src="item.data.imageSrc"
-              :alt="item.data.alt"
-              img-sizes="480px sm:340px md:468px lg:392px 2xl:397px"
-            />
-          </div>
+          <!-- Image Card -->
+          <ImageCard
+            v-else-if="item.type === 'image'"
+            :image-src="item.data.imageSrc"
+            :alt="item.data.alt"
+            img-sizes="480px sm:340px md:468px lg:392px 2xl:397px"
+          />
         </div>
       </div>
-      <div class="relative">
-        <div class="flex flex-col gap-2 items-center sm:hidden">
-          <!-- Pagination -->
-          <div class="mt-2 flex justify-center gap-2">
-            <!-- Dots -->
-            <template v-if="!useScrollbar">
-              <span
-                v-for="(_, idx) in totalItems" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
-                :class="isVisible(idx) ? 'bg-primary-600' : 'bg-gray-300'"
-                aria-hidden="true" />
-            </template>
+    </div>
+    <div class="relative">
+      <div class="flex flex-col gap-2 items-center sm:hidden">
+        <!-- Pagination -->
+        <div class="mt-2 flex justify-center gap-2">
+          <!-- Dots -->
+          <template v-if="!useScrollbar">
+            <span
+              v-for="(_, idx) in totalItems" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
+              :class="isVisible(idx) ? 'bg-primary-600' : 'bg-gray-300'"
+              aria-hidden="true" />
+          </template>
 
-            <!-- Scrollbar -->
-            <template v-else>
-              <input
-                type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-48 h-2 rounded-lg"
-                :value="scrollProgress" aria-label="Carousel scrollbar" @input="onScrollBarChange">
-            </template>
-          </div>
-          <!-- Arrows -->
-          <div class="flex gap-3 my-2">
-            <button
-                v-if="props.showArrows" class="
-                btn-icon
-                rounded-xl
-                border border-black
-                px-8 py-3
-                hover:bg-gray-100
-                touch-manipulation
-                select-none
-                focus:ring-2 focus:ring-primary focus:ring-offset-2
-              " :disabled="!canScrollPrev" aria-label="Previous slide" @click="handleClick(scrollPrev)">
-              <LeftArrow />
-            </button>
-
-            <button
-              v-if="props.showArrows"
-              class="
-              btn-icon 
-              rounded-xl 
-              border border-black 
-              px-8 py-3 
-              hover:bg-gray-100 
+          <!-- Scrollbar -->
+          <template v-else>
+            <input
+              type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-48 h-2 rounded-lg"
+              :value="scrollProgress" aria-label="Carousel scrollbar" @input="onScrollBarChange">
+          </template>
+        </div>
+        <!-- Arrows -->
+        <div class="flex gap-3 my-2">
+          <button
+              v-if="props.showArrows" class="
+              btn-icon
+              rounded-xl
+              border border-black
+              px-8 py-3
+              hover:bg-gray-100
               touch-manipulation
               select-none
               focus:ring-2 focus:ring-primary focus:ring-offset-2
-              "
-              :disabled="!canScrollNext" aria-label="Next slide" @click="handleClick(scrollNext)">
-              <RightArrow />
-            </button>
-          </div>
+            " :disabled="!canScrollPrev" aria-label="Previous slide" @click="handleClick(scrollPrev)">
+            <LeftArrow />
+          </button>
+
+          <button
+            v-if="props.showArrows"
+            class="
+            btn-icon 
+            rounded-xl 
+            border border-black 
+            px-8 py-3 
+            hover:bg-gray-100 
+            touch-manipulation
+            select-none
+            focus:ring-2 focus:ring-primary focus:ring-offset-2
+            "
+            :disabled="!canScrollNext" aria-label="Next slide" @click="handleClick(scrollNext)">
+            <RightArrow />
+          </button>
         </div>
+      </div>
 
-        <div class="hidden sm:flex sm:gap-0 sm:flex-row items-center">
-          <!-- Arrows -->
-          <div class="flex gap-3 my-2 sm:pl-[8px]">
-            <button
-                v-if="props.showArrows" class="
-                btn-icon
-                rounded-xl
-                border border-black
-                px-8 py-3
-                hover:bg-gray-100
-                touch-manipulation
-                select-none
-                focus:ring-2 focus:ring-primary focus:ring-offset-2
-              " :disabled="!canScrollPrev" aria-label="Previous slide" @click="handleClick(scrollPrev)">
-              <LeftArrow />
-            </button>
-
-            <button
-              v-if="props.showArrows"
-              class="
-              btn-icon 
-              rounded-xl 
-              border border-black 
-              px-8 py-3 
-              hover:bg-gray-100 
+      <div class="hidden sm:flex sm:gap-0 sm:flex-row items-center">
+        <!-- Arrows -->
+        <div class="flex gap-3 my-2 sm:pl-[8px]">
+          <button
+              v-if="props.showArrows" class="
+              btn-icon
+              rounded-xl
+              border border-black
+              px-8 py-3
+              hover:bg-gray-100
               touch-manipulation
               select-none
               focus:ring-2 focus:ring-primary focus:ring-offset-2
-              "
-              :disabled="!canScrollNext" aria-label="Next slide" @click="handleClick(scrollNext)">
-              <RightArrow />
-            </button>
-          </div>
-          <!-- Pagination -->
-          <div class="mt-2 sm:absolute left-1/2 sm:-translate-x-1/2 flex justify-center gap-2">
-            <!-- Dots -->
-            <template v-if="!useScrollbar">
-              <span
-                v-for="(_, idx) in totalItems" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
-                :class="isVisible(idx) ? 'bg-primary-600' : 'bg-gray-300'"
-                aria-hidden="true" />
-            </template>
+            " :disabled="!canScrollPrev" aria-label="Previous slide" @click="handleClick(scrollPrev)">
+            <LeftArrow />
+          </button>
 
-            <!-- Scrollbar -->
-            <template v-else>
-              <input
-                type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-48 h-2 rounded-lg"
-                :value="scrollProgress" aria-label="Carousel scrollbar" @input="onScrollBarChange">
-            </template>
-          </div>
+          <button
+            v-if="props.showArrows"
+            class="
+            btn-icon 
+            rounded-xl 
+            border border-black 
+            px-8 py-3 
+            hover:bg-gray-100 
+            touch-manipulation
+            select-none
+            focus:ring-2 focus:ring-primary focus:ring-offset-2
+            "
+            :disabled="!canScrollNext" aria-label="Next slide" @click="handleClick(scrollNext)">
+            <RightArrow />
+          </button>
+        </div>
+        <!-- Pagination -->
+        <div class="mt-2 sm:absolute left-1/2 sm:-translate-x-1/2 flex justify-center gap-2">
+          <!-- Dots -->
+          <template v-if="!useScrollbar">
+            <span
+              v-for="(_, idx) in totalItems" :key="idx" class="w-2.5 h-2.5 rounded-full inline-block"
+              :class="isVisible(idx) ? 'bg-primary-600' : 'bg-gray-300'"
+              aria-hidden="true" />
+          </template>
+
+          <!-- Scrollbar -->
+          <template v-else>
+            <input
+              type="range" min="0" max="1" step="0.001" class="embla-scrollbar w-48 h-2 rounded-lg"
+              :value="scrollProgress" aria-label="Carousel scrollbar" @input="onScrollBarChange">
+          </template>
         </div>
       </div>
-    </section>
-  </ClientOnly>
+    </div>
+  </section>
 </template>
 
 <style scoped>
