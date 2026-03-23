@@ -11,8 +11,8 @@ import TextboxControls from '~/components/features/TextboxControls.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import IconTextButton from '~/components/common/IconTextButton.vue'
 
-// Lazy-load CanvasCore and QuoteForm so Fabric.js and Zod are kept out of the shared synchronous bundle
-const CanvasCore = defineAsyncComponent(() => import('~/components/features/CanvasPanel.vue'))
+// Lazy-load CanvasPanel and QuoteForm so Fabric.js and Zod are kept out of the shared synchronous bundle
+const CanvasPanel = defineAsyncComponent(() => import('~/components/features/CanvasPanel.vue'))
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
 
 // Dynamically import fonts to avoid blocking the main thread
@@ -101,7 +101,7 @@ function handleChangedActiveCanvas(canvas: Canvas | null): void {
     <div class="designer grid grid-cols-1 sm:grid-cols-[1fr_minmax(350px,800px)_1fr] gap-4 items-start">
       <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
       <div class="hidden sm:block md:w-[48px]" />
-      <CanvasCore
+      <CanvasPanel
         :image="image"
         :text-cnt="textCnt"
         @changed:canvas-map="handleChangedCanvasMap"
