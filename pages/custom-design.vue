@@ -18,13 +18,13 @@ import IconTextButton from '~/components/common/IconTextButton.vue'
 const CanvasPanel = defineAsyncComponent(() => import('~/components/features/CanvasPanel.vue'))
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
 
-// ===== COMPOSABLES =====
-const siteUrl = useSiteUrl()
-
 // Dynamically import fonts to avoid blocking the main thread
 if (import.meta.client) {
   import('~/assets/css/custom-design-fonts.css')
 }
+
+// ===== COMPOSABLES =====
+const siteUrl = useSiteUrl()
 
 useHead({
   title: 'Designa själv',
