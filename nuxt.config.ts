@@ -23,9 +23,6 @@ export default defineNuxtConfig({
             if (id.includes('fabric')) return 'fabric'
             if (id.includes('zod')) return 'zod'
             
-            // Extract image optimization to shared chunk (used by card components)
-            if (id.includes('@nuxt/image')) return 'nuxt-image'
-            
             // Extract Vue Router to shared chunk (used across app)
             if (id.includes('vue-router')) return 'vue-router'
           }
