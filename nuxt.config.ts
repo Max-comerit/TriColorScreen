@@ -14,7 +14,8 @@ export default defineNuxtConfig({
       rollupOptions: {
         output: {
           manualChunks: {
-            'fabric': ['fabric']
+            'fabric': ['fabric'],
+            'zod': ['zod']
           }
         }
       }
