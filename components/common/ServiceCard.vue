@@ -96,6 +96,7 @@ async function handleLinkClick(event: MouseEvent): Promise<void> {
       v-if="link"
       :key="`link-${link}`"
       tabindex="0"
+      :to="link"
       class="py-0 service-card-link group outline-visible-spaced-card h-full block"
       @click="handleLinkClick"
     >
