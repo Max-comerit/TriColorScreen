@@ -5,12 +5,72 @@
  *
  * Provides form state management, validation, and submission handling
  * for the contact form with Zod schema validation.
- * 
- * Note: Zod validation is dynamically imported to keep it out of the critical bundle.
  */
 
+import { z } from 'zod'
 import { useContactFormStore } from '~/stores/contactFormStore'
-import type { ContactFormData, FormState } from '~/types/Forms'
+
+// ===== CONSTANTS =====
+/** Maximum file size: 7MB */
+const MAX_FILE_SIZE = 7 * 1024 * 1024
+
+/** Allowed image MIME types */
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
+
+// ===== ZOD SCHEMA =====
+/** Contact form validation schema */
+export const contactFormSchema = z.object({
+  name: z
+    .string()
+    .min(2, 'Namnet måste vara minst 2 tecken')
+    .max(100, 'Namnet får inte vara längre än 100 tecken'),
+  email: z
+    .string()
+    .email('Ange en giltig e-postadress')
+    .min(1, 'E-post är obligatoriskt'),
+  phone: z
+    .string()
+    .regex(/^(\+\d{1,3})?[\s]*-?[\s]*(\(?\d{1,4}\)?)?[\s]*-?[\s]*\d[\d\s-]{5,14}$/, 'Ange ett giltigt telefonnummer')
+    .optional()
+    .or(z.literal('')),
+  customerType: z
+    .enum(['Privatperson', 'Företag'], {
+      errorMap: () => ({ message: 'Välj om du är privatperson eller företag' }),
+    }),
+  subject: z
+    .string()
+    .min(3, 'Ämnet måste vara minst 3 tecken')
+    .max(200, 'Ämnet får inte vara längre än 200 tecken'),
+  message: z
+    .string()
+    .max(2000, 'Meddelandet får inte vara längre än 2000 tecken')
+    .optional()
+    .or(z.literal('')),
+  image: z
+    .custom<File>((file) => {
+      if (!file) return true // Optional field
+      if (!(file instanceof File)) return false
+      if (file.size > MAX_FILE_SIZE) return false
+      return ALLOWED_IMAGE_TYPES.includes(file.type)
+    }, {
+      message: 'Bilden måste vara mindre än 7MB och i formatet JPEG, PNG, WebP eller GIF',
+    })
+    .optional()
+    .nullable(),
+  gdprConsent: z
+    .boolean()
+    .refine(val => val === true, {
+      message: 'Du måste godkänna behandling av personuppgifter',
+    }),
+})
+
+/** TypeScript type from Zod schema */
+export type ContactFormData = z.infer<typeof contactFormSchema>
+
+// ===== TYPES =====
+
+/** Form submission state */
+type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
 // ===== COMPOSABLE =====
 /**
@@ -58,51 +118,40 @@ export function useContactForm() {
   // ===== METHODS =====
   /**
    * Validate a single field
-   * Dynamically imports validation logic to keep Zod out of critical bundle
    */
-  async function validateField(field: keyof ContactFormData): Promise<boolean> {
+  function validateField(field: keyof ContactFormData): boolean {
     try {
-      const { validateField: validate } = await import('~/utils/validation/contactFormValidation')
-      const result = validate(field, formData.value)
-      if (result.valid) {
-        fieldErrors.value.delete(field)
-        return true
-      }
-      else {
-        if (result.error) {
-          fieldErrors.value.set(field, result.error)
-        }
-        return false
-      }
+      const fieldSchema = contactFormSchema.shape[field]
+      fieldSchema.parse(formData.value[field])
+      fieldErrors.value.delete(field)
+      return true
     }
     catch (error) {
-      console.error('Field validation error:', error)
+      if (error instanceof z.ZodError) {
+        fieldErrors.value.set(field, error.errors[0].message)
+      }
       return false
     }
   }
 
   /**
    * Validate entire form
-   * Dynamically imports validation logic to keep Zod out of critical bundle
    */
-  async function validateForm(): Promise<boolean> {
+  function validateForm(): boolean {
     try {
-      const { validateForm: validate } = await import('~/utils/validation/contactFormValidation')
-      const result = validate(formData.value)
-      
-      if (result.valid) {
-        fieldErrors.value.clear()
-        generalError.value = null
-        return true
-      }
-      else {
-        fieldErrors.value = new Map(result.errors)
-        return false
-      }
+      contactFormSchema.parse(formData.value)
+      fieldErrors.value.clear()
+      generalError.value = null
+      return true
     }
     catch (error) {
-      console.error('Form validation error:', error)
-      generalError.value = 'Valideringsfel inträffade'
+      if (error instanceof z.ZodError) {
+        fieldErrors.value.clear()
+        error.errors.forEach((err) => {
+          const field = err.path[0] as keyof ContactFormData
+          fieldErrors.value.set(field, err.message)
+        })
+      }
       return false
     }
   }
@@ -154,7 +203,7 @@ export function useContactForm() {
    */
   async function submitForm(): Promise<boolean> {
     // Validate form before submission
-    if (!await validateForm()) {
+    if (!validateForm()) {
       return false
     }
 

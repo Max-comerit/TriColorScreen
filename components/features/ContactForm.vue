@@ -4,7 +4,7 @@
 // ===== IMPORTS =====
 import { defineAsyncComponent } from 'vue'
 import { useContactForm } from '~/composables/useContactForm'
-import type { ContactFormData } from '~/types/Forms'
+import type { ContactFormData } from '~/composables/useContactForm'
 import TextButton from '~/components/common/TextButton.vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
 import { TAP_ANIMATION_TIME } from '~/constants/ui'
@@ -45,9 +45,9 @@ const fileInputLabel = computed(() => formData.value.image?.name ?? 'Ingen fil v
 /**
  * Handle input blur event and validate field
  */
-async function handleBlur(field: keyof ContactFormData): Promise<void> {
+function handleBlur(field: keyof ContactFormData): void {
   if (formData.value[field]) {
-    await validateField(field)
+    validateField(field)
   }
 }
 
@@ -61,7 +61,7 @@ function handleInput(field: keyof ContactFormData): void {
 /**
  * Handle file input change
  */
-async function handleFileChange(event: Event): Promise<void> {
+function handleFileChange(event: Event): void {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0] || null
   
@@ -70,7 +70,7 @@ async function handleFileChange(event: Event): Promise<void> {
   
   // Validate file if selected
   if (file) {
-    await validateField('image')
+    validateField('image')
   }
   else {
     clearFieldError('image')

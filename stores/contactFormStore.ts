@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { ContactFormData } from '~/types/Forms'
+import type { ContactFormData } from '~/composables/useContactForm'
 
 /**
  * Contact Form Pinia Store

@@ -5,7 +5,7 @@
 import { defineAsyncComponent } from 'vue'
 import { nanoid } from 'nanoid'
 import type { Canvas } from 'fabric'
-import type { QuoteFormData } from '~/types/Forms'
+import type { QuoteFormData } from '~/composables/useQuoteForm'
 import { useQuoteForm, MAX_IMAGE_COUNT } from '~/composables/useQuoteForm'
 import TextButton from '~/components/common/TextButton.vue'
 import { storeToRefs } from 'pinia'
@@ -70,9 +70,9 @@ const activeSideLabels = computed(
 /**
  * Handle input blur event and validate field
  */
-async function handleBlur(field: keyof QuoteFormData): Promise<void> {
+function handleBlur(field: keyof QuoteFormData): void {
   if (formData.value[field]) {
-    await validateField(field)
+    validateField(field)
   }
 }
 
