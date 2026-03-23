@@ -44,7 +44,10 @@ const circularMode = ref(false)
 function sliderToRadius(v: number): number {
   if (v === 0) return 0
   const sign = v > 0 ? 1 : -1
-  return sign * (MAX_TEXT_RADIUS - (Math.abs(v) / 100) * (MAX_TEXT_RADIUS - MIN_TEXT_RADIUS))
+  if (Math.abs(v) < 20) {
+    return sign * (MAX_TEXT_RADIUS - 5 * ((Math.abs(v)-1) / 100) * (MAX_TEXT_RADIUS - MIN_TEXT_RADIUS))
+  }
+  return sign * (MAX_TEXT_RADIUS/10 - (Math.abs(v) / 100) * (MAX_TEXT_RADIUS/10 - MIN_TEXT_RADIUS))
 }
 
 // Inverse of sliderToRadius: converts stored fabric radius back to slider intensity.
@@ -53,7 +56,12 @@ function radiusToSlider(r: number): number {
   const absR = Math.abs(r)
   if (absR < MIN_TEXT_RADIUS || absR > MAX_TEXT_RADIUS) return 0
   const sign = r > 0 ? 1 : -1
-  const v = Math.round(((MAX_TEXT_RADIUS - absR) / (MAX_TEXT_RADIUS - MIN_TEXT_RADIUS)) * 100)
+  if (absR > MAX_TEXT_RADIUS/10) {
+    const v = Math.round(((MAX_TEXT_RADIUS - absR) / (5 * (MAX_TEXT_RADIUS - MIN_TEXT_RADIUS))) * 100) + 1
+    // Clamp to at least ±1 so an existing path isn't silently dropped
+    return sign * Math.max(v, 1)
+  }
+  const v = Math.round(((MAX_TEXT_RADIUS/10 - absR) / (MAX_TEXT_RADIUS/10 - MIN_TEXT_RADIUS)) * 100)
   // Clamp to at least ±1 so an existing path isn't silently dropped
   return sign * Math.max(v, 1)
 }
