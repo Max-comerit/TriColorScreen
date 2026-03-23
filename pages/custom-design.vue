@@ -13,10 +13,10 @@ import Section from '~/components/common/Section.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
-import CanvasPanel from '~/components/features/CanvasPanel.vue'
 import IconTextButton from '~/components/common/IconTextButton.vue'
 
-// Lazy-load QuoteForm so Zod and nanoid are kept out of the shared synchronous bundle
+// Lazy-load CanvasPanel and QuoteForm so Fabric.js and Zod are kept out of the shared synchronous bundle
+const CanvasPanel = defineAsyncComponent(() => import('~/components/features/CanvasPanel.vue'))
 const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
 
 // ===== COMPOSABLES =====
