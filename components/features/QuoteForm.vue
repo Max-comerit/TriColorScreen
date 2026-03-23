@@ -2,7 +2,6 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { defineAsyncComponent } from 'vue'
 import { nanoid } from 'nanoid'
 import type { Canvas } from 'fabric'
 import type { QuoteFormData } from '~/composables/useQuoteForm'
@@ -11,8 +10,8 @@ import TextButton from '~/components/common/TextButton.vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { useCanvasExport } from '~/composables/useCanvasExport'
+import GdprDialog from '~/components/features/GdprDialog.vue'
 import { TAP_ANIMATION_TIME } from '~/constants/ui'
-const GdprDialog = defineAsyncComponent(() => import('~/components/features/GdprDialog.vue'))
 
 // ===== PROPS =====
 interface Props {

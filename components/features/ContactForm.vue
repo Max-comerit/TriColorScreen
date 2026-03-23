@@ -2,13 +2,12 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { defineAsyncComponent } from 'vue'
 import { useContactForm } from '~/composables/useContactForm'
 import type { ContactFormData } from '~/composables/useContactForm'
 import TextButton from '~/components/common/TextButton.vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
+import GdprDialog from '~/components/features/GdprDialog.vue'
 import { TAP_ANIMATION_TIME } from '~/constants/ui'
-const GdprDialog = defineAsyncComponent(() => import('~/components/features/GdprDialog.vue'))
 
 // ===== EMITS =====
 const emit = defineEmits<{
