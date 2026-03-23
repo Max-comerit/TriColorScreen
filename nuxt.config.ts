@@ -10,6 +10,15 @@ const siteUrl = process.env.SITE_URL || process.env.DEPLOY_PRIME_URL || 'https:/
 export default defineNuxtConfig({
   vite: {
     plugins: [svgLoader()],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'fabric': ['fabric']
+          }
+        }
+      }
+    }
   },
   ssr: true,
 
