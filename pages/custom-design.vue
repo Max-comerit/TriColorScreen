@@ -107,16 +107,18 @@ function addText(): void {
 }
 
 /**
- * Handle canvas changed event and store the updated canvas map
+ * Handle canvas map update event and store the updated map of canvas instances
+ * @param newCanvasMap Updated array of canvas instances, indexed by side number
  */
-function handleCanvasChanged(newCanvasMap: (Canvas | undefined)[]): void {
+function handleChangedCanvasMap(newCanvasMap: (Canvas | undefined)[]): void {
   canvasMap.value = newCanvasMap
 }
 
 /**
  * Handle active canvas update event and store the updated active canvas
+ * @param canvas Updated active canvas instance or null
  */
-function handleUpdateActiveCanvas(canvas: Canvas | null): void {
+function handleChangedActiveCanvas(canvas: Canvas | null): void {
   activeCanvas.value = canvas
 }
 
@@ -207,7 +209,7 @@ function handleUpdateActiveCanvas(canvas: Canvas | null): void {
         <div class="designer grid grid-cols-1 sm:grid-cols-[1fr_minmax(350px,800px)_1fr] gap-4 items-start">
           <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
           <div class="hidden sm:block md:w-[48px]" />
-          <CanvasPanel :background-url="backgroundUrl" :image="image" :text-cnt="textCnt" @changed="handleCanvasChanged" @update-active="handleUpdateActiveCanvas" />
+          <CanvasPanel :background-url="backgroundUrl" :image="image" :text-cnt="textCnt" @changed:canvas-map="handleChangedCanvasMap" @changed:active-canvas="handleChangedActiveCanvas" />
           <div class="flex flex-row sm:flex-col justify-center gap-3">
             <div class="xl:hidden">
               <IconButton

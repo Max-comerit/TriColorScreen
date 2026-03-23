@@ -29,8 +29,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 // ===== EMITS =====
 const emit = defineEmits<{
-  (e: 'changed', canvasMap: (Canvas | undefined)[]): void
-  (e: 'updateActive', activeCanvas: Canvas | null): void
+  (e: 'changed:canvasMap', canvasMap: (Canvas | undefined)[]): void
+  (e: 'changed:activeCanvas', activeCanvas: Canvas | null): void
 }>()
 
 // ===== COMPOSABLES =====
@@ -93,7 +93,6 @@ async function initializeCanvas(side: number, el: HTMLCanvasElement, width: numb
   canvasInstance.on('object:modified', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
   canvasInstance.on('object:removed', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
 }
-
 
 /** Assign or remove a canvas element ref from the template v-for */
 function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
@@ -286,14 +285,14 @@ watch(
 watch(
   () => canvasMap.value,
   (newCanvasMap) => {
-    emit('changed', newCanvasMap)
+    emit('changed:canvasMap', newCanvasMap)
   },
 )
 
 watch(
   () => activeCanvas.value,
   (newActiveCanvas) => {
-    emit('updateActive', newActiveCanvas)
+    emit('changed:activeCanvas', newActiveCanvas)
   },
 )
 
