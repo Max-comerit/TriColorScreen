@@ -38,15 +38,6 @@ export default defineNuxtConfig({
       ]
     },
     compressPublicAssets: true,
-    routeRules: {
-      // Cache HTML pages for 1 hour (revalidate in background)
-      // Static asset caching (images, fonts, JS, CSS) is handled in netlify.toml
-      '/**': { 
-        headers: { 
-          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400'
-        } 
-      },
-    },
     rollupConfig: {
       external: ['@nuxt/nitro-server'],
       onwarn(warning, warn) {
