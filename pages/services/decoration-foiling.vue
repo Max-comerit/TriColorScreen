@@ -1,17 +1,12 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { defineAsyncComponent } from 'vue'
 import { useSiteUrl } from '~/composables/useSiteUrl'
+import CardGrid from '~/components/common/CardGrid.vue'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import CtaSection from '~/components/features/CtaSection.vue'
 import type { CardItem, IServiceCardContent } from '~/types/CardContent'
 import decorationFoilingServicesData from '~/assets/json/services/decoration-foiling/services.json'
-
-// ===== ASYNC COMPONENTS =====
-const CardGrid = defineAsyncComponent(() =>
-  import('~/components/common/CardGrid.vue')
-)
 
 // ===== PROPS & EMITS =====
 
