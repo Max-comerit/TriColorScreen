@@ -89,6 +89,9 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/Inter-Bold.woff2', crossorigin: '' },
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/DMSans-Bold.woff2', crossorigin: '' },
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/DMSans-SemiBold.woff2', crossorigin: '' },
       ],
     },
   },
