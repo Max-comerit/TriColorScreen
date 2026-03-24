@@ -148,8 +148,10 @@ export function getInitialBackgroundUrl(
     return state.backgroundSelection
   }
   const defaults: string[] = [
-    '/images/custom-design/t-shirt-front.png',
-    '/images/custom-design/t-shirt-back.png',
+    '/images/custom-design/t-shirt-front.jpg',
+    '/images/custom-design/t-shirt-back.jpg',
+    '/images/custom-design/t-shirt-left.jpg',
+    '/images/custom-design/t-shirt-right.jpg'
   ]
   return defaults[sideKey] ?? ''
 }
