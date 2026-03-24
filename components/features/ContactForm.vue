@@ -2,13 +2,17 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { computed, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { useContactForm } from '~/composables/useContactForm'
 import type { ContactFormData } from '~/composables/useContactForm'
 import TextButton from '~/components/common/TextButton.vue'
-import GdprDialog from '~/components/features/GdprDialog.vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
 import { TAP_ANIMATION_TIME } from '~/constants/ui'
+
+// ===== ASYNC COMPONENTS =====
+const GdprDialog = defineAsyncComponent(() =>
+  import('~/components/features/GdprDialog.vue')
+)
 
 // ===== EMITS =====
 const emit = defineEmits<{
@@ -531,6 +535,6 @@ watch(isChanged, (newValue) => {
     </div>
 
     <!-- GDPR Information Dialog -->
-    <GdprDialog v-model="showGdprDialog" form="Contact" />
+    <GdprDialog v-if="showGdprDialog" v-model="showGdprDialog" form="Contact" />
   </form>
 </template>
