@@ -10,11 +10,19 @@
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/t-shirt-front.png"
+              "src": "/images/custom-design/t-shirt-front.jpg"
             },
             {
               "label": "Bak",
-              "src": "/images/custom-design/t-shirt-back.png"
+              "src": "/images/custom-design/t-shirt-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/t-shirt-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/t-shirt-right.jpg"
             }
           ]
         },
@@ -23,19 +31,19 @@
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/shirt-front.png"
+              "src": "/images/custom-design/shirt-front.jpg"
             },
             {
               "label": "Bak",
-              "src": "/images/custom-design/shirt-back.png"
+              "src": "/images/custom-design/shirt-back.jpg"
             },
             {
               "label": "Vänster",
-              "src": "/images/custom-design/shirt-side-left.png"
+              "src": "/images/custom-design/shirt-left.jpg"
             },
             {
               "label": "Höger",
-              "src": "/images/custom-design/shirt-side-right.png"
+              "src": "/images/custom-design/shirt-right.jpg"
             }
           ]
         },
@@ -44,11 +52,19 @@
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/hoodie-front.png"
+              "src": "/images/custom-design/hoodie-front.jpg"
             },
             {
               "label": "Bak",
-              "src": "/images/custom-design/hoodie-back.png"
+              "src": "/images/custom-design/hoodie-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/hoodie-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/hoodie-right.jpg"
             }
           ]
         },
@@ -57,11 +73,284 @@
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/college-front.png"
+              "src": "/images/custom-design/college-front.jpg"
             },
             {
               "label": "Bak",
-              "src": "/images/custom-design/college-back.png"
+              "src": "/images/custom-design/college-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/college-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/college-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Sweatpants",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/sweatpants-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/sweatpants-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/sweatpants-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/sweatpants-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Fleece",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/fleece-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/fleece-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/fleece-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/fleece-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Jacka",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/jacket-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/jacket-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/jacket-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/jacket-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Pikétröja",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/polo-shirt-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/polo-shirt-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/polo-shirt-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/polo-shirt-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Keps",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/cap-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/cap-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/cap-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/cap-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Väst",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/vest-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/vest-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/vest-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/vest-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Egen Produkt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": ""
+            },
+            {
+              "label": "Bak",
+              "src": ""
+            },
+            {
+              "label": "Vänster",
+              "src": ""
+            },
+            {
+              "label": "Höger",
+              "src": ""
+            },
+            {
+              "label": "Över",
+              "src": ""
+            },
+            {
+              "label": "Under",
+              "src": ""
+            }
+          ]
+        }
+      ]
+    },
+        {
+      "label": "Arbetskläder",
+      "products": [
+        {
+          "label": "Jacka",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/high-vis-jacket-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/high-vis-jacket-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/high-vis-jacket-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/high-vis-jacket-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Byxa",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/high-vis-pants-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/high-vis-pants-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/high-vis-pants-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/high-vis-pants-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Softshell",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/high-vis-softshell-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/high-vis-softshell-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/high-vis-softshell-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/high-vis-softshell-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Väst",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/high-vis-vest-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/high-vis-vest-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/high-vis-vest-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/high-vis-vest-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Overall",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/overall-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/overall-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/overall-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/overall-right.jpg"
             }
           ]
         },
@@ -109,24 +398,6 @@
           ]
         },
         {
-          "label": "Flyer",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/poster.png"
-            }
-          ]
-        },
-        {
-          "label": "Storformat",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/poster.png"
-            }
-          ]
-        },
-        {
           "label": "Banderoll",
           "sides": [
             {
@@ -144,7 +415,7 @@
             }
           ]
         },
-                {
+        {
           "label": "Beachflagga",
           "sides": [
             {
@@ -163,75 +434,11 @@
           ]
         },
         {
-          "label": "Egen Produkt",
+          "label": "Roll-up",
           "sides": [
             {
               "label": "Fram",
-              "src": ""
-            },
-            {
-              "label": "Bak",
-              "src": ""
-            },
-            {
-              "label": "Vänster",
-              "src": ""
-            },
-            {
-              "label": "Höger",
-              "src": ""
-            },
-            {
-              "label": "Över",
-              "src": ""
-            },
-            {
-              "label": "Under",
-              "src": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "label": "Brodyr",
-      "products": [
-        {
-          "label": "Jacka",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/jacket-front.png"
-            },
-            {
-              "label": "Bak",
-              "src": "/images/custom-design/jacket-back.png"
-            }
-          ]
-        },
-        {
-          "label": "Pikétröja",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/polo-shirt-front.png"
-            },
-            {
-              "label": "Bak",
-              "src": "/images/custom-design/polo-shirt-back.png"
-            }
-          ]
-        },
-        {
-          "label": "Keps",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/baseball-cap-front.png"
-            },
-            {
-              "label": "Bak",
-              "src": "/images/custom-design/baseball-cap-back.png"
+              "src": "/images/custom-design/roll-up.png"
             }
           ]
         },

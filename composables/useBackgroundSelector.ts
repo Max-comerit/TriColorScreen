@@ -21,9 +21,16 @@ export function useBackgroundSelector() {
 
   // 3. Methods
 
-  /** Registers the product category tree in the store once on mount. */
+  /** Registers the product category tree in the store once on mount and syncs the default product. */
   function initProductCategories(): void {
     canvasStore.setProductCategoryTree(PRODUCT_CATEGORIES_OBJ)
+    // Sync the default product's sides so sideCount matches what the side dropdown shows.
+    // Without this, sideCount stays at 2 while sideOptions shows all 4 sides, causing
+    // left/right canvases to never render on first load.
+    if (!canvasStore.sides.some(s => s.backgroundSelection)) {
+      const url = PRODUCT_CATEGORIES[canvasStore.activeCategory]?.products[canvasStore.activeProduct]?.sides[0]?.src
+      if (url) syncProductSelection(url)
+    }
   }
 
   /** Syncs store backgroundSelection for every side of the product that owns the given URL. */
