@@ -246,95 +246,7 @@
         }
       ]
     },
-    {
-      "label": "Reklam",
-      "products": [
         {
-          "label": "Affisch",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/poster.png"
-            }
-          ]
-        },
-        {
-          "label": "Banderoll",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/banderoll.png"
-            }
-          ]
-        },
-        {
-          "label": "Skylt",
-          "sides": [
-            {
-              "label": "Höger",
-              "src": "/images/custom-design/sign.png"
-            }
-          ]
-        },
-        {
-          "label": "Beachflagga",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/beach-flag.png"
-            }
-          ]
-        },
-        {
-          "label": "Butiksflagga",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/kiosk-flag.png"
-            }
-          ]
-        },
-        {
-          "label": "Roll-up",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/roll-up.png"
-            }
-          ]
-        },
-        {
-          "label": "Egen Produkt",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": ""
-            },
-            {
-              "label": "Bak",
-              "src": ""
-            },
-            {
-              "label": "Vänster",
-              "src": ""
-            },
-            {
-              "label": "Höger",
-              "src": ""
-            },
-            {
-              "label": "Över",
-              "src": ""
-            },
-            {
-              "label": "Under",
-              "src": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
       "label": "Arbetskläder",
       "products": [
         {
@@ -439,6 +351,94 @@
             {
               "label": "Höger",
               "src": "/images/custom-design/overall-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Egen Produkt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": ""
+            },
+            {
+              "label": "Bak",
+              "src": ""
+            },
+            {
+              "label": "Vänster",
+              "src": ""
+            },
+            {
+              "label": "Höger",
+              "src": ""
+            },
+            {
+              "label": "Över",
+              "src": ""
+            },
+            {
+              "label": "Under",
+              "src": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Reklam",
+      "products": [
+        {
+          "label": "Affisch",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/poster.png"
+            }
+          ]
+        },
+        {
+          "label": "Banderoll",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/banderoll.png"
+            }
+          ]
+        },
+        {
+          "label": "Skylt",
+          "sides": [
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/sign.png"
+            }
+          ]
+        },
+        {
+          "label": "Beachflagga",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/beach-flag.png"
+            }
+          ]
+        },
+        {
+          "label": "Butiksflagga",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/kiosk-flag.png"
+            }
+          ]
+        },
+        {
+          "label": "Roll-up",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/roll-up.png"
             }
           ]
         },
