@@ -94,15 +94,20 @@ useHead({
       >
         <figure class="flex flex-col items-center gap-2 mx-auto max-w-full">
           <div class="w-full max-w-2xl aspect-video border border-neutral-900 rounded-card overflow-hidden">
-            <iframe 
-              title="Google Maps - Tricolor Screen location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2034.3229615671016!2d18.110771677289637!3d59.344256609825635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465f82caa3b3dbe7%3A0xed88aaff18ddd6f3!2sTricolor%20Screen!5e0!3m2!1ssv!2sse!4v1770820576918!5m2!1ssv!2sse"
-              style="border:0;" 
-              allowfullscreen="false" 
-              loading="lazy" 
-              referrerpolicy="no-referrer-when-downgrade"
-              class="w-full h-full border border-neutral-900 rounded-card"
-            />
+            <ClientOnly>
+              <iframe 
+                title="Google Maps - Tricolor Screen location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2034.3229615671016!2d18.110771677289637!3d59.344256609825635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465f82caa3b3dbe7%3A0xed88aaff18ddd6f3!2sTricolor%20Screen!5e0!3m2!1ssv!2sse!4v1770820576918!5m2!1ssv!2sse"
+                style="border:0;" 
+                allowfullscreen="false" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade"
+                class="w-full h-full border border-neutral-900 rounded-card"
+              />
+              <template #fallback>
+                <div class="w-full h-full bg-neutral-200 animate-pulse" />
+              </template>
+            </ClientOnly>
           </div>
         </figure>
       </Section>

@@ -3,17 +3,15 @@
 <script setup lang="ts">
 // 1. Imports
 import type { Canvas } from 'fabric'
-import { defineAsyncComponent, ref } from 'vue'
+import { ref } from 'vue'
+import CanvasPanel from '~/components/features/CanvasPanel.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import IconTextButton from '~/components/common/IconTextButton.vue'
-
-// Lazy-load CanvasPanel and QuoteForm so Fabric.js and Zod are kept out of the shared synchronous bundle
-const CanvasPanel = defineAsyncComponent(() => import('~/components/features/CanvasPanel.vue'))
-const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
+import QuoteForm from '~/components/features/QuoteForm.vue'
 
 // Dynamically import fonts to avoid blocking the main thread
 if (import.meta.client) {

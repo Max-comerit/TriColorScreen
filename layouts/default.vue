@@ -1,9 +1,11 @@
 // layouts/default.vue
 
 <script setup lang="ts">
-import AppHeader from '~/components/layout/AppHeader.vue'
-import AppFooter from '~/components/layout/AppFooter.vue'
+import { defineAsyncComponent, computed } from 'vue'
 import { useSiteUrl } from '~/composables/useSiteUrl'
+import AppHeader from '~/components/layout/AppHeader.vue'
+// Lazy-load footer since it's below the fold and not critical for initial page paint
+const AppFooter = defineAsyncComponent(() => import('~/components/layout/AppFooter.vue'))
 
 // Dynamic canonical for all pages — built from siteUrl + current route path.
 const siteUrl = useSiteUrl()

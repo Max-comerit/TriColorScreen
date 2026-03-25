@@ -121,7 +121,11 @@ const imageSrc = computed(() => isNotFound.value ? 'error' : 'oops')
             <!-- Action Buttons -->
             <div class="mt-8 flex flex-wrap items-center gap-4">
               <!-- Back to Home Button -->
-              <NuxtLink to="/" aria-label="Gå tillbaka till startsidan" tabindex="-1">
+              <NuxtLink 
+                to="/" 
+                aria-label="Gå tillbaka till startsidan" 
+                tabindex="-1"
+              >
                 <TextButton
                   variant="primary"
                   size="fit"

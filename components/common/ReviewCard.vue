@@ -42,7 +42,7 @@ const cardStyle = computed(() => ({
   <article class="flex flex-col gap-2 p-4 md:p-6 rounded-card" :class="backgroundColor" :style="cardStyle" aria-label="Customer review">
     <!-- Review text section -->
     <div class="flex-1">
-      <blockquote class="text-sm md:text-base leading-relaxed text-gray-700 italic">
+      <blockquote class="m-0 p-0 before:content-['“'] after:content-['”'] text-sm md:text-base leading-relaxed text-gray-700 italic">
         {{ review }}
       </blockquote>
     </div>
@@ -66,21 +66,3 @@ const cardStyle = computed(() => ({
     </div>
   </article>
 </template>
-
-<style scoped>
-/* ReviewCard Component Styles */
-
-/* Blockquote styling for better semantic structure */
-blockquote {
-  margin: 0;
-  padding: 0;
-}
-
-blockquote::before {
-  content: "“";
-}
-
-blockquote::after {
-  content: "”";
-}
-</style>

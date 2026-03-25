@@ -292,7 +292,10 @@ watch(
         @mouseenter="handleMouseEnter(item)" @mouseleave="handleMouseLeave" @focusout="handleNavItemFocusOut">
         <!-- Parent menu item with dropdown -->
         <button
-        v-if="item.children" type="button" class="nav-link" :class="{ active: isActiveOrParent(item) }"
+        v-if="item.children" 
+          type="button" 
+          class="nav-link" 
+          :class="{ active: isActiveOrParent(item) }"
           :aria-expanded="openDropdown === item.href" 
           :aria-haspopup="true" 
           @click="handleNavClick($event, item)"
@@ -304,7 +307,9 @@ watch(
 
         <!-- Regular nav link (no children) -->
         <NuxtLink
-        v-else :to="item.href" class="nav-link" 
+        v-else 
+          :to="item.href" 
+          class="nav-link" 
           :class="{ active: isActiveOrParent(item) }"
           draggable="false"
           @click="handleNavClick($event, item)" 
@@ -323,7 +328,8 @@ watch(
           :aria-label="`${item.label} undermeny`">
           <li v-for="(child, index) in item.children" :key="child.href" class="dropdown-item flex">
             <NuxtLink
-              :to="child.href" class="dropdown-link" 
+              :to="child.href" 
+              class="dropdown-link" 
               :class="{
                 active: navigationStore.isRouteActive(child.href),
               }" 

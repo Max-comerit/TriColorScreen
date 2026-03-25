@@ -10,6 +10,21 @@ const siteUrl = process.env.SITE_URL || process.env.DEPLOY_PRIME_URL || 'https:/
 export default defineNuxtConfig({
   vite: {
     plugins: [svgLoader()],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            // Split heavy dependencies into separate chunks
+            if (id.includes('fabric')) return 'fabric'
+            if (id.includes('zod')) return 'zod'
+            if (id.includes('embla-carousel')) return 'embla-carousel'
+            
+            // Extract Vue Router to shared chunk (used across app)
+            if (id.includes('vue-router')) return 'vue-router'
+          }
+        }
+      }
+    }
   },
   ssr: true,
 
@@ -23,15 +38,6 @@ export default defineNuxtConfig({
       ]
     },
     compressPublicAssets: true,
-    routeRules: {
-      // Cache HTML pages for 1 hour (revalidate in background)
-      // Static asset caching (images, fonts, JS, CSS) is handled in netlify.toml
-      '/**': { 
-        headers: { 
-          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400'
-        } 
-      },
-    },
     rollupConfig: {
       external: ['@nuxt/nitro-server'],
       onwarn(warning, warn) {
@@ -83,14 +89,18 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+        { rel: 'manifest', href: '/site.webmanifest' },
       ],
     },
   },
 
   css: [
-    '~/assets/css/main.css',
-    '~/assets/css/fonts.css',
-    '~/assets/css/layout.css'
+    '~/assets/css/main.css',     // Critical: base resets
+    '~/assets/css/layout.css',   // Critical: layout grid (prevents CLS)
+    '~/assets/css/fonts.css',    // Critical: font definitions
   ],
 
   image: {

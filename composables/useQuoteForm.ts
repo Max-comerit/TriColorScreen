@@ -117,9 +117,6 @@ export function useQuoteForm() {
 
   // ===== STATE =====
   const formData = ref<QuoteFormData>({ ...quoteFormStore.formData })
-
-
-
   const initialFormData = ref<Omit<QuoteFormData, 'images'>>(
     (({ images: _i, ...rest }) => rest)(formData.value),
   )

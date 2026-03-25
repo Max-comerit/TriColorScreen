@@ -155,10 +155,10 @@ function setInitialFocus(): void {
  */
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
+})
 
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeyDown)
-  })
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown)
 })
 
 // ===== WATCHERS =====
@@ -176,64 +176,66 @@ watch(
 </script>
 
 <template>
-  <Teleport to="body">
-    <!-- Modal Backdrop -->
-    <div
-      v-if="props.modelValue"
-      class="fixed inset-0 bg-black/45 flex items-center justify-center z-50"
-      @click.self="props.closeOnBackdrop ? close() : null"
-    >
-      <!-- Modal Dialog -->
-      <dialog
-        open
-        role="dialog"
-        aria-modal="true"
-        class="bg-white p-7 min-w-48 max-w-[calc(100vw_-_2rem)] overflow-hidden rounded-modal shadow-drop relative flex flex-col"
-        :style="{ width: props.width, height: props.height }"
-        :aria-labelledby="props.title ? 'modal-title' : undefined"
-        aria-describedby="modal-body"
+  <ClientOnly>
+    <Teleport to="body">
+      <!-- Modal Backdrop -->
+      <div
+        v-if="props.modelValue"
+        class="fixed inset-0 bg-black/45 flex items-center justify-center z-50"
+        @click.self="props.closeOnBackdrop ? close() : null"
       >
-        <!-- Close (X) Button -->
-        <button
-          aria-label="Close dialog"
-          class="absolute top-2 right-4 p-2 border-none bg-transparent cursor-pointer text-neutral-500 hover:text-neutral-900 transition-colors w-11 h-11 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-12 lg:h-12 flex items-center justify-center"
-          @click="close"
+        <!-- Modal Dialog -->
+        <dialog
+          open
+          role="dialog"
+          aria-modal="true"
+          class="bg-white p-7 min-w-48 max-w-[calc(100vw_-_2rem)] overflow-hidden rounded-modal shadow-drop relative flex flex-col"
+          :style="{ width: props.width, height: props.height }"
+          :aria-labelledby="props.title ? 'modal-title' : undefined"
+          aria-describedby="modal-body"
         >
-          <CloseIcon class="w-6 h-6 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-7 lg:h-7" />
-        </button>
-
-        <!-- Header -->
-        <header v-if="props.title" class="pb-5 flex-shrink-0">
-          <h2
-            id="modal-title"
-            class="min-h-fit m-0 text-lg md:text-xl lg:text-[22px] lg:leading-[30px] font-semibold text-neutral-900"
+          <!-- Close (X) Button -->
+          <button
+            aria-label="Close dialog"
+            class="absolute top-2 right-4 p-2 border-none bg-transparent cursor-pointer text-neutral-500 hover:text-neutral-900 transition-colors w-11 h-11 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-12 lg:h-12 flex items-center justify-center"
+            @click="close"
           >
-            <strong>{{ props.title }}</strong>
-          </h2>
-        </header>
+            <CloseIcon class="w-6 h-6 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-7 lg:h-7" />
+          </button>
 
-        <!-- Body Slot -->
-        <section 
-          id="modal-body" 
-          ref="modalBodyRef"
-          class="pb-5 text-neutral-700 flex-grow overflow-y-auto min-h-0 overscroll-contain"
-          :class="[
-            props.innerBorder === 'sunken'
-              ? 'border border-neutral-300 p-5 shadow-[inset_2px_2px_3px_rgba(0,0,0,0.2)] bg-neutral-50'
-              : '',
-          ]"
-          @wheel="handleWheelScroll"
-          @touchstart="handleTouchStart"
-          @touchmove="handleTouchMove"
-        >
-          <slot name="body" />
-        </section>
+          <!-- Header -->
+          <header v-if="props.title" class="pb-5 flex-shrink-0">
+            <h2
+              id="modal-title"
+              class="min-h-fit m-0 text-lg md:text-xl lg:text-[22px] lg:leading-[30px] font-semibold text-neutral-900"
+            >
+              <strong>{{ props.title }}</strong>
+            </h2>
+          </header>
 
-        <!-- Footer Slot -->
-        <footer class="min-h-fit pt-5 flex flex-wrap justify-end gap-4 border-t border-neutral-200 flex-shrink-0" role="group" aria-label="Dialog actions">
-          <slot name="footer" />
-        </footer>
-      </dialog>
-    </div>
-  </Teleport>
+          <!-- Body Slot -->
+          <section 
+            id="modal-body" 
+            ref="modalBodyRef"
+            class="pb-5 text-neutral-700 flex-grow overflow-y-auto min-h-0 overscroll-contain"
+            :class="[
+              props.innerBorder === 'sunken'
+                ? 'border border-neutral-300 p-5 shadow-[inset_2px_2px_3px_rgba(0,0,0,0.2)] bg-neutral-50'
+                : '',
+            ]"
+            @wheel="handleWheelScroll"
+            @touchstart="handleTouchStart"
+            @touchmove="handleTouchMove"
+          >
+            <slot name="body" />
+          </section>
+
+          <!-- Footer Slot -->
+          <footer class="min-h-fit pt-5 flex flex-wrap justify-end gap-4 border-t border-neutral-200 flex-shrink-0" role="group" aria-label="Dialog actions">
+            <slot name="footer" />
+          </footer>
+        </dialog>
+      </div>
+    </Teleport>
+  </ClientOnly>
 </template>

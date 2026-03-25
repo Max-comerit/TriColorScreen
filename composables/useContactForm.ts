@@ -82,9 +82,6 @@ export function useContactForm() {
 
   // ===== STATE =====
   const formData = ref<ContactFormData>({ ...contactFormStore.formData })
-
-
-
   const initialFormData = ref<ContactFormData>(JSON.parse(JSON.stringify(formData.value)))
   const formState = ref<FormState>('idle')
   const fieldErrors = ref<Map<keyof ContactFormData, string>>(new Map())

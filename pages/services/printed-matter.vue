@@ -108,16 +108,18 @@ const serviceCards = computed<CardItem[]>(() =>
         aria-label="Våra trycksaker"
         padding-y="pb-4 md:pb-6 lg:pb-8 xl:pb-12 2xl:pb-16"
       >
-        <Carousel
-          :items="serviceCards"
-          :per-page="perPage"
-          :gap-px="16"
-          :loop="true"
-          show-arrows
-          show-dots
-          outer-border="bordered"
-          aria-label="Trycksaker"
-        />
+        <ClientOnly>
+          <Carousel
+            :items="serviceCards"
+            :per-page="perPage"
+            :gap-px="16"
+            :loop="true"
+            show-arrows
+            show-dots
+            outer-border="bordered"
+            aria-label="Trycksaker"
+          />
+        </ClientOnly>
       </Section>
 
       <!-- CTA -->

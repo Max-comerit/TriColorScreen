@@ -91,17 +91,19 @@ const imageCards = computed<CardItem[]>(() =>
       </div>
 
     </Section>
-          <Carousel
-          :items="imageCards"
-          :per-page="perPage"
-          :gap-px="16"
-          :loop="true"
-          show-arrows
-          show-dots
-          outer-border="bordered"
-          aria-label="Tryckmetoder och resultat"
-          class="mb-4"
-        />
+          <ClientOnly>
+            <Carousel
+              :items="imageCards"
+              :per-page="perPage"
+              :gap-px="16"
+              :loop="true"
+              show-arrows
+              show-dots
+              outer-border="bordered"
+              aria-label="Tryckmetoder och resultat"
+              class="mb-4"
+            />
+          </ClientOnly>
 
       <!-- Store section -->
       <section
