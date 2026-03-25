@@ -12,7 +12,7 @@ import type { DropdownGroup } from '~/components/base/BaseDropdown.vue'
 // Font names used for eager preloading on mount
 const FONT_NAMES = [
   'Inter', 'Open Sans', 'Roboto',
-  'Merriweather', 'Playfair Display', 'PT Serif',
+  'Lora', 'Playfair Display', 'PT Serif',
   'Dancing Script', 'Pacifico',
   'Bebas Neue', 'Oswald',
 ]
@@ -83,7 +83,7 @@ const fontGroups: DropdownGroup[] = [
   {
     label: 'Serif',
     options: [
-      { label: 'Merriweather', value: "'Merriweather', serif", style: "font-family: 'Merriweather', serif" },
+      { label: 'Lora', value: "'Lora', serif", style: "font-family: 'Lora', serif" },
       { label: 'Playfair Display', value: "'Playfair Display', serif", style: "font-family: 'Playfair Display', serif" },
       { label: 'PT Serif', value: "'PT Serif', serif", style: "font-family: 'PT Serif', serif" },
     ],
