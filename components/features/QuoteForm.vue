@@ -19,13 +19,7 @@ const GdprDialog = defineAsyncComponent(() =>
 )
 
 // ===== PROPS =====
-interface Props {
-  canvasMap?: (Canvas | undefined)[]
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  canvasMap: () => [],
-})
+// (none)
 
 // ===== EMITS =====
 const emit = defineEmits<{
@@ -35,7 +29,7 @@ const emit = defineEmits<{
 
 // ===== COMPOSABLES & STORES =====
 const canvasStore = useCanvasStore()
-const { productCategoryTree, activeCategory, activeProduct } = storeToRefs(canvasStore)
+const { productCategoryTree, activeCategory, activeProduct, canvasMap } = storeToRefs(canvasStore)
 const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const {
   formData,
@@ -200,7 +194,7 @@ async function compressDataUrl(dataUrl: string, quality = 0.75): Promise<string>
  * Limits total images to MAX_IMAGE_COUNT to prevent excessive payloads.
  */
 async function collectQuoteFiles(): Promise<File[]> {
-  const availableCanvases = props.canvasMap
+  const availableCanvases = canvasMap.value
     .map((canvas, index) => ({ index, canvas }))
     .filter((entry): entry is { index: number; canvas: Canvas } => entry.canvas !== undefined)
 

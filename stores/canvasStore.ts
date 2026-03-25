@@ -38,6 +38,8 @@ function createInitialSides(): CanvasSideState[] {
 
 export const useCanvasStore = defineStore('canvas', {
   state: () => ({
+    /** Array of canvas instances indexed by side number */
+    canvasMap: [] as (Canvas | undefined)[],
     /** The currently active product category name */
     productCategoryTree:  undefined as ProductCategories | undefined,
     /** The currently active product category name */
@@ -95,6 +97,9 @@ export const useCanvasStore = defineStore('canvas', {
       }
 
       canvas.requestRenderAll()
+    },
+    setCanvasMap(map: (Canvas | undefined)[]) {
+      this.canvasMap = map
     },
     setBackgroundSelection(side: number, selection: string | null) {
       this.ensureSide(side)

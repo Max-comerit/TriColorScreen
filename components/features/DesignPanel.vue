@@ -4,6 +4,7 @@
 // 1. Imports
 import type { Canvas } from 'fabric'
 import { ref } from 'vue'
+import { useCanvasStore } from '~/stores/canvasStore'
 import CanvasPanel from '~/components/features/CanvasPanel.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
@@ -11,7 +12,6 @@ import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import IconTextButton from '~/components/common/IconTextButton.vue'
-import QuoteForm from '~/components/features/QuoteForm.vue'
 
 // Dynamically import fonts to avoid blocking the main thread
 if (import.meta.client) {
@@ -22,13 +22,12 @@ if (import.meta.client) {
 // (none)
 
 // 3. Composables & Stores
-// (none)
 
 // 4. State (ref/reactive)
+const canvasStore = useCanvasStore()
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const image = ref<File | undefined>()
 const textCnt = ref<number>(0) // Incrementing number to trigger reactivity in CanvasCore when adding text
-const canvasMap = ref<(Canvas | undefined)[]>([])
 const activeCanvas = ref<Canvas | null>(null)
 
 // 5. Computed
@@ -68,7 +67,7 @@ function addText(): void {
 }
 
 function handleChangedCanvasMap(newCanvasMap: (Canvas | undefined)[]): void {
-  canvasMap.value = newCanvasMap
+  canvasStore.setCanvasMap(newCanvasMap)
 }
 
 function handleChangedActiveCanvas(canvas: Canvas | null): void {
@@ -167,13 +166,5 @@ function handleChangedActiveCanvas(canvas: Canvas | null): void {
       </div>
     </div>
     <TextboxControls :canvas="activeCanvas as any" />
-
-    <!-- Offertformulär -->
-    <div
-      class="mt-10 flex justify-center"
-      aria-label="Offertformulär"
-    >
-      <QuoteForm :canvas-map="canvasMap as any" />
-    </div>
   </div>
 </template>
