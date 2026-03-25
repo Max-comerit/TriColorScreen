@@ -111,6 +111,27 @@
           ]
         },
         {
+          "label": "Fleece",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/fleece-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/fleece-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/fleece-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/fleece-right.jpg"
+            }
+          ]
+        },
+        {
           "label": "Jacka",
           "sides": [
             {
@@ -279,6 +300,145 @@
             {
               "label": "Fram",
               "src": "/images/custom-design/roll-up.png"
+            }
+          ]
+        },
+        {
+          "label": "Egen Produkt",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": ""
+            },
+            {
+              "label": "Bak",
+              "src": ""
+            },
+            {
+              "label": "Vänster",
+              "src": ""
+            },
+            {
+              "label": "Höger",
+              "src": ""
+            },
+            {
+              "label": "Över",
+              "src": ""
+            },
+            {
+              "label": "Under",
+              "src": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Arbetskläder",
+      "products": [
+        {
+          "label": "Jacka",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/high-vis-jacket-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/high-vis-jacket-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/high-vis-jacket-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/high-vis-jacket-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Byxa",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/high-vis-pants-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/high-vis-pants-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/high-vis-pants-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/high-vis-pants-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Softshell",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/high-vis-softshell-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/high-vis-softshell-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/high-vis-softshell-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/high-vis-softshell-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Väst",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/high-vis-vest-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/high-vis-vest-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/high-vis-vest-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/high-vis-vest-right.jpg"
+            }
+          ]
+        },
+        {
+          "label": "Overall",
+          "sides": [
+            {
+              "label": "Fram",
+              "src": "/images/custom-design/overall-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/overall-back.jpg"
+            },
+            {
+              "label": "Vänster",
+              "src": "/images/custom-design/overall-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/overall-right.jpg"
             }
           ]
         },
