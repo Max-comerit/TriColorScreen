@@ -29,7 +29,7 @@ const emit = defineEmits<{
 
 // ===== COMPOSABLES & STORES =====
 const canvasStore = useCanvasStore()
-const { productCategoryTree, activeCategory, activeProduct, canvasMap } = storeToRefs(canvasStore)
+const { canvasMap, productCategoryTree, activeCategory, activeProduct } = storeToRefs(canvasStore)
 const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const {
   formData,
