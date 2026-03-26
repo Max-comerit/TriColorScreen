@@ -315,6 +315,11 @@ watch(isChanged, (newValue) => {
  * Finally collects canvas images after listeners are updated
  */
 watch(canvasMap, async (newCanvases) => {
+  // Guard against undefined canvasMap (occurs when server dies or component unmounts)
+  if (!Array.isArray(newCanvases)) {
+    return
+  }
+
   // Create a Set of current canvas references for quick lookup
   const currentCanvases = new Set<Canvas>(newCanvases.filter((c): c is Canvas => c !== undefined))
 
