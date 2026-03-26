@@ -160,6 +160,7 @@ function syncFromFirst() {
   if (!first) return
 
   fontFamily.value = first.fontFamily ?? 'sans-serif'
+  ensureFontLoaded(fontFamily.value) // Fire and forget
   isBold.value = first.fontWeight === 'bold' || first.fontWeight === 700
   isItalic.value = first.fontStyle === 'italic'
   textAlign.value = (first.textAlign as 'left' | 'center' | 'right') ?? 'left'
@@ -179,13 +180,16 @@ function applyToAll(updater: (tb: Textbox) => void) {
 }
 
 /**
- * Wait for the browser to load the font before telling Fabric to render.
+ * Wait for the browser to load the font (both normal and bold) before telling Fabric to render.
  * Without this, Firefox/Safari may render in the fallback font on first switch.
  */
 async function ensureFontLoaded(fontValue: string): Promise<void> {
   const name = fontValue.replace(/['"]*/g, '').split(',')[0].trim()
   try {
-    await document.fonts.load(`400 16px "${name}"`)
+    await Promise.all([
+      document.fonts.load(`400 16px "${name}"`),
+      document.fonts.load(`700 16px "${name}"`),
+    ])
   } catch {
     // best-effort: proceed even if the API fails
   }
@@ -239,10 +243,13 @@ function applyCircularRadius() {
 
 // 7. Lifecycle hooks
 onMounted(() => {
-  // Eagerly load all fonts so they are ready before the user interacts.
-  // This prevents the Firefox/Safari "wrong font on first switch" issue.
-  Promise.allSettled(
-    FONT_NAMES.map(name => document.fonts.load(`400 16px "${name}"`))
+  // Eagerly load all fonts (normal and bold weights) so they are ready before the user interacts.
+  // This prevents the Firefox/Safari "wrong font on first switch" issue and bold weight fallback.
+  Promise.all(
+    FONT_NAMES.flatMap(name => [
+      document.fonts.load(`400 16px "${name}"`),
+      document.fonts.load(`700 16px "${name}"`),
+    ])
   )
 })
 
