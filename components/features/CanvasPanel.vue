@@ -249,7 +249,7 @@ watch(
   () => {
     for (const canvas of canvasMap.value) {
       if (canvas) {
-        clearCanvas(canvas)
+        clearCanvas(canvas, true)
       }
     }
   },
