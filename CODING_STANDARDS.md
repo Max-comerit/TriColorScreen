@@ -1106,7 +1106,7 @@ useHead({
   <h1 class="font-display text-4xl font-bold">Heading with Poppins</h1>
 
   <!-- Serif for special content -->
-  <blockquote class="font-serif text-lg italic">Quote with Merriweather</blockquote>
+  <blockquote class="font-serif text-lg italic">Quote with Lora</blockquote>
 
   <!-- Mono for code -->
   <code class="font-mono text-sm"> const code = 'example' </code>
