@@ -214,35 +214,6 @@
               "src": "/images/custom-design/textile/vest-right.jpg"
             }
           ]
-        },
-        {
-          "label": "Egen Produkt",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": ""
-            },
-            {
-              "label": "Bak",
-              "src": ""
-            },
-            {
-              "label": "Vänster",
-              "src": ""
-            },
-            {
-              "label": "Höger",
-              "src": ""
-            },
-            {
-              "label": "Över",
-              "src": ""
-            },
-            {
-              "label": "Under",
-              "src": ""
-            }
-          ]
         }
       ]
     },
@@ -353,35 +324,6 @@
               "src": "/images/custom-design/workwear/overall-right.jpg"
             }
           ]
-        },
-        {
-          "label": "Egen Produkt",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": ""
-            },
-            {
-              "label": "Bak",
-              "src": ""
-            },
-            {
-              "label": "Vänster",
-              "src": ""
-            },
-            {
-              "label": "Höger",
-              "src": ""
-            },
-            {
-              "label": "Över",
-              "src": ""
-            },
-            {
-              "label": "Under",
-              "src": ""
-            }
-          ]
         }
       ]
     },
@@ -441,35 +383,6 @@
               "src": "/images/custom-design/advertisement/roll-up.png"
             }
           ]
-        },
-        {
-          "label": "Egen Produkt",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": ""
-            },
-            {
-              "label": "Bak",
-              "src": ""
-            },
-            {
-              "label": "Vänster",
-              "src": ""
-            },
-            {
-              "label": "Höger",
-              "src": ""
-            },
-            {
-              "label": "Över",
-              "src": ""
-            },
-            {
-              "label": "Under",
-              "src": ""
-            }
-          ]
         }
       ]
     },
@@ -493,7 +406,12 @@
               "src": "/images/custom-design/decoration/truck.png"
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "label": "Övrigt",
+      "products": [
         {
           "label": "Egen Produkt",
           "sides": [
