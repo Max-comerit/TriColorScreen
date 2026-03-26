@@ -14,81 +14,41 @@
 @font-face {
   font-family: 'Dancing Script';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/DancingScript-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Dancing Script';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('~/assets/fonts/custom-design/DancingScript-Bold.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/DancingScript[wght].woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'Inter';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 900;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/Inter-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('~/assets/fonts/custom-design/Inter-Bold.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/Inter[wght].woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'Lora';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/Lora-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Lora';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('~/assets/fonts/custom-design/Lora-Bold.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/Lora[wght].woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300 800;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/OpenSans-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('~/assets/fonts/custom-design/OpenSans-Bold.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/OpenSans[wght].woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'Oswald';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/Oswald-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Oswald';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('~/assets/fonts/custom-design/Oswald-Bold.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/Oswald[wght].woff2') format('woff2');
 }
 
 @font-face {
@@ -118,31 +78,15 @@
 @font-face {
   font-family: 'Playfair Display';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 900;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/PlayfairDisplay-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Playfair Display';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('~/assets/fonts/custom-design/PlayfairDisplay-Bold.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/PlayfairDisplay[wght].woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 900;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/Roboto-Regular.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('~/assets/fonts/custom-design/Roboto-Bold.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/Roboto[wght].woff2') format('woff2');
 }
