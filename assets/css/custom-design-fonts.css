@@ -28,6 +28,22 @@
 }
 
 @font-face {
+  font-family: 'Lobster Two';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/LobsterTwo-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Lobster Two';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('~/assets/fonts/custom-design/LobsterTwo-Bold.woff2') format('woff2');
+}
+
+@font-face {
   font-family: 'Lora';
   font-style: normal;
   font-weight: 400 700;
@@ -65,14 +81,6 @@
   font-weight: 700;
   font-display: swap;
   src: url('~/assets/fonts/custom-design/PTSerif-Bold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Pacifico';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('~/assets/fonts/custom-design/Pacifico-Regular.woff2') format('woff2');
 }
 
 @font-face {

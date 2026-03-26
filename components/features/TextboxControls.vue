@@ -13,7 +13,7 @@ import type { DropdownGroup } from '~/components/base/BaseDropdown.vue'
 const FONT_NAMES = [
   'Inter', 'Open Sans', 'Roboto',
   'Lora', 'Playfair Display', 'PT Serif',
-  'Dancing Script', 'Pacifico',
+  'Dancing Script', 'Lobster Two',
   'Bebas Neue', 'Oswald',
 ]
 
@@ -92,7 +92,7 @@ const fontGroups: DropdownGroup[] = [
     label: 'Script',
     options: [
       { label: 'Dancing Script', value: "'Dancing Script', cursive", style: "font-family: 'Dancing Script', cursive" },
-      { label: 'Pacifico', value: "'Pacifico', cursive", style: "font-family: 'Pacifico', cursive" },
+      { label: 'Lobster Two', value: "'Lobster Two', cursive", style: "font-family: 'Lobster Two', cursive" },
     ],
   },
   {
