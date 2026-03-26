@@ -1,5 +1,5 @@
 // scripts/download-app-fonts.mjs
-// Downloads woff2 + woff font files for app-wide fonts from Google Fonts
+// Downloads woff2 font files for app-wide fonts from Google Fonts
 // and regenerates assets/css/fonts.css.
 //
 // App-wide fonts (matches tailwind.config.ts fontFamily):
