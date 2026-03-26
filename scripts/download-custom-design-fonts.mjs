@@ -168,7 +168,7 @@ async function main() {
 
   // Download files
   const downloaded = []
-  for (const { face, weightRange, isVariable, minWeight } of collapsedFaces) {
+  for (const { face, weightRange, isVariable } of collapsedFaces) {
     const file2 = isVariable
       ? makeFilename(face.family, '', face.style, 'woff2', true)
       : makeFilename(face.family, face.weight, face.style, 'woff2', false)

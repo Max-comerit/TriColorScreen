@@ -127,12 +127,6 @@ async function main() {
   const uniqueFaces = [...deduped2.values()]
   console.log(`Deduplicated to ${uniqueFaces.length} unique faces`)
 
-  // Detect variable fonts: if multiple weights within the same family+style share
-  // the same CDN URL AND the file itself contains an 'fvar' table, it is a true
-  // variable font — collapse into one entry with a weight range.
-  // If the URL is the same but it is a static font, keep each weight separately.
-  const { TTFont } = await import('fonttools').catch(() => null) ?? {}
-
   const variantKey = (f) => `${f.family}|${f.style}|${f.url}`
   const byVariant = new Map()
   for (const f of uniqueFaces) {
@@ -183,7 +177,7 @@ async function main() {
 
   // Download files
   const downloaded = []
-  for (const { face, weightRange, isVariable, minWeight } of collapsedFaces) {
+  for (const { face, weightRange, isVariable } of collapsedFaces) {
     const file2 = isVariable
       ? makeFilename(face.family, '', face.style, 'woff2', true)
       : makeFilename(face.family, face.weight, face.style, 'woff2', false)
