@@ -7,8 +7,11 @@ import { useSiteUrl } from '~/composables/useSiteUrl'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 
-// Lazy-load DesignPanel so Fabric.js and Zod are kept out of the shared synchronous bundle
+// Lazy-load DesignPanel so Fabric.js is kept out of the shared synchronous bundle
 const DesignPanel = defineAsyncComponent(() => import('~/components/features/DesignPanel.vue'))
+
+// Lazy-load QuoteForm so Zod is kept out of the shared synchronous bundle
+const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
 
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
@@ -112,6 +115,13 @@ useHead({
         aria-label="Design Verktyg"
       >
         <DesignPanel />
+        <!-- Offertformulär -->
+        <div
+          class="mt-10 flex justify-center"
+          aria-label="Offertformulär"
+        >
+          <QuoteForm />
+        </div>
       </Section>
     </div>
   </div>

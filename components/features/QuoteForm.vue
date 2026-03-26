@@ -19,13 +19,7 @@ const GdprDialog = defineAsyncComponent(() =>
 )
 
 // ===== PROPS =====
-interface Props {
-  canvasMap?: (Canvas | undefined)[]
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  canvasMap: () => [],
-})
+// (none)
 
 // ===== EMITS =====
 const emit = defineEmits<{
@@ -35,7 +29,7 @@ const emit = defineEmits<{
 
 // ===== COMPOSABLES & STORES =====
 const canvasStore = useCanvasStore()
-const { productCategoryTree, activeCategory, activeProduct } = storeToRefs(canvasStore)
+const { canvasMap, productCategoryTree, activeCategory, activeProduct } = storeToRefs(canvasStore)
 const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const {
   formData,
@@ -56,12 +50,15 @@ const showSuccessMessage = ref(false)
 const showErrorMessage = ref(false)
 const showGdprDialog = ref(false)
 const fileInputRefs = ref<HTMLInputElement[]>([])
-const collectedImages = ref(false)
+const canvasesWithListeners = new Set<Canvas>()
+const isCollectingImages = ref(false)
+const pendingCanvasChange = ref(false)
 
 // ===== COMPUTED =====
 const activeCategoryLabel = computed(
   () => productCategoryTree.value?.productCategories[activeCategory.value]?.label ?? ''
 )
+
 const activeProductLabel = computed(
   () => productCategoryTree.value?.productCategories[activeCategory.value]?.products[activeProduct.value]?.label ?? ''
 )
@@ -71,6 +68,167 @@ const activeSideLabels = computed(
 )
 
 // ===== METHODS =====
+/**
+ * Attach object:added and object:removed listeners to a canvas
+ */
+function attachCanvasListeners(canvas: Canvas): void {
+  if (!canvasesWithListeners.has(canvas)) {
+    canvas.on('object:added', onCanvasChange)
+    canvas.on('object:modified', onCanvasChange);
+    canvas.on('object:removed', onCanvasChange)
+    canvasesWithListeners.add(canvas)
+  }
+}
+
+/**
+ * Detach object:added and object:removed listeners from a canvas
+ */
+function detachCanvasListeners(canvas: Canvas): void {
+  if (canvasesWithListeners.has(canvas)) {
+    canvas.off('object:added', onCanvasChange)
+    canvas.off('object:modified', onCanvasChange);
+    canvas.off('object:removed', onCanvasChange)
+    canvasesWithListeners.delete(canvas)
+  }
+}
+
+/**
+ * Compress a data URL to JPEG at the given quality (0-1).
+ * Reduces file size significantly compared to the raw PNG canvas export.
+ */
+async function compressDataUrl(dataUrl: string, quality = 0.75): Promise<string> {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.width = img.naturalWidth
+      canvas.height = img.naturalHeight
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0)
+      resolve(canvas.toDataURL('image/jpeg', quality))
+    }
+    img.src = dataUrl
+  })
+}
+
+/**
+ * Convert a data URL to a File object.
+ */
+async function dataUrlToFile(dataUrl: string, filename: string): Promise<File> {
+  const response = await fetch(dataUrl)
+  const blob = await response.blob()
+  return new File([blob], filename, { type: blob.type })
+}
+
+/**
+ * Export both canvas sides as File objects and populate files.
+ * Includes a merged composite image and all individual image-layer files.
+ * Limits total images to MAX_IMAGE_COUNT to prevent excessive payloads.
+ */
+async function collectQuoteFiles(): Promise<File[]> {
+  const availableCanvases = canvasMap.value
+    .map((canvas, index) => ({ index, canvas }))
+    .filter((entry): entry is { index: number; canvas: Canvas } => entry.canvas !== undefined)
+
+  if (availableCanvases.length === 0) {
+    console.warn('collectQuoteFiles: no canvas available')
+    return []
+  }
+
+  const collected: File[] = []
+  const id = nanoid(10)
+  let imgCount = 0;
+
+  for (const entry of availableCanvases) {
+    try {
+      const canvasInstance = entry.canvas as Canvas
+
+      // Validate canvas is still valid before exporting
+      if (!canvasInstance) {
+        console.warn('collectQuoteFiles: canvas instance is no longer valid, skipping')
+        continue
+      }
+
+      const [mergedUrl, imageUrls] = await Promise.all([
+        exportMergedImage(canvasInstance),
+        exportImageObjects(canvasInstance),
+      ])
+
+      // Merged composite: compress to JPEG (no transparency needed, smaller payload)
+      const compressedMerged = await compressDataUrl(mergedUrl)
+      collected.push(await dataUrlToFile(compressedMerged, `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}.jpg`))
+      if (++imgCount >= MAX_IMAGE_COUNT) break;
+
+      // Individual layers: keep as PNG to preserve transparency
+      for (let i = 0; i < imageUrls.length; i++) {
+        collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}-layer-${i + 1}.png`))
+        if (++imgCount >= MAX_IMAGE_COUNT) break;
+      }
+    }
+    catch (error) {
+      console.error('collectQuoteFiles: error exporting canvas:', error)
+      // Continue with next canvas on error
+      continue
+    }
+  }
+
+  return collected
+}
+
+/**
+ * Collect canvas images and populate form with exports
+ */
+async function collectCanvasImages(): Promise<void> {
+  try {
+    isCollectingImages.value = true
+    // Collect current canvas images and populate formData before user submits
+    formData.value.images = await collectQuoteFiles()
+    // Sync each image to its corresponding hidden file input for Netlify submission
+    formData.value.images?.forEach((file, index) => {
+      const ref = fileInputRefs.value[index]
+      if (ref) {
+        const dt = new DataTransfer()
+        if (file) dt.items.add(file)
+        ref.files = dt.files
+      }
+    })
+  }
+  catch (error) {
+    console.error('Error collecting canvas images:', error)
+  }
+  finally {
+    isCollectingImages.value = false
+  }
+}
+
+/**
+ * Collect canvas images with queuing logic
+ * If collection is already in progress, queues the change for later
+ * Recursively processes queued changes after collection completes
+ */
+async function collectCanvasImagesQueued(): Promise<void> {
+  // If collection is already in progress, queue this change for later
+  if (isCollectingImages.value) {
+    pendingCanvasChange.value = true
+    return
+  }
+
+  await collectCanvasImages()
+  
+  // If collectCanvasImagesQueued was queued while collecting images, process it now
+  if (pendingCanvasChange.value) {
+    pendingCanvasChange.value = false
+    await collectCanvasImagesQueued()
+  }
+}
+
+/**
+ * Handle canvas object changes (added/removed/updated)
+ */
+async function onCanvasChange(): Promise<void> {
+  await collectCanvasImagesQueued()
+}
+
 /**
  * Handle input blur event and validate field
  */
@@ -92,44 +250,6 @@ function handleInput(field: keyof QuoteFormData): void {
  */
 function openGdprDialog(): void {
   showGdprDialog.value = true
-}
-
-/**
- * Handle in-focus event to collect current canvas images before submission
- */
-async function handleFocusIn(): Promise<void> {
-  if(!collectedImages.value) {
-    collectedImages.value = true
-    // Collect current canvas images and populate formData before user submits
-    formData.value.images = await collectQuoteFiles()
-    // Sync each image to its corresponding hidden file input for Netlify submission
-    formData.value.images?.forEach((file, index) => {
-      const ref = fileInputRefs.value[index]
-      if (ref) {
-        const dt = new DataTransfer()
-        if (file) dt.items.add(file)
-        ref.files = dt.files
-      }
-    })
-  }
-}
-
-/**
- * Handle focus out event to clear collected images and file inputs
- */
-async function handleFocusOut(event: FocusEvent): Promise<void> {
-  const form = event.currentTarget as HTMLElement
-  const next = event.relatedTarget as HTMLElement | null
-  if (!next || !form.contains(next)) {
-    // Focus left the whole form
-    collectedImages.value = false
-    // Clear collected images when user leaves the form to avoid stale data
-    // formData.value.images = []
-    // fileInputRefs.value.forEach(ref => {
-    //   const dt = new DataTransfer()
-    //   ref.files = dt.files
-    // })
-  }
 }
 
 /**
@@ -166,76 +286,6 @@ async function handleSubmit(): Promise<void> {
   }
 }
 
-/**
- * Convert a data URL to a File object.
- */
-async function dataUrlToFile(dataUrl: string, filename: string): Promise<File> {
-  const response = await fetch(dataUrl)
-  const blob = await response.blob()
-  return new File([blob], filename, { type: blob.type })
-}
-
-/**
- * Compress a data URL to JPEG at the given quality (0-1).
- * Reduces file size significantly compared to the raw PNG canvas export.
- */
-async function compressDataUrl(dataUrl: string, quality = 0.75): Promise<string> {
-  return new Promise((resolve) => {
-    const img = new Image()
-    img.onload = () => {
-      const canvas = document.createElement('canvas')
-      canvas.width = img.naturalWidth
-      canvas.height = img.naturalHeight
-      const ctx = canvas.getContext('2d')!
-      ctx.drawImage(img, 0, 0)
-      resolve(canvas.toDataURL('image/jpeg', quality))
-    }
-    img.src = dataUrl
-  })
-}
-
-/**
- * Export both canvas sides as File objects and populate files.
- * Includes a merged composite image and all individual image-layer files.
- * Limits total images to MAX_IMAGE_COUNT to prevent excessive payloads.
- */
-async function collectQuoteFiles(): Promise<File[]> {
-  const availableCanvases = props.canvasMap
-    .map((canvas, index) => ({ index, canvas }))
-    .filter((entry): entry is { index: number; canvas: Canvas } => entry.canvas !== undefined)
-
-  if (availableCanvases.length === 0) {
-    console.warn('collectQuoteFiles: no canvas available')
-    return []
-  }
-
-  const collected: File[] = []
-  const id = nanoid(10)
-  let imgCount = 0;
-
-  for (const entry of availableCanvases) {
-    const canvasInstance = entry.canvas as Canvas
-    const [mergedUrl, imageUrls] = await Promise.all([
-      exportMergedImage(canvasInstance),
-      exportImageObjects(canvasInstance),
-    ])
-
-    // Merged composite: compress to JPEG (no transparency needed, smaller payload)
-    const compressedMerged = await compressDataUrl(mergedUrl)
-    collected.push(await dataUrlToFile(compressedMerged, `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}.jpg`))
-    if (++imgCount >= MAX_IMAGE_COUNT) break;
-
-    // Individual layers: keep as PNG to preserve transparency
-    for (let i = 0; i < imageUrls.length; i++) {
-      collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}-layer-${i + 1}.png`))
-      if (++imgCount >= MAX_IMAGE_COUNT) break;
-    }
-  }
-
-  return collected
-}
-
-
 // ===== WATCHERS =====
 
 /**
@@ -257,6 +307,38 @@ watch(isChanged, (newValue) => {
   emit('changed', newValue)
 })
 
+/**
+ * Attach event listeners to canvas objects when canvasMap changes
+ * Listens for object:added, object:removed and object:updated events 
+ * to detect canvas mutations
+ * Also detaches listeners from canvases that are no longer in the map
+ * Finally collects canvas images after listeners are updated
+ */
+watch(canvasMap, async (newCanvases) => {
+  // Guard against undefined canvasMap (occurs when server dies or component unmounts)
+  if (!Array.isArray(newCanvases)) {
+    return
+  }
+
+  // Create a Set of current canvas references for quick lookup
+  const currentCanvases = new Set<Canvas>(newCanvases.filter((c): c is Canvas => c !== undefined))
+
+  // Attach listeners to new canvases
+  for (const canvas of currentCanvases) {
+    attachCanvasListeners(canvas)
+  }
+
+  // Detach listeners from canvases that are no longer in the map
+  for (const canvas of canvasesWithListeners) {
+    if (!currentCanvases.has(canvas)) {
+      detachCanvasListeners(canvas)
+    }
+  }
+
+  // Collect canvas images after listeners are attached/detached
+  await collectCanvasImagesQueued()
+})
+
 // ===== LIFECYCLE HOOKS =====
 
 </script>
@@ -274,8 +356,6 @@ watch(isChanged, (newValue) => {
     aria-label="Offertförfrågningsformulär"
     tabindex="-1"
     @submit.prevent="handleSubmit"
-    @focusin="handleFocusIn"
-    @focusout="handleFocusOut"
   >
     <!-- Form title -->
     <h3 class="sr-only">Offertförfrågningsformulär</h3>
