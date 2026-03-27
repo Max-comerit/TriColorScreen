@@ -45,6 +45,10 @@ function normalizeSvgDimensions(svgText: string): string {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(fixedSvg)}`
 }
 
+/**
+ * Reads a file and resolves with a base64-encoded data URL.
+ * Used for raster image formats (PNG, JPEG, WebP, GIF).
+ */
 function readFileAsDataUrl(file: File): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader()
@@ -58,6 +62,12 @@ function readFileAsDataUrl(file: File): Promise<string> {
   })
 }
 
+/**
+ * Reads an SVG file as text, normalises its dimensions, and resolves with
+ * a percent-encoded `data:image/svg+xml` URL ready for Fabric.js.
+ * Reading as text (instead of a base64 data URL) is required so the SVG
+ * markup can be parsed and patched by normalizeSvgDimensions.
+ */
 function readSvgAsDataUrl(file: File): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader()
