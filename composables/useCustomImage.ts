@@ -15,6 +15,65 @@ interface Transform {
   target?: unknown
 }
 
+/**
+ * SVGs without explicit width/height attributes (only viewBox) render at 0×0
+ * in Fabric.js, causing mispositioned or invisible objects. This normalizes
+ * the SVG by injecting dimensions derived from the viewBox before loading.
+ */
+function normalizeSvgDimensions(svgText: string): string {
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(svgText, 'image/svg+xml')
+  const svgEl = doc.documentElement
+
+  if (!svgEl.hasAttribute('width') || !svgEl.hasAttribute('height')) {
+    const viewBox = svgEl.getAttribute('viewBox')
+    if (viewBox) {
+      const parts = viewBox.trim().split(/[\s,]+/)
+      if (parts.length === 4) {
+        const w = parseFloat(parts[2])
+        const h = parseFloat(parts[3])
+        if (!isNaN(w) && !isNaN(h)) {
+          if (!svgEl.hasAttribute('width')) svgEl.setAttribute('width', String(w))
+          if (!svgEl.hasAttribute('height')) svgEl.setAttribute('height', String(h))
+        }
+      }
+    }
+  }
+
+  const serializer = new XMLSerializer()
+  const fixedSvg = serializer.serializeToString(svgEl)
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(fixedSvg)}`
+}
+
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const result = e.target?.result
+      if (typeof result === 'string') resolve(result)
+      else reject(new Error('Failed to read file as data URL'))
+    }
+    reader.onerror = () => reject(new Error('File reading error'))
+    reader.readAsDataURL(file)
+  })
+}
+
+function readSvgAsDataUrl(file: File): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const result = e.target?.result
+      if (typeof result !== 'string') {
+        reject(new Error('Failed to read SVG file'))
+        return
+      }
+      resolve(normalizeSvgDimensions(result))
+    }
+    reader.onerror = () => reject(new Error('File reading error'))
+    reader.readAsText(file)
+  })
+}
+
 
 
 export function useCustomImage() {
@@ -119,21 +178,11 @@ export function useCustomImage() {
     }
 
     try {
-      // Read the file as a data URL
-      const reader = new FileReader()
-
-      const dataUrl = await new Promise<string>((resolve, reject) => {
-        reader.onload = (e) => {
-          const result = e.target?.result
-          if (typeof result === 'string') {
-            resolve(result)
-          } else {
-            reject(new Error('Failed to read file as data URL'))
-          }
-        }
-        reader.onerror = () => reject(new Error('File reading error'))
-        reader.readAsDataURL(file)
-      })
+      // SVGs without explicit width/height must be normalised first so Fabric.js
+      // can determine natural dimensions and centre the object correctly.
+      const dataUrl = file.type === 'image/svg+xml'
+        ? await readSvgAsDataUrl(file)
+        : await readFileAsDataUrl(file)
 
       // Load the image using Fabric.js
       const image = await FabricImage.fromURL(dataUrl)
