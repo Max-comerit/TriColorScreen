@@ -304,11 +304,11 @@ export function useQuoteForm() {
     catch (error) {
       formState.value = 'error'
       if (error instanceof Error) {
-        generalError.value = error.message
+        console.error('Form submission error:', error.message)
       }
-      else {
-        generalError.value = 'Ett oväntat fel inträffade. Försök igen senare.'
-      }
+
+      generalError.value = 'Ett oväntat fel inträffade. Försök igen senare.'
+
       return false
     }
   }

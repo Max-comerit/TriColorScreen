@@ -186,7 +186,6 @@ watch(isChanged, (newValue) => {
           v-model="formData.name"
           type="text"
           name="name"
-          required
           autocomplete="name"
           :aria-invalid="!!getFieldError('name')"
           :aria-describedby="getFieldError('name') ? 'name-error' : undefined"
@@ -223,7 +222,6 @@ watch(isChanged, (newValue) => {
           v-model="formData.email"
           type="email"
           name="email"
-          required
           autocomplete="email"
           :aria-invalid="!!getFieldError('email')"
           :aria-describedby="getFieldError('email') ? 'email-error' : undefined"
@@ -296,7 +294,6 @@ watch(isChanged, (newValue) => {
           id="contact-customer-type"
           v-model="formData.customerType"
           name="customer_type"
-          required
           autocomplete="off"
           :aria-invalid="!!getFieldError('customerType')"
           :aria-describedby="getFieldError('customerType') ? 'customer-type-error' : undefined"
@@ -337,7 +334,6 @@ watch(isChanged, (newValue) => {
           v-model="formData.subject"
           type="text"
           name="subject"
-          required
           autocomplete="off"
           :aria-invalid="!!getFieldError('subject')"
           :aria-describedby="getFieldError('subject') ? 'subject-error' : undefined"
@@ -462,7 +458,6 @@ watch(isChanged, (newValue) => {
             v-model="formData.gdprConsent"
             type="checkbox"
             name="gdpr_consent"
-            required
             autocomplete="off"
             :aria-invalid="!!getFieldError('gdprConsent')"
             :aria-describedby="getFieldError('gdprConsent') ? 'gdpr-error' : undefined"
