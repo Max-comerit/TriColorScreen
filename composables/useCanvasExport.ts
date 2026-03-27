@@ -13,8 +13,9 @@ export interface ExportedLayer {
  * only the outer dimensions (which control the file's intrinsic size) are updated.
  *
  * When a rotation angle is provided the visual content is wrapped in a <g>
- * element with the corresponding transform, and the outer bounding box is
- * expanded so the rotated content is fully visible with no clipping.
+ * element with a rotate transform around the true centre of the viewBox
+ * coordinate space. The viewBox is expanded symmetrically around that centre
+ * so the rotated content is fully visible with no clipping.
  *
  * This ensures every exported SVG has a consistent, meaningful size instead of
  * reflecting the original file's arbitrary viewBox dimensions.
@@ -30,18 +31,18 @@ function stampSvgExportSize(svgDataUrl: string, width: number, height: number, a
   const roundedWidth = Math.round(width)
   const roundedHeight = Math.round(height)
 
-  // Resolve the SVG's internal coordinate space from the viewBox attribute.
-  // Falls back to the stamped pixel dimensions if no viewBox is present.
+  // Read all four viewBox components — including minX/minY which may be
+  // non-zero (e.g. Google Material icons use viewBox="0 -960 960 960").
   const viewBoxAttr = svgEl.getAttribute('viewBox')
-  let vW: number
-  let vH: number
+  let minX: number, minY: number, vW: number, vH: number
   if (viewBoxAttr) {
     const parts = viewBoxAttr.trim().split(/[\s,]+/)
-    vW = parseFloat(parts[2])
-    vH = parseFloat(parts[3])
+    minX = parseFloat(parts[0])
+    minY = parseFloat(parts[1])
+    vW   = parseFloat(parts[2])
+    vH   = parseFloat(parts[3])
   } else {
-    vW = roundedWidth
-    vH = roundedHeight
+    minX = 0; minY = 0; vW = roundedWidth; vH = roundedHeight
   }
 
   // Normalise to [0, 360) so the angle === 0 short-circuit is reliable.
@@ -53,30 +54,29 @@ function stampSvgExportSize(svgDataUrl: string, width: number, height: number, a
     return new XMLSerializer().serializeToString(svgEl)
   }
 
+  // True centre of the viewBox coordinate space.
+  const cx = minX + vW / 2
+  const cy = minY + vH / 2
+
   const θ = (angle * Math.PI) / 180
   const abscos = Math.abs(Math.cos(θ))
   const abssin = Math.abs(Math.sin(θ))
 
-  // New bounding box in SVG user units after rotation.
+  // New bounding box in SVG user units after rotation around (cx, cy).
   const newVW = vW * abscos + vH * abssin
   const newVH = vW * abssin + vH * abscos
 
-  // Physical pixel dimensions of the rotated bounding box.
+  // Physical pixel dimensions — maintain the same pixel-per-unit scale.
   const scale = roundedWidth / vW
-  const newWidth = Math.round(newVW * scale)
+  const newWidth  = Math.round(newVW * scale)
   const newHeight = Math.round(newVH * scale)
 
-  // Translation to keep the rotated content centred in the expanded viewBox.
-  const tx = (newVW - vW) / 2
-  const ty = (newVH - vH) / 2
-
-  // Structural elements must stay at root level so any <defs> references
-  // (gradients, clip-paths, filters) remain resolvable.
+  // Wrap visual content in a pure rotation transform (no translate needed —
+  // the viewBox update below absorbs the offset). Structural elements
+  // (<defs>, <style>, etc.) stay at root so their references keep resolving.
   const KEEP_AT_ROOT = new Set(['defs', 'style', 'title', 'desc', 'metadata'])
   const g = doc.createElementNS('http://www.w3.org/2000/svg', 'g')
-  // Rotate around the centre of the original content, then translate into the
-  // new (larger) bounding box so nothing is clipped.
-  g.setAttribute('transform', `translate(${tx} ${ty}) rotate(${angle} ${vW / 2} ${vH / 2})`)
+  g.setAttribute('transform', `rotate(${angle} ${cx} ${cy})`)
 
   const toMove = Array.from(svgEl.childNodes).filter(
     node => !(node.nodeType === 1 && KEEP_AT_ROOT.has((node as Element).tagName.toLowerCase()))
@@ -86,7 +86,9 @@ function stampSvgExportSize(svgDataUrl: string, width: number, height: number, a
   }
   svgEl.appendChild(g)
 
-  svgEl.setAttribute('viewBox', `0 0 ${newVW} ${newVH}`)
+  // Expand the viewBox symmetrically around the same centre so the rotated
+  // content is fully visible without any extra translation.
+  svgEl.setAttribute('viewBox', `${cx - newVW / 2} ${cy - newVH / 2} ${newVW} ${newVH}`)
   svgEl.setAttribute('width', String(newWidth))
   svgEl.setAttribute('height', String(newHeight))
 
