@@ -384,7 +384,6 @@ watch(canvasMap, async (newCanvases) => {
           v-model="formData.name"
           type="text"
           name="name"
-          required
           autocomplete="name"
           :aria-invalid="!!getFieldError('name')"
           :aria-describedby="getFieldError('name') ? 'name-error' : undefined"
@@ -417,7 +416,6 @@ watch(canvasMap, async (newCanvases) => {
           v-model="formData.email"
           type="email"
           name="email"
-          required
           autocomplete="email"
           :aria-invalid="!!getFieldError('email')"
           :aria-describedby="getFieldError('email') ? 'email-error' : undefined"
@@ -482,7 +480,6 @@ watch(canvasMap, async (newCanvases) => {
           id="quote-customer-type"
           v-model="formData.customerType"
           name="customer_type"
-          required
           autocomplete="off"
           :aria-invalid="!!getFieldError('customerType')"
           :aria-describedby="getFieldError('customerType') ? 'customer-type-error' : undefined"
@@ -644,7 +641,6 @@ watch(canvasMap, async (newCanvases) => {
           v-model.number="formData.productCount"
           type="number"
           name="product_count"
-          required
           min="1"
           max="10000"
           step="1"
@@ -989,7 +985,6 @@ watch(canvasMap, async (newCanvases) => {
             v-model="formData.gdprConsent"
             type="checkbox"
             name="gdpr_consent"
-            required
             autocomplete="off"
             :aria-invalid="!!getFieldError('gdprConsent')"
             :aria-describedby="getFieldError('gdprConsent') ? 'gdpr-error' : undefined"
