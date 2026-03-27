@@ -4,6 +4,8 @@
  *
  * DM Sans  →  font-display  (Tailwind)  weights: 600, 700
  * Inter    →  font-body     (Tailwind)  weights: 400, 700
+ *
+ * Fonts are served from public/fonts/ and preloaded in app.vue
  */
 
 @font-face {
@@ -11,7 +13,7 @@
   font-style: normal;
   font-weight: 100 1000;
   font-display: swap;
-  src: url('~/assets/fonts/DMSans[wght].woff2') format('woff2');
+  src: url('/fonts/DMSans[wght].woff2') format('woff2');
 }
 
 @font-face {
@@ -19,5 +21,5 @@
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url('~/assets/fonts/Inter[wght].woff2') format('woff2');
+  src: url('/fonts/Inter[wght].woff2') format('woff2');
 }
