@@ -15,6 +15,29 @@ interface Transform {
   target?: unknown
 }
 
+/** FabricImage extended with an optional persisted SVG source URL. */
+type FabricImageWithSvg = FabricImage & { svgDataUrl?: string }
+
+/**
+ * Attach the original SVG data URL to a FabricImage so it can be recovered
+ * at export time and survives canvas save / restore round-trips.
+ *
+ * Overrides `toObject` on the specific instance so that `canvas.toJSON()`
+ * includes `svgDataUrl` in the serialized output without needing to touch
+ * `canvas.toJSON(['svgDataUrl'])` at the call site.
+ */
+export function attachSvgDataUrl(image: FabricImage, svgDataUrl: string): void {
+  const imgWithSvg = image as FabricImageWithSvg
+  imgWithSvg.svgDataUrl = svgDataUrl
+
+  // Cast through unknown to avoid Fabric v6's overly complex generic signature on toObject.
+  const originalToObject = (image.toObject as (props?: string[]) => Record<string, unknown>).bind(image)
+  ;(image as { toObject: (props?: string[]) => Record<string, unknown> }).toObject = (propertiesToInclude?: string[]) => ({
+    ...originalToObject(propertiesToInclude),
+    svgDataUrl,
+  })
+}
+
 /**
  * SVGs without explicit width/height attributes (only viewBox) render at 0×0
  * in Fabric.js, causing mispositioned or invisible objects. This normalizes
@@ -190,12 +213,19 @@ export function useCustomImage() {
     try {
       // SVGs without explicit width/height must be normalised first so Fabric.js
       // can determine natural dimensions and centre the object correctly.
-      const dataUrl = file.type === 'image/svg+xml'
+      const isSvg = file.type === 'image/svg+xml'
+      const dataUrl = isSvg
         ? await readSvgAsDataUrl(file)
         : await readFileAsDataUrl(file)
 
       // Load the image using Fabric.js
       const image = await FabricImage.fromURL(dataUrl)
+
+      // For SVGs, attach the source data URL so the export pipeline can
+      // return the original vector instead of a rasterised PNG.
+      if (isSvg) {
+        attachSvgDataUrl(image, dataUrl)
+      }
 
       // Apply custom controls and styling
       applyImageControls(image)
