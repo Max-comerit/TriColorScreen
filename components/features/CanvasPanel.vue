@@ -2,7 +2,7 @@
 
 // ===== IMPORTS =====
 import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch } from 'vue'
-import { Canvas } from 'fabric'
+import { Canvas, type FabricImage } from 'fabric'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { useCustomBackground } from '~/composables/useCustomBackground'
@@ -252,6 +252,19 @@ watch(
         canvasMap.value = newMap
       }
       canvasElMap[key] = undefined
+    }
+  },
+)
+
+// Sync aspect ratio when the user switches sides so the canvas wrapper resizes to match
+watch(
+  () => canvasStore.activeSide,
+  (newSide) => {
+    const canvas = canvasMap.value[newSide]
+    if (!canvas) return
+    const bg = canvas.backgroundImage as FabricImage | undefined
+    if (bg && bg.width > 0 && bg.height > 0) {
+      canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
     }
   },
 )
