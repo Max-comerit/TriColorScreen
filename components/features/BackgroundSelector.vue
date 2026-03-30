@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 // 1. Imports
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
@@ -19,9 +19,9 @@ const PRODUCT_CATEGORIES = PRODUCT_CATEGORIES_OBJ.productCategories
 
 // 3. Composables & Stores
 const canvasStore = useCanvasStore()
-const { activeCategory, activeProduct, activeSide, sides } = storeToRefs(canvasStore)
+const { activeCategory, activeProduct, activeSide } = storeToRefs(canvasStore)
 
-const { initProductCategories, onCategoryChange, onProductChange, onSideChange } = useBackgroundSelector()
+const { initBackgroundSelector, onCategoryChange, onProductChange, onSideChange } = useBackgroundSelector()
 
 // 4. State
 const customFileInputRef = ref<HTMLInputElement | null>(null)
@@ -94,9 +94,17 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
 }
 
 // 7. Lifecycle hooks
-onMounted(() => {
-  initProductCategories()
-})
+
+// 8. Watchers
+// Watch for canvasStore.initialized and call initBackgroundSelector when it changes from false to true
+watch(
+  () => canvasStore.initialized,
+  (newVal, oldVal) => {
+    if (newVal && !oldVal) {
+      initBackgroundSelector()
+    }
+  }
+)
 </script>
 
 <template>

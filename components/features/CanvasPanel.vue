@@ -12,7 +12,6 @@ import { useCustomText } from '~/composables/useCustomText'
 import {
   clearCanvasObjects,
   clearCanvas,
-  getInitialBackgroundUrl,
   rescaleCanvas,
 } from '~/utils/canvasUtils'
 
@@ -70,28 +69,15 @@ async function initializeCanvas(side: number, el: HTMLCanvasElement, width: numb
 
   await canvasStore.restore(side, canvasInstance, width)
 
-  if (!canvasInstance.backgroundImage) {
-    const sideState = canvasStore.sides[side]
-    if (sideState?.backgroundSelection === CUSTOM_BACKGROUND_ID) {
-      // Restore a previously uploaded custom image; otherwise leave the canvas blank.
-      if (sideState.customBackgroundDataUrl) {
-        await applyBackgroundSelection(side, canvasInstance, CUSTOM_BACKGROUND_ID, false)
-      }
-    }
-    else {
-      const initialBackgroundUrl = getInitialBackgroundUrl(canvasStore.sides, side)
-      if (initialBackgroundUrl) {
-        await applyBackgroundSelection(side, canvasInstance, initialBackgroundUrl, false)
-        if (!sideState?.backgroundSelection) {
-          canvasStore.setBackgroundSelection(side, initialBackgroundUrl)
-        }
-      }
-    }
-  }
-
   canvasInstance.on('object:added', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
   canvasInstance.on('object:modified', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
   canvasInstance.on('object:removed', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
+
+  // Set initialized state in store if all canvases are initialized
+  const allInitialized = canvasStore.sideKeys.every(key => canvasMap.value[key])
+  if (allInitialized) {
+    canvasStore.setInitialized(true)
+  }
 }
 
 /** Assign or remove a canvas element ref from the template v-for */
