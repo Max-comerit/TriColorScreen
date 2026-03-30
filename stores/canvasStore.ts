@@ -22,15 +22,15 @@ const DEFAULT_SIDE_COUNT = 4
 interface CanvasSideState {
   json: string | null
   size: number
-  backgroundSelection: string | null
-  customBackgroundDataUrl: string | null
+  isCustomBackground: boolean
+  bgUrl: string | null
 }
 
 const createSideState = (): CanvasSideState => ({
   json: null,
   size: 0,
-  backgroundSelection: null,
-  customBackgroundDataUrl: null,
+  isCustomBackground: false,
+  bgUrl: null,
 })
 
 /**
@@ -71,14 +71,15 @@ export const useCanvasStore = defineStore('canvas', {
     sideKeys: (state): number[] => Array.from({ length: state.sideCount }, (_, i) => i),
   },
   actions: {
-    /** Helper to initialize sides, sideCount, backgrounds and customBackgroundDataUrl for all sides */
+    /** Helper to initialize sides, sideCount and background url for all sides */
     initSides() {
       const sidesArr = this.productCategoryTree?.productCategories[this.activeCategory]?.products[this.activeProduct]?.sides || [];
+      const isCustomBackground = this.productCategoryTree?.productCategories[this.activeCategory]?.products[this.activeProduct]?.label === 'Egen Produkt';
       this.sideCount = sidesArr.length || DEFAULT_SIDE_COUNT;
       this.sides = createSides(this.sideCount);
       this.sides.forEach((side, i) => {
-        side.backgroundSelection = sidesArr[i]?.src || null; // Sync background selection from product data or set to null
-        side.customBackgroundDataUrl = null;
+        side.bgUrl = sidesArr[i]?.src || null; // Sync background url from product data or set to null
+        side.isCustomBackground = isCustomBackground;
       });
     },
     setInitialized(val: boolean) {
@@ -116,11 +117,8 @@ export const useCanvasStore = defineStore('canvas', {
     setCanvasMap(map: (Canvas | undefined)[]) {
       this.canvasMap = map
     },
-    setBackgroundSelection(side: number, selection: string | null) {
-      this.sides[side]!.backgroundSelection = selection
-    },
-    setCustomBackgroundDataUrl(side: number, dataUrl: string | null) {
-      this.sides[side]!.customBackgroundDataUrl = dataUrl
+    setBgUrl(side: number, url: string | null) {
+      this.sides[side]!.bgUrl = url
     },
     setProductCategoryTree(categories: ProductCategories | undefined) {
       this.productCategoryTree = categories

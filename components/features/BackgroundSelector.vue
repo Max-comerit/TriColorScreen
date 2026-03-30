@@ -5,7 +5,6 @@
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
-import { CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 import { useBackgroundSelector } from '~/composables/useBackgroundSelector'
 import rawBackgroundOptions from '~/assets/json/custom-design/products.json'
 import type { ProductCategories } from '~/types/BackgroundSelector'
@@ -29,7 +28,7 @@ const fileErrorMessage = ref('')
 
 // 5. Computed
 const isCustomSelected = computed(() =>
-  !PRODUCT_CATEGORIES[activeCategory.value]?.products[activeProduct.value]?.sides[activeSide.value]?.src
+  canvasStore.sides[activeSide.value]?.isCustomBackground
 )
 
 const categoryOptions = computed<DropdownOption[]>(() =>
@@ -40,7 +39,6 @@ const productOptions = computed<DropdownOption[]>(() =>
   (PRODUCT_CATEGORIES[activeCategory.value]?.products ?? []).map((p, i) => ({
     label: p.label,
     value: i,
-    dataKey: p.label === 'Egen Produkt' ? CUSTOM_BACKGROUND_ID : p.label,
   }))
 )
 
@@ -81,8 +79,7 @@ async function handleCustomFileSelected(event: Event): Promise<void> {
 
   try {
     const dataUrl = await readFileAsDataUrl(file)
-    canvasStore.setCustomBackgroundDataUrl(activeSide.value, dataUrl)
-    canvasStore.setBackgroundSelection(activeSide.value, CUSTOM_BACKGROUND_ID)
+    canvasStore.setBgUrl(activeSide.value, dataUrl)
     fileErrorMessage.value = ''
   }
   catch (error) {
@@ -120,7 +117,7 @@ watch(
           :options="productOptions"
           :model-value="activeProduct"
           label="Välj produkt"
-          @change="(val, dataKey) => onProductChange(Number(val), dataKey)"
+          @change="(val) => onProductChange(Number(val))"
         />
         <BaseDropdown
           :options="sideOptions"

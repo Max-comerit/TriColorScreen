@@ -10,7 +10,6 @@ defineOptions({ inheritAttrs: false })
 export interface DropdownOption {
   label: string
   value: string | number
-  dataKey?: string | null
   style?: string
 }
 
@@ -29,7 +28,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  change: [value: string | number, dataKey: string | null]
+  change: [value: string | number]
 }>()
 
 // 4. State
@@ -86,7 +85,7 @@ function toggle(): void {
 }
 
 function select(option: DropdownOption): void {
-  emit('change', option.value, option.dataKey ?? null)
+  emit('change', option.value)
   isOpen.value = false
   triggerRef.value?.focus()
 }
