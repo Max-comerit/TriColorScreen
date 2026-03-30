@@ -75,7 +75,6 @@ function attachCanvasListeners(canvas: Canvas): void {
   if (!canvasesWithListeners.has(canvas)) {
     canvas.on('object:added', onCanvasChange)
     canvas.on('object:modified', onCanvasChange);
-    canvas.on('object:removed', onCanvasChange)
     canvasesWithListeners.add(canvas)
   }
 }
@@ -87,7 +86,6 @@ function detachCanvasListeners(canvas: Canvas): void {
   if (canvasesWithListeners.has(canvas)) {
     canvas.off('object:added', onCanvasChange)
     canvas.off('object:modified', onCanvasChange);
-    canvas.off('object:removed', onCanvasChange)
     canvasesWithListeners.delete(canvas)
   }
 }
