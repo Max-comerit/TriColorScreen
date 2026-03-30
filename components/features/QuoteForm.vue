@@ -159,9 +159,11 @@ async function collectQuoteFiles(): Promise<File[]> {
       collected.push(await dataUrlToFile(compressedMerged, `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}.jpg`))
       if (++imgCount >= MAX_IMAGE_COUNT) break;
 
-      // Individual layers: keep as PNG to preserve transparency
+      // Individual layers: preserve original format (SVG stays SVG, rasters stay PNG).
       for (let i = 0; i < imageUrls.length; i++) {
-        collected.push(await dataUrlToFile(imageUrls[i], `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}-layer-${i + 1}.png`))
+        const layer = imageUrls[i]
+        const ext = layer.mimeType === 'image/svg+xml' ? 'svg' : 'png'
+        collected.push(await dataUrlToFile(layer.url, `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}-layer-${i + 1}.${ext}`))
         if (++imgCount >= MAX_IMAGE_COUNT) break;
       }
     }

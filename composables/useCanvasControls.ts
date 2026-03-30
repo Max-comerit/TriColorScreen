@@ -4,7 +4,7 @@ import { FabricImage, Textbox } from 'fabric'
 import type { Canvas, FabricObject } from 'fabric'
 import { CircularTextbox } from '~/utils/circularTextbox'
 import { setTextboxTextRadius } from '~/utils/canvasUtils'
-import { useCustomImage } from '~/composables/useCustomImage'
+import { useCustomImage, attachSvgDataUrl } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
 
 /**
@@ -47,8 +47,15 @@ export function useCanvasControls() {
    * Fixes controls on each object as it is added, before any mouse events can fire.
    */
   function makeControlsReviver() {
-    return (_data: Record<string, unknown>, obj: unknown): void => {
-      if (obj instanceof FabricImage || obj instanceof Textbox) {
+    return (data: Record<string, unknown>, obj: unknown): void => {
+      if (obj instanceof FabricImage) {
+        reapplyControlsToObject(obj)
+        // Re-attach the SVG source URL (and toObject override) so it survives
+        // future save/restore cycles after a canvas side switch.
+        if (typeof data.svgDataUrl === 'string') {
+          attachSvgDataUrl(obj, data.svgDataUrl)
+        }
+      } else if (obj instanceof Textbox) {
         reapplyControlsToObject(obj)
       }
     }
