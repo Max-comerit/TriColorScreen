@@ -97,10 +97,39 @@ function stampSvgExportSize(svgDataUrl: string, width: number, height: number, a
 
 export function useCanvasExport() {
   async function exportMergedImage(canvas: Canvas): Promise<string> {
-    const htmlCanvas = canvas.getElement() as HTMLCanvasElement
-    
     canvas.discardActiveObject()
     canvas.renderAll() // Ensure canvas is fully rendered before export
+
+    const htmlCanvas = canvas.getElement() as HTMLCanvasElement
+    const bg = canvas.backgroundImage as FabricImage | undefined
+
+    // When all canvases share a single wrapper div, switching sides forces every
+    // canvas to the active side's aspect ratio. The background is re-scaled with
+    // scaleToHeight, so a portrait background on a wider canvas renders narrower
+    // than the canvas width, producing black bars on the left and right.
+    // Detect this case and crop the exported image to the background region only.
+    if (bg && bg.width > 0 && bg.height > 0) {
+      const canvasW = canvas.getWidth()
+      const canvasH = canvas.getHeight()
+      // Rendered background width when scaleToHeight wins: bg.width * (canvasH / bg.height)
+      const renderedBgW = Math.round(bg.width * (canvasH / bg.height))
+      if (renderedBgW < canvasW - 1) {
+        const srcX = Math.round((canvasW - renderedBgW) / 2)
+        const offscreen = document.createElement('canvas')
+        offscreen.width = renderedBgW
+        offscreen.height = canvasH
+        const ctx = offscreen.getContext('2d')
+        if (ctx) {
+          ctx.drawImage(htmlCanvas, srcX, 0, renderedBgW, canvasH, 0, 0, renderedBgW, canvasH)
+          return new Promise<string>((resolve, reject) => {
+            offscreen.toBlob((blob) => {
+              if (!blob) return reject(new Error('toBlob returned null'))
+              resolve(URL.createObjectURL(blob))
+            }, 'image/png')
+          })
+        }
+      }
+    }
 
     if (typeof htmlCanvas.toBlob === 'function') {
       return new Promise((resolve, reject) => {
