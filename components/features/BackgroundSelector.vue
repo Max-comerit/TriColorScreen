@@ -28,7 +28,7 @@ const fileErrorMessage = ref('')
 
 // 5. Computed
 const isCustomSelected = computed(() =>
-  canvasStore.sides[activeSide.value]?.isCustomBackground
+  canvasStore.isCustomBackground
 )
 
 const categoryOptions = computed<DropdownOption[]>(() =>

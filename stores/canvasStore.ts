@@ -22,14 +22,12 @@ const DEFAULT_SIDE_COUNT = 4
 interface CanvasSideState {
   json: string | null
   size: number
-  isCustomBackground: boolean
   bgUrl: string | null
 }
 
 const createSideState = (): CanvasSideState => ({
   json: null,
   size: 0,
-  isCustomBackground: false,
   bgUrl: null,
 })
 
@@ -55,6 +53,8 @@ export const useCanvasStore = defineStore('canvas', {
     activeProduct: 0 as number,
     /** The currently active side index */
     activeSide: 0 as number ,
+    /** Indicates whether the current background is custom */
+    isCustomBackground: false as boolean,
     /** State indexed by side number (0, 1, 2, …) */
     sides: createSides(DEFAULT_SIDE_COUNT) as CanvasSideState[],
     /** Number of active sides for the selected product */
@@ -71,15 +71,17 @@ export const useCanvasStore = defineStore('canvas', {
     sideKeys: (state): number[] => Array.from({ length: state.sideCount }, (_, i) => i),
   },
   actions: {
+     /** Helper to configure custom background flag */
+    cfgIsCustomBackground() {
+      this.isCustomBackground = this.productCategoryTree?.productCategories[this.activeCategory]?.products[this.activeProduct]?.label === 'Egen Produkt';
+    },
     /** Helper to initialize sides, sideCount and background url for all sides */
     initSides() {
       const sidesArr = this.productCategoryTree?.productCategories[this.activeCategory]?.products[this.activeProduct]?.sides || [];
-      const isCustomBackground = this.productCategoryTree?.productCategories[this.activeCategory]?.products[this.activeProduct]?.label === 'Egen Produkt';
       this.sideCount = sidesArr.length || DEFAULT_SIDE_COUNT;
       this.sides = createSides(this.sideCount);
       this.sides.forEach((side, i) => {
         side.bgUrl = sidesArr[i]?.src || null; // Sync background url from product data or set to null
-        side.isCustomBackground = isCustomBackground;
       });
     },
     setInitialized(val: boolean) {
@@ -125,10 +127,12 @@ export const useCanvasStore = defineStore('canvas', {
     },
     setActiveCategory(category: number) {
       this.activeCategory = category
+      this.cfgIsCustomBackground()
       this.initSides()
     },
     setActiveProduct(product: number) {
       this.activeProduct = product
+      this.cfgIsCustomBackground()
       this.initSides()
     },
     setActiveSide(side: number) {
