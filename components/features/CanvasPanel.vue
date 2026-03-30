@@ -5,7 +5,7 @@ import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch 
 import { Canvas } from 'fabric'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
-import { useCustomBackground, loadBackgroundOnCanvas, CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
+import { useCustomBackground } from '~/composables/useCustomBackground'
 import { configureActiveSelectionDefaults } from '@/utils/canvasSetup'
 import { useCustomImage } from '~/composables/useCustomImage'
 import { useCustomText } from '~/composables/useCustomText'
@@ -35,7 +35,7 @@ const emit = defineEmits<{
 // ===== COMPOSABLES =====
 const canvasStore = useCanvasStore()
 const { activeSide } = storeToRefs(canvasStore)
-const { applyCustomBackground } = useCustomBackground()
+const { loadBackgroundOnCanvas } = useCustomBackground()
 const { addImageToCanvas } = useCustomImage()
 const { addTextToCanvas } = useCustomText()
 
@@ -90,37 +90,27 @@ function syncAspectRatioFromBackground(side: number, width: number, height: numb
   }
 }
 
-async function applyBackgroundSelection(
+async function loadBackgroundUrl(
   side: number,
   canvas: Canvas,
-  selection: string | null | undefined,
+  bgUrl: string | null | undefined,
   clearObjects = true,
 ): Promise<void> {
+
   if (clearObjects) {
     clearCanvasObjects(canvas)
   }
 
-  if (!selection) {
+  if (!bgUrl) {
     canvas.backgroundImage = undefined
     canvas.requestRenderAll()
     return
   }
 
-  if (selection === CUSTOM_BACKGROUND_ID) {
-    const customDataUrl = canvasStore.sides[side]?.customBackgroundDataUrl
-    if (!customDataUrl) {
-      canvas.backgroundImage = undefined
-      canvas.requestRenderAll()
-      return
-    }
-
-    const bg = await loadBackgroundOnCanvas(canvas, customDataUrl)
+  const bg = await loadBackgroundOnCanvas(canvas, bgUrl)
+  if (bg) {
     syncAspectRatioFromBackground(side, bg.width, bg.height)
-    return
   }
-
-  const bg = await loadBackgroundOnCanvas(canvas, selection)
-  syncAspectRatioFromBackground(side, bg.width, bg.height)
 }
 
 // ===== LIFECYCLE HOOKS =====
@@ -175,15 +165,23 @@ onBeforeUnmount(() => {
 
 // ===== WATCHERS =====
 
-watch(() => canvasStore.sides[activeSide.value]?.customBackgroundDataUrl, async (newBackgroundUrl) => {
-  if (newBackgroundUrl) {
-    const canvas = activeCanvas.value
-    if (canvas) {
-      await applyCustomBackground(canvas, newBackgroundUrl)
-    }
-  }
-})
+// Single watcher for all side backgroundUrls — only reacts to actual changes
+watch(
+  () => canvasStore.sides.map(v => v.bgUrl),
+  async (newBgUrls, oldBgUrls) => {
+    for (let key = 0; key < newBgUrls.length; key++) {
+      const bgUrl = newBgUrls[key]
+      if (bgUrl === oldBgUrls?.[key]) continue
+      const canvas = canvasMap.value[key]
+      if (!canvas) continue
 
+      await loadBackgroundUrl(key, canvas, bgUrl, false)
+    }
+  },
+  { deep: true },
+)
+
+// Watch for changes to props.image and add the new image to the active canvas
 watch(() => props.image, async (newImage) => {
   if (newImage && activeCanvas.value) {
     try {
@@ -195,6 +193,7 @@ watch(() => props.image, async (newImage) => {
   }
 })
 
+// Watch for changes to props.textCnt and add a new text object to the active canvas
 watch(() => props.textCnt, (newTextCnt) => {
   if (newTextCnt && activeCanvas.value) {
     try {
@@ -205,22 +204,6 @@ watch(() => props.textCnt, (newTextCnt) => {
     }
   }
 })
-
-// Single watcher for all side backgroundSelections — only reacts to actual changes
-watch(
-  () => canvasStore.sides.map(v => v.backgroundSelection),
-  async (newSelections, oldSelections) => {
-    for (let key = 0; key < newSelections.length; key++) {
-      const selection = newSelections[key]
-      if (selection === oldSelections?.[key]) continue
-      const canvas = canvasMap.value[key]
-      if (!canvas) continue
-
-      await applyBackgroundSelection(key, canvas, selection, true)
-    }
-  },
-  { deep: true },
-)
 
 // Remove user-added objects and background from all live canvases when the store is fully cleared
 watch(

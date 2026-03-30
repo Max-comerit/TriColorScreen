@@ -2,7 +2,6 @@
 
 // 1. Imports
 import { useCanvasStore } from '@/stores/canvasStore'
-import { CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 import rawBackgroundOptions from '~/assets/json/custom-design/products.json'
 import type { ProductCategories } from '~/types/BackgroundSelector'
 
@@ -43,13 +42,10 @@ export function useBackgroundSelector() {
    * Handles a product selection change: resets the active side, then either enters
    * custom-background mode or syncs the new product's side backgrounds to the store.
    */
-  function onProductChange(index: number, dataKey: string | null): void {
+  function onProductChange(index: number): void {
     canvasStore.setActiveProduct(index)
     canvasStore.setActiveSide(0)
     canvasStore.clear()
-    if (dataKey === CUSTOM_BACKGROUND_ID) {
-      canvasStore.sides.forEach((_, i) => canvasStore.setBackgroundSelection(i, CUSTOM_BACKGROUND_ID))
-    }
   }
 
   /** Handles a side selection change: updates the active side in the store. */
