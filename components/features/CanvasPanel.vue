@@ -222,13 +222,25 @@ watch(
   { deep: true },
 )
 
-// Remove user-added objects from all live canvases when the store is cleared
+// Remove user-added objects and background from all live canvases when the store is fully cleared
 watch(
   () => canvasStore.clearSeq,
   () => {
     for (const canvas of canvasMap.value) {
       if (canvas) {
         clearCanvas(canvas, true)
+      }
+    }
+  },
+)
+
+// Remove only user-added objects from all live canvases, preserving backgrounds
+watch(
+  () => canvasStore.clearObjectsSeq,
+  () => {
+    for (const canvas of canvasMap.value) {
+      if (canvas) {
+        clearCanvas(canvas, false)
       }
     }
   },

@@ -61,8 +61,10 @@ export const useCanvasStore = defineStore('canvas', {
     sideCount: DEFAULT_SIDE_COUNT as number,
     /** CSS aspect-ratio string for the active product's background image */
     aspectRatio: '1 / 1' as string,
-    /** Incremented each time clear() is called; watchers use this to remove live canvas objects */
+    /** Incremented each time clear() is called; watchers use this to fully clear live canvases including background */
     clearSeq: 0 as number,
+    /** Incremented each time clearObjects() is called; watchers use this to remove only user-added live canvas objects */
+    clearObjectsSeq: 0 as number,
   }),
   getters: {
     /** Ordered list of active side indices derived from sideCount */
@@ -134,12 +136,20 @@ export const useCanvasStore = defineStore('canvas', {
     setActiveSide(side: number) {
       this.activeSide = side
     },
-    /** Clear user-added objects from all sides, preserving background selections */
+    /** Clear user-added objects from all sides and backgrounds */
     clear() {
       for (const side of this.sides) {
         side.json = null
       }
       this.clearSeq++
+    },
+    /** Clear only user-added objects from all sides, preserving background selections */
+    clearObjects() {
+      for (const side of this.sides) {
+        side.json = null
+      }
+      this.activeSide = 0
+      this.clearObjectsSeq++
     },
     setAspectRatio(ratio: string) {
       this.aspectRatio = ratio
