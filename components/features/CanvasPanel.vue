@@ -71,7 +71,6 @@ async function initializeCanvas(side: number, el: HTMLCanvasElement, width: numb
 
   canvasInstance.on('object:added', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
   canvasInstance.on('object:modified', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
-  canvasInstance.on('object:removed', () => canvasStore.save(side, canvasInstance, currentCanvasWidth))
 
   // Set initialized state in store if all canvases are initialized
   const allInitialized = canvasStore.sideKeys.every(key => canvasMap.value[key])
