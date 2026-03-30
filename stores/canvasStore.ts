@@ -71,11 +71,11 @@ export const useCanvasStore = defineStore('canvas', {
   actions: {
     /** Helper to initialize sides, sideCount, backgrounds and customBackgroundDataUrl for all sides */
     initSides() {
-      const sidesData = this.productCategoryTree?.productCategories[this.activeCategory]?.products[this.activeProduct]?.sides || [];
-      this.sideCount = sidesData.length || DEFAULT_SIDE_COUNT;
+      const sidesArr = this.productCategoryTree?.productCategories[this.activeCategory]?.products[this.activeProduct]?.sides || [];
+      this.sideCount = sidesArr.length || DEFAULT_SIDE_COUNT;
       this.sides = createSides(this.sideCount);
       this.sides.forEach((side, i) => {
-        side.backgroundSelection = sidesData[i]?.src || null; // Sync background selection from product data or set to null
+        side.backgroundSelection = sidesArr[i]?.src || null; // Sync background selection from product data or set to null
         side.customBackgroundDataUrl = null;
       });
     },
