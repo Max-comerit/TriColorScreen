@@ -212,6 +212,7 @@ watch(
   () => canvasStore.sides.map(v => v.backgroundSelection),
   async (newSelections, oldSelections) => {
     for (let key = 0; key < newSelections.length; key++) {
+      let clearObjects = false
       const selection = newSelections[key]
       if (selection === oldSelections?.[key]) continue
       const canvas = canvasMap.value[key]
@@ -219,11 +220,10 @@ watch(
 
       if (!selection) {
         // Selection was explicitly cleared — wipe objects and background from the live canvas
-        clearCanvas(canvas, true)
-        continue
+        clearObjects = true
       }
 
-      await applyBackgroundSelection(key, canvas, selection)
+      await applyBackgroundSelection(key, canvas, selection, clearObjects)
     }
   },
   { deep: true },
