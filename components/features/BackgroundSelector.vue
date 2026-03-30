@@ -29,7 +29,7 @@ const fileErrorMessage = ref('')
 
 // 5. Computed
 const isCustomSelected = computed(() =>
-  sides.value[activeSide.value]?.backgroundSelection === CUSTOM_BACKGROUND_ID,
+  !PRODUCT_CATEGORIES[activeCategory.value]?.products[activeProduct.value]?.sides[activeSide.value]?.src
 )
 
 const categoryOptions = computed<DropdownOption[]>(() =>
