@@ -6,7 +6,6 @@
 import type { FabricObject, Canvas, FabricImage } from 'fabric'
 import type { CircularTextbox } from './circularTextbox'
 import { Path, Point } from 'fabric'
-import { CUSTOM_BACKGROUND_ID } from '~/composables/useCustomBackground'
 
 // Valid range for text radius to create a circular path
 export const MIN_TEXT_RADIUS = 25
@@ -132,28 +131,6 @@ export function setTextboxTextRadius(textbox: CircularTextbox, radius: number): 
   textbox.controls.resize.visible = !nextHasPath
   textbox.setPositionByOrigin(center, 'center', 'center')
   textbox.setCoords()
-}
-
-/**
- * Returns the initial background URL for a given canvas side.
- * Uses the stored selection if present, otherwise falls back to hardcoded defaults
- * for the first two sides.
- */
-export function getInitialBackgroundUrl(
-  sides: Array<{ backgroundSelection: string | null } | undefined>,
-  sideKey: number,
-): string {
-  const state = sides[sideKey]
-  if (state?.backgroundSelection && state.backgroundSelection !== CUSTOM_BACKGROUND_ID) {
-    return state.backgroundSelection
-  }
-  const defaults: string[] = [
-    '/images/custom-design/t-shirt-front.jpg',
-    '/images/custom-design/t-shirt-back.jpg',
-    '/images/custom-design/t-shirt-left.jpg',
-    '/images/custom-design/t-shirt-right.jpg'
-  ]
-  return defaults[sideKey] ?? ''
 }
 
 export function clearCanvasObjects(canvas: Canvas): void {

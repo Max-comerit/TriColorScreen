@@ -4,6 +4,8 @@ import { defineStore } from 'pinia'
 import type { Canvas } from 'fabric'
 import type { ProductCategories } from '~/types/BackgroundSelector'
 
+const DEFAULT_SIDE_COUNT = 4
+
 /**
  * Canvas Store
  * @description Manages the state of N canvas sides dynamically. Sides are
@@ -31,13 +33,18 @@ const createSideState = (): CanvasSideState => ({
   customBackgroundDataUrl: null,
 })
 
-/** Creates initial sides state for the default two sides */
-function createInitialSides(): CanvasSideState[] {
-  return [createSideState(), createSideState()]
+/**
+ * Helper to create an array of CanvasSideState for the given count.
+ * Used for initializing and resetting the sides state.
+ */
+function createSides(count: number): CanvasSideState[] {
+  return Array.from({ length: count }, () => createSideState())
 }
 
 export const useCanvasStore = defineStore('canvas', {
   state: () => ({
+    /** True when all canvases are initialized */
+    initialized: false as boolean,
     /** Array of canvas instances indexed by side number */
     canvasMap: [] as (Canvas | undefined)[],
     /** The currently active product category name */
@@ -49,9 +56,9 @@ export const useCanvasStore = defineStore('canvas', {
     /** The currently active side index */
     activeSide: 0 as number ,
     /** State indexed by side number (0, 1, 2, …) */
-    sides: createInitialSides(),
+    sides: createSides(DEFAULT_SIDE_COUNT) as CanvasSideState[],
     /** Number of active sides for the selected product */
-    sideCount: 2 as number,
+    sideCount: DEFAULT_SIDE_COUNT as number,
     /** CSS aspect-ratio string for the active product's background image */
     aspectRatio: '1 / 1' as string,
     /** Incremented each time clear() is called; watchers use this to remove live canvas objects */
@@ -62,14 +69,20 @@ export const useCanvasStore = defineStore('canvas', {
     sideKeys: (state): number[] => Array.from({ length: state.sideCount }, (_, i) => i),
   },
   actions: {
-    /** Lazily initialize state for a side index if it doesn't exist yet */
-    ensureSide(side: number) {
-      while (this.sides.length <= side) {
-        this.sides.push(createSideState())
-      }
+    /** Helper to initialize sides, sideCount, backgrounds and customBackgroundDataUrl for all sides */
+    initSides() {
+      const sidesArr = this.productCategoryTree?.productCategories[this.activeCategory]?.products[this.activeProduct]?.sides || [];
+      this.sideCount = sidesArr.length || DEFAULT_SIDE_COUNT;
+      this.sides = createSides(this.sideCount);
+      this.sides.forEach((side, i) => {
+        side.backgroundSelection = sidesArr[i]?.src || null; // Sync background selection from product data or set to null
+        side.customBackgroundDataUrl = null;
+      });
+    },
+    setInitialized(val: boolean) {
+      this.initialized = val
     },
     save(side: number, canvas: Canvas, size: number) {
-      this.ensureSide(side)
       const sideState = this.sides[side]!
       sideState.json = JSON.stringify(canvas.toJSON())
       sideState.size = size
@@ -102,11 +115,9 @@ export const useCanvasStore = defineStore('canvas', {
       this.canvasMap = map
     },
     setBackgroundSelection(side: number, selection: string | null) {
-      this.ensureSide(side)
       this.sides[side]!.backgroundSelection = selection
     },
     setCustomBackgroundDataUrl(side: number, dataUrl: string | null) {
-      this.ensureSide(side)
       this.sides[side]!.customBackgroundDataUrl = dataUrl
     },
     setProductCategoryTree(categories: ProductCategories | undefined) {
@@ -114,22 +125,14 @@ export const useCanvasStore = defineStore('canvas', {
     },
     setActiveCategory(category: number) {
       this.activeCategory = category
+      this.initSides()
     },
     setActiveProduct(product: number) {
       this.activeProduct = product
+      this.initSides()
     },
     setActiveSide(side: number) {
       this.activeSide = side
-    },
-    /**
-     * Set the number of active sides for the selected product.
-     * Ensures state objects exist for all indices.
-     */
-    setSideCount(count: number) {
-      this.sideCount = count
-      for (let i = 0; i < count; i++) {
-        this.ensureSide(i)
-      }
     },
     /** Clear user-added objects from all sides, preserving background selections */
     clear() {

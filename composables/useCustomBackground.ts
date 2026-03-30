@@ -7,15 +7,6 @@ import { useCanvasStore } from '@/stores/canvasStore'
 
 export const CUSTOM_BACKGROUND_ID = 'custom'
 
-export const CUSTOM_SIDES: { label: string }[] = [
-  { label: 'Fram' },
-  { label: 'Bak' },
-  { label: 'Vänster' },
-  { label: 'Höger' },
-  { label: 'Över' },
-  { label: 'Under' },
-]
-
 /**
  * Loads a background image onto a canvas instance by URL.
  * Returns the loaded FabricImage so callers can read its dimensions (e.g. to update aspect ratio).

@@ -75,7 +75,6 @@ function attachCanvasListeners(canvas: Canvas): void {
   if (!canvasesWithListeners.has(canvas)) {
     canvas.on('object:added', onCanvasChange)
     canvas.on('object:modified', onCanvasChange);
-    canvas.on('object:removed', onCanvasChange)
     canvasesWithListeners.add(canvas)
   }
 }
@@ -87,7 +86,6 @@ function detachCanvasListeners(canvas: Canvas): void {
   if (canvasesWithListeners.has(canvas)) {
     canvas.off('object:added', onCanvasChange)
     canvas.off('object:modified', onCanvasChange);
-    canvas.off('object:removed', onCanvasChange)
     canvasesWithListeners.delete(canvas)
   }
 }
@@ -143,8 +141,8 @@ async function collectQuoteFiles(): Promise<File[]> {
     try {
       const canvasInstance = entry.canvas as Canvas
 
-      // Validate canvas is still valid before exporting
-      if (!canvasInstance) {
+      // Validate canvas is still valid and has a valid HTML element before exporting
+      if (!canvasInstance || !canvasInstance.elements.lower) {
         console.warn('collectQuoteFiles: canvas instance is no longer valid, skipping')
         continue
       }
