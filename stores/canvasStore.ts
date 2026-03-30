@@ -148,7 +148,6 @@ export const useCanvasStore = defineStore('canvas', {
       for (const side of this.sides) {
         side.json = null
       }
-      this.activeSide = 0
       this.clearObjectsSeq++
     },
     setAspectRatio(ratio: string) {

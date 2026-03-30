@@ -267,6 +267,7 @@ async function handleSubmit(): Promise<void> {
     emit('success')
 
     // Clear canvases immediately as it takes some time to clear the canvas object
+    canvasStore.setActiveSide(0)
     canvasStore.clearObjects()
 
     // Auto-hide success message after 5 seconds then reset user-editable fields
