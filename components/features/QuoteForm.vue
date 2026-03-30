@@ -143,8 +143,8 @@ async function collectQuoteFiles(): Promise<File[]> {
     try {
       const canvasInstance = entry.canvas as Canvas
 
-      // Validate canvas is still valid before exporting
-      if (!canvasInstance) {
+      // Validate canvas is still valid and has a valid HTML element before exporting
+      if (!canvasInstance || !canvasInstance.elements.lower) {
         console.warn('collectQuoteFiles: canvas instance is no longer valid, skipping')
         continue
       }
