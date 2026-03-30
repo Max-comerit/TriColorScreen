@@ -46,6 +46,7 @@ export function useBackgroundSelector() {
   function onProductChange(index: number, dataKey: string | null): void {
     canvasStore.setActiveProduct(index)
     canvasStore.setActiveSide(0)
+    canvasStore.clear()
     if (dataKey === CUSTOM_BACKGROUND_ID) {
       canvasStore.sides.forEach((_, i) => canvasStore.setBackgroundSelection(i, CUSTOM_BACKGROUND_ID))
     }
