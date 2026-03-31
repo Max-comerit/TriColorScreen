@@ -8,6 +8,7 @@ import { setTextboxTextRadius, MIN_TEXT_RADIUS, MAX_TEXT_RADIUS } from '~/utils/
 import { CircularTextbox } from '~/utils/circularTextbox'
 import BaseDropdown from '~/components/base/BaseDropdown.vue'
 import type { DropdownGroup } from '~/components/base/BaseDropdown.vue'
+import { useCanvasStore } from '@/stores/canvasStore'
 
 // Font names used for eager preloading on mount
 const FONT_NAMES = [
@@ -25,7 +26,7 @@ interface Props {
 const props = defineProps<Props>()
 
 // 3. Composables & Stores
-// (none)
+const canvasStore = useCanvasStore()
 
 // 4. State (ref/reactive)
 const selectedTextboxes = shallowRef<Textbox[]>([])
@@ -177,6 +178,7 @@ function applyToAll(updater: (tb: Textbox) => void) {
     tb.setCoords()
   }
   props.canvas.requestRenderAll()
+  canvasStore.notifyTextControlsChanged()
 }
 
 /**

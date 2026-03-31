@@ -31,7 +31,7 @@ const emit = defineEmits<{
 
 // ===== COMPOSABLES & STORES =====
 const canvasStore = useCanvasStore()
-const { canvasMap, productCategoryTree, activeCategory, activeProduct } = storeToRefs(canvasStore)
+const { canvasMap, productCategoryTree, activeCategory, activeProduct, textControlsSeq } = storeToRefs(canvasStore)
 const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const {
   formData,
@@ -124,6 +124,7 @@ function collectCanvasTexts(): string {
         text: obj.text ?? '',
         fontFamily: cleanFontFamily(obj.fontFamily ?? ''),
         fontWeight: obj.fontWeight ?? 400,
+        isItalic: obj.fontStyle === 'italic',
         color: (obj.fill as string) ?? '#000000',
       })),
     })
@@ -135,7 +136,7 @@ function collectCanvasTexts(): string {
     .map(side => [
       `[ ${side.side} ]`,
       ...side.texts.map((t, i) =>
-        `Text ${i + 1}: "${t.text}" | Typsnitt: ${t.fontFamily} ${t.fontWeight} | Färg: ${t.color}`
+        `Text ${i + 1}: "${t.text}" | Typsnitt: ${t.fontFamily} ${t.fontWeight}${t.isItalic ? ' italic' : ''} | Färg: ${t.color}`
       ),
     ].join('\n'))
     .join('\n\n')
@@ -363,6 +364,14 @@ watch(activeProductLabel, (label) => {
  */
 watch(isChanged, (newValue) => {
   emit('changed', newValue)
+})
+
+/**
+ * Re-collect canvas texts when TextboxControls programmatically changes a textbox
+ * property (font, bold, italic, color, etc.) — these don't fire canvas events.
+ */
+watch(textControlsSeq, () => {
+  formData.value.canvasTexts = collectCanvasTexts()
 })
 
 /**
@@ -1002,6 +1011,25 @@ watch(canvasMap, async (newCanvases) => {
         </ul>
       </div>
 
+      <!-- Display canvas texts to user -->
+      <input type="hidden" name="texter" :value="formData.canvasTexts">
+      <div v-if="formData.canvasTexts" aria-live="polite">
+        <p class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5">
+          Tillagda texter
+        </p>
+        <ul
+          class="w-full px-4 py-2.5 text-sm border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
+          aria-label="Texter som biläggs formuläret"
+        >
+          <li
+            v-for="line in formData.canvasTexts.split('\n')"
+            :key="line"
+          >
+            {{ line }}
+          </li>
+        </ul>
+      </div>
+
       <!-- ── Message (optional) ─────────────────────────────── -->
       <div>
         <label
@@ -1034,7 +1062,6 @@ watch(canvasMap, async (newCanvases) => {
           {{ getFieldError('message') }}
         </p>
       </div>
-      <input type="hidden" name="texter" :value="formData.canvasTexts">
 
       <!-- ── GDPR consent ───────────────────────────────────── -->
       <div>

@@ -2,6 +2,7 @@ export interface TextEntry {
   text: string
   fontFamily: string
   fontWeight: number | string
+  isItalic: boolean
   color: string
 }
 
