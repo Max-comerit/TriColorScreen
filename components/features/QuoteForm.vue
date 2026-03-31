@@ -5,6 +5,7 @@
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import type { Canvas } from 'fabric'
+import { Textbox } from 'fabric'
 import type { QuoteFormData } from '~/composables/useQuoteForm'
 import { useQuoteForm, MAX_IMAGE_COUNT } from '~/composables/useQuoteForm'
 import TextButton from '~/components/common/TextButton.vue'
@@ -12,6 +13,7 @@ import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { useCanvasExport } from '~/composables/useCanvasExport'
 import { TAP_ANIMATION_TIME } from '~/constants/ui'
+import type { SideTextInfo } from '~/types/CanvasText'
 
 // ===== ASYNC COMPONENTS =====
 const GdprDialog = defineAsyncComponent(() =>
@@ -88,6 +90,49 @@ function detachCanvasListeners(canvas: Canvas): void {
     canvas.off('object:modified', onCanvasChange);
     canvasesWithListeners.delete(canvas)
   }
+}
+
+/**
+ * Clean a CSS font-family string to just the primary font name.
+ * E.g. "'Inter', sans-serif" → "Inter"
+ */
+function cleanFontFamily(fontFamily: string): string {
+  const primary = fontFamily.split(',')[0].trim()
+  return primary.replace(/['"/]/g, '')
+}
+
+/**
+ * Collect text objects from all active canvases and return a JSON string.
+ * Each entry describes the side label and an array of text object properties.
+ */
+function collectCanvasTexts(): string {
+  const result: SideTextInfo[] = []
+
+  canvasMap.value.forEach((canvas, index) => {
+    if (!canvas) return
+
+    const textObjects = canvas.getObjects().filter(
+      (obj): obj is Textbox => obj instanceof Textbox
+    )
+
+    if (textObjects.length === 0) return
+
+    const sideLabel = activeSideLabels.value[index]?.label ?? `Sida ${index + 1}`
+    result.push({
+      side: sideLabel,
+      texts: textObjects.map(obj => ({
+        text: obj.text ?? '',
+        fontFamily: cleanFontFamily(obj.fontFamily ?? ''),
+        fontSize: Math.round(obj.fontSize ?? 0),
+        fontWeight: obj.fontWeight ?? 400,
+        color: (obj.fill as string) ?? '#000000',
+        textAlign: obj.textAlign ?? 'left',
+        textRadius: (obj as Textbox & { textRadius?: number }).textRadius ?? 0,
+      })),
+    })
+  })
+
+  return result.length > 0 ? JSON.stringify(result) : ''
 }
 
 /**
@@ -183,6 +228,8 @@ async function collectCanvasImages(): Promise<void> {
     isCollectingImages.value = true
     // Collect current canvas images and populate formData before user submits
     formData.value.images = await collectQuoteFiles()
+    // Collect text objects from all canvases
+    formData.value.canvasTexts = collectCanvasTexts()
     // Sync each image to its corresponding hidden file input for Netlify submission
     formData.value.images?.forEach((file, index) => {
       const ref = fileInputRefs.value[index]
@@ -363,6 +410,7 @@ watch(canvasMap, async (newCanvases) => {
 
     <!-- Hidden fields for Netlify -->
     <input type="hidden" name="form-name" value="quote">
+    <input type="hidden" name="canvas_texts" :value="formData.canvasTexts">
     <p class="sr-only">
       <label>
         Don't fill this out if you're human:

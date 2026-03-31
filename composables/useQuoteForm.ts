@@ -69,6 +69,7 @@ export const quoteFormSchema = z.object({
     .int('Antal måste vara ett heltal')
     .min(1, 'Antal måste vara minst 1')
     .max(10000, 'Antal får inte vara mer än 10 000'),
+  canvasTexts: z.string().optional(),
   images: z
     .array(z.custom<File>((file) => {
       if (!file) return true // Optional field
@@ -117,8 +118,8 @@ export function useQuoteForm() {
 
   // ===== STATE =====
   const formData = ref<QuoteFormData>({ ...quoteFormStore.formData })
-  const initialFormData = ref<Omit<QuoteFormData, 'images'>>(
-    (({ images: _i, ...rest }) => rest)(formData.value),
+  const initialFormData = ref<Omit<QuoteFormData, 'images' | 'canvasTexts'>>(
+    (({ images: _i, canvasTexts: _ct, ...rest }) => rest)(formData.value),
   )
   const formState = ref<FormState>('idle')
   const fieldErrors = ref<Map<keyof QuoteFormData, string>>(new Map())
@@ -130,7 +131,7 @@ export function useQuoteForm() {
    * Files are excluded because they are prop-injected and cannot be serialised.
    */
   const isChanged = computed(() => {
-    const editableData = (({ images: _i, ...rest }) => rest)(formData.value)
+    const editableData = (({ images: _i, canvasTexts: _ct, ...rest }) => rest)(formData.value)
     return JSON.stringify(editableData) !== JSON.stringify(initialFormData.value)
   })
 
@@ -231,9 +232,10 @@ export function useQuoteForm() {
     formData.value.productId = ''
     formData.value.size = ''
     formData.value.productCount = undefined as unknown as number
+    formData.value.canvasTexts = ''
     formData.value.message = ''
     formData.value.gdprConsent = false
-    initialFormData.value = (({ images: _i, ...rest }) => rest)(formData.value)
+    initialFormData.value = (({ images: _i, canvasTexts: _ct, ...rest }) => rest)(formData.value)
     clearErrors()
     formState.value = 'idle'
     quoteFormStore.resetForm()
@@ -276,6 +278,9 @@ export function useQuoteForm() {
       formData.value.images?.forEach((file, index) => {
         formDataToSubmit.append(`image_${index + 1}`, file)
       })
+      if (formData.value.canvasTexts) {
+        formDataToSubmit.append('canvas_texts', formData.value.canvasTexts)
+      }
       if (formData.value.message) {
         formDataToSubmit.append('message', formData.value.message)
       }
