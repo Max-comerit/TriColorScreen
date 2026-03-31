@@ -283,7 +283,7 @@ export function useQuoteForm() {
       }
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
       if (formData.value.canvasTexts) {
-        formDataToSubmit.append('canvas_texts', formData.value.canvasTexts)
+        formDataToSubmit.append('texter', formData.value.canvasTexts)
       }
       formDataToSubmit.append('bot-field', '')
 

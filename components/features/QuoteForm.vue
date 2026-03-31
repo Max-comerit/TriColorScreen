@@ -1030,7 +1030,7 @@ watch(canvasMap, async (newCanvases) => {
           {{ getFieldError('message') }}
         </p>
       </div>
-      <input type="hidden" name="canvas_texts" :value="formData.canvasTexts">
+      <input type="hidden" name="texter" :value="formData.canvasTexts">
 
       <!-- ── GDPR consent ───────────────────────────────────── -->
       <div>
