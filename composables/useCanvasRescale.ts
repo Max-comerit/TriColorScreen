@@ -1,5 +1,7 @@
 // composables/useCanvasRescale.ts
 
+import type { Canvas, FabricImage } from 'fabric'
+
 /**
  * Rescale Canvas Objects Composable
  * @description Proportionally rescales canvas objects and background image by a given ratio.
@@ -17,7 +19,7 @@ export function useCanvasRescale() {
    * @param ratio - The scaling ratio to apply to the background image and the canvas objects
    */
   async function rescaleCanvas(
-    canvasInstance: import('fabric').Canvas,
+    canvasInstance: Canvas,
     newWidth: number,
     newHeight: number,
     ratio: number,
@@ -35,10 +37,10 @@ export function useCanvasRescale() {
    * @param ratio - The scaling ratio to apply to the background image
    */
   function rescaleBackground( 
-    canvas: import('fabric').Canvas, 
+    canvas: Canvas, 
     ratio: number
   ): void {
-    const bg = canvas.backgroundImage as import('fabric').FabricImage | undefined
+    const bg = canvas.backgroundImage as FabricImage | undefined
     if (!bg) return
     bg.set({
       scaleX: (bg.scaleX ?? 1) * ratio,
@@ -56,7 +58,7 @@ export function useCanvasRescale() {
    */
 
   function rescaleObjects( 
-    canvas: import('fabric').Canvas, 
+    canvas: Canvas, 
     ratio: number
   ): void {
     canvas.getObjects().forEach((obj) => {
