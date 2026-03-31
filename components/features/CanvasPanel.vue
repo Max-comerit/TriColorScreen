@@ -84,12 +84,6 @@ function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
   canvasElMap[key] = el ?? undefined
 }
 
-function syncAspectRatioFromBackground(side: number, width: number, height: number): void {
-  if (side === canvasStore.activeSide && width > 0 && height > 0) {
-    canvasStore.setAspectRatio(`${width} / ${height}`)
-  }
-}
-
 async function loadBackgroundUrl(
   side: number,
   canvas: Canvas,
@@ -107,10 +101,7 @@ async function loadBackgroundUrl(
     return
   }
 
-  const bg = await loadBackgroundOnCanvas(canvas, bgUrl)
-  if (bg) {
-    syncAspectRatioFromBackground(side, bg.width, bg.height)
-  }
+  await loadBackgroundOnCanvas(side, canvas, bgUrl)
 }
 
 // ===== LIFECYCLE HOOKS =====

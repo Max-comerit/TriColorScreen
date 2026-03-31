@@ -2,6 +2,7 @@
 
 // 1. Imports
 import type { Canvas } from 'fabric'
+import { useCanvasStore } from '@/stores/canvasStore'
 import { FabricImage } from 'fabric'
 
 /**
@@ -9,14 +10,18 @@ import { FabricImage } from 'fabric'
  */
 export function useCustomBackground() {
   // 2. Composables & Stores
+  const canvasStore = useCanvasStore()
 
   // 3. Methods
 
   /**
    * Loads a background image onto a canvas by URL.
-   * Returns the loaded FabricImage so callers can read its dimensions (e.g. to update aspect ratio).
+   * @param side - The side of the canvas (0, 1, or 2).
+   * @param canvas - The Fabric.js canvas instance to update.
+   * @param url - The URL of the background image to load.
+   * @returns A promise that resolves when the background image is loaded and applied.
    */
-  async function loadBackgroundOnCanvas(canvas: Canvas, url: string): Promise<FabricImage | null> {
+  async function loadBackgroundOnCanvas(side: number, canvas: Canvas, url: string): Promise<void> {
     try {
       const bg = await FabricImage.fromURL(url)
       const w = canvas.getWidth()
@@ -28,11 +33,13 @@ export function useCustomBackground() {
       bg.set({ originX: 'center', originY: 'center', left: w / 2, top: h / 2 })
       canvas.backgroundImage = bg
       canvas.requestRenderAll()
-      return bg
+
+      if (side === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
+        canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
+      }
     }
     catch (error) {
       console.error('Failed to load background image:', error)
-      return null
     }
   }
 
