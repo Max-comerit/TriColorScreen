@@ -311,7 +311,11 @@ function openGdprDialog(): void {
 async function handleSubmit(): Promise<void> {
   // Delay validation TAP_ANIMATION_TIME ms to allow tap animation to complete
   await new Promise(resolve => setTimeout(resolve, TAP_ANIMATION_TIME))
-  
+
+  // Re-collect texts fresh at submit time so programmatic changes via the
+  // controls panel (which fire no canvas events) are always included
+  formData.value.canvasTexts = collectCanvasTexts()
+
   const success = await submitForm()
 
   if (success) {

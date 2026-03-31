@@ -177,10 +177,6 @@ function applyToAll(updater: (tb: Textbox) => void) {
     tb.setCoords()
   }
   props.canvas.requestRenderAll()
-  // Fire object:modified so external listeners (e.g. QuoteForm) pick up the change
-  for (const tb of selectedTextboxes.value) {
-    props.canvas.fire('object:modified', { target: tb })
-  }
 }
 
 /**
