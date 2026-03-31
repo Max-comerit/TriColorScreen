@@ -4,8 +4,8 @@ import { FabricImage, Textbox } from 'fabric'
 import type { Canvas, FabricObject } from 'fabric'
 import { CircularTextbox } from '~/utils/circularTextbox'
 import { setTextboxTextRadius } from '~/utils/canvasUtils'
-import { useCustomImage, attachSvgDataUrl } from '~/composables/useCustomImage'
-import { useCustomText } from '~/composables/useCustomText'
+import { useCanvasImage, attachSvgDataUrl } from '~/composables/useCanvasImage'
+import { useCanvasText } from '~/composables/useCanvasText'
 
 /**
  * Canvas Controls Composable
@@ -19,8 +19,8 @@ import { useCustomText } from '~/composables/useCustomText'
  */
 
 export function useCanvasControls() {
-  const { applyImageControls } = useCustomImage()
-  const { applyTextboxControls } = useCustomText()
+  const { applyImageControls } = useCanvasImage()
+  const { applyTextboxControls } = useCanvasText()
 
   function reapplyControlsToObject(obj: FabricObject): void {
     if (obj instanceof FabricImage) {

@@ -1,4 +1,4 @@
-// composables/useCustomText.ts
+// composables/useCanvasText.ts
 
 import {  Control, controlsUtils, util } from 'fabric'
 import type { Textbox } from 'fabric'
@@ -40,7 +40,7 @@ const DEFAULT_TEXT_ALIGN: AddTextOptions['textAlign'] = 'center'
 const DEFAULT_TEXT_RADIUS = 0
 const DEFAULT_TEXT_WIDTH = 360
 
-export function useCustomText() {
+export function useCanvasText() {
   /**
    * Apply custom controls to an existing Textbox.
    * Called both when first adding and when restoring from JSON.

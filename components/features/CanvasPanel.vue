@@ -5,14 +5,15 @@ import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch 
 import { Canvas, type FabricImage } from 'fabric'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
-import { useCustomBackground } from '~/composables/useCustomBackground'
+import { useCanvasBackground } from '~/composables/useCanvasBackground'
 import { configureActiveSelectionDefaults } from '@/utils/canvasSetup'
-import { useCustomImage } from '~/composables/useCustomImage'
-import { useCustomText } from '~/composables/useCustomText'
+import { useCanvasImage } from '~/composables/useCanvasImage'
+import { useCanvasText } from '~/composables/useCanvasText'
+import { useCanvasRescale } from '~/composables/useCanvasRescale'
 import {
   clearCanvasObjects,
+  clearCanvasBackground,
   clearCanvas,
-  rescaleCanvas,
 } from '~/utils/canvasUtils'
 
 // ===== TYPES =====
@@ -35,9 +36,10 @@ const emit = defineEmits<{
 // ===== COMPOSABLES =====
 const canvasStore = useCanvasStore()
 const { activeSide } = storeToRefs(canvasStore)
-const { loadBackgroundOnCanvas } = useCustomBackground()
-const { addImageToCanvas } = useCustomImage()
-const { addTextToCanvas } = useCustomText()
+const { loadBackgroundOnCanvas } = useCanvasBackground()
+const { addImageToCanvas } = useCanvasImage()
+const { addTextToCanvas } = useCanvasText()
+const { rescaleCanvas } = useCanvasRescale()
 
 // ===== STATE =====
 /** Reactive array of initialized Fabric Canvas instances, indexed by side number */
@@ -84,12 +86,6 @@ function assignCanvasEl(key: number, el: HTMLCanvasElement | null): void {
   canvasElMap[key] = el ?? undefined
 }
 
-function syncAspectRatioFromBackground(side: number, width: number, height: number): void {
-  if (side === canvasStore.activeSide && width > 0 && height > 0) {
-    canvasStore.setAspectRatio(`${width} / ${height}`)
-  }
-}
-
 async function loadBackgroundUrl(
   side: number,
   canvas: Canvas,
@@ -101,15 +97,11 @@ async function loadBackgroundUrl(
     clearCanvasObjects(canvas)
   }
 
-  if (!bgUrl) {
-    canvas.backgroundImage = undefined
-    canvas.requestRenderAll()
-    return
+  if(bgUrl) {
+    await loadBackgroundOnCanvas(side, canvas, bgUrl)
   }
-
-  const bg = await loadBackgroundOnCanvas(canvas, bgUrl)
-  if (bg) {
-    syncAspectRatioFromBackground(side, bg.width, bg.height)
+  else {
+    clearCanvasBackground(canvas)
   }
 }
 
@@ -133,10 +125,11 @@ onMounted(async () => {
     if (width <= 0 || height <= 0) return
 
     const previousWidth = currentCanvasWidth
-    if (previousWidth > 0 && (width !== previousWidth || height !== currentCanvasHeight)) {
-      const ratio = width / previousWidth
+    const previousHeight = currentCanvasHeight
+    if (previousWidth > 0 && (width !== previousWidth || height !== previousHeight)) {
+      const ratio = width !== previousWidth ? width / previousWidth : height / previousHeight
       for (const canvas of canvasMap.value) {
-        if (canvas) void rescaleCanvas(canvas, ratio, width, height)
+        if (canvas) void rescaleCanvas(canvas, width, height, ratio)
       }
     }
 
@@ -211,7 +204,7 @@ watch(
   () => {
     for (const canvas of canvasMap.value) {
       if (canvas) {
-        clearCanvas(canvas, true)
+        clearCanvas(canvas)
       }
     }
   },
@@ -223,7 +216,7 @@ watch(
   () => {
     for (const canvas of canvasMap.value) {
       if (canvas) {
-        clearCanvas(canvas, false)
+        clearCanvasObjects(canvas)
       }
     }
   },

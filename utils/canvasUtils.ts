@@ -3,7 +3,7 @@
  * 
  * This module provides functions to manipulate the z-order of Fabric objects and to set a circular text path for Textbox objects based on a specified radius. The circular path is created using SVG path syntax and is centered at the origin. The module also includes a function to check if the radius value is within a valid range for creating a circular path.
  */
-import type { FabricObject, Canvas, FabricImage } from 'fabric'
+import type { FabricObject, Canvas } from 'fabric'
 import type { CircularTextbox } from './circularTextbox'
 import { Path, Point } from 'fabric'
 
@@ -135,35 +135,16 @@ export function setTextboxTextRadius(textbox: CircularTextbox, radius: number): 
 
 export function clearCanvasObjects(canvas: Canvas): void {
   canvas.remove(...canvas.getObjects())
-}
-
-export function clearCanvas(canvas: Canvas, clearBackground = false): void {
-  clearCanvasObjects(canvas)
-  if (clearBackground) {
-    canvas.backgroundImage = undefined
-  }
   canvas.requestRenderAll()
 }
 
-/**
- * Resizes a Fabric canvas to new dimensions and rescales the background image to fill.
- * Lazy-loads useCanvasRescale so it stays out of the synchronous bundle (Lighthouse optimization).
- */
-export async function rescaleCanvas(
-  canvasInstance: Canvas,
-  ratio: number,
-  newWidth: number,
-  newHeight: number,
-): Promise<void> {
-  canvasInstance.setDimensions({ width: newWidth, height: newHeight })
-  const bg = canvasInstance.backgroundImage as FabricImage | undefined
-  if (bg) {
-    bg.scaleToWidth(newWidth)
-    bg.scaleToHeight(newHeight)
-    bg.set({ left: newWidth / 2, top: newHeight / 2 })
-  }
-  const { useCanvasRescale } = await import('~/composables/useCanvasRescale')
-  const { rescaleObjects } = useCanvasRescale()
-  rescaleObjects(canvasInstance, ratio)
-  canvasInstance.requestRenderAll()
+export function clearCanvasBackground(canvas: Canvas): void {
+  canvas.backgroundImage = undefined
+  canvas.requestRenderAll()
+}
+
+export function clearCanvas(canvas: Canvas): void {
+  clearCanvasObjects(canvas)
+  clearCanvasBackground(canvas)
+  canvas.requestRenderAll()
 }
