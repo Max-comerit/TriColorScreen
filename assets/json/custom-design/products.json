@@ -335,7 +335,7 @@
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/advertisement/poster.png"
+              "src": "/images/custom-design/advertisement/poster.jpg"
             }
           ]
         },
@@ -344,7 +344,11 @@
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/advertisement/banderoll.png"
+              "src": "/images/custom-design/advertisement/banderoll-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/advertisement/banderoll-back.jpg"
             }
           ]
         },
@@ -352,8 +356,12 @@
           "label": "Skylt",
           "sides": [
             {
+              "label": "Vänster",
+              "src": "/images/custom-design/advertisement/sign-left.jpg"
+            },
+            {
               "label": "Höger",
-              "src": "/images/custom-design/advertisement/sign.png"
+              "src": "/images/custom-design/advertisement/sign-right.jpg"
             }
           ]
         },
@@ -361,8 +369,12 @@
           "label": "Beachflagga",
           "sides": [
             {
-              "label": "Fram",
-              "src": "/images/custom-design/advertisement/beach-flag.png"
+              "label": "Vänster",
+              "src": "/images/custom-design/advertisement/beach-flag-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/advertisement/beach-flag-right.jpg"
             }
           ]
         },
@@ -370,8 +382,12 @@
           "label": "Butiksflagga",
           "sides": [
             {
-              "label": "Fram",
-              "src": "/images/custom-design/advertisement/kiosk-flag.png"
+              "label": "Vänster",
+              "src": "/images/custom-design/advertisement/kiosk-flag-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/advertisement/kiosk-flag-right.jpg"
             }
           ]
         },
@@ -380,7 +396,11 @@
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/advertisement/roll-up.png"
+              "src": "/images/custom-design/advertisement/roll-up-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/advertisement/roll-up-back.jpg"
             }
           ]
         }
@@ -393,8 +413,20 @@
           "label": "Skåpbil",
           "sides": [
             {
+              "label": "Fram",
+              "src": "/images/custom-design/decoration/van-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/decoration/van-back.jpg"
+            },
+            {
               "label": "Vänster",
-              "src": "/images/custom-design/decoration/van.png"
+              "src": "/images/custom-design/decoration/van-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/decoration/van-right.jpg"
             }
           ]
         },
@@ -402,8 +434,20 @@
           "label": "Lastbil",
           "sides": [
             {
+              "label": "Fram",
+              "src": "/images/custom-design/decoration/truck-front.jpg"
+            },
+            {
+              "label": "Bak",
+              "src": "/images/custom-design/decoration/truck-back.jpg"
+            },
+            {
               "label": "Vänster",
-              "src": "/images/custom-design/decoration/truck.png"
+              "src": "/images/custom-design/decoration/truck-left.jpg"
+            },
+            {
+              "label": "Höger",
+              "src": "/images/custom-design/decoration/truck-right.jpg"
             }
           ]
         }
