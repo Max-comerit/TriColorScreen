@@ -9,10 +9,11 @@ import { useCanvasBackground } from '~/composables/useCanvasBackground'
 import { configureActiveSelectionDefaults } from '@/utils/canvasSetup'
 import { useCanvasImage } from '~/composables/useCanvasImage'
 import { useCanvasText } from '~/composables/useCanvasText'
+import { useCanvasRescale } from '~/composables/useCanvasRescale'
 import {
   clearCanvasObjects,
+  clearCanvasBackground,
   clearCanvas,
-  rescaleCanvas,
 } from '~/utils/canvasUtils'
 
 // ===== TYPES =====
@@ -38,6 +39,7 @@ const { activeSide } = storeToRefs(canvasStore)
 const { loadBackgroundOnCanvas } = useCanvasBackground()
 const { addImageToCanvas } = useCanvasImage()
 const { addTextToCanvas } = useCanvasText()
+const { rescaleCanvas } = useCanvasRescale()
 
 // ===== STATE =====
 /** Reactive array of initialized Fabric Canvas instances, indexed by side number */
@@ -95,13 +97,12 @@ async function loadBackgroundUrl(
     clearCanvasObjects(canvas)
   }
 
-  if (!bgUrl) {
-    canvas.backgroundImage = undefined
-    canvas.requestRenderAll()
-    return
+  if(bgUrl) {
+    await loadBackgroundOnCanvas(side, canvas, bgUrl)
   }
-
-  await loadBackgroundOnCanvas(side, canvas, bgUrl)
+  else {
+    clearCanvasBackground(canvas)
+  }
 }
 
 // ===== LIFECYCLE HOOKS =====
@@ -124,10 +125,11 @@ onMounted(async () => {
     if (width <= 0 || height <= 0) return
 
     const previousWidth = currentCanvasWidth
-    if (previousWidth > 0 && (width !== previousWidth || height !== currentCanvasHeight)) {
-      const ratio = width / previousWidth
+    const previousHeight = currentCanvasHeight
+    if (previousWidth > 0 && (width !== previousWidth || height !== previousHeight)) {
+      const ratio = width !== previousWidth ? width / previousWidth : height / previousHeight
       for (const canvas of canvasMap.value) {
-        if (canvas) void rescaleCanvas(canvas, ratio, width, height)
+        if (canvas) void rescaleCanvas(canvas, width, height, ratio)
       }
     }
 
@@ -202,7 +204,7 @@ watch(
   () => {
     for (const canvas of canvasMap.value) {
       if (canvas) {
-        clearCanvas(canvas, true)
+        clearCanvas(canvas)
       }
     }
   },
@@ -214,7 +216,7 @@ watch(
   () => {
     for (const canvas of canvasMap.value) {
       if (canvas) {
-        clearCanvas(canvas, false)
+        clearCanvasObjects(canvas)
       }
     }
   },
