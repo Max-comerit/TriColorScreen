@@ -416,7 +416,6 @@ watch(canvasMap, async (newCanvases) => {
 
     <!-- Hidden fields for Netlify -->
     <input type="hidden" name="form-name" value="quote">
-    <input type="hidden" name="canvas_texts" :value="formData.canvasTexts">
     <p class="sr-only">
       <label>
         Don't fill this out if you're human:
@@ -1031,6 +1030,7 @@ watch(canvasMap, async (newCanvases) => {
           {{ getFieldError('message') }}
         </p>
       </div>
+      <input type="hidden" name="canvas_texts" :value="formData.canvasTexts">
 
       <!-- ── GDPR consent ───────────────────────────────────── -->
       <div>
