@@ -278,13 +278,13 @@ export function useQuoteForm() {
       formData.value.images?.forEach((file, index) => {
         formDataToSubmit.append(`image_${index + 1}`, file)
       })
-      if (formData.value.canvasTexts) {
-        formDataToSubmit.append('canvas_texts', formData.value.canvasTexts)
-      }
       if (formData.value.message) {
         formDataToSubmit.append('message', formData.value.message)
       }
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
+      if (formData.value.canvasTexts) {
+        formDataToSubmit.append('canvas_texts', formData.value.canvasTexts)
+      }
       formDataToSubmit.append('bot-field', '')
 
       // Submit to Netlify Forms

@@ -102,8 +102,8 @@ function cleanFontFamily(fontFamily: string): string {
 }
 
 /**
- * Collect text objects from all active canvases and return a JSON string.
- * Each entry describes the side label and an array of text object properties.
+ * Collect text objects from all active canvases and return a human-readable string.
+ * Each entry describes the side label and the text properties on that side.
  */
 function collectCanvasTexts(): string {
   const result: SideTextInfo[] = []
@@ -123,16 +123,22 @@ function collectCanvasTexts(): string {
       texts: textObjects.map(obj => ({
         text: obj.text ?? '',
         fontFamily: cleanFontFamily(obj.fontFamily ?? ''),
-        fontSize: Math.round(obj.fontSize ?? 0),
         fontWeight: obj.fontWeight ?? 400,
         color: (obj.fill as string) ?? '#000000',
-        textAlign: obj.textAlign ?? 'left',
-        textRadius: (obj as Textbox & { textRadius?: number }).textRadius ?? 0,
       })),
     })
   })
 
-  return result.length > 0 ? JSON.stringify(result) : ''
+  if (result.length === 0) return ''
+
+  return result
+    .map(side => [
+      `[ ${side.side} ]`,
+      ...side.texts.map((t, i) =>
+        `Text ${i + 1}: "${t.text}" | Typsnitt: ${t.fontFamily} ${t.fontWeight} | Färg: ${t.color}`
+      ),
+    ].join('\n'))
+    .join('\n\n')
 }
 
 /**
