@@ -1,4 +1,4 @@
-// composables/useCustomBackground.ts
+// composables/useCanvasBackground.ts
 
 // 1. Imports
 import type { Canvas } from 'fabric'
@@ -8,7 +8,7 @@ import { FabricImage } from 'fabric'
 /**
  * Composable for background image state and operations.
  */
-export function useCustomBackground() {
+export function useCanvasBackground() {
   // 2. Composables & Stores
   const canvasStore = useCanvasStore()
 

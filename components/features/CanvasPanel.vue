@@ -5,10 +5,10 @@ import { computed, nextTick, ref, shallowRef, onMounted, onBeforeUnmount, watch 
 import { Canvas, type FabricImage } from 'fabric'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
-import { useCustomBackground } from '~/composables/useCustomBackground'
+import { useCanvasBackground } from '~/composables/useCanvasBackground'
 import { configureActiveSelectionDefaults } from '@/utils/canvasSetup'
-import { useCustomImage } from '~/composables/useCustomImage'
-import { useCustomText } from '~/composables/useCustomText'
+import { useCanvasImage } from '~/composables/useCanvasImage'
+import { useCanvasText } from '~/composables/useCanvasText'
 import {
   clearCanvasObjects,
   clearCanvas,
@@ -35,9 +35,9 @@ const emit = defineEmits<{
 // ===== COMPOSABLES =====
 const canvasStore = useCanvasStore()
 const { activeSide } = storeToRefs(canvasStore)
-const { loadBackgroundOnCanvas } = useCustomBackground()
-const { addImageToCanvas } = useCustomImage()
-const { addTextToCanvas } = useCustomText()
+const { loadBackgroundOnCanvas } = useCanvasBackground()
+const { addImageToCanvas } = useCanvasImage()
+const { addTextToCanvas } = useCanvasText()
 
 // ===== STATE =====
 /** Reactive array of initialized Fabric Canvas instances, indexed by side number */

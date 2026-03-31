@@ -1,4 +1,4 @@
-// composables/useCustomImage.ts
+// composables/useCanvasImage.ts
 
 import type { Canvas } from 'fabric'
 import { FabricImage, Control, controlsUtils } from 'fabric'
@@ -109,7 +109,7 @@ function readSvgAsDataUrl(file: File): Promise<string> {
 
 
 
-export function useCustomImage() {
+export function useCanvasImage() {
   /**
    * Apply custom controls and appearance to a FabricImage.
    * Called both when first adding and when restoring from JSON.
