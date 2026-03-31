@@ -335,7 +335,7 @@
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/advertisement/poster.png"
+              "src": "/images/custom-design/advertisement/poster.jpg"
             }
           ]
         },
@@ -344,11 +344,11 @@
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/advertisement/banderoll.png"
+              "src": "/images/custom-design/advertisement/banderoll-front.jpg"
             },
             {
               "label": "Bak",
-              "src": "/images/custom-design/advertisement/banderoll-back.png"
+              "src": "/images/custom-design/advertisement/banderoll-back.jpg"
             }
           ]
         },
@@ -357,11 +357,11 @@
           "sides": [
             {
               "label": "Vänster",
-              "src": "/images/custom-design/advertisement/sign-left.png"
+              "src": "/images/custom-design/advertisement/sign-left.jpg"
             },
             {
               "label": "Höger",
-              "src": "/images/custom-design/advertisement/sign-right.png"
+              "src": "/images/custom-design/advertisement/sign-right.jpg"
             }
           ]
         },
@@ -370,11 +370,11 @@
           "sides": [
             {
               "label": "Vänster",
-              "src": "/images/custom-design/advertisement/beach-flag-left.png"
+              "src": "/images/custom-design/advertisement/beach-flag-left.jpg"
             },
             {
               "label": "Höger",
-              "src": "/images/custom-design/advertisement/beach-flag-right.png"
+              "src": "/images/custom-design/advertisement/beach-flag-right.jpg"
             }
           ]
         },
@@ -383,11 +383,11 @@
           "sides": [
             {
               "label": "Vänster",
-              "src": "/images/custom-design/advertisement/kiosk-flag-left.png"
+              "src": "/images/custom-design/advertisement/kiosk-flag-left.jpg"
             },
             {
               "label": "Höger",
-              "src": "/images/custom-design/advertisement/kiosk-flag-right.png"
+              "src": "/images/custom-design/advertisement/kiosk-flag-right.jpg"
             }
           ]
         },
@@ -396,11 +396,11 @@
           "sides": [
             {
               "label": "Fram",
-              "src": "/images/custom-design/advertisement/roll-up-front.png"
+              "src": "/images/custom-design/advertisement/roll-up-front.jpg"
             },
             {
               "label": "Bak",
-              "src": "/images/custom-design/advertisement/roll-up-back.png"
+              "src": "/images/custom-design/advertisement/roll-up-back.jpg"
             }
           ]
         }
