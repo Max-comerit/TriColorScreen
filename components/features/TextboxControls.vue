@@ -204,7 +204,7 @@ async function updateFontFamily() {
 
 function toggleBold() {
   isBold.value = !isBold.value
-  applyToAll(tb => tb.set('fontWeight', isBold.value ? 'bold' : 'normal'))
+  applyToAll(tb => tb.set('fontWeight', isBold.value ? 700 : 400))
 }
 
 function toggleItalic() {

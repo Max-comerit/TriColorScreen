@@ -101,6 +101,22 @@ function cleanFontFamily(fontFamily: string): string {
   return primary.replace(/['"/]/g, '')
 }
 
+function normalizeFontWeight(fontWeight: number | string): number {
+  if (typeof fontWeight === 'number') {
+    return fontWeight >= 600 ? 700 : 400
+  }
+
+  if (fontWeight === 'bold') return 700
+  if (fontWeight === 'normal') return 400
+
+  const parsed = Number.parseInt(fontWeight, 10)
+  if (Number.isFinite(parsed)) {
+    return parsed >= 600 ? 700 : 400
+  }
+
+  return 400
+}
+
 /**
  * Collect text objects from all active canvases and return a human-readable string.
  * Each entry describes the side label and the text properties on that side.
@@ -123,7 +139,7 @@ function collectCanvasTexts(): string {
       texts: textObjects.map(obj => ({
         text: obj.text ?? '',
         fontFamily: cleanFontFamily(obj.fontFamily ?? ''),
-        fontWeight: obj.fontWeight ?? 400,
+        fontWeight: normalizeFontWeight(obj.fontWeight ?? 400),
         isItalic: obj.fontStyle === 'italic',
         color: (obj.fill as string) ?? '#000000',
       })),
