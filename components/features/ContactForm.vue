@@ -37,6 +37,7 @@ const {
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
+const fileInputRefs = ref<HTMLInputElement[]>([])
 const showSuccessMessage = ref(false)
 const showErrorMessage = ref(false)
 const showGdprDialog = ref(false)
@@ -112,6 +113,22 @@ function removeFile(name: string): void {
 }
 
 /**
+ * Sync selected files into the hidden named file inputs via DataTransfer
+ * so Netlify’s form crawler (which reads the pre-rendered DOM) correctly
+ * registers and processes each file field.
+ */
+function syncFilesToInputs(): void {
+  const files = formData.value.image ?? []
+  fileInputRefs.value.forEach((input, index) => {
+    if (!input) return
+    const dt = new DataTransfer()
+    const file = files[index]
+    if (file) dt.items.add(file)
+    input.files = dt.files
+  })
+}
+
+/**
  * Open GDPR information dialog
  */
 function openGdprDialog(): void {
@@ -124,7 +141,9 @@ function openGdprDialog(): void {
 async function handleSubmit(): Promise<void> {
   // Delay validation TAP_ANIMATION_TIME ms to allow tap animation to complete
   await new Promise(resolve => setTimeout(resolve, TAP_ANIMATION_TIME))
-  
+
+  syncFilesToInputs()
+
   const success = await submitForm()
   
   if (success) {
@@ -377,11 +396,11 @@ watch(isChanged, (newValue) => {
         >
           Ladda upp bilder <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 7MB per fil)</span>
         </label>
+        <!-- UI trigger input — no name, never submitted directly -->
         <input
           id="contact-image"
           ref="fileInputRef"
           type="file"
-          name="image"
           accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml"
           autocomplete="off"
           multiple
@@ -392,6 +411,19 @@ watch(isChanged, (newValue) => {
           :disabled="isSubmitting"
           @change="handleFileChange"
         >
+        <!-- Hidden named inputs — registered by Netlify’s SSG crawler -->
+        <div aria-hidden="true" class="sr-only">
+          <input :ref="el => fileInputRefs[0] = el as HTMLInputElement" type="file" name="image_1" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml" tabindex="-1" aria-hidden="true">
+          <input :ref="el => fileInputRefs[1] = el as HTMLInputElement" type="file" name="image_2" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml" tabindex="-1" aria-hidden="true">
+          <input :ref="el => fileInputRefs[2] = el as HTMLInputElement" type="file" name="image_3" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml" tabindex="-1" aria-hidden="true">
+          <input :ref="el => fileInputRefs[3] = el as HTMLInputElement" type="file" name="image_4" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml" tabindex="-1" aria-hidden="true">
+          <input :ref="el => fileInputRefs[4] = el as HTMLInputElement" type="file" name="image_5" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml" tabindex="-1" aria-hidden="true">
+          <input :ref="el => fileInputRefs[5] = el as HTMLInputElement" type="file" name="image_6" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml" tabindex="-1" aria-hidden="true">
+          <input :ref="el => fileInputRefs[6] = el as HTMLInputElement" type="file" name="image_7" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml" tabindex="-1" aria-hidden="true">
+          <input :ref="el => fileInputRefs[7] = el as HTMLInputElement" type="file" name="image_8" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml" tabindex="-1" aria-hidden="true">
+          <input :ref="el => fileInputRefs[8] = el as HTMLInputElement" type="file" name="image_9" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml" tabindex="-1" aria-hidden="true">
+          <input :ref="el => fileInputRefs[9] = el as HTMLInputElement" type="file" name="image_10" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml" tabindex="-1" aria-hidden="true">
+        </div>
         <button
           type="button"
           class="w-full px-4 py-2.5 text-base form-button-base outline-tight-button disabled:opacity-50 disabled:cursor-not-allowed text-left bg-white flex items-start justify-between"
