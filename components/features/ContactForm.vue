@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, markRaw, ref, toRaw, watch } from 'vue'
 import { useContactForm } from '~/composables/useContactForm'
 import type { ContactFormData } from '~/composables/useContactForm'
 import TextButton from '~/components/common/TextButton.vue'
@@ -77,7 +77,10 @@ function handleInput(field: keyof ContactFormData): void {
  */
 function handleFileChange(event: Event): void {
   const target = event.target as HTMLInputElement
-  const incoming = target.files ? Array.from(target.files) : []
+  // markRaw prevents Vue from wrapping File objects in a Proxy.
+  // FormData.append() and DataTransfer.items.add() use internal-slot brand
+  // checks that fail on Proxy-wrapped Blob/File objects.
+  const incoming = target.files ? Array.from(target.files).map(f => markRaw(f)) : []
   // Reset input value so the same file can be re-added after removal
   target.value = ''
 
@@ -123,7 +126,7 @@ function syncFilesToInputs(): void {
     if (!input) return
     const dt = new DataTransfer()
     const file = files[index]
-    if (file) dt.items.add(file)
+    if (file) dt.items.add(toRaw(file))
     input.files = dt.files
   })
 }
@@ -180,7 +183,7 @@ watch(isChanged, (newValue) => {
 <template>
   <!-- ✅ Visible form -->
   <form 
-    name="contact"
+    name="contact-v2"
     method="POST"
     action="/"
     data-netlify="true"
@@ -195,7 +198,7 @@ watch(isChanged, (newValue) => {
     <h3 class="sr-only">Kontaktformulär</h3>
 
     <!-- Hidden fields for Netlify -->
-    <input type="hidden" name="form-name" value="contact">
+    <input type="hidden" name="form-name" value="contact-v2">
     <p class="sr-only">
       <label>
         Don't fill this out if you're human: 

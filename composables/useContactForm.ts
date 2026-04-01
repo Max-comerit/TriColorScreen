@@ -218,7 +218,7 @@ export function useContactForm() {
 
       // Prepare form data for Netlify submission
       const formDataToSubmit = new FormData()
-      formDataToSubmit.append('form-name', 'contact')
+      formDataToSubmit.append('form-name', 'contact-v2')
       formDataToSubmit.append('name', formData.value.name)
       formDataToSubmit.append('email', formData.value.email)
       if (formData.value.phone) {
@@ -230,7 +230,9 @@ export function useContactForm() {
         formDataToSubmit.append('message', formData.value.message)
       }
       if (formData.value.image) {
-        formData.value.image.forEach((file, index) => formDataToSubmit.append(`image_${index + 1}`, file))
+        // toRaw unwraps Vue's reactive Proxy — FormData.append uses internal-slot
+        // brand checks that fail on Proxy-wrapped File/Blob objects.
+        formData.value.image.forEach((file, index) => formDataToSubmit.append(`image_${index + 1}`, toRaw(file)))
       }
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
       formDataToSubmit.append('bot-field', '') // Honeypot field for spam protection
