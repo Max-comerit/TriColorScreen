@@ -4,7 +4,7 @@
  * This module provides functions to manipulate the z-order of Fabric objects and to set a circular text path for Textbox objects based on a specified radius. The circular path is created using SVG path syntax and is centered at the origin. The module also includes a function to check if the radius value is within a valid range for creating a circular path.
  */
 import type { FabricObject, Canvas } from 'fabric'
-import type { CircularTextbox } from './circularTextbox'
+import type { CircularTextbox } from './canvasCircularTextbox'
 import { Path, Point } from 'fabric'
 
 // Valid range for text radius to create a circular path

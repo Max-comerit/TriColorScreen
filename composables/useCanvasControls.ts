@@ -2,7 +2,7 @@
 
 import { FabricImage, Textbox } from 'fabric'
 import type { Canvas, FabricObject } from 'fabric'
-import { CircularTextbox } from '~/utils/circularTextbox'
+import { CircularTextbox } from '~/utils/canvasCircularTextbox'
 import { setTextboxTextRadius } from '~/utils/canvasUtils'
 import { useCanvasImage, attachSvgDataUrl } from '~/composables/useCanvasImage'
 import { useCanvasText } from '~/composables/useCanvasText'
