@@ -7,7 +7,7 @@ import {
   createRotateControlRender,
   createTrashControlRender,
   createBringToFrontControlRender,
-} from '@/utils/customControlRenders'
+} from '~/utils/canvasControlRenders'
 import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
 import { toggleObjectZOrder } from '~/utils/canvasUtils'
 
