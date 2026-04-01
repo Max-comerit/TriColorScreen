@@ -69,7 +69,7 @@ onMounted(() => {
         }
       })
     },
-    { rootMargin: '1000px' } // Start rendering way before it's visible
+    { rootMargin: '1000px' } // Start rendering way before it's visible so it's ready when user scrolls to it
   )
 
   intersectionObserver.observe(designSectionRef.value)
