@@ -3,15 +3,16 @@
 <script setup lang="ts">
 // 1. Imports
 import type { Canvas } from 'fabric'
-import { ref } from 'vue'
+import { ref, defineAsyncComponent } from 'vue'
 import { useCanvasStore } from '~/stores/canvasStore'
-import CanvasPanel from '~/components/features/CanvasPanel.vue'
 import ImageIcon from '~/assets/images/custom-design/image-icon.svg?component'
 import TextIcon from '~/assets/images/custom-design/text-icon.svg?component'
 import BackgroundSelector from '~/components/features/BackgroundSelector.vue'
 import TextboxControls from '~/components/features/TextboxControls.vue'
 import IconButton from '~/components/common/IconButton.vue'
 import IconTextButton from '~/components/common/IconTextButton.vue'
+// Lazy-load CanvasPanel to defer Fabric.js initialization until canvas is actually needed
+const CanvasPanel = defineAsyncComponent(() => import('~/components/features/CanvasPanel.vue'))
 
 // Dynamically import fonts to avoid blocking the main thread
 if (import.meta.client) {
@@ -29,6 +30,8 @@ const fileInputRef = ref<HTMLInputElement | null>(null)
 const image = ref<File | undefined>()
 const textCnt = ref<number>(0) // Incrementing number to trigger reactivity in CanvasCore when adding text
 const activeCanvas = ref<Canvas | null>(null)
+// Defer canvas initialization until first user interaction to reduce main-thread work
+const isCanvasInitialized = ref(false)
 
 // 5. Computed
 // (none)
@@ -37,8 +40,10 @@ const activeCanvas = ref<Canvas | null>(null)
 
 /**
  * Trigger the hidden file input to open the file dialog for image selection.
+ * Initializes canvas on first interaction.
  */
 function uploadImage(): void {
+  isCanvasInitialized.value = true
   fileInputRef.value?.click()
 }
 
@@ -63,6 +68,7 @@ async function handleImageSelected(event: Event): Promise<void> {
 }
 
 function addText(): void {
+  isCanvasInitialized.value = true
   textCnt.value++
 }
 
@@ -98,12 +104,26 @@ function handleChangedActiveCanvas(canvas: Canvas | null): void {
     <div class="designer grid grid-cols-1 sm:grid-cols-[1fr_minmax(350px,800px)_1fr] gap-4 items-start">
       <!-- Placeholder element to center canvas horizontally (must have same width as IconButton elements) -->
       <div class="hidden sm:block md:w-[48px]" />
-      <CanvasPanel
-        :image="image"
-        :text-cnt="textCnt"
-        @changed:canvas-map="handleChangedCanvasMap"
-        @changed:active-canvas="handleChangedActiveCanvas"
-      />
+      
+      <!-- Canvas: Lazy-loaded on first user interaction to defer Fabric.js initialization -->
+      <Suspense>
+        <template #default>
+          <CanvasPanel
+            v-if="isCanvasInitialized"
+            :image="image"
+            :text-cnt="textCnt"
+            @changed:canvas-map="handleChangedCanvasMap"
+            @changed:active-canvas="handleChangedActiveCanvas"
+          />
+        </template>
+        <template #fallback>
+          <div class="aspect-video bg-neutral-200 rounded-card flex items-center justify-center">
+            <div class="text-center">
+              <p class="text-neutral-600 text-sm">Laddar editor...</p>
+            </div>
+          </div>
+        </template>
+      </Suspense>
       <div class="flex flex-row sm:flex-col justify-center gap-3">
         <div class="xl:hidden">
           <IconButton
