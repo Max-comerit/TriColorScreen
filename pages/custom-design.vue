@@ -62,7 +62,11 @@ onMounted(() => {
       entries.forEach((entry) => {
         // Once visible, keep it visible (don't unload when user scrolls away)
         if (entry.isIntersecting && !isDesignSectionVisible.value) {
-          isDesignSectionVisible.value = true
+          // Add a small delay to ensure Suspense fallback shows
+          // (even if modules are preloaded, users get visual feedback)
+          setTimeout(() => {
+            isDesignSectionVisible.value = true
+          }, 100)
           // Disconnect observer once section is loaded
           intersectionObserver?.disconnect()
         }
@@ -72,6 +76,20 @@ onMounted(() => {
   )
 
   intersectionObserver.observe(designSectionRef.value)
+
+  // Preload DesignPanel + QuoteForm after initial page load to avoid scroll stall
+  const preloadModules = () => {
+    import('~/components/features/DesignPanel.vue').catch(() => {}) // Silently fail if already loading
+    import('~/components/features/QuoteForm.vue').catch(() => {})
+  }
+
+  if (document.readyState === 'complete') {
+    // Page already fully loaded
+    preloadModules()
+  } else {
+    // Wait for page load event
+    window.addEventListener('load', preloadModules, { once: true })
+  }
 })
 
 onBeforeUnmount(() => {
