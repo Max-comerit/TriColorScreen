@@ -21,6 +21,7 @@ export const useQuoteFormStore = defineStore('quoteForm', () => {
     size: '',
     productCount: undefined as unknown as number,
     images: [],
+    canvasTexts: '',
     message: '',
     gdprConsent: false,
   })
@@ -67,6 +68,7 @@ export const useQuoteFormStore = defineStore('quoteForm', () => {
       size: '',
       productCount: undefined as unknown as number,
       images: [],
+      canvasTexts: '',
       message: '',
       gdprConsent: false,
     }

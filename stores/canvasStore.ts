@@ -65,6 +65,8 @@ export const useCanvasStore = defineStore('canvas', {
     clearSeq: 0 as number,
     /** Incremented each time clearObjects() is called; watchers use this to remove only user-added live canvas objects */
     clearObjectsSeq: 0 as number,
+    /** Incremented each time TextboxControls programmatically modifies a textbox property */
+    textControlsSeq: 0 as number,
   }),
   getters: {
     /** Ordered list of active side indices derived from sideCount */
@@ -154,6 +156,10 @@ export const useCanvasStore = defineStore('canvas', {
     },
     setAspectRatio(ratio: string) {
       this.aspectRatio = ratio
+    },
+    /** Notify watchers that TextboxControls programmatically changed a textbox property */
+    notifyTextControlsChanged() {
+      this.textControlsSeq++
     },
   },
 })

@@ -5,6 +5,7 @@
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import type { Canvas } from 'fabric'
+import { Textbox } from 'fabric'
 import type { QuoteFormData } from '~/composables/useQuoteForm'
 import { useQuoteForm, MAX_IMAGE_COUNT } from '~/composables/useQuoteForm'
 import TextButton from '~/components/common/TextButton.vue'
@@ -12,6 +13,7 @@ import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
 import { useCanvasExport } from '~/composables/useCanvasExport'
 import { TAP_ANIMATION_TIME } from '~/constants/ui'
+import type { SideTextInfo } from '~/types/CanvasText'
 
 // ===== ASYNC COMPONENTS =====
 const GdprDialog = defineAsyncComponent(() =>
@@ -29,7 +31,7 @@ const emit = defineEmits<{
 
 // ===== COMPOSABLES & STORES =====
 const canvasStore = useCanvasStore()
-const { canvasMap, productCategoryTree, activeCategory, activeProduct } = storeToRefs(canvasStore)
+const { canvasMap, productCategoryTree, activeCategory, activeProduct, textControlsSeq } = storeToRefs(canvasStore)
 const { exportMergedImage, exportImageObjects } = useCanvasExport()
 const {
   formData,
@@ -88,6 +90,72 @@ function detachCanvasListeners(canvas: Canvas): void {
     canvas.off('object:modified', onCanvasChange);
     canvasesWithListeners.delete(canvas)
   }
+}
+
+/**
+ * Clean a CSS font-family string to just the primary font name.
+ * E.g. "'Inter', sans-serif" → "Inter"
+ */
+function cleanFontFamily(fontFamily: string): string {
+  const primary = fontFamily.split(',')[0].trim()
+  return primary.replace(/['"/]/g, '')
+}
+
+function normalizeFontWeight(fontWeight: number | string): number {
+  if (typeof fontWeight === 'number') {
+    return fontWeight >= 600 ? 700 : 400
+  }
+
+  if (fontWeight === 'bold') return 700
+  if (fontWeight === 'normal') return 400
+
+  const parsed = Number.parseInt(fontWeight, 10)
+  if (Number.isFinite(parsed)) {
+    return parsed >= 600 ? 700 : 400
+  }
+
+  return 400
+}
+
+/**
+ * Collect text objects from all active canvases and return a human-readable string.
+ * Each entry describes the side label and the text properties on that side.
+ */
+function collectCanvasTexts(): string {
+  const result: SideTextInfo[] = []
+
+  canvasMap.value.forEach((canvas, index) => {
+    if (!canvas) return
+
+    const textObjects = canvas.getObjects().filter(
+      (obj): obj is Textbox => obj instanceof Textbox
+    )
+
+    if (textObjects.length === 0) return
+
+    const sideLabel = activeSideLabels.value[index]?.label ?? `Sida ${index + 1}`
+    result.push({
+      side: sideLabel,
+      texts: textObjects.map(obj => ({
+        text: obj.text ?? '',
+        fontFamily: cleanFontFamily(obj.fontFamily ?? ''),
+        fontWeight: normalizeFontWeight(obj.fontWeight ?? 400),
+        isItalic: obj.fontStyle === 'italic',
+        color: (obj.fill as string) ?? '#000000',
+      })),
+    })
+  })
+
+  if (result.length === 0) return ''
+
+  return result
+    .map(side => [
+      `[ ${side.side} ]`,
+      ...side.texts.map((t, i) =>
+        `Text ${i + 1}: "${t.text}" | Typsnitt: ${t.fontFamily} ${t.fontWeight}${t.isItalic ? ' italic' : ''} | Färg: ${t.color}`
+      ),
+    ].join('\n'))
+    .join('\n\n')
 }
 
 /**
@@ -183,6 +251,8 @@ async function collectCanvasImages(): Promise<void> {
     isCollectingImages.value = true
     // Collect current canvas images and populate formData before user submits
     formData.value.images = await collectQuoteFiles()
+    // Collect text objects from all canvases
+    formData.value.canvasTexts = collectCanvasTexts()
     // Sync each image to its corresponding hidden file input for Netlify submission
     formData.value.images?.forEach((file, index) => {
       const ref = fileInputRefs.value[index]
@@ -258,7 +328,11 @@ function openGdprDialog(): void {
 async function handleSubmit(): Promise<void> {
   // Delay validation TAP_ANIMATION_TIME ms to allow tap animation to complete
   await new Promise(resolve => setTimeout(resolve, TAP_ANIMATION_TIME))
-  
+
+  // Re-collect texts fresh at submit time so programmatic changes via the
+  // controls panel (which fire no canvas events) are always included
+  formData.value.canvasTexts = collectCanvasTexts()
+
   const success = await submitForm()
 
   if (success) {
@@ -306,6 +380,14 @@ watch(activeProductLabel, (label) => {
  */
 watch(isChanged, (newValue) => {
   emit('changed', newValue)
+})
+
+/**
+ * Re-collect canvas texts when TextboxControls programmatically changes a textbox
+ * property (font, bold, italic, color, etc.) — these don't fire canvas events.
+ */
+watch(textControlsSeq, () => {
+  formData.value.canvasTexts = collectCanvasTexts()
 })
 
 /**
@@ -941,6 +1023,25 @@ watch(canvasMap, async (newCanvases) => {
             class="flex items-center gap-2"
           >
             {{ image.name }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Display canvas texts to user -->
+      <input type="hidden" name="texter" :value="formData.canvasTexts">
+      <div v-if="formData.canvasTexts" aria-live="polite">
+        <p class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5">
+          Tillagda texter
+        </p>
+        <ul
+          class="w-full px-4 py-2.5 text-sm border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
+          aria-label="Texter som biläggs formuläret"
+        >
+          <li
+            v-for="line in formData.canvasTexts.split('\n')"
+            :key="line"
+          >
+            {{ line }}
           </li>
         </ul>
       </div>
