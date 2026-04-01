@@ -14,6 +14,9 @@ import { useContactFormStore } from '~/stores/contactFormStore'
 /** Maximum file size: 7MB */
 const MAX_FILE_SIZE = 7 * 1024 * 1024
 
+/** Maximum number of images allowed */
+export const MAX_IMAGE_COUNT = 10
+
 /** Allowed image MIME types */
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
 
@@ -227,7 +230,7 @@ export function useContactForm() {
         formDataToSubmit.append('message', formData.value.message)
       }
       if (formData.value.image) {
-        formData.value.image.forEach(file => formDataToSubmit.append('image', file))
+        formData.value.image.forEach((file, index) => formDataToSubmit.append(`image_${index + 1}`, file))
       }
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
       formDataToSubmit.append('bot-field', '') // Honeypot field for spam protection
