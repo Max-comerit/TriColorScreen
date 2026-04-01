@@ -67,7 +67,7 @@ const emit = defineEmits<{
           <li>Telefonnummer (om angivet)</li>
           <li>Kundtyp (privatperson eller företag)</li>
           <li>Ämne</li>
-          <li>Eventuell bifogade bilder</li>
+          <li>Eventuellt bifogade bilder</li>
           <li>Meddelande (om angivet)</li>
           <li>GDPR samtycke</li>
         </ul>
