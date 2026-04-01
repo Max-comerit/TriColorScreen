@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useSiteUrl } from '~/composables/useSiteUrl'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
@@ -46,9 +46,38 @@ useHead({
   ],
 })
 
-
 // ===== STATE =====
-// (none — canvas state is managed by CanvasPanel)
+// Track when user scrolls to the design section
+const designSectionRef = ref<HTMLElement | null>(null)
+const isDesignSectionVisible = ref(false)
+let intersectionObserver: IntersectionObserver | null = null
+
+// ===== LIFECYCLE HOOKS =====
+onMounted(() => {
+  if (!designSectionRef.value) return
+
+  // Use IntersectionObserver to detect when design section comes into view
+  intersectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        // Once visible, keep it visible (don't unload when user scrolls away)
+        if (entry.isIntersecting && !isDesignSectionVisible.value) {
+          isDesignSectionVisible.value = true
+          // Disconnect observer once section is loaded
+          intersectionObserver?.disconnect()
+        }
+      })
+    },
+    { threshold: 0.1 } // Trigger when 10% of section is visible
+  )
+
+  intersectionObserver.observe(designSectionRef.value)
+})
+
+onBeforeUnmount(() => {
+  intersectionObserver?.disconnect()
+})
+
 
 </script>
 
@@ -110,18 +139,33 @@ useHead({
 
       <!-- Design Tool -->
       <Section
+        ref="designSectionRef"
         id="services"
         align="center"
         aria-label="Design Verktyg"
       >
-        <DesignPanel />
-        <!-- Offertformulär -->
-        <div
-          class="mt-10 flex justify-center"
-          aria-label="Offertformulär"
-        >
-          <QuoteForm />
-        </div>
+        <Suspense>
+          <template #default>
+            <template v-if="isDesignSectionVisible">
+              <DesignPanel />
+              <!-- Offertformulär -->
+              <div
+                class="mt-10 flex justify-center"
+                aria-label="Offertformulär"
+              >
+                <QuoteForm />
+              </div>
+            </template>
+          </template>
+          <template #fallback>
+            <div class="space-y-8">
+              <div class="aspect-video bg-neutral-200 rounded-card flex items-center justify-center">
+                <p class="text-neutral-600 text-sm">Laddar designverktyg...</p>
+              </div>
+              <div class="mx-auto max-w-2xl h-40 bg-neutral-100 rounded-card" />
+            </div>
+          </template>
+        </Suspense>
       </Section>
     </div>
   </div>
