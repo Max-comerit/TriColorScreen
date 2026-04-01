@@ -33,7 +33,6 @@ const selectedTextboxes = shallowRef<Textbox[]>([])
 const fontFamily = ref("'Inter', sans-serif")
 const isBold = ref(false)
 const isItalic = ref(false)
-const textAlign = ref<'left' | 'center' | 'right'>('left')
 const fill = ref('#000000')
 // warpSlider: -100 to 100, where 0 = no warp, ±100 = maximum warp.
 // Positive = text curves upward (left side of arc), negative = downward (right side).
@@ -164,7 +163,6 @@ function syncFromFirst() {
   ensureFontLoaded(fontFamily.value) // Fire and forget
   isBold.value = first.fontWeight === 'bold' || first.fontWeight === 700
   isItalic.value = first.fontStyle === 'italic'
-  textAlign.value = (first.textAlign as 'left' | 'center' | 'right') ?? 'left'
   fill.value = (first.fill as string) ?? '#000000'
   textValue.value = first.text ?? ''
   warpSlider.value = first instanceof CircularTextbox ? radiusToSlider(first.textRadius) : 0
@@ -210,13 +208,6 @@ function toggleBold() {
 function toggleItalic() {
   isItalic.value = !isItalic.value
   applyToAll(tb => tb.set('fontStyle', isItalic.value ? 'italic' : 'normal'))
-}
-
-function cycleAlignment() {
-  const order: Array<'left' | 'center' | 'right'> = ['left', 'center', 'right']
-  const next = order[(order.indexOf(textAlign.value) + 1) % order.length]
-  textAlign.value = next
-  applyToAll(tb => tb.set('textAlign', next))
 }
 
 function updateColor() {
@@ -354,34 +345,6 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
           @click="toggleItalic"
         >
           I
-        </button>
-
-        <!-- Alignment Cycle -->
-        <button
-          type="button"
-          class="min-w-[44px] min-h-[44px] flex items-center justify-center px-3 py-2 border-gray-300 bg-gray-50 cursor-pointer hover:bg-gray-100 form-button-base outline-tight-button"
-          title="Text Alignment"
-          aria-label="Cycle text alignment"
-          @click="cycleAlignment"
-        >
-          <!-- Align Left -->
-          <svg v-if="textAlign === 'left'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="15" y2="12" />
-            <line x1="3" y1="18" x2="18" y2="18" />
-          </svg>
-          <!-- Align Center -->
-          <svg v-else-if="textAlign === 'center'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="6" y1="12" x2="18" y2="12" />
-            <line x1="4" y1="18" x2="20" y2="18" />
-          </svg>
-          <!-- Align Right -->
-          <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="9" y1="12" x2="21" y2="12" />
-            <line x1="6" y1="18" x2="21" y2="18" />
-          </svg>
         </button>
 
         <!-- Color -->
