@@ -1,11 +1,15 @@
 <script setup lang="ts">
-  import MapMarker from '~/assets/images/footer/map-marker.svg'
-  import PhoneIcon from '~/assets/images/footer/phone-icon.svg'
-  import EmailIcon from '~/assets/images/footer/email-icon.svg'
-  import FacebookIcon from '~/assets/images/footer/facebook-icon.svg'
-  import InstagramIcon from '~/assets/images/footer/instagram-icon.svg'
-  import LinkedInIcon from '~/assets/images/footer/linkedin-icon.svg'
-  import TikTokIcon from '~/assets/images/footer/tiktok-icon.svg'
+  import { defineAsyncComponent } from 'vue'
+
+  // Lazy-load SVG components so they bundle with this async footer component,
+  // not with the main entry.js bundle. vite-svg-loader converts SVGs to Vue components.
+  const MapMarkerIcon = defineAsyncComponent(() => import('~/assets/images/footer/map-marker.svg'))
+  const EmailIcon = defineAsyncComponent(() => import('~/assets/images/footer/email-icon.svg'))
+  const PhoneIcon = defineAsyncComponent(() => import('~/assets/images/footer/phone-icon.svg'))
+  const LinkedInIcon = defineAsyncComponent(() => import('~/assets/images/footer/linkedin-icon.svg'))
+  const FacebookIcon = defineAsyncComponent(() => import('~/assets/images/footer/facebook-icon.svg'))
+  const InstagramIcon = defineAsyncComponent(() => import('~/assets/images/footer/instagram-icon.svg'))
+  const TikTokIcon = defineAsyncComponent(() => import('~/assets/images/footer/tiktok-icon.svg'))
 </script>
 
 <template>
@@ -15,7 +19,7 @@
         <h2 class="text-lg my-2 mb-4 text-inherit font-semibold pl-1">Kontakt Info</h2>
         <ul class="space-y-1 text-white">
           <li class="flex items-center">
-            <MapMarker class="w-6 h-6 text-accent-400 mr-2" aria-hidden="true" />
+            <MapMarkerIcon class="w-6 h-6 text-accent-400 mr-2" aria-hidden="true" />
             <address>Öregrundsgatan 24, 115 59 Stockholm</address>
           </li>
           <li class="flex items-center">
