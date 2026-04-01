@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, markRaw, ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import type { Canvas } from 'fabric'
 import { Textbox } from 'fabric'
@@ -51,7 +51,6 @@ const {
 const showSuccessMessage = ref(false)
 const showErrorMessage = ref(false)
 const showGdprDialog = ref(false)
-const fileInputRefs = ref<HTMLInputElement[]>([])
 const canvasesWithListeners = new Set<Canvas>()
 const isCollectingImages = ref(false)
 const pendingCanvasChange = ref(false)
@@ -250,18 +249,11 @@ async function collectCanvasImages(): Promise<void> {
   try {
     isCollectingImages.value = true
     // Collect current canvas images and populate formData before user submits
-    formData.value.images = await collectQuoteFiles()
+    // markRaw prevents Vue from wrapping File objects in a Proxy.
+    // FormData.append() uses internal-slot brand checks that fail on Proxy-wrapped File/Blob objects.
+    formData.value.images = (await collectQuoteFiles()).map(f => markRaw(f))
     // Collect text objects from all canvases
     formData.value.canvasTexts = collectCanvasTexts()
-    // Sync each image to its corresponding hidden file input for Netlify submission
-    formData.value.images?.forEach((file, index) => {
-      const ref = fileInputRefs.value[index]
-      if (ref) {
-        const dt = new DataTransfer()
-        if (file) dt.items.add(file)
-        ref.files = dt.files
-      }
-    })
   }
   catch (error) {
     console.error('Error collecting canvas images:', error)
@@ -748,264 +740,24 @@ watch(canvasMap, async (newCanvases) => {
       </div>
 
       <!-- ── Attached design images (hidden / prop-filled) ───── -->
+      <!-- Hidden file inputs for Netlify SSG crawler registration, one per image slot -->
       <div aria-hidden="true" class="sr-only">
-        <!-- Hidden file inputs for Netlify submission, one per image slot -->
-          <label
-            for="quote-image-1"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 1
-          </label>
-          <input
-            id="quote-image-1"
-            :ref="el => fileInputRefs[0] = el as HTMLInputElement"
-            type="file"
-            name="image_1"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-2"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 2
-          </label>
-          <input
-            id="quote-image-2"
-            :ref="el => fileInputRefs[1] = el as HTMLInputElement"
-            type="file"
-            name="image_2"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-3"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 3
-          </label>
-          <input
-            id="quote-image-3"
-            :ref="el => fileInputRefs[2] = el as HTMLInputElement"
-            type="file"
-            name="image_3"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-4"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 4
-          </label>
-          <input
-            id="quote-image-4"
-            :ref="el => fileInputRefs[3] = el as HTMLInputElement"
-            type="file"
-            name="image_4"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-5"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 5
-          </label>
-          <input
-            id="quote-image-5"
-            :ref="el => fileInputRefs[4] = el as HTMLInputElement"
-            type="file"
-            name="image_5"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-6"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 6
-          </label>
-          <input
-            id="quote-image-6"
-            :ref="el => fileInputRefs[5] = el as HTMLInputElement"
-            type="file"
-            name="image_6"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-7"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 7
-          </label>
-          <input
-            id="quote-image-7"
-            :ref="el => fileInputRefs[6] = el as HTMLInputElement"
-            type="file"
-            name="image_7"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-8"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 8
-          </label>
-          <input
-            id="quote-image-8"
-            :ref="el => fileInputRefs[7] = el as HTMLInputElement"
-            type="file"
-            name="image_8"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-9"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 9
-          </label>
-          <input
-            id="quote-image-9"
-            :ref="el => fileInputRefs[8] = el as HTMLInputElement"
-            type="file"
-            name="image_9"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-10"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 10
-          </label>
-          <input
-            id="quote-image-10"
-            :ref="el => fileInputRefs[9] = el as HTMLInputElement"
-            type="file"
-            name="image_10"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-11"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 11
-          </label>
-          <input
-            id="quote-image-11"
-            :ref="el => fileInputRefs[10] = el as HTMLInputElement"
-            type="file"
-            name="image_11"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-12"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 12
-          </label>
-          <input
-            id="quote-image-12"
-            :ref="el => fileInputRefs[11] = el as HTMLInputElement"
-            type="file"
-            name="image_12"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-13"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 13
-          </label>
-          <input
-            id="quote-image-13"
-            :ref="el => fileInputRefs[12] = el as HTMLInputElement"
-            type="file"
-            name="image_13"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-14"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 14
-          </label>
-          <input
-            id="quote-image-14"
-            :ref="el => fileInputRefs[13] = el as HTMLInputElement"
-            type="file"
-            name="image_14"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-15"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 15
-          </label>
-          <input
-            id="quote-image-15"
-            :ref="el => fileInputRefs[14] = el as HTMLInputElement"
-            type="file"
-            name="image_15"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-16"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 16
-          </label>
-          <input
-            id="quote-image-16"
-            :ref="el => fileInputRefs[15] = el as HTMLInputElement"
-            type="file"
-            name="image_16"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
+        <input type="file" name="image_1" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_2" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_3" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_4" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_5" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_6" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_7" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_8" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_9" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_10" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_11" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_12" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_13" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_14" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_15" tabindex="-1" aria-hidden="true">
+        <input type="file" name="image_16" tabindex="-1" aria-hidden="true">
       </div>
 
       <!-- Display attached files to user (optional) -->

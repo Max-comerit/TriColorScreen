@@ -8,6 +8,7 @@
  */
 
 import { z } from 'zod'
+import { toRaw } from 'vue'
 import { useQuoteFormStore } from '~/stores/quoteFormStore'
 
 // ===== CONSTANTS =====
@@ -276,7 +277,9 @@ export function useQuoteForm() {
       }
       formDataToSubmit.append('product_count', String(formData.value.productCount))
       formData.value.images?.forEach((file, index) => {
-        formDataToSubmit.append(`image_${index + 1}`, file)
+        // toRaw unwraps Vue's reactive Proxy — FormData.append uses internal-slot
+        // brand checks that fail on Proxy-wrapped File/Blob objects.
+        formDataToSubmit.append(`image_${index + 1}`, toRaw(file))
       })
       if (formData.value.message) {
         formDataToSubmit.append('message', formData.value.message)
