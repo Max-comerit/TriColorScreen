@@ -56,6 +56,7 @@ const emit = defineEmits<{
           <li>Produkt ID och storlek (om angivet)</li>
           <li>Antal</li>
           <li>Tillagda design bilder</li>
+          <li>Tillagda design texter</li>
           <li>Meddelande (om angivet)</li>
           <li>GDPR samtycke</li>
         </ul>
@@ -66,7 +67,7 @@ const emit = defineEmits<{
           <li>Telefonnummer (om angivet)</li>
           <li>Kundtyp (privatperson eller företag)</li>
           <li>Ämne</li>
-          <li>Eventuell bifogad bild</li>
+          <li>Eventuell bifogade bilder</li>
           <li>Meddelande (om angivet)</li>
           <li>GDPR samtycke</li>
         </ul>
