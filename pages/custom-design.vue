@@ -6,6 +6,7 @@ import { defineAsyncComponent, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useSiteUrl } from '~/composables/useSiteUrl'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
+import LoadingSpinner from '~/components/common/LoadingSpinner.vue'
 
 // Lazy-load DesignPanel so Fabric.js is kept out of the shared synchronous bundle
 const DesignPanel = defineAsyncComponent(() => import('~/components/features/DesignPanel.vue'))
@@ -62,33 +63,28 @@ onMounted(() => {
       entries.forEach((entry) => {
         // Once visible, keep it visible (don't unload when user scrolls away)
         if (entry.isIntersecting && !isDesignSectionVisible.value) {
-          // Add a small delay to ensure Suspense fallback shows
-          // (even if modules are preloaded, users get visual feedback)
-          setTimeout(() => {
-            isDesignSectionVisible.value = true
-          }, 100)
+          isDesignSectionVisible.value = true
           // Disconnect observer once section is loaded
           intersectionObserver?.disconnect()
         }
       })
     },
-    { threshold: 0.1 } // Trigger when 10% of section is visible
+    { rootMargin: '1000px' } // Start rendering way before it's visible
   )
 
   intersectionObserver.observe(designSectionRef.value)
 
-  // Preload DesignPanel + QuoteForm after initial page load to avoid scroll stall
-  const preloadModules = () => {
+  // Load DesignPanel after initial page load to avoid scroll stall
+  const loadModules = () => {
     import('~/components/features/DesignPanel.vue').catch(() => {}) // Silently fail if already loading
-    import('~/components/features/QuoteForm.vue').catch(() => {})
   }
 
   if (document.readyState === 'complete') {
     // Page already fully loaded
-    preloadModules()
+    loadModules()
   } else {
-    // Wait for page load event
-    window.addEventListener('load', preloadModules, { once: true })
+    // Load DesignPanel after the initial page load event
+    window.addEventListener('load', loadModules, { once: true })
   }
 })
 
@@ -162,28 +158,22 @@ onBeforeUnmount(() => {
         aria-label="Design Verktyg"
       >
         <div ref="designSectionRef">
-          <Suspense>
-            <template #default>
-              <template v-if="isDesignSectionVisible">
-                <DesignPanel />
-                <!-- Offertformulär -->
-                <div
-                  class="mt-10 flex justify-center"
-                  aria-label="Offertformulär"
-                >
-                  <QuoteForm />
-                </div>
-              </template>
-            </template>
-            <template #fallback>
-              <div class="space-y-8">
-                <div class="aspect-video bg-neutral-200 rounded-card flex items-center justify-center">
-                  <p class="text-neutral-600 text-sm">Laddar designverktyg...</p>
-                </div>
-                <div class="mx-auto max-w-2xl h-40 bg-neutral-100 rounded-card" />
-              </div>
-            </template>
-          </Suspense>
+          <template v-if="isDesignSectionVisible">
+            <DesignPanel />
+          </template>
+          <template v-else>
+            <div class="space-y-8 flex flex-col items-center justify-center py-12">
+              <LoadingSpinner type="page" />
+              <p class="text-neutral-600 text-sm mt-4">Laddar designverktyg...</p>
+            </div>
+          </template>
+        </div>
+        <!-- Offertformulär -->
+        <div
+          class="mt-10 flex justify-center"
+          aria-label="Offertformulär"
+        >
+          <QuoteForm />
         </div>
       </Section>
     </div>
