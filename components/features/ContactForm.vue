@@ -43,9 +43,18 @@ const showGdprDialog = ref(false)
 
 // ===== COMPUTED =====
 /**
- * Display label for file input showing filename or default text
+ * Display label for file input (used for ARIA and empty-state checks)
  */
-const fileInputLabel = computed(() => formData.value.image?.name ?? 'Ingen fil vald')
+const fileInputLabel = computed(() => {
+  const files = formData.value.image
+  if (!files || files.length === 0) return 'Ingen fil vald'
+  return files.map(f => f.name).join(', ')
+})
+
+/**
+ * List of selected file names for vertical display
+ */
+const selectedFileNames = computed(() => formData.value.image?.map(f => f.name) ?? [])
 /**
  * Handle input blur event and validate field
  */
@@ -63,22 +72,22 @@ function handleInput(field: keyof ContactFormData): void {
 }
 
 /**
- * Handle file input change
+ * Handle file input change — merge new files into existing selection
  */
 function handleFileChange(event: Event): void {
   const target = event.target as HTMLInputElement
-  const file = target.files?.[0] || null
-  
-  formData.value.image = file
-  // fileInputLabel is computed from formData.image, so label updates automatically
-  
-  // Validate file if selected
-  if (file) {
-    validateField('image')
-  }
-  else {
-    clearFieldError('image')
-  }
+  const incoming = target.files ? Array.from(target.files) : []
+  // Reset input value so the same file can be re-added after removal
+  target.value = ''
+
+  if (incoming.length === 0) return
+
+  const existing = formData.value.image ?? []
+  const existingNames = new Set(existing.map(f => f.name))
+  const merged = [...existing, ...incoming.filter(f => !existingNames.has(f.name))]
+
+  formData.value.image = merged
+  validateField('image')
 }
 
 /**
@@ -89,14 +98,17 @@ function triggerFileInput(): void {
 }
 
 /**
- * Clear selected file
+ * Remove a single file by name
  */
-function handleClearFile(): void {
-  if (fileInputRef.value) {
-    fileInputRef.value.value = ''
+function removeFile(name: string): void {
+  const remaining = (formData.value.image ?? []).filter(f => f.name !== name)
+  formData.value.image = remaining.length > 0 ? remaining : null
+  if (remaining.length === 0) {
+    clearFieldError('image')
   }
-  formData.value.image = null
-  clearFieldError('image')
+  else {
+    validateField('image')
+  }
 }
 
 /**
@@ -363,15 +375,16 @@ watch(isChanged, (newValue) => {
           for="contact-image" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ladda upp bild <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 7MB)</span>
+          Ladda upp bilder <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 7MB per fil)</span>
         </label>
         <input
           id="contact-image"
           ref="fileInputRef"
           type="file"
           name="image"
-          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml"
           autocomplete="off"
+          multiple
           :aria-invalid="!!getFieldError('image')"
           :aria-describedby="getFieldError('image') ? 'image-error' : undefined"
           class="sr-only"
@@ -381,27 +394,35 @@ watch(isChanged, (newValue) => {
         >
         <button
           type="button"
-          class="w-full px-4 py-2.5 text-base form-button-base outline-tight-button disabled:opacity-50 disabled:cursor-not-allowed text-left bg-white flex items-center justify-between"
+          class="w-full px-4 py-2.5 text-base form-button-base outline-tight-button disabled:opacity-50 disabled:cursor-not-allowed text-left bg-white flex items-start justify-between"
           :class="[
             getFieldError('image')
               ? 'border-error focus:ring-error'
               : 'border-neutral-300 hover:border-neutral-400',
           ]"
           :disabled="isSubmitting"
-          :aria-label="fileInputLabel === 'Ingen fil vald' ? 'Välj fil att ladda upp' : `Vald fil: ${fileInputLabel}`"
+          :aria-label="fileInputLabel === 'Ingen fil vald' ? 'Välj filer att ladda upp' : `Valda filer: ${fileInputLabel}`"
           @click="triggerFileInput"
         >
-          <span class="text-neutral-700">{{ fileInputLabel }}</span>
-          <button
-            v-if="fileInputLabel !== 'Ingen fil vald'"
-            type="button"
-            class="ml-2 p-1 text-neutral-600 hover:text-error outline-tight-button-error"
-            :aria-label="'Rensa vald fil: ' + fileInputLabel"
-            :disabled="isSubmitting"
-            @click.stop="handleClearFile"
-          >
-            <CloseIcon class="w-5 h-5" />
-          </button>
+          <span v-if="selectedFileNames.length === 0" class="text-neutral-700">Ingen fil vald</span>
+          <ul v-else class="flex flex-col gap-1 text-sm w-full" aria-label="Valda filer">
+            <li
+              v-for="name in selectedFileNames"
+              :key="name"
+              class="flex items-center justify-between gap-2 text-neutral-700"
+            >
+              <span class="truncate">{{ name }}</span>
+              <button
+                type="button"
+                class="flex-shrink-0 p-1 text-neutral-600 hover:text-error outline-tight-button-error"
+                :aria-label="'Ta bort fil: ' + name"
+                :disabled="isSubmitting"
+                @click.stop="removeFile(name)"
+              >
+                <CloseIcon class="w-4 h-4" />
+              </button>
+            </li>
+          </ul>
         </button>
         <p
           v-if="getFieldError('image')"

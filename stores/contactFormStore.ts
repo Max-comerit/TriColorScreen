@@ -18,7 +18,7 @@ export const useContactFormStore = defineStore('contactForm', () => {
     customerType: '' as 'Privatperson' | 'Företag',
     subject: '',
     message: '',
-    image: null as File | null,
+    image: null as File[] | null,
     gdprConsent: false,
   })
 
@@ -58,7 +58,7 @@ export const useContactFormStore = defineStore('contactForm', () => {
       customerType: '' as 'Privatperson' | 'Företag',
       subject: '',
       message: '',
-      image: null as File | null,
+      image: null as File[] | null,
       gdprConsent: false,
     }
   }

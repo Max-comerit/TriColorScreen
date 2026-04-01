@@ -15,7 +15,7 @@ import { useContactFormStore } from '~/stores/contactFormStore'
 const MAX_FILE_SIZE = 7 * 1024 * 1024
 
 /** Allowed image MIME types */
-const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
 
 // ===== ZOD SCHEMA =====
 /** Contact form validation schema */
@@ -47,14 +47,16 @@ export const contactFormSchema = z.object({
     .optional()
     .or(z.literal('')),
   image: z
-    .custom<File>((file) => {
-      if (!file) return true // Optional field
-      if (!(file instanceof File)) return false
-      if (file.size > MAX_FILE_SIZE) return false
-      return ALLOWED_IMAGE_TYPES.includes(file.type)
-    }, {
-      message: 'Bilden måste vara mindre än 7MB och i formatet JPEG, PNG, WebP eller GIF',
-    })
+    .array(
+      z.custom<File>(
+        (file) => {
+          if (!(file instanceof File)) return false
+          if (file.size > MAX_FILE_SIZE) return false
+          return ALLOWED_IMAGE_TYPES.includes(file.type)
+        },
+        { message: 'Varje fil måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF eller SVG' },
+      ),
+    )
     .optional()
     .nullable(),
   gdprConsent: z
@@ -189,7 +191,7 @@ export function useContactForm() {
       customerType: '' as 'Privatperson' | 'Företag',
       subject: '',
       message: '',
-      image: null as File | null,
+      image: null as File[] | null,
       gdprConsent: false,
     }
     initialFormData.value = JSON.parse(JSON.stringify(formData.value))
@@ -225,7 +227,7 @@ export function useContactForm() {
         formDataToSubmit.append('message', formData.value.message)
       }
       if (formData.value.image) {
-        formDataToSubmit.append('image', formData.value.image)
+        formData.value.image.forEach(file => formDataToSubmit.append('image', file))
       }
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
       formDataToSubmit.append('bot-field', '') // Honeypot field for spam protection
