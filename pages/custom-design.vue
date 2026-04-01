@@ -139,33 +139,34 @@ onBeforeUnmount(() => {
 
       <!-- Design Tool -->
       <Section
-        ref="designSectionRef"
         id="services"
         align="center"
         aria-label="Design Verktyg"
       >
-        <Suspense>
-          <template #default>
-            <template v-if="isDesignSectionVisible">
-              <DesignPanel />
-              <!-- Offertformulär -->
-              <div
-                class="mt-10 flex justify-center"
-                aria-label="Offertformulär"
-              >
-                <QuoteForm />
+        <div ref="designSectionRef">
+          <Suspense>
+            <template #default>
+              <template v-if="isDesignSectionVisible">
+                <DesignPanel />
+                <!-- Offertformulär -->
+                <div
+                  class="mt-10 flex justify-center"
+                  aria-label="Offertformulär"
+                >
+                  <QuoteForm />
+                </div>
+              </template>
+            </template>
+            <template #fallback>
+              <div class="space-y-8">
+                <div class="aspect-video bg-neutral-200 rounded-card flex items-center justify-center">
+                  <p class="text-neutral-600 text-sm">Laddar designverktyg...</p>
+                </div>
+                <div class="mx-auto max-w-2xl h-40 bg-neutral-100 rounded-card" />
               </div>
             </template>
-          </template>
-          <template #fallback>
-            <div class="space-y-8">
-              <div class="aspect-video bg-neutral-200 rounded-card flex items-center justify-center">
-                <p class="text-neutral-600 text-sm">Laddar designverktyg...</p>
-              </div>
-              <div class="mx-auto max-w-2xl h-40 bg-neutral-100 rounded-card" />
-            </div>
-          </template>
-        </Suspense>
+          </Suspense>
+        </div>
       </Section>
     </div>
   </div>
