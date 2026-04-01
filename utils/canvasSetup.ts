@@ -5,7 +5,7 @@ import {
   createRotateControlRender,
   createTrashControlRender,
   createResizeControlRender,
-} from './customControlRenders'
+} from './canvasControlRenders'
 import { getRotateImage, getTrashCanImage, getResizeImage } from './customImageIcons'
 
 /**

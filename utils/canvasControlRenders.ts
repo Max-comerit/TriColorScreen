@@ -1,3 +1,5 @@
+// utils/canvasControlRenders.ts
+
 import type { FabricObject } from 'fabric'
 import { util } from 'fabric'
 

@@ -2,10 +2,11 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useSiteUrl } from '~/composables/useSiteUrl'
 import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
+import LoadingSpinner from '~/components/common/LoadingSpinner.vue'
 
 // Lazy-load DesignPanel so Fabric.js is kept out of the shared synchronous bundle
 const DesignPanel = defineAsyncComponent(() => import('~/components/features/DesignPanel.vue'))
@@ -46,9 +47,51 @@ useHead({
   ],
 })
 
-
 // ===== STATE =====
-// (none — canvas state is managed by CanvasPanel)
+// Track when user scrolls to the design section
+const designSectionRef = ref<HTMLElement | null>(null)
+const isDesignSectionVisible = ref(false)
+let intersectionObserver: IntersectionObserver | null = null
+
+// ===== LIFECYCLE HOOKS =====
+onMounted(() => {
+  if (!designSectionRef.value) return
+
+  // Use IntersectionObserver to detect when design section comes into view
+  intersectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        // Once visible, keep it visible (don't unload when user scrolls away)
+        if (entry.isIntersecting && !isDesignSectionVisible.value) {
+          isDesignSectionVisible.value = true
+          // Disconnect observer once section is loaded
+          intersectionObserver?.disconnect()
+        }
+      })
+    },
+    { rootMargin: '1000px' } // Start rendering way before it's visible so it's ready when user scrolls to it
+  )
+
+  intersectionObserver.observe(designSectionRef.value)
+
+  // Load DesignPanel after initial page load to avoid scroll stall
+  const loadModules = () => {
+    import('~/components/features/DesignPanel.vue').catch(() => {}) // Silently fail if already loading
+  }
+
+  if (document.readyState === 'complete') {
+    // Page already fully loaded
+    loadModules()
+  } else {
+    // Load DesignPanel after the initial page load event
+    window.addEventListener('load', loadModules, { once: true })
+  }
+})
+
+onBeforeUnmount(() => {
+  intersectionObserver?.disconnect()
+})
+
 
 </script>
 
@@ -114,7 +157,17 @@ useHead({
         align="center"
         aria-label="Design Verktyg"
       >
-        <DesignPanel />
+        <div ref="designSectionRef">
+          <template v-if="isDesignSectionVisible">
+            <DesignPanel />
+          </template>
+          <template v-else>
+            <div class="space-y-8 flex flex-col items-center justify-center py-12">
+              <LoadingSpinner type="page" />
+              <p class="text-neutral-600 text-sm mt-4">Laddar designverktyg...</p>
+            </div>
+          </template>
+        </div>
         <!-- Offertformulär -->
         <div
           class="mt-10 flex justify-center"

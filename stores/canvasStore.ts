@@ -1,8 +1,10 @@
 // stores/canvasStore.ts
 
 import { defineStore } from 'pinia'
-import type { Canvas } from 'fabric'
 import type { ProductCategories } from '~/types/BackgroundSelector'
+
+// Dynamically typed Canvas - imported on demand to avoid loading fabric.js unnecessarily
+type Canvas = import('fabric').Canvas
 
 const DEFAULT_SIDE_COUNT = 4
 

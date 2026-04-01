@@ -1031,7 +1031,7 @@ watch(canvasMap, async (newCanvases) => {
       <input type="hidden" name="texter" :value="formData.canvasTexts">
       <div v-if="formData.canvasTexts" aria-live="polite">
         <p class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5">
-          Tillagda texter
+          Tillagda designtexter
         </p>
         <ul
           class="w-full px-4 py-2.5 text-sm border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
