@@ -62,7 +62,11 @@ onMounted(() => {
       entries.forEach((entry) => {
         // Once visible, keep it visible (don't unload when user scrolls away)
         if (entry.isIntersecting && !isDesignSectionVisible.value) {
-          isDesignSectionVisible.value = true
+          // Add a small delay to ensure Suspense fallback shows
+          // (even if modules are preloaded, users get visual feedback)
+          setTimeout(() => {
+            isDesignSectionVisible.value = true
+          }, 100)
           // Disconnect observer once section is loaded
           intersectionObserver?.disconnect()
         }
@@ -160,15 +164,16 @@ onBeforeUnmount(() => {
         <div ref="designSectionRef">
           <Suspense>
             <template #default>
-              <DesignPanel v-if="isDesignSectionVisible" />
-              <!-- Offertformulär -->
-              <div
-                v-if="isDesignSectionVisible"
-                class="mt-10 flex justify-center"
-                aria-label="Offertformulär"
-              >
-                <QuoteForm />
-              </div>
+              <template v-if="isDesignSectionVisible">
+                <DesignPanel />
+                <!-- Offertformulär -->
+                <div
+                  class="mt-10 flex justify-center"
+                  aria-label="Offertformulär"
+                >
+                  <QuoteForm />
+                </div>
+              </template>
             </template>
             <template #fallback>
               <div class="space-y-8">
