@@ -379,7 +379,7 @@ watch(isChanged, (newValue) => {
           for="contact-image" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ladda upp bilder <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 7MB per fil)</span>
+          Ladda upp bilder <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 8 MB totalt)</span>
         </label>
         <!-- UI trigger input — no name, never submitted directly -->
         <input
