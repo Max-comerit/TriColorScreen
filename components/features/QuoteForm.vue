@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 import type { Canvas } from 'fabric'
 import { Textbox } from 'fabric'
 import type { QuoteFormData } from '~/composables/useQuoteForm'
-import { useQuoteForm, MAX_IMAGE_COUNT } from '~/composables/useQuoteForm'
+import { useQuoteForm } from '~/composables/useQuoteForm'
 import TextButton from '~/components/common/TextButton.vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
@@ -76,6 +76,7 @@ function attachCanvasListeners(canvas: Canvas): void {
   if (!canvasesWithListeners.has(canvas)) {
     canvas.on('object:added', onCanvasChange)
     canvas.on('object:modified', onCanvasChange);
+    canvas.on('object:removed', onCanvasChange);
     canvasesWithListeners.add(canvas)
   }
 }
@@ -87,6 +88,7 @@ function detachCanvasListeners(canvas: Canvas): void {
   if (canvasesWithListeners.has(canvas)) {
     canvas.off('object:added', onCanvasChange)
     canvas.off('object:modified', onCanvasChange);
+    canvas.off('object:removed', onCanvasChange);
     canvasesWithListeners.delete(canvas)
   }
 }
@@ -188,7 +190,6 @@ async function dataUrlToFile(dataUrl: string, filename: string): Promise<File> {
 /**
  * Export both canvas sides as File objects and populate files.
  * Includes a merged composite image and all individual image-layer files.
- * Limits total images to MAX_IMAGE_COUNT to prevent excessive payloads.
  */
 async function collectQuoteFiles(): Promise<File[]> {
   const availableCanvases = canvasMap.value
@@ -202,15 +203,16 @@ async function collectQuoteFiles(): Promise<File[]> {
 
   const collected: File[] = []
   const id = nanoid(10)
-  let imgCount = 0;
 
   for (const entry of availableCanvases) {
     try {
       const canvasInstance = entry.canvas as Canvas
 
       // Validate canvas is still valid and has a valid HTML element before exporting
+      // The products have different sides/canvases and the user might have switched 
+      // to a different product or category while the export was in progress, 
+      // causing the original canvas references to become stale/invalid.
       if (!canvasInstance || !canvasInstance.elements.lower) {
-        console.warn('collectQuoteFiles: canvas instance is no longer valid, skipping')
         continue
       }
 
@@ -222,14 +224,12 @@ async function collectQuoteFiles(): Promise<File[]> {
       // Merged composite: compress to JPEG (no transparency needed, smaller payload)
       const compressedMerged = await compressDataUrl(mergedUrl)
       collected.push(await dataUrlToFile(compressedMerged, `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}.jpg`))
-      if (++imgCount >= MAX_IMAGE_COUNT) break;
 
       // Individual layers: preserve original format (SVG stays SVG, rasters stay PNG).
       for (let i = 0; i < imageUrls.length; i++) {
         const layer = imageUrls[i]
         const ext = layer.mimeType === 'image/svg+xml' ? 'svg' : 'png'
         collected.push(await dataUrlToFile(layer.url, `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}-layer-${i + 1}.${ext}`))
-        if (++imgCount >= MAX_IMAGE_COUNT) break;
       }
     }
     catch (error) {
@@ -254,6 +254,8 @@ async function collectCanvasImages(): Promise<void> {
     formData.value.images = (await collectQuoteFiles()).map(f => markRaw(f))
     // Collect text objects from all canvases
     formData.value.canvasTexts = collectCanvasTexts()
+    // Validate images field after collecting
+    validateField('images')
   }
   catch (error) {
     console.error('Error collecting canvas images:', error)
@@ -870,6 +872,16 @@ watch(canvasMap, async (newCanvases) => {
           {{ getFieldError('gdprConsent') }}
         </p>
       </div>
+
+      <!-- ── Images error (from canvas export) ──────────────── -->
+      <p
+        v-if="getFieldError('images')"
+        id="images-error"
+        class="mt-1.5 text-sm text-error-dark"
+        role="alert"
+      >
+        {{ getFieldError('images') }}
+      </p>
 
       <!-- ── Success message ───────────────────────────────── -->
       <div

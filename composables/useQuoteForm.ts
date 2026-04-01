@@ -16,7 +16,7 @@ import { useQuoteFormStore } from '~/stores/quoteFormStore'
 const MAX_FILE_SIZE = 7 * 1024 * 1024
 
 /** Maximum number of images allowed */
-export const MAX_IMAGE_COUNT = 16
+export const MAX_QUOTE_IMAGE_COUNT = 16
 
 /** Allowed image MIME types */
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
@@ -80,9 +80,12 @@ export const quoteFormSchema = z.object({
     }, {
       message: 'Bilden måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF eller SVG',
     }))
-    .max(MAX_IMAGE_COUNT, { message: `Maximalt ${MAX_IMAGE_COUNT} bilder kan bifogas` })
-    .optional()
-    .nullable(),
+    .refine(
+      (array) => array.length <= MAX_QUOTE_IMAGE_COUNT,
+      { message: `Maximalt ${MAX_QUOTE_IMAGE_COUNT} bilder kan bifogas` }
+    )
+    .nullable()
+    .optional(),
   message: z
     .string()
     .max(2000, 'Meddelandet får inte vara längre än 2000 tecken')
