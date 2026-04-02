@@ -12,9 +12,6 @@ import { toRaw } from 'vue'
 import { useContactFormStore } from '~/stores/contactFormStore'
 import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_CONTACT_IMAGE_COUNT } from '~/constants/ui'
 
-// ===== RE-EXPORTS (consumed by ContactForm.vue template) =====
-export { MAX_CONTACT_IMAGE_COUNT, FORM_MAX_TOTAL_FILE_SIZE as MAX_TOTAL_FILE_SIZE }
-
 // ===== CONSTANTS =====
 /** Allowed image MIME types */
 const ALLOWED_IMAGE_TYPES = [
