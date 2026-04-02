@@ -744,22 +744,38 @@ watch(canvasMap, async (newCanvases) => {
       <!-- ── Attached design images (hidden / prop-filled) ───── -->
       <!-- Hidden file inputs for Netlify SSG crawler registration, one per image slot -->
       <div aria-hidden="true" class="sr-only">
-        <input type="file" name="image_1" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_2" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_3" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_4" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_5" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_6" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_7" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_8" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_9" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_10" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_11" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_12" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_13" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_14" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_15" tabindex="-1" aria-hidden="true">
-        <input type="file" name="image_16" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-1" class="block">Bild 1</label>
+        <input id="quote-image-1" type="file" name="image_1" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-2" class="block">Bild 2</label>
+        <input id="quote-image-2" type="file" name="image_2" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-3" class="block">Bild 3</label>
+        <input id="quote-image-3" type="file" name="image_3" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-4" class="block">Bild 4</label>
+        <input id="quote-image-4" type="file" name="image_4" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-5" class="block">Bild 5</label>
+        <input id="quote-image-5" type="file" name="image_5" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-6" class="block">Bild 6</label>
+        <input id="quote-image-6" type="file" name="image_6" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-7" class="block">Bild 7</label>
+        <input id="quote-image-7" type="file" name="image_7" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-8" class="block">Bild 8</label>
+        <input id="quote-image-8" type="file" name="image_8" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-9" class="block">Bild 9</label>
+        <input id="quote-image-9" type="file" name="image_9" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-10" class="block">Bild 10</label>
+        <input id="quote-image-10" type="file" name="image_10" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-11" class="block">Bild 11</label>
+        <input id="quote-image-11" type="file" name="image_11" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-12" class="block">Bild 12</label>
+        <input id="quote-image-12" type="file" name="image_12" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-13" class="block">Bild 13</label>
+        <input id="quote-image-13" type="file" name="image_13" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-14" class="block">Bild 14</label>
+        <input id="quote-image-14" type="file" name="image_14" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-15" class="block">Bild 15</label>
+        <input id="quote-image-15" type="file" name="image_15" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-16" class="block">Bild 16</label>
+        <input id="quote-image-16" type="file" name="image_16" tabindex="-1" aria-hidden="true">
       </div>
 
       <!-- Display attached files to user (optional) -->
@@ -768,7 +784,14 @@ watch(canvasMap, async (newCanvases) => {
           Tillagda designbilder
         </p>
         <ul
-          class="w-full px-4 py-2.5 text-sm border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-sm border rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
+          :class="[
+            getFieldError('images')
+              ? 'border-error'
+              : 'border-neutral-300',
+          ]"
+          :aria-invalid="!!getFieldError('images')"
+          :aria-describedby="getFieldError('images') ? 'images-error' : undefined"
           aria-label="Designbilder som biläggs formuläret"
         >
           <li
@@ -780,6 +803,15 @@ watch(canvasMap, async (newCanvases) => {
           </li>
         </ul>
       </div>
+      <!-- ── Images error (from canvas export) ──────────────── -->
+      <p
+        v-if="getFieldError('images')"
+        id="images-error"
+        class="mt-1.5 text-sm text-error-dark"
+        role="alert"
+      >
+        {{ getFieldError('images') }}
+      </p>
 
       <!-- Display canvas texts to user -->
       <input type="hidden" name="texter" :value="formData.canvasTexts">
@@ -872,16 +904,6 @@ watch(canvasMap, async (newCanvases) => {
           {{ getFieldError('gdprConsent') }}
         </p>
       </div>
-
-      <!-- ── Images error (from canvas export) ──────────────── -->
-      <p
-        v-if="getFieldError('images')"
-        id="images-error"
-        class="mt-1.5 text-sm text-error-dark"
-        role="alert"
-      >
-        {{ getFieldError('images') }}
-      </p>
 
       <!-- ── Success message ───────────────────────────────── -->
       <div
