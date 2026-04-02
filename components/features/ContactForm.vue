@@ -558,7 +558,7 @@ watch(isChanged, (newValue) => {
         class="p-4 bg-error-light border-l-4 border-error rounded-input"
       >
         <p class="font-medium text-error-dark">
-          Kontrollera de markerade fälten ovan och rätta till felen.
+          Ett fel uppstod. Kontrollera dina uppgifter och försök igen.
         </p>
       </div>
 
