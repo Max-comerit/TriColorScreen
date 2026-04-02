@@ -3,7 +3,7 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { computed, defineAsyncComponent, markRaw, ref, watch } from 'vue'
-import { useContactForm, MAX_CONTACT_IMAGE_COUNT, MAX_TOTAL_FILE_SIZE } from '~/composables/useContactForm'
+import { useContactForm, MAX_CONTACT_IMAGE_COUNT } from '~/composables/useContactForm'
 import type { ContactFormData } from '~/composables/useContactForm'
 import TextButton from '~/components/common/TextButton.vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
@@ -55,15 +55,6 @@ const fileInputLabel = computed(() => {
  * List of selected file names for vertical display
  */
 const selectedFileNames = computed(() => formData.value.image?.map(f => f.name) ?? [])
-
-/**
- * Total size of selected files in MB, formatted to one decimal place
- */
-const totalFileSizeMB = computed(() => {
-  const files = formData.value.image ?? []
-  const totalBytes = files.reduce((sum, f) => sum + f.size, 0)
-  return (totalBytes / 1024 / 1024).toFixed(1)
-})
 /**
  * Handle input blur event and validate field
  */
@@ -469,12 +460,6 @@ watch(isChanged, (newValue) => {
           role="alert"
         >
           {{ getFieldError('image') }}
-        </p>
-        <p
-          aria-live="polite"
-          class="mt-1.5 text-xs text-neutral-500"
-        >
-          {{ selectedFileNames.length }} / {{ MAX_CONTACT_IMAGE_COUNT }} filer valda · {{ totalFileSizeMB }} / {{ MAX_TOTAL_FILE_SIZE / 1024 / 1024 }} MB<span v-if="selectedFileNames.length >= MAX_CONTACT_IMAGE_COUNT"> — max antal uppnått</span>
         </p>
       </div>
 
