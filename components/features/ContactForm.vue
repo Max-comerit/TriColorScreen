@@ -550,9 +550,9 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- Error Message — validation failures -->
+      <!-- ── Error message ─────────────────────────────────── -->
       <div
-        v-if="showErrorMessage && hasErrors && !isError"
+        v-if="showErrorMessage && (isError || hasErrors)"
         role="alert"
         aria-live="assertive"
         class="p-4 bg-error-light border-l-4 border-error rounded-input"
@@ -562,17 +562,6 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- Error Message — server / submission failures -->
-      <div
-        v-if="showErrorMessage && isError"
-        role="alert"
-        aria-live="assertive"
-        class="p-4 bg-error-light border-l-4 border-error rounded-input"
-      >
-        <p class="font-medium text-error-dark">
-          Formuläret kunde inte skickas. Vänligen försök igen senare.
-        </p>
-      </div>
 
       <!-- Submit Button -->
       <div class="pt-2">
