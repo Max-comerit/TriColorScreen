@@ -8,14 +8,19 @@
  */
 
 import { z } from 'zod'
+import { toRaw } from 'vue'
 import { useContactFormStore } from '~/stores/contactFormStore'
+import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_CONTACT_IMAGE_COUNT } from '~/constants/ui'
 
 // ===== CONSTANTS =====
-/** Maximum file size: 7MB */
-const MAX_FILE_SIZE = 7 * 1024 * 1024
-
 /** Allowed image MIME types */
-const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
+const ALLOWED_IMAGE_TYPES = [
+  'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml',
+  // Vector / print formats
+  'application/postscript', 'application/eps', 'application/x-eps', 'image/x-eps',
+  'application/illustrator',
+  'application/pdf',
+]
 
 // ===== ZOD SCHEMA =====
 /** Contact form validation schema */
@@ -47,14 +52,21 @@ export const contactFormSchema = z.object({
     .optional()
     .or(z.literal('')),
   image: z
-    .custom<File>((file) => {
-      if (!file) return true // Optional field
-      if (!(file instanceof File)) return false
-      if (file.size > MAX_FILE_SIZE) return false
-      return ALLOWED_IMAGE_TYPES.includes(file.type)
-    }, {
-      message: 'Bilden måste vara mindre än 7MB och i formatet JPEG, PNG, WebP eller GIF',
-    })
+    .array(
+      z.custom<File>(
+        (file) => {
+          if (!(file instanceof File)) return false
+          if (file.size > FORM_MAX_FILE_SIZE) return false
+          return ALLOWED_IMAGE_TYPES.includes(file.type)
+        },
+        { message: 'Varje fil måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF, SVG, EPS, AI eller PDF' },
+      ),
+    )
+    .max(MAX_CONTACT_IMAGE_COUNT, `Du kan bifoga max ${MAX_CONTACT_IMAGE_COUNT} filer`)
+    .refine(
+      files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
+      { message: `Den totala filstorleken får inte överstiga ${FORM_MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
+    )
     .optional()
     .nullable(),
   gdprConsent: z
@@ -189,7 +201,7 @@ export function useContactForm() {
       customerType: '' as 'Privatperson' | 'Företag',
       subject: '',
       message: '',
-      image: null as File | null,
+      image: null as File[] | null,
       gdprConsent: false,
     }
     initialFormData.value = JSON.parse(JSON.stringify(formData.value))
@@ -213,7 +225,7 @@ export function useContactForm() {
 
       // Prepare form data for Netlify submission
       const formDataToSubmit = new FormData()
-      formDataToSubmit.append('form-name', 'contact')
+      formDataToSubmit.append('form-name', 'contact-v2')
       formDataToSubmit.append('name', formData.value.name)
       formDataToSubmit.append('email', formData.value.email)
       if (formData.value.phone) {
@@ -225,7 +237,9 @@ export function useContactForm() {
         formDataToSubmit.append('message', formData.value.message)
       }
       if (formData.value.image) {
-        formDataToSubmit.append('image', formData.value.image)
+        // toRaw unwraps Vue's reactive Proxy — FormData.append uses internal-slot
+        // brand checks that fail on Proxy-wrapped File/Blob objects.
+        formData.value.image.forEach((file, index) => formDataToSubmit.append(`image_${index + 1}`, toRaw(file)))
       }
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
       formDataToSubmit.append('bot-field', '') // Honeypot field for spam protection

@@ -8,15 +8,11 @@
  */
 
 import { z } from 'zod'
+import { toRaw } from 'vue'
 import { useQuoteFormStore } from '~/stores/quoteFormStore'
+import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_QUOTE_IMAGE_COUNT } from '~/constants/ui'
 
 // ===== CONSTANTS =====
-/** Maximum file size: 7MB */
-const MAX_FILE_SIZE = 7 * 1024 * 1024
-
-/** Maximum number of images allowed */
-export const MAX_IMAGE_COUNT = 16
-
 /** Allowed image MIME types */
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
 
@@ -74,14 +70,21 @@ export const quoteFormSchema = z.object({
     .array(z.custom<File>((file) => {
       if (!file) return true // Optional field
       if (!(file instanceof File)) return false
-      if (file.size > MAX_FILE_SIZE) return false
+      if (file.size > FORM_MAX_FILE_SIZE) return false
       return ALLOWED_IMAGE_TYPES.includes(file.type)
     }, {
       message: 'Bilden måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF eller SVG',
     }))
-    .max(MAX_IMAGE_COUNT, { message: `Maximalt ${MAX_IMAGE_COUNT} bilder kan bifogas` })
-    .optional()
-    .nullable(),
+    .refine(
+      (array) => array.length <= MAX_QUOTE_IMAGE_COUNT,
+      { message: `Maximalt ${MAX_QUOTE_IMAGE_COUNT} bilder kan bifogas` }
+    )
+    .refine(
+      files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
+      { message: `Den totala filstorleken får inte överstiga ${FORM_MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
+    )
+    .nullable()
+    .optional(),
   message: z
     .string()
     .max(2000, 'Meddelandet får inte vara längre än 2000 tecken')
@@ -276,7 +279,9 @@ export function useQuoteForm() {
       }
       formDataToSubmit.append('product_count', String(formData.value.productCount))
       formData.value.images?.forEach((file, index) => {
-        formDataToSubmit.append(`image_${index + 1}`, file)
+        // toRaw unwraps Vue's reactive Proxy — FormData.append uses internal-slot
+        // brand checks that fail on Proxy-wrapped File/Blob objects.
+        formDataToSubmit.append(`image_${index + 1}`, toRaw(file))
       })
       if (formData.value.message) {
         formDataToSubmit.append('message', formData.value.message)

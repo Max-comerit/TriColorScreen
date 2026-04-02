@@ -12,8 +12,8 @@
       appear in the pre-rendered HTML that Netlify's crawler reads.
       This plain HTML file guarantees Netlify can always find and register the form.
     -->
-    <form name="contact" enctype="multipart/form-data" method="POST" action="/" netlify-honeypot="bot-field" autocomplete="off" data-netlify="true">
-      <input type="hidden" name="form-name" value="contact">
+    <form name="contact-v2" enctype="multipart/form-data" method="POST" action="/" netlify-honeypot="bot-field" autocomplete="off" data-netlify="true">
+      <input type="hidden" name="form-name" value="contact-v2">
       <input type="text" name="name" autocomplete="name">
       <input type="email" name="email" autocomplete="email">
       <input type="tel" name="phone" autocomplete="tel">
@@ -22,7 +22,16 @@
         <option value="company">company</option>
       </select>
       <input type="text" name="subject" autocomplete="off">
-      <input type="file" name="image" autocomplete="off">
+      <input type="file" name="image_1" autocomplete="off">
+      <input type="file" name="image_2" autocomplete="off">
+      <input type="file" name="image_3" autocomplete="off">
+      <input type="file" name="image_4" autocomplete="off">
+      <input type="file" name="image_5" autocomplete="off">
+      <input type="file" name="image_6" autocomplete="off">
+      <input type="file" name="image_7" autocomplete="off">
+      <input type="file" name="image_8" autocomplete="off">
+      <input type="file" name="image_9" autocomplete="off">
+      <input type="file" name="image_10" autocomplete="off">
       <textarea name="message" autocomplete="off"></textarea>
       <input type="checkbox" name="gdpr_consent" autocomplete="off">
       <input name="bot-field" autocomplete="off" style="display:none">

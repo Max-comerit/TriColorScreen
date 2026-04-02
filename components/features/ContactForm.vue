@@ -2,7 +2,7 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, markRaw, ref, watch } from 'vue'
 import { useContactForm } from '~/composables/useContactForm'
 import type { ContactFormData } from '~/composables/useContactForm'
 import TextButton from '~/components/common/TextButton.vue'
@@ -43,9 +43,18 @@ const showGdprDialog = ref(false)
 
 // ===== COMPUTED =====
 /**
- * Display label for file input showing filename or default text
+ * Display label for file input (used for ARIA and empty-state checks)
  */
-const fileInputLabel = computed(() => formData.value.image?.name ?? 'Ingen fil vald')
+const fileInputLabel = computed(() => {
+  const files = formData.value.image
+  if (!files || files.length === 0) return 'Ingen fil vald'
+  return files.map(f => f.name).join(', ')
+})
+
+/**
+ * List of selected file names for vertical display
+ */
+const selectedFileNames = computed(() => formData.value.image?.map(f => f.name) ?? [])
 /**
  * Handle input blur event and validate field
  */
@@ -63,22 +72,25 @@ function handleInput(field: keyof ContactFormData): void {
 }
 
 /**
- * Handle file input change
+ * Handle file input change — merge new files into existing selection
  */
 function handleFileChange(event: Event): void {
   const target = event.target as HTMLInputElement
-  const file = target.files?.[0] || null
-  
-  formData.value.image = file
-  // fileInputLabel is computed from formData.image, so label updates automatically
-  
-  // Validate file if selected
-  if (file) {
-    validateField('image')
-  }
-  else {
-    clearFieldError('image')
-  }
+  // markRaw prevents Vue from wrapping File objects in a Proxy.
+  // FormData.append() and DataTransfer.items.add() use internal-slot brand
+  // checks that fail on Proxy-wrapped Blob/File objects.
+  const incoming = target.files ? Array.from(target.files).map(f => markRaw(f)) : []
+  // Reset input value so the same file can be re-added after removal
+  target.value = ''
+
+  if (incoming.length === 0) return
+
+  const existing = formData.value.image ?? []
+  const existingNames = new Set(existing.map(f => f.name))
+  const merged = [...existing, ...incoming.filter(f => !existingNames.has(f.name))]
+
+  formData.value.image = merged
+  validateField('image')
 }
 
 /**
@@ -89,17 +101,21 @@ function triggerFileInput(): void {
 }
 
 /**
- * Clear selected file
+ * Remove a single file by name
  */
-function handleClearFile(): void {
-  if (fileInputRef.value) {
-    fileInputRef.value.value = ''
+function removeFile(name: string): void {
+  const remaining = (formData.value.image ?? []).filter(f => f.name !== name)
+  formData.value.image = remaining.length > 0 ? remaining : null
+  if (remaining.length === 0) {
+    clearFieldError('image')
   }
-  formData.value.image = null
-  clearFieldError('image')
+  else {
+    validateField('image')
+  }
 }
 
 /**
+
  * Open GDPR information dialog
  */
 function openGdprDialog(): void {
@@ -112,7 +128,7 @@ function openGdprDialog(): void {
 async function handleSubmit(): Promise<void> {
   // Delay validation TAP_ANIMATION_TIME ms to allow tap animation to complete
   await new Promise(resolve => setTimeout(resolve, TAP_ANIMATION_TIME))
-  
+
   const success = await submitForm()
   
   if (success) {
@@ -149,7 +165,7 @@ watch(isChanged, (newValue) => {
 <template>
   <!-- ✅ Visible form -->
   <form 
-    name="contact"
+    name="contact-v2"
     method="POST"
     action="/"
     data-netlify="true"
@@ -164,7 +180,7 @@ watch(isChanged, (newValue) => {
     <h3 class="sr-only">Kontaktformulär</h3>
 
     <!-- Hidden fields for Netlify -->
-    <input type="hidden" name="form-name" value="contact">
+    <input type="hidden" name="form-name" value="contact-v2">
     <p class="sr-only">
       <label>
         Don't fill this out if you're human: 
@@ -363,15 +379,16 @@ watch(isChanged, (newValue) => {
           for="contact-image" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ladda upp bild <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 7MB)</span>
+          Ladda upp bilder <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 10 st, max 7 MB totalt)</span>
         </label>
+        <!-- UI trigger input — no name, never submitted directly -->
         <input
           id="contact-image"
           ref="fileInputRef"
           type="file"
-          name="image"
-          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml,application/postscript,application/eps,application/x-eps,image/x-eps,application/illustrator,application/pdf,.eps,.ai,.pdf"
           autocomplete="off"
+          multiple
           :aria-invalid="!!getFieldError('image')"
           :aria-describedby="getFieldError('image') ? 'image-error' : undefined"
           class="sr-only"
@@ -379,29 +396,60 @@ watch(isChanged, (newValue) => {
           :disabled="isSubmitting"
           @change="handleFileChange"
         >
+        <!-- Hidden named inputs — registered by Netlify's SSG crawler -->
+        <div aria-hidden="true" class="sr-only">
+          <label for="contact-image-1" class="block">Bild 1</label>
+          <input id="contact-image-1" type="file" name="image_1" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-2" class="block">Bild 2</label>
+          <input id="contact-image-2" type="file" name="image_2" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-3" class="block">Bild 3</label>
+          <input id="contact-image-3" type="file" name="image_3" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-4" class="block">Bild 4</label>
+          <input id="contact-image-4" type="file" name="image_4" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-5" class="block">Bild 5</label>
+          <input id="contact-image-5" type="file" name="image_5" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-6" class="block">Bild 6</label>
+          <input id="contact-image-6" type="file" name="image_6" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-7" class="block">Bild 7</label>
+          <input id="contact-image-7" type="file" name="image_7" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-8" class="block">Bild 8</label>
+          <input id="contact-image-8" type="file" name="image_8" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-9" class="block">Bild 9</label>
+          <input id="contact-image-9" type="file" name="image_9" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-10" class="block">Bild 10</label>
+          <input id="contact-image-10" type="file" name="image_10" tabindex="-1" aria-hidden="true">
+        </div>
         <button
           type="button"
-          class="w-full px-4 py-2.5 text-base form-button-base outline-tight-button disabled:opacity-50 disabled:cursor-not-allowed text-left bg-white flex items-center justify-between"
+          class="w-full px-4 py-2.5 text-base form-button-base outline-tight-button disabled:opacity-50 disabled:cursor-not-allowed text-left bg-white flex items-start justify-between"
           :class="[
             getFieldError('image')
               ? 'border-error focus:ring-error'
               : 'border-neutral-300 hover:border-neutral-400',
           ]"
           :disabled="isSubmitting"
-          :aria-label="fileInputLabel === 'Ingen fil vald' ? 'Välj fil att ladda upp' : `Vald fil: ${fileInputLabel}`"
+          :aria-label="fileInputLabel === 'Ingen fil vald' ? 'Välj filer att ladda upp' : `Valda filer: ${fileInputLabel}`"
           @click="triggerFileInput"
         >
-          <span class="text-neutral-700">{{ fileInputLabel }}</span>
-          <button
-            v-if="fileInputLabel !== 'Ingen fil vald'"
-            type="button"
-            class="ml-2 p-1 text-neutral-600 hover:text-error outline-tight-button-error"
-            :aria-label="'Rensa vald fil: ' + fileInputLabel"
-            :disabled="isSubmitting"
-            @click.stop="handleClearFile"
-          >
-            <CloseIcon class="w-5 h-5" />
-          </button>
+          <span v-if="selectedFileNames.length === 0" class="text-neutral-700">Ingen fil vald</span>
+          <ul v-else class="flex flex-col gap-1 text-sm w-full" aria-label="Valda filer">
+            <li
+              v-for="name in selectedFileNames"
+              :key="name"
+              class="flex items-center justify-between gap-2 text-neutral-700"
+            >
+              <span class="truncate">{{ name }}</span>
+              <button
+                type="button"
+                class="flex-shrink-0 p-1 text-neutral-600 hover:text-error outline-tight-button-error"
+                :aria-label="'Ta bort fil: ' + name"
+                :disabled="isSubmitting"
+                @click.stop="removeFile(name)"
+              >
+                <CloseIcon class="w-4 h-4" />
+              </button>
+            </li>
+          </ul>
         </button>
         <p
           v-if="getFieldError('image')"
@@ -502,7 +550,7 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- Error Message -->
+      <!-- ── Error message ─────────────────────────────────── -->
       <div
         v-if="showErrorMessage && (isError || hasErrors)"
         role="alert"
@@ -513,6 +561,7 @@ watch(isChanged, (newValue) => {
           Ett fel uppstod. Kontrollera dina uppgifter och försök igen.
         </p>
       </div>
+
 
       <!-- Submit Button -->
       <div class="pt-2">

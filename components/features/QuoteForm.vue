@@ -2,12 +2,12 @@
 
 <script setup lang="ts">
 // ===== IMPORTS =====
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, markRaw, ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import type { Canvas } from 'fabric'
 import { Textbox } from 'fabric'
 import type { QuoteFormData } from '~/composables/useQuoteForm'
-import { useQuoteForm, MAX_IMAGE_COUNT } from '~/composables/useQuoteForm'
+import { useQuoteForm } from '~/composables/useQuoteForm'
 import TextButton from '~/components/common/TextButton.vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
@@ -51,7 +51,6 @@ const {
 const showSuccessMessage = ref(false)
 const showErrorMessage = ref(false)
 const showGdprDialog = ref(false)
-const fileInputRefs = ref<HTMLInputElement[]>([])
 const canvasesWithListeners = new Set<Canvas>()
 const isCollectingImages = ref(false)
 const pendingCanvasChange = ref(false)
@@ -77,6 +76,7 @@ function attachCanvasListeners(canvas: Canvas): void {
   if (!canvasesWithListeners.has(canvas)) {
     canvas.on('object:added', onCanvasChange)
     canvas.on('object:modified', onCanvasChange);
+    canvas.on('object:removed', onCanvasChange);
     canvasesWithListeners.add(canvas)
   }
 }
@@ -88,6 +88,7 @@ function detachCanvasListeners(canvas: Canvas): void {
   if (canvasesWithListeners.has(canvas)) {
     canvas.off('object:added', onCanvasChange)
     canvas.off('object:modified', onCanvasChange);
+    canvas.off('object:removed', onCanvasChange);
     canvasesWithListeners.delete(canvas)
   }
 }
@@ -189,7 +190,6 @@ async function dataUrlToFile(dataUrl: string, filename: string): Promise<File> {
 /**
  * Export both canvas sides as File objects and populate files.
  * Includes a merged composite image and all individual image-layer files.
- * Limits total images to MAX_IMAGE_COUNT to prevent excessive payloads.
  */
 async function collectQuoteFiles(): Promise<File[]> {
   const availableCanvases = canvasMap.value
@@ -203,15 +203,16 @@ async function collectQuoteFiles(): Promise<File[]> {
 
   const collected: File[] = []
   const id = nanoid(10)
-  let imgCount = 0;
 
   for (const entry of availableCanvases) {
     try {
       const canvasInstance = entry.canvas as Canvas
 
       // Validate canvas is still valid and has a valid HTML element before exporting
+      // The products have different sides/canvases and the user might have switched 
+      // to a different product or category while the export was in progress, 
+      // causing the original canvas references to become stale/invalid.
       if (!canvasInstance || !canvasInstance.elements.lower) {
-        console.warn('collectQuoteFiles: canvas instance is no longer valid, skipping')
         continue
       }
 
@@ -223,14 +224,12 @@ async function collectQuoteFiles(): Promise<File[]> {
       // Merged composite: compress to JPEG (no transparency needed, smaller payload)
       const compressedMerged = await compressDataUrl(mergedUrl)
       collected.push(await dataUrlToFile(compressedMerged, `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}.jpg`))
-      if (++imgCount >= MAX_IMAGE_COUNT) break;
 
       // Individual layers: preserve original format (SVG stays SVG, rasters stay PNG).
       for (let i = 0; i < imageUrls.length; i++) {
         const layer = imageUrls[i]
         const ext = layer.mimeType === 'image/svg+xml' ? 'svg' : 'png'
         collected.push(await dataUrlToFile(layer.url, `design-${id}-side-${sanitizeFilenameSegment(activeSideLabels.value[entry.index]?.label ?? String(entry.index))}-layer-${i + 1}.${ext}`))
-        if (++imgCount >= MAX_IMAGE_COUNT) break;
       }
     }
     catch (error) {
@@ -250,18 +249,13 @@ async function collectCanvasImages(): Promise<void> {
   try {
     isCollectingImages.value = true
     // Collect current canvas images and populate formData before user submits
-    formData.value.images = await collectQuoteFiles()
+    // markRaw prevents Vue from wrapping File objects in a Proxy.
+    // FormData.append() uses internal-slot brand checks that fail on Proxy-wrapped File/Blob objects.
+    formData.value.images = (await collectQuoteFiles()).map(f => markRaw(f))
     // Collect text objects from all canvases
     formData.value.canvasTexts = collectCanvasTexts()
-    // Sync each image to its corresponding hidden file input for Netlify submission
-    formData.value.images?.forEach((file, index) => {
-      const ref = fileInputRefs.value[index]
-      if (ref) {
-        const dt = new DataTransfer()
-        if (file) dt.items.add(file)
-        ref.files = dt.files
-      }
-    })
+    // Validate images field after collecting
+    validateField('images')
   }
   catch (error) {
     console.error('Error collecting canvas images:', error)
@@ -748,264 +742,40 @@ watch(canvasMap, async (newCanvases) => {
       </div>
 
       <!-- ── Attached design images (hidden / prop-filled) ───── -->
+      <!-- Hidden file inputs for Netlify SSG crawler registration, one per image slot -->
       <div aria-hidden="true" class="sr-only">
-        <!-- Hidden file inputs for Netlify submission, one per image slot -->
-          <label
-            for="quote-image-1"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 1
-          </label>
-          <input
-            id="quote-image-1"
-            :ref="el => fileInputRefs[0] = el as HTMLInputElement"
-            type="file"
-            name="image_1"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-2"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 2
-          </label>
-          <input
-            id="quote-image-2"
-            :ref="el => fileInputRefs[1] = el as HTMLInputElement"
-            type="file"
-            name="image_2"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-3"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 3
-          </label>
-          <input
-            id="quote-image-3"
-            :ref="el => fileInputRefs[2] = el as HTMLInputElement"
-            type="file"
-            name="image_3"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-4"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 4
-          </label>
-          <input
-            id="quote-image-4"
-            :ref="el => fileInputRefs[3] = el as HTMLInputElement"
-            type="file"
-            name="image_4"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-5"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 5
-          </label>
-          <input
-            id="quote-image-5"
-            :ref="el => fileInputRefs[4] = el as HTMLInputElement"
-            type="file"
-            name="image_5"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-6"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 6
-          </label>
-          <input
-            id="quote-image-6"
-            :ref="el => fileInputRefs[5] = el as HTMLInputElement"
-            type="file"
-            name="image_6"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-7"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 7
-          </label>
-          <input
-            id="quote-image-7"
-            :ref="el => fileInputRefs[6] = el as HTMLInputElement"
-            type="file"
-            name="image_7"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-8"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 8
-          </label>
-          <input
-            id="quote-image-8"
-            :ref="el => fileInputRefs[7] = el as HTMLInputElement"
-            type="file"
-            name="image_8"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-9"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 9
-          </label>
-          <input
-            id="quote-image-9"
-            :ref="el => fileInputRefs[8] = el as HTMLInputElement"
-            type="file"
-            name="image_9"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-10"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 10
-          </label>
-          <input
-            id="quote-image-10"
-            :ref="el => fileInputRefs[9] = el as HTMLInputElement"
-            type="file"
-            name="image_10"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-11"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 11
-          </label>
-          <input
-            id="quote-image-11"
-            :ref="el => fileInputRefs[10] = el as HTMLInputElement"
-            type="file"
-            name="image_11"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-12"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 12
-          </label>
-          <input
-            id="quote-image-12"
-            :ref="el => fileInputRefs[11] = el as HTMLInputElement"
-            type="file"
-            name="image_12"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-13"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 13
-          </label>
-          <input
-            id="quote-image-13"
-            :ref="el => fileInputRefs[12] = el as HTMLInputElement"
-            type="file"
-            name="image_13"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-14"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 14
-          </label>
-          <input
-            id="quote-image-14"
-            :ref="el => fileInputRefs[13] = el as HTMLInputElement"
-            type="file"
-            name="image_14"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-15"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 15
-          </label>
-          <input
-            id="quote-image-15"
-            :ref="el => fileInputRefs[14] = el as HTMLInputElement"
-            type="file"
-            name="image_15"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
-          <label
-            for="quote-image-16"
-            class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-          >
-            Bild 16
-          </label>
-          <input
-            id="quote-image-16"
-            :ref="el => fileInputRefs[15] = el as HTMLInputElement"
-            type="file"
-            name="image_16"
-            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-            class="sr-only"
-            tabindex="-1"
-            aria-hidden="true"
-          >
+        <label for="quote-image-1" class="block">Bild 1</label>
+        <input id="quote-image-1" type="file" name="image_1" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-2" class="block">Bild 2</label>
+        <input id="quote-image-2" type="file" name="image_2" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-3" class="block">Bild 3</label>
+        <input id="quote-image-3" type="file" name="image_3" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-4" class="block">Bild 4</label>
+        <input id="quote-image-4" type="file" name="image_4" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-5" class="block">Bild 5</label>
+        <input id="quote-image-5" type="file" name="image_5" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-6" class="block">Bild 6</label>
+        <input id="quote-image-6" type="file" name="image_6" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-7" class="block">Bild 7</label>
+        <input id="quote-image-7" type="file" name="image_7" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-8" class="block">Bild 8</label>
+        <input id="quote-image-8" type="file" name="image_8" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-9" class="block">Bild 9</label>
+        <input id="quote-image-9" type="file" name="image_9" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-10" class="block">Bild 10</label>
+        <input id="quote-image-10" type="file" name="image_10" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-11" class="block">Bild 11</label>
+        <input id="quote-image-11" type="file" name="image_11" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-12" class="block">Bild 12</label>
+        <input id="quote-image-12" type="file" name="image_12" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-13" class="block">Bild 13</label>
+        <input id="quote-image-13" type="file" name="image_13" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-14" class="block">Bild 14</label>
+        <input id="quote-image-14" type="file" name="image_14" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-15" class="block">Bild 15</label>
+        <input id="quote-image-15" type="file" name="image_15" tabindex="-1" aria-hidden="true">
+        <label for="quote-image-16" class="block">Bild 16</label>
+        <input id="quote-image-16" type="file" name="image_16" tabindex="-1" aria-hidden="true">
       </div>
 
       <!-- Display attached files to user (optional) -->
@@ -1014,7 +784,14 @@ watch(canvasMap, async (newCanvases) => {
           Tillagda designbilder
         </p>
         <ul
-          class="w-full px-4 py-2.5 text-sm border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-sm border rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
+          :class="[
+            getFieldError('images')
+              ? 'border-error'
+              : 'border-neutral-300',
+          ]"
+          :aria-invalid="!!getFieldError('images')"
+          :aria-describedby="getFieldError('images') ? 'images-error' : undefined"
           aria-label="Designbilder som biläggs formuläret"
         >
           <li
@@ -1026,6 +803,15 @@ watch(canvasMap, async (newCanvases) => {
           </li>
         </ul>
       </div>
+      <!-- ── Images error (from canvas export) ──────────────── -->
+      <p
+        v-if="getFieldError('images')"
+        id="images-error"
+        class="mt-1.5 text-sm text-error-dark"
+        role="alert"
+      >
+        {{ getFieldError('images') }}
+      </p>
 
       <!-- Display canvas texts to user -->
       <input type="hidden" name="texter" :value="formData.canvasTexts">
