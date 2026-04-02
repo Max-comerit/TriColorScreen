@@ -379,7 +379,7 @@ watch(isChanged, (newValue) => {
           for="contact-image" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ladda upp bilder <span class="text-neutral-600 text-xs sm:text-sm">(max 10 st & max 8 MB totalt)</span>
+          Ladda upp bilder <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 10 st & max 8 MB totalt)</span>
         </label>
         <!-- UI trigger input — no name, never submitted directly -->
         <input
@@ -398,16 +398,26 @@ watch(isChanged, (newValue) => {
         >
         <!-- Hidden named inputs — registered by Netlify's SSG crawler -->
         <div aria-hidden="true" class="sr-only">
-          <input type="file" name="image_1" tabindex="-1" aria-hidden="true">
-          <input type="file" name="image_2" tabindex="-1" aria-hidden="true">
-          <input type="file" name="image_3" tabindex="-1" aria-hidden="true">
-          <input type="file" name="image_4" tabindex="-1" aria-hidden="true">
-          <input type="file" name="image_5" tabindex="-1" aria-hidden="true">
-          <input type="file" name="image_6" tabindex="-1" aria-hidden="true">
-          <input type="file" name="image_7" tabindex="-1" aria-hidden="true">
-          <input type="file" name="image_8" tabindex="-1" aria-hidden="true">
-          <input type="file" name="image_9" tabindex="-1" aria-hidden="true">
-          <input type="file" name="image_10" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-1" class="block">Bild 1</label>
+          <input id="contact-image-1" type="file" name="image_1" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-2" class="block">Bild 2</label>
+          <input id="contact-image-2" type="file" name="image_2" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-3" class="block">Bild 3</label>
+          <input id="contact-image-3" type="file" name="image_3" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-4" class="block">Bild 4</label>
+          <input id="contact-image-4" type="file" name="image_4" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-5" class="block">Bild 5</label>
+          <input id="contact-image-5" type="file" name="image_5" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-6" class="block">Bild 6</label>
+          <input id="contact-image-6" type="file" name="image_6" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-7" class="block">Bild 7</label>
+          <input id="contact-image-7" type="file" name="image_7" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-8" class="block">Bild 8</label>
+          <input id="contact-image-8" type="file" name="image_8" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-9" class="block">Bild 9</label>
+          <input id="contact-image-9" type="file" name="image_9" tabindex="-1" aria-hidden="true">
+          <label for="contact-image-10" class="block">Bild 10</label>
+          <input id="contact-image-10" type="file" name="image_10" tabindex="-1" aria-hidden="true">
         </div>
         <button
           type="button"
