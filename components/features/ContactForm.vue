@@ -3,7 +3,7 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { computed, defineAsyncComponent, markRaw, ref, watch } from 'vue'
-import { useContactForm, MAX_CONTACT_IMAGE_COUNT } from '~/composables/useContactForm'
+import { useContactForm } from '~/composables/useContactForm'
 import type { ContactFormData } from '~/composables/useContactForm'
 import TextButton from '~/components/common/TextButton.vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
@@ -87,7 +87,7 @@ function handleFileChange(event: Event): void {
 
   const existing = formData.value.image ?? []
   const existingNames = new Set(existing.map(f => f.name))
-  const merged = [...existing, ...incoming.filter(f => !existingNames.has(f.name))].slice(0, MAX_CONTACT_IMAGE_COUNT)
+  const merged = [...existing, ...incoming.filter(f => !existingNames.has(f.name))]
 
   formData.value.image = merged
   validateField('image')
@@ -427,10 +427,8 @@ watch(isChanged, (newValue) => {
               ? 'border-error focus:ring-error'
               : 'border-neutral-300 hover:border-neutral-400',
           ]"
-          :disabled="isSubmitting || selectedFileNames.length >= MAX_CONTACT_IMAGE_COUNT"
-          :aria-label="selectedFileNames.length >= MAX_CONTACT_IMAGE_COUNT
-            ? `Max antal filer uppnått (${MAX_CONTACT_IMAGE_COUNT}/${MAX_CONTACT_IMAGE_COUNT})`
-            : fileInputLabel === 'Ingen fil vald' ? 'Välj filer att ladda upp' : `Valda filer: ${fileInputLabel}`"
+          :disabled="isSubmitting"
+          :aria-label="fileInputLabel === 'Ingen fil vald' ? 'Välj filer att ladda upp' : `Valda filer: ${fileInputLabel}`"
           @click="triggerFileInput"
         >
           <span v-if="selectedFileNames.length === 0" class="text-neutral-700">Ingen fil vald</span>
