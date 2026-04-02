@@ -22,7 +22,13 @@ export const MAX_TOTAL_FILE_SIZE = 7 * 1024 * 1024
 export const MAX_CONTACT_IMAGE_COUNT = 10
 
 /** Allowed image MIME types */
-const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
+const ALLOWED_IMAGE_TYPES = [
+  'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml',
+  // Vector / print formats
+  'application/postscript', 'application/eps', 'application/x-eps', 'image/x-eps',
+  'application/illustrator',
+  'application/pdf',
+]
 
 // ===== ZOD SCHEMA =====
 /** Contact form validation schema */
@@ -61,7 +67,7 @@ export const contactFormSchema = z.object({
           if (file.size > MAX_FILE_SIZE) return false
           return ALLOWED_IMAGE_TYPES.includes(file.type)
         },
-        { message: 'Varje fil måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF eller SVG' },
+        { message: 'Varje fil måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF, SVG, EPS, AI eller PDF' },
       ),
     )
     .max(MAX_CONTACT_IMAGE_COUNT, `Du kan bifoga max ${MAX_CONTACT_IMAGE_COUNT} filer`)

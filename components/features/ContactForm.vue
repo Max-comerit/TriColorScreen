@@ -386,7 +386,7 @@ watch(isChanged, (newValue) => {
           id="contact-image"
           ref="fileInputRef"
           type="file"
-          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml"
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml,application/postscript,application/eps,application/x-eps,image/x-eps,application/illustrator,application/pdf,.eps,.ai,.pdf"
           autocomplete="off"
           multiple
           :aria-invalid="!!getFieldError('image')"
