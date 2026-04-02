@@ -10,14 +10,12 @@
 import { z } from 'zod'
 import { toRaw } from 'vue'
 import { useQuoteFormStore } from '~/stores/quoteFormStore'
+import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_QUOTE_IMAGE_COUNT } from '~/constants/ui'
+
+// ===== RE-EXPORTS (consumed by QuoteForm.vue template) =====
+export { MAX_QUOTE_IMAGE_COUNT }
 
 // ===== CONSTANTS =====
-/** Maximum file size: 7MB */
-const MAX_FILE_SIZE = 7 * 1024 * 1024
-
-/** Maximum number of images allowed */
-export const MAX_QUOTE_IMAGE_COUNT = 16
-
 /** Allowed image MIME types */
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
 
@@ -75,7 +73,7 @@ export const quoteFormSchema = z.object({
     .array(z.custom<File>((file) => {
       if (!file) return true // Optional field
       if (!(file instanceof File)) return false
-      if (file.size > MAX_FILE_SIZE) return false
+      if (file.size > FORM_MAX_FILE_SIZE) return false
       return ALLOWED_IMAGE_TYPES.includes(file.type)
     }, {
       message: 'Bilden måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF eller SVG',
@@ -83,6 +81,10 @@ export const quoteFormSchema = z.object({
     .refine(
       (array) => array.length <= MAX_QUOTE_IMAGE_COUNT,
       { message: `Maximalt ${MAX_QUOTE_IMAGE_COUNT} bilder kan bifogas` }
+    )
+    .refine(
+      files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
+      { message: `Den totala filstorleken får inte överstiga ${FORM_MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
     )
     .nullable()
     .optional(),

@@ -10,17 +10,12 @@
 import { z } from 'zod'
 import { toRaw } from 'vue'
 import { useContactFormStore } from '~/stores/contactFormStore'
+import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_CONTACT_IMAGE_COUNT } from '~/constants/ui'
+
+// ===== RE-EXPORTS (consumed by ContactForm.vue template) =====
+export { MAX_CONTACT_IMAGE_COUNT, FORM_MAX_TOTAL_FILE_SIZE as MAX_TOTAL_FILE_SIZE }
 
 // ===== CONSTANTS =====
-/** Maximum file size per file: 7MB */
-const MAX_FILE_SIZE = 7 * 1024 * 1024
-
-/** Maximum total upload size: 7MB (Netlify Forms limit) */
-export const MAX_TOTAL_FILE_SIZE = 7 * 1024 * 1024
-
-/** Maximum number of images allowed */
-export const MAX_CONTACT_IMAGE_COUNT = 10
-
 /** Allowed image MIME types */
 const ALLOWED_IMAGE_TYPES = [
   'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml',
@@ -64,7 +59,7 @@ export const contactFormSchema = z.object({
       z.custom<File>(
         (file) => {
           if (!(file instanceof File)) return false
-          if (file.size > MAX_FILE_SIZE) return false
+          if (file.size > FORM_MAX_FILE_SIZE) return false
           return ALLOWED_IMAGE_TYPES.includes(file.type)
         },
         { message: 'Varje fil måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF, SVG, EPS, AI eller PDF' },
@@ -72,8 +67,8 @@ export const contactFormSchema = z.object({
     )
     .max(MAX_CONTACT_IMAGE_COUNT, `Du kan bifoga max ${MAX_CONTACT_IMAGE_COUNT} filer`)
     .refine(
-      files => files.reduce((sum, f) => sum + f.size, 0) <= MAX_TOTAL_FILE_SIZE,
-      { message: `Den totala filstorleken får inte överstiga ${MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
+      files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
+      { message: `Den totala filstorleken får inte överstiga ${FORM_MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
     )
     .optional()
     .nullable(),
