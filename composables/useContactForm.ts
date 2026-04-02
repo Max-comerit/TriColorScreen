@@ -15,8 +15,8 @@ import { useContactFormStore } from '~/stores/contactFormStore'
 /** Maximum file size per file: 7MB */
 const MAX_FILE_SIZE = 7 * 1024 * 1024
 
-/** Maximum total upload size: 8MB (Netlify Forms limit) */
-export const MAX_TOTAL_FILE_SIZE = 8 * 1024 * 1024
+/** Maximum total upload size: 7MB (Netlify Forms limit) */
+export const MAX_TOTAL_FILE_SIZE = 7 * 1024 * 1024
 
 /** Maximum number of images allowed */
 export const MAX_CONTACT_IMAGE_COUNT = 10
