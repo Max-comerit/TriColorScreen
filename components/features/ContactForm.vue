@@ -3,7 +3,7 @@
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { computed, defineAsyncComponent, markRaw, ref, watch } from 'vue'
-import { useContactForm } from '~/composables/useContactForm'
+import { useContactForm, MAX_CONTACT_IMAGE_COUNT, MAX_TOTAL_FILE_SIZE } from '~/composables/useContactForm'
 import type { ContactFormData } from '~/composables/useContactForm'
 import TextButton from '~/components/common/TextButton.vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
@@ -55,6 +55,15 @@ const fileInputLabel = computed(() => {
  * List of selected file names for vertical display
  */
 const selectedFileNames = computed(() => formData.value.image?.map(f => f.name) ?? [])
+
+/**
+ * Total size of selected files in MB, formatted to one decimal place
+ */
+const totalFileSizeMB = computed(() => {
+  const files = formData.value.image ?? []
+  const totalBytes = files.reduce((sum, f) => sum + f.size, 0)
+  return (totalBytes / 1024 / 1024).toFixed(1)
+})
 /**
  * Handle input blur event and validate field
  */
@@ -87,7 +96,7 @@ function handleFileChange(event: Event): void {
 
   const existing = formData.value.image ?? []
   const existingNames = new Set(existing.map(f => f.name))
-  const merged = [...existing, ...incoming.filter(f => !existingNames.has(f.name))]
+  const merged = [...existing, ...incoming.filter(f => !existingNames.has(f.name))].slice(0, MAX_CONTACT_IMAGE_COUNT)
 
   formData.value.image = merged
   validateField('image')
@@ -379,7 +388,7 @@ watch(isChanged, (newValue) => {
           for="contact-image" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ladda upp bilder <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 10 st & max 8 MB totalt)</span>
+          Ladda upp bilder <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 10 st, max 8 MB totalt)</span>
         </label>
         <!-- UI trigger input — no name, never submitted directly -->
         <input
@@ -427,8 +436,10 @@ watch(isChanged, (newValue) => {
               ? 'border-error focus:ring-error'
               : 'border-neutral-300 hover:border-neutral-400',
           ]"
-          :disabled="isSubmitting"
-          :aria-label="fileInputLabel === 'Ingen fil vald' ? 'Välj filer att ladda upp' : `Valda filer: ${fileInputLabel}`"
+          :disabled="isSubmitting || selectedFileNames.length >= MAX_CONTACT_IMAGE_COUNT"
+          :aria-label="selectedFileNames.length >= MAX_CONTACT_IMAGE_COUNT
+            ? `Max antal filer uppnått (${MAX_CONTACT_IMAGE_COUNT}/${MAX_CONTACT_IMAGE_COUNT})`
+            : fileInputLabel === 'Ingen fil vald' ? 'Välj filer att ladda upp' : `Valda filer: ${fileInputLabel}`"
           @click="triggerFileInput"
         >
           <span v-if="selectedFileNames.length === 0" class="text-neutral-700">Ingen fil vald</span>
@@ -458,6 +469,12 @@ watch(isChanged, (newValue) => {
           role="alert"
         >
           {{ getFieldError('image') }}
+        </p>
+        <p
+          aria-live="polite"
+          class="mt-1.5 text-xs text-neutral-500"
+        >
+          {{ selectedFileNames.length }} / {{ MAX_CONTACT_IMAGE_COUNT }} filer valda · {{ totalFileSizeMB }} / {{ MAX_TOTAL_FILE_SIZE / 1024 / 1024 }} MB<span v-if="selectedFileNames.length >= MAX_CONTACT_IMAGE_COUNT"> — max antal uppnått</span>
         </p>
       </div>
 
@@ -550,15 +567,27 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- Error Message -->
+      <!-- Error Message — validation failures -->
       <div
-        v-if="showErrorMessage && (isError || hasErrors)"
+        v-if="showErrorMessage && hasErrors && !isError"
         role="alert"
         aria-live="assertive"
         class="p-4 bg-error-light border-l-4 border-error rounded-input"
       >
         <p class="font-medium text-error-dark">
-          Ett fel uppstod. Kontrollera dina uppgifter och försök igen.
+          Kontrollera de markerade fälten ovan och rätta till felen.
+        </p>
+      </div>
+
+      <!-- Error Message — server / submission failures -->
+      <div
+        v-if="showErrorMessage && isError"
+        role="alert"
+        aria-live="assertive"
+        class="p-4 bg-error-light border-l-4 border-error rounded-input"
+      >
+        <p class="font-medium text-error-dark">
+          Formuläret kunde inte skickas. Vänligen försök igen senare.
         </p>
       </div>
 

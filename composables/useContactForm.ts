@@ -12,8 +12,11 @@ import { toRaw } from 'vue'
 import { useContactFormStore } from '~/stores/contactFormStore'
 
 // ===== CONSTANTS =====
-/** Maximum file size: 7MB */
+/** Maximum file size per file: 7MB */
 const MAX_FILE_SIZE = 7 * 1024 * 1024
+
+/** Maximum total upload size: 8MB (Netlify Forms limit) */
+export const MAX_TOTAL_FILE_SIZE = 8 * 1024 * 1024
 
 /** Maximum number of images allowed */
 export const MAX_CONTACT_IMAGE_COUNT = 10
@@ -60,6 +63,11 @@ export const contactFormSchema = z.object({
         },
         { message: 'Varje fil måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF eller SVG' },
       ),
+    )
+    .max(MAX_CONTACT_IMAGE_COUNT, `Du kan bifoga max ${MAX_CONTACT_IMAGE_COUNT} filer`)
+    .refine(
+      files => files.reduce((sum, f) => sum + f.size, 0) <= MAX_TOTAL_FILE_SIZE,
+      { message: `Den totala filstorleken får inte överstiga ${MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
     )
     .optional()
     .nullable(),
