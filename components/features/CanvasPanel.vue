@@ -127,7 +127,7 @@ onMounted(async () => {
     const previousWidth = currentCanvasWidth
     const previousHeight = currentCanvasHeight
     if (previousWidth > 0 && (width !== previousWidth || height !== previousHeight)) {
-      const ratio = width !== previousWidth ? width / previousWidth : height / previousHeight
+      const ratio = width / previousWidth 
       for (const canvas of canvasMap.value) {
         if (canvas) void rescaleCanvas(canvas, width, height, ratio)
       }
@@ -256,8 +256,8 @@ watch(
     const canvas = canvasMap.value[newSide]
     if (!canvas) return
     const bg = canvas.backgroundImage as FabricImage | undefined
-    if (bg && bg.width > 0 && bg.height > 0) {
-      canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
+    if (bg && bg.getScaledWidth() > 0 && bg.getScaledHeight() > 0) {
+      canvasStore.setAspectRatio(`${bg.getScaledWidth()} / ${bg.getScaledHeight()}`)
     }
   },
 )
@@ -280,7 +280,7 @@ watch(
 
 <template>
   <ClientOnly>
-    <div ref="canvasWrapperRef" class="relative w-full max-h-[1000px]" :style="{ aspectRatio: canvasStore.aspectRatio }">
+    <div ref="canvasWrapperRef" class="relative w-full h-full" :style="{ aspectRatio: canvasStore.aspectRatio }">
       <div
         v-for="key in canvasStore.sideKeys"
         v-show="activeSide === key"

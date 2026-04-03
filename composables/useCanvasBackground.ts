@@ -25,17 +25,23 @@ export function useCanvasBackground() {
     try {
       const bg = await FabricImage.fromURL(url)
       const w = canvas.getWidth()
-      const h = canvas.getHeight()
-      bg.scaleToWidth(w)
-      bg.scaleToHeight(h)
+      const scale = w / bg.width
+
+      bg.set({
+        originX: 'left',
+        originY: 'top',
+        left: 0,
+        top: 0,
+        scaleX: scale,
+        scaleY: scale,
+      })
       bg.selectable = false
       bg.evented = false
-      bg.set({ originX: 'center', originY: 'center', left: w / 2, top: h / 2 })
       canvas.backgroundImage = bg
       canvas.requestRenderAll()
 
-      if (side === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
-        canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
+      if (side === canvasStore.activeSide && bg.getScaledWidth() > 0 && bg.getScaledHeight() > 0) {
+        canvasStore.setAspectRatio(`${bg.getScaledWidth()} / ${bg.getScaledHeight()}`)
       }
     }
     catch (error) {
