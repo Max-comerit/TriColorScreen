@@ -256,8 +256,8 @@ watch(
     const canvas = canvasMap.value[newSide]
     if (!canvas) return
     const bg = canvas.backgroundImage as FabricImage | undefined
-    if (bg && bg.getScaledWidth() > 0 && bg.getScaledHeight() > 0) {
-      canvasStore.setAspectRatio(`${bg.getScaledWidth()} / ${bg.getScaledHeight()}`)
+    if (bg && bg.width > 0 && bg.height > 0) {
+      canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
     }
   },
 )

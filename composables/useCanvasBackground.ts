@@ -40,8 +40,8 @@ export function useCanvasBackground() {
       canvas.backgroundImage = bg
       canvas.requestRenderAll()
 
-      if (side === canvasStore.activeSide && bg.getScaledWidth() > 0 && bg.getScaledHeight() > 0) {
-        canvasStore.setAspectRatio(`${bg.getScaledWidth()} / ${bg.getScaledHeight()}`)
+      if (side === canvasStore.activeSide && bg.width > 0 && bg.height > 0) {
+        canvasStore.setAspectRatio(`${bg.width} / ${bg.height}`)
       }
     }
     catch (error) {
