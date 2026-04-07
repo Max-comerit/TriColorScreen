@@ -1338,9 +1338,9 @@ import { formatDate, calculateTotal } from '~/utils'
 ```vue
 <script setup lang="ts">
 // Lazy load heavy components
-const HeavyChart = defineAsyncComponent(() => import('~/components/HeavyChart.vue'))
+const HeavyChart = defineAsyncComponent(() => import('~/components/features/HeavyChart.vue'))
 
-const LazyModal = defineAsyncComponent(() => import('~/components/Modal.vue'))
+const LazyModal = defineAsyncComponent(() => import('~/components/base/Modal.vue'))
 </script>
 
 <template>
