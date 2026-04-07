@@ -43,10 +43,10 @@ export function useCanvasRescale() {
     const bg = canvas.backgroundImage as FabricImage | undefined
     if (!bg) return
     bg.set({
+      left: 0,
+      top: 0,
       scaleX: (bg.scaleX ?? 1) * ratio,
       scaleY: (bg.scaleY ?? 1) * ratio,
-      left: (bg.left ?? 0) * ratio,
-      top: (bg.top ?? 0) * ratio,
     })
     bg.setCoords()
   }
