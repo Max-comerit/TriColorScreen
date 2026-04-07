@@ -96,6 +96,8 @@ export function useCanvasText() {
         x: 0,
         y: -0.5,
         offsetY: -50,
+        sizeX: 36,
+        sizeY: 36,
         cursorStyle: 'grab',
         render: createRotateControlRender(getRotateImage()),
         withConnection: true,

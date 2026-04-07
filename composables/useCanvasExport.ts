@@ -97,10 +97,11 @@ function stampSvgExportSize(svgDataUrl: string, width: number, height: number, a
 
 export function useCanvasExport() {
   async function exportMergedImage(canvas: Canvas): Promise<string> {
-    canvas.discardActiveObject()
-    canvas.renderAll() // Ensure canvas is fully rendered before export
+    // Render to an offscreen canvas so the live canvas is never repainted without
+    // selection handles. toCanvasElement sets skipControlsDrawing=true internally,
+    // so the export never includes selection borders — no need to discardActiveObject.
+    const offscreenEl = canvas.toCanvasElement()
 
-    const htmlCanvas = canvas.getElement() as HTMLCanvasElement
     const bg = canvas.backgroundImage as FabricImage | undefined
 
     // When all canvases share a single wrapper div, switching sides forces every
@@ -115,14 +116,14 @@ export function useCanvasExport() {
       const renderedBgW = Math.round(bg.width * (canvasH / bg.height))
       if (renderedBgW < canvasW - 1) {
         const srcX = Math.round((canvasW - renderedBgW) / 2)
-        const offscreen = document.createElement('canvas')
-        offscreen.width = renderedBgW
-        offscreen.height = canvasH
-        const ctx = offscreen.getContext('2d')
+        const cropCanvas = document.createElement('canvas')
+        cropCanvas.width = renderedBgW
+        cropCanvas.height = canvasH
+        const ctx = cropCanvas.getContext('2d')
         if (ctx) {
-          ctx.drawImage(htmlCanvas, srcX, 0, renderedBgW, canvasH, 0, 0, renderedBgW, canvasH)
+          ctx.drawImage(offscreenEl, srcX, 0, renderedBgW, canvasH, 0, 0, renderedBgW, canvasH)
           return new Promise<string>((resolve, reject) => {
-            offscreen.toBlob((blob) => {
+            cropCanvas.toBlob((blob) => {
               if (!blob) return reject(new Error('toBlob returned null'))
               resolve(URL.createObjectURL(blob))
             }, 'image/png')
@@ -131,16 +132,16 @@ export function useCanvasExport() {
       }
     }
 
-    if (typeof htmlCanvas.toBlob === 'function') {
+    if (typeof offscreenEl.toBlob === 'function') {
       return new Promise((resolve, reject) => {
-        htmlCanvas.toBlob((blob) => {
+        offscreenEl.toBlob((blob) => {
           if (!blob) return reject(new Error('toBlob returned null'))
           resolve(URL.createObjectURL(blob))
         }, 'image/png')
       })
     }
 
-    return canvas.toDataURL({ format: 'png', multiplier: 1 })
+    return offscreenEl.toDataURL('image/png')
   }
 
   async function exportImageObjects(canvas: Canvas): Promise<ExportedLayer[]> {
