@@ -141,7 +141,7 @@ export function useCanvasExport() {
       })
     }
 
-    return offscreenEl.toDataURL()
+    return offscreenEl.toDataURL('image/png')
   }
 
   async function exportImageObjects(canvas: Canvas): Promise<ExportedLayer[]> {
