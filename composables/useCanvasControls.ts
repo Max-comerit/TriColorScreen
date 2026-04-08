@@ -1,7 +1,7 @@
 // composables/useCanvasControls.ts
 
-import { FabricImage, Textbox, Control, controlsUtils, util } from 'fabric'
 import type { Canvas, FabricObject } from 'fabric'
+import { FabricImage, Textbox, Control, controlsUtils, util } from 'fabric'
 import { CircularTextbox } from '~/utils/canvasCircularTextbox'
 import { setTextboxTextRadius, toggleObjectZOrder } from '~/utils/canvasUtils'
 import { attachSvgDataUrl } from '~/composables/useCanvasImage'
@@ -14,7 +14,7 @@ import {
 import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
 
 
-interface Transform {
+export interface Transform {
   target?: unknown
 }
 
@@ -61,7 +61,19 @@ export function useCanvasControls() {
     })
   }
 
-  function createDeleteControl(): Control {
+  function createDeleteControl(
+    mouseUpHandler?: (eventData: unknown, transform: Transform) => boolean,
+  ): Control {
+    const defaultHandler = (_eventData: unknown, transform: Transform): boolean => {
+      const target = transform?.target as FabricObject | undefined
+      if (target) {
+        const canvas = target.canvas
+        canvas?.remove(target)
+        canvas?.requestRenderAll()
+      }
+      return true
+    }
+
     return new Control({
       x: 0.5,
       y: -0.5,
@@ -71,15 +83,7 @@ export function useCanvasControls() {
       sizeY: 36,
       cursorStyle: 'pointer',
       render: createTrashControlRender(getTrashCanImage()),
-      mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
-        const target = transform?.target as FabricObject | undefined
-        if (target) {
-          const canvas = target.canvas
-          canvas?.remove(target)
-          canvas?.requestRenderAll()
-        }
-        return true
-      },
+      mouseUpHandler: mouseUpHandler ?? defaultHandler,
     })
   }
 
@@ -227,5 +231,5 @@ export function useCanvasControls() {
     }
   }
 
-  return { applyImageControls, applyTextboxControls, reapplyControls, reapplyControlsToObject, makeControlsReviver }
+  return { createBringToFrontControl, createDeleteControl, createRotateControl, createResizeControl, createWidthControl, applyImageControls, applyTextboxControls, reapplyControls, reapplyControlsToObject, makeControlsReviver }
 }
