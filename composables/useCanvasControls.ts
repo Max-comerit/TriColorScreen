@@ -27,9 +27,123 @@ interface Transform {
  * Use `makeControlsReviver` as the reviver argument to `loadFromJSON` to fix
  * controls immediately per-object as they are added, preventing mouse-event
  * errors on partially-loaded canvases.
+ * 
+ * @returns {Object} Composable with the following functions:
+ *   - applyImageControls: Applies standard controls to FabricImage objects
+ *   - applyTextboxControls: Applies specialized controls to Textbox objects with width-resize
+ *   - reapplyControls: Re-applies controls to all objects on a canvas
+ *   - reapplyControlsToObject: Re-applies controls to a single object
+ *   - makeControlsReviver: Returns a reviver function to pass to loadFromJSON for per-object fixes
  */
 
 export function useCanvasControls() {
+  /**
+   * Factory functions for creating reusable control definitions
+   */
+
+  function createBringToFrontControl(): Control {
+    return new Control({
+      x: -0.5,
+      y: -0.5,
+      offsetX: -12,
+      offsetY: -12,
+      sizeX: 36,
+      sizeY: 36,
+      cursorStyle: 'pointer',
+      render: createBringToFrontControlRender(getBringToFrontImage()),
+      mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
+        const target = transform?.target as FabricObject | undefined
+        if (target && target.canvas) {
+          toggleObjectZOrder(target, target.canvas)
+        }
+        return true
+      },
+    })
+  }
+
+  function createDeleteControl(): Control {
+    return new Control({
+      x: 0.5,
+      y: -0.5,
+      offsetX: 12,
+      offsetY: -12,
+      sizeX: 36,
+      sizeY: 36,
+      cursorStyle: 'pointer',
+      render: createTrashControlRender(getTrashCanImage()),
+      mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
+        const target = transform?.target as FabricObject | undefined
+        if (target) {
+          const canvas = target.canvas
+          canvas?.remove(target)
+          canvas?.requestRenderAll()
+        }
+        return true
+      },
+    })
+  }
+
+  function createRotateControl(): Control {
+    return new Control({
+      x: 0,
+      y: -0.5,
+      offsetX: 0,
+      offsetY: -50,
+      sizeX: 36,
+      sizeY: 36,
+      cursorStyle: 'grab',
+      render: createRotateControlRender(getRotateImage()),
+      actionHandler: controlsUtils.rotationWithSnapping,
+      withConnection: true,
+    })
+  }
+
+  function createResizeControl(): Control {
+    return new Control({
+      x: 0.5,
+      y: 0.5,
+      offsetX: 12,
+      offsetY: 12,
+      sizeX: 36,
+      sizeY: 36,
+      cursorStyle: 'nwse-resize',
+      render: createResizeControlRender(getResizeImage()),
+      withConnection: false,
+      actionHandler: controlsUtils.scalingEqually,
+    })
+  }
+
+  function createWidthResizeControl(): Control {
+    return new Control({
+      x: -0.5,
+      y: 0.5,
+      offsetX: -12,
+      offsetY: 12,
+      sizeX: 36,
+      sizeY: 36,
+      cursorStyle: 'ew-resize',
+      render: (ctx, left, top, _styleOverride, fabricObject) => {
+        const size = 24
+        const img = getResizeImage()
+        ctx.save()
+        ctx.translate(left, top)
+        ctx.fillStyle = 'white'
+        ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
+        ctx.beginPath()
+        ctx.arc(0, 0, (3 * size) / 4, 0, Math.PI * 2)
+        ctx.fill()
+
+        if (img.complete) {
+          ctx.drawImage(img, -size / 2, -size / 2, size, size)
+        }
+
+        ctx.restore()
+      },
+      withConnection: true,
+      actionHandler: controlsUtils.changeObjectWidth,
+    })
+  }
+
 
   /**
    * Apply custom controls and appearance to a FabricImage.
@@ -51,72 +165,13 @@ export function useCanvasControls() {
     // Disable caching to ensure controls are always rendered
     image.objectCaching = false
 
-    // Add custom control for bring to front
-    image.controls.bringToFrontControl = new Control({
-      x: -0.5,
-      y: -0.5,
-      offsetX: -12,
-      offsetY: -12,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'pointer',
-      render: createBringToFrontControlRender(getBringToFrontImage()),
-      mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
-        const target = transform?.target as FabricImage | undefined
-        if (target && target.canvas) {
-          toggleObjectZOrder(target, target.canvas)
-        }
-        return true
-      },
-    })
-
-    // Add custom control for delete
-    image.controls.deleteControl = new Control({
-      x: 0.5,
-      y: -0.5,
-      offsetX: 12,
-      offsetY: -12,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'pointer',
-      render: createTrashControlRender(getTrashCanImage()),
-      mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
-        const target = transform?.target as FabricImage | undefined
-        if (target) {
-          const canvas = target.canvas
-          canvas?.remove(target)
-          canvas?.requestRenderAll()
-        }
-        return true
-      },
-    })
-    // Add custom control for rotation
-    image.controls.rotateControl = new Control({
-      x: 0,
-      y: -0.5,
-      offsetX: 0,
-      offsetY: -50,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'grab',
-      render: createRotateControlRender(getRotateImage()),
-      actionHandler: controlsUtils.rotationWithSnapping,
-      withConnection: true,
-    })
-
-    // Add custom control for resize
-    image.controls.resizeControl = new Control({
-      x: 0.5,
-      y: 0.5,
-      offsetX: 12,
-      offsetY: 12,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'nwse-resize',
-      render: createResizeControlRender(getResizeImage()),
-      withConnection: false,
-      actionHandler: controlsUtils.scalingEqually,
-    })
+    // Add custom controls using factory functions
+    image.controls = {
+      bringToFrontControl: createBringToFrontControl(),
+      deleteControl: createDeleteControl(),
+      rotateControl: createRotateControl(),
+      resizeControl: createResizeControl(),
+    }
   }
 
   /**
@@ -125,90 +180,11 @@ export function useCanvasControls() {
    */
   function applyTextboxControls(textbox: Textbox): void {
     textbox.controls = {
-      bringToFrontIcon: new Control({
-        x: -0.5,
-        y: -0.5,
-        offsetX: -12,
-        offsetY: -12,
-        sizeX: 36,
-        sizeY: 36,
-        cursorStyle: 'pointer',
-        render: createBringToFrontControlRender(getBringToFrontImage()),
-        mouseUpHandler: (eventData, transform) => {
-          const target = transform?.target
-          if (target && target.canvas) {
-            toggleObjectZOrder(target, target.canvas)
-          }
-        }
-      }),
-      scaleIcon: new Control({
-        x: 0.5,
-        y: 0.5,
-        offsetX: 12,
-        offsetY: 12,
-        sizeX: 36,
-        sizeY: 36,
-        render: createResizeControlRender(getResizeImage()),
-        cursorStyle: 'nwse-resize',
-        actionHandler: controlsUtils.scalingEqually,
-      }),
-      deleteIcon: new Control({
-        x: 0.5,
-        y: -0.5,
-        offsetX: 12,
-        offsetY: -12,
-        sizeX: 36,
-        sizeY: 36,
-        cursorStyle: 'pointer',
-        render: createTrashControlRender(getTrashCanImage()),
-        mouseUpHandler: (eventData, transform) => {
-          const target = transform?.target
-          if (target) {
-            const canvas = target.canvas
-            canvas?.remove(target)
-            canvas?.requestRenderAll()
-          }
-        }
-      }),
-      rotateIcon: new Control({
-        x: 0,
-        y: -0.5,
-        offsetY: -50,
-        sizeX: 36,
-        sizeY: 36,
-        cursorStyle: 'grab',
-        render: createRotateControlRender(getRotateImage()),
-        withConnection: true,
-        actionHandler: controlsUtils.rotationWithSnapping,
-      }),
-      resize: new Control({
-        x: -0.5,
-        y: 0.5,
-        cursorStyle: 'ew-resize',
-        offsetX: -12,
-        offsetY: 12,
-        sizeX: 36,
-        sizeY: 36,
-        render: (ctx, left, top, _styleOverride, fabricObject) => {
-          const size = 24
-          const img = getResizeImage()
-          ctx.save()
-          ctx.translate(left, top)
-          ctx.fillStyle = 'white'
-          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
-          ctx.beginPath()
-          ctx.arc(0, 0, (3 * size) / 4, 0, Math.PI * 2)
-          ctx.fill()
-
-          if (img.complete) {
-            ctx.drawImage(img, -size / 2, -size / 2, size, size)
-          }
-
-          ctx.restore()
-        },
-        withConnection: true,
-        actionHandler: controlsUtils.changeObjectWidth,
-      }),
+      bringToFrontIcon: createBringToFrontControl(),
+      deleteIcon: createDeleteControl(),
+      rotateIcon: createRotateControl(),
+      scaleIcon: createResizeControl(),
+      resize: createWidthResizeControl(),
     }
   }
 
