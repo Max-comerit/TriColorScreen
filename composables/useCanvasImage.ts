@@ -1,19 +1,8 @@
 // composables/useCanvasImage.ts
 
 import type { Canvas } from 'fabric'
-import { FabricImage, Control, controlsUtils } from 'fabric'
-import {
-  createResizeControlRender,
-  createRotateControlRender,
-  createTrashControlRender,
-  createBringToFrontControlRender,
-} from '~/utils/canvasControlRenders'
-import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
-import { toggleObjectZOrder } from '~/utils/canvasUtils'
-
-interface Transform {
-  target?: unknown
-}
+import { FabricImage } from 'fabric'
+import { useCanvasControls } from '~/composables/useCanvasControls'
 
 /** FabricImage extended with an optional persisted SVG source URL. */
 type FabricImageWithSvg = FabricImage & { svgDataUrl?: string }
@@ -108,95 +97,8 @@ function readSvgAsDataUrl(file: File): Promise<string> {
 }
 
 
-
 export function useCanvasImage() {
-  /**
-   * Apply custom controls and appearance to a FabricImage.
-   * Called both when first adding and when restoring from JSON.
-   */
-  function applyImageControls(image: FabricImage): void {
-    // Clear default controls
-    image.controls = {}
-    // Configure the image
-    image.selectable = true
-    image.hasControls = true
-    image.hasBorders = true
-
-    // Add a blue dashed border for better visibility when selected
-    image.borderColor = 'blue'
-    image.borderScaleFactor = 1
-    image.borderDashArray = [5, 5]
-
-    // Disable caching to ensure controls are always rendered
-    image.objectCaching = false
-
-    // Add custom control for bring to front
-    image.controls.bringToFrontControl = new Control({
-      x: -0.5,
-      y: -0.5,
-      offsetX: -12,
-      offsetY: -12,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'pointer',
-      render: createBringToFrontControlRender(getBringToFrontImage()),
-      mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
-        const target = transform?.target as FabricImage | undefined
-        if (target && target.canvas) {
-          toggleObjectZOrder(target, target.canvas)
-        }
-        return true
-      },
-    })
-
-    // Add custom control for delete
-    image.controls.deleteControl = new Control({
-      x: 0.5,
-      y: -0.5,
-      offsetX: 12,
-      offsetY: -12,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'pointer',
-      render: createTrashControlRender(getTrashCanImage()),
-      mouseUpHandler: (_eventData: unknown, transform: Transform): boolean => {
-        const target = transform?.target as FabricImage | undefined
-        if (target) {
-          const canvas = target.canvas
-          canvas?.remove(target)
-          canvas?.requestRenderAll()
-        }
-        return true
-      },
-    })
-    // Add custom control for rotation
-    image.controls.rotateControl = new Control({
-      x: 0,
-      y: -0.5,
-      offsetX: 0,
-      offsetY: -50,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'grab',
-      render: createRotateControlRender(getRotateImage()),
-      actionHandler: controlsUtils.rotationWithSnapping,
-      withConnection: true,
-    })
-
-    // Add custom control for resize
-    image.controls.resizeControl = new Control({
-      x: 0.5,
-      y: 0.5,
-      offsetX: 12,
-      offsetY: 12,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'nwse-resize',
-      render: createResizeControlRender(getResizeImage()),
-      withConnection: false,
-      actionHandler: controlsUtils.scalingEqually,
-    })
-  }
+  const { applyImageControls } = useCanvasControls()
 
   /**
    * Add a custom image to the canvas from a File object
@@ -253,9 +155,6 @@ export function useCanvasImage() {
   }
 
   return {
-    applyImageControls,
     addImageToCanvas,
   }
 }
-
-
