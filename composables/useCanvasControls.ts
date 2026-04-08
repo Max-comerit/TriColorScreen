@@ -198,7 +198,7 @@ export function useCanvasControls() {
     } else if (obj instanceof CircularTextbox) {
       // CircularTextbox must be checked before Textbox since it extends it.
       // Cast to Textbox because CircularTextbox.toObject uses @ts-expect-error to work
-      // around Fabric's complex generic constraint — the runtime behaviour is correct.
+      // around Fabric's complex generic constraint — the runtime behavior is correct.
       applyTextboxControls(obj as unknown as Textbox)
       // Re-apply textRadius after applyTextboxControls resets all controls,
       // to restore correct path and resize control visibility

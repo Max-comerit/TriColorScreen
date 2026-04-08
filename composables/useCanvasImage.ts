@@ -75,7 +75,7 @@ function readFileAsDataUrl(file: File): Promise<string> {
 }
 
 /**
- * Reads an SVG file as text, normalises its dimensions, and resolves with
+ * Reads an SVG file as text, normalizes its dimensions, and resolves with
  * a percent-encoded `data:image/svg+xml` URL ready for Fabric.js.
  * Reading as text (instead of a base64 data URL) is required so the SVG
  * markup can be parsed and patched by normalizeSvgDimensions.
@@ -113,7 +113,7 @@ export function useCanvasImage() {
     }
 
     try {
-      // SVGs without explicit width/height must be normalised first so Fabric.js
+      // SVGs without explicit width/height must be normalized first so Fabric.js
       // can determine natural dimensions and centre the object correctly.
       const isSvg = file.type === 'image/svg+xml'
       const dataUrl = isSvg
@@ -124,7 +124,7 @@ export function useCanvasImage() {
       const image = await FabricImage.fromURL(dataUrl)
 
       // For SVGs, attach the source data URL so the export pipeline can
-      // return the original vector instead of a rasterised PNG.
+      // return the original vector instead of a rasterized PNG.
       if (isSvg) {
         attachSvgDataUrl(image, dataUrl)
       }
