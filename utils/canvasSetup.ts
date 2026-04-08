@@ -15,7 +15,7 @@ import { getRotateImage, getTrashCanImage, getResizeImage } from './customImageI
  */
 export function configureActiveSelectionDefaults(): void {
   ActiveSelection.ownDefaults.controls = {
-    deleteIcon: new Control({
+    deleteControl: new Control({
       x: 0.5,
       y: -0.5,
       offsetX: 12,
@@ -36,7 +36,7 @@ export function configureActiveSelectionDefaults(): void {
         }
       },
     }),
-    rotateIcon: new Control({
+    rotateControl: new Control({
       x: 0,
       y: -0.5,
       offsetY: -50,

@@ -128,7 +128,7 @@ export function setTextboxTextRadius(textbox: CircularTextbox, radius: number): 
   }
 
   textbox.initDimensions()
-  textbox.controls.resize.visible = !nextHasPath
+  textbox.controls.widthControl.visible = !nextHasPath
   textbox.setPositionByOrigin(center, 'center', 'center')
   textbox.setCoords()
 }

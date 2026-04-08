@@ -113,7 +113,7 @@ export function useCanvasControls() {
     })
   }
 
-  function createWidthResizeControl(): Control {
+  function createWidthControl(): Control {
     return new Control({
       x: -0.5,
       y: 0.5,
@@ -180,11 +180,11 @@ export function useCanvasControls() {
    */
   function applyTextboxControls(textbox: Textbox): void {
     textbox.controls = {
-      bringToFrontIcon: createBringToFrontControl(),
-      deleteIcon: createDeleteControl(),
-      rotateIcon: createRotateControl(),
-      scaleIcon: createResizeControl(),
-      resize: createWidthResizeControl(),
+      bringToFrontControl: createBringToFrontControl(),
+      deleteControl: createDeleteControl(),
+      rotateControl: createRotateControl(),
+      resizeControl: createResizeControl(),
+      widthControl: createWidthControl(),
     }
   }
 
