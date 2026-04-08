@@ -1,16 +1,10 @@
 // composables/useCanvasText.ts
 
-import {  Control, controlsUtils, util } from 'fabric'
 import type { Textbox } from 'fabric'
-import {
-  createResizeControlRender,
-  createRotateControlRender,
-  createTrashControlRender,
-  createBringToFrontControlRender,
-} from '~/utils/canvasControlRenders'
-import { getResizeImage, getRotateImage, getTrashCanImage, getBringToFrontImage } from '@/utils/customImageIcons'
-import { toggleObjectZOrder, setTextboxTextRadius } from '~/utils/canvasUtils'
+
+import { setTextboxTextRadius } from '~/utils/canvasUtils'
 import { CircularTextbox } from '~/utils/canvasCircularTextbox'
+import { useCanvasControls } from '~/composables/useCanvasControls'
 
 interface FabricCanvasLike {
   add: (object: CircularTextbox) => void
@@ -41,98 +35,7 @@ const DEFAULT_TEXT_RADIUS = 0
 const DEFAULT_TEXT_WIDTH = 360
 
 export function useCanvasText() {
-  /**
-   * Apply custom controls to an existing Textbox.
-   * Called both when first adding and when restoring from JSON.
-   */
-  function applyTextboxControls(textbox: Textbox): void {
-    textbox.controls = {
-      bringToFrontIcon: new Control({
-        x: -0.5,
-        y: -0.5,
-        offsetX: -12,
-        offsetY: -12,
-        sizeX: 36,
-        sizeY: 36,
-        cursorStyle: 'pointer',
-        render: createBringToFrontControlRender(getBringToFrontImage()),
-        mouseUpHandler: (eventData, transform) => {
-          const target = transform?.target
-          if (target && target.canvas) {
-            toggleObjectZOrder(target, target.canvas)
-          }
-        }
-      }),
-      scaleIcon: new Control({
-        x: 0.5,
-        y: 0.5,
-        offsetX: 12,
-        offsetY: 12,
-        sizeX: 36,
-        sizeY: 36,
-        render: createResizeControlRender(getResizeImage()),
-        cursorStyle: 'nwse-resize',
-        actionHandler: controlsUtils.scalingEqually,
-      }),
-      deleteIcon: new Control({
-        x: 0.5,
-        y: -0.5,
-        offsetX: 12,
-        offsetY: -12,
-        sizeX: 36,
-        sizeY: 36,
-        cursorStyle: 'pointer',
-        render: createTrashControlRender(getTrashCanImage()),
-        mouseUpHandler: (eventData, transform) => {
-          const target = transform?.target
-          if (target) {
-            const canvas = target.canvas
-            canvas?.remove(target)
-            canvas?.requestRenderAll()
-          }
-        }
-      }),
-      rotateIcon: new Control({
-        x: 0,
-        y: -0.5,
-        offsetY: -50,
-        sizeX: 36,
-        sizeY: 36,
-        cursorStyle: 'grab',
-        render: createRotateControlRender(getRotateImage()),
-        withConnection: true,
-        actionHandler: controlsUtils.rotationWithSnapping,
-      }),
-      resize: new Control({
-        x: -0.5,
-        y: 0.5,
-        cursorStyle: 'ew-resize',
-        offsetX: -12,
-        offsetY: 12,
-        sizeX: 36,
-        sizeY: 36,
-        render: (ctx, left, top, _styleOverride, fabricObject) => {
-          const size = 24
-          const img = getResizeImage()
-          ctx.save()
-          ctx.translate(left, top)
-          ctx.fillStyle = 'white'
-          ctx.rotate(util.degreesToRadians(fabricObject.angle || 0))
-          ctx.beginPath()
-          ctx.arc(0, 0, (3 * size) / 4, 0, Math.PI * 2)
-          ctx.fill()
-
-          if (img.complete) {
-            ctx.drawImage(img, -size / 2, -size / 2, size, size)
-          }
-
-          ctx.restore()
-        },
-        withConnection: true,
-        actionHandler: controlsUtils.changeObjectWidth,
-      }),
-    }
-  }
+  const { applyTextboxControls } = useCanvasControls()
 
   /**
    * Adds a textbox to a Fabric canvas (accepts a Vue Ref<Canvas | null>).
@@ -175,7 +78,6 @@ export function useCanvasText() {
   }
 
   return {
-    applyTextboxControls,
     addTextToCanvas,
   }
 }
