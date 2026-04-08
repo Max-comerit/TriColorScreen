@@ -1,12 +1,9 @@
 // utils/canvasSetup.ts
 
-import { ActiveSelection, Control, controlsUtils } from 'fabric'
-import {
-  createRotateControlRender,
-  createTrashControlRender,
-  createResizeControlRender,
-} from './canvasControlRenders'
-import { getRotateImage, getTrashCanImage, getResizeImage } from './customImageIcons'
+import { ActiveSelection } from 'fabric'
+import { useCanvasControls } from '~/composables/useCanvasControls'
+
+const { createDeleteControl, createRotateControl, createResizeControl } = useCanvasControls()
 
 /**
  * Configures Fabric's ActiveSelection (box/multi-select) with custom controls:
@@ -14,50 +11,23 @@ import { getRotateImage, getTrashCanImage, getResizeImage } from './customImageI
  * Call once before any canvas is initialized.
  */
 export function configureActiveSelectionDefaults(): void {
+  const deleteActiveSelectionHandler = (_eventData: unknown, transform: Transform): boolean => {
+    const target = transform.target as ActiveSelection | undefined
+    if (target) {
+      const c = target.canvas
+      if (c) {
+        target.getObjects().forEach(obj => c.remove(obj))
+        c.discardActiveObject()
+        c.requestRenderAll()
+      }
+    }
+    return true
+  }
+
   ActiveSelection.ownDefaults.controls = {
-    deleteIcon: new Control({
-      x: 0.5,
-      y: -0.5,
-      offsetX: 12,
-      offsetY: -12,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'pointer',
-      render: createTrashControlRender(getTrashCanImage()),
-      mouseUpHandler: (_eventData, transform) => {
-        const target = transform?.target as ActiveSelection | undefined
-        if (target) {
-          const c = target.canvas
-          if (c) {
-            target.getObjects().forEach(obj => c.remove(obj))
-            c.discardActiveObject()
-            c.requestRenderAll()
-          }
-        }
-      },
-    }),
-    rotateIcon: new Control({
-      x: 0,
-      y: -0.5,
-      offsetY: -50,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'pointer',
-      render: createRotateControlRender(getRotateImage()),
-      withConnection: true,
-      actionHandler: controlsUtils.rotationWithSnapping,
-    }),
-    resizeIcon: new Control({
-      x: 0.5,
-      y: 0.5,
-      offsetX: 12,
-      offsetY: 12,
-      sizeX: 36,
-      sizeY: 36,
-      cursorStyle: 'nwse-resize',
-      render: createResizeControlRender(getResizeImage()),
-      actionHandler: controlsUtils.scalingEqually,
-    }),
+    deleteControl: createDeleteControl(deleteActiveSelectionHandler),
+    rotateControl: createRotateControl(),
+    resizeControl: createResizeControl()
   }
   ActiveSelection.ownDefaults.borderColor = 'blue'
   ActiveSelection.ownDefaults.borderScaleFactor = 1
