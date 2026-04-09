@@ -174,6 +174,7 @@ function applyToAll(updater: (tb: Textbox) => void) {
     updater(tb)
     tb.initDimensions()
     tb.setCoords()
+    props.canvas.fire('object:modified', { target: tb })
   }
   props.canvas.requestRenderAll()
   canvasStore.notifyTextControlsChanged()
