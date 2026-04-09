@@ -1,6 +1,7 @@
 // utils/canvasSetup.ts
 
 import { ActiveSelection } from 'fabric'
+import type { Transform } from '~/composables/useCanvasControls'
 import { useCanvasControls } from '~/composables/useCanvasControls'
 
 const { createDeleteControl, createRotateControl, createResizeControl } = useCanvasControls()
