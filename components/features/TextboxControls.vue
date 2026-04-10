@@ -366,7 +366,7 @@ watch(() => props.canvas, (newCanvas, oldCanvas) => {
           aria-label="Apply circular text effect"
           @click="updateRadius"
         >
-          <img src="@/assets/images/custom-design/circular-text-icon.svg?url" alt="" class="h-7 w-7" >
+          <img src="@/assets/images/custom-design/textile-advertisement-decor/circular-text-icon.svg?url" alt="" class="h-7 w-7" >
         </button>
 
       </div>

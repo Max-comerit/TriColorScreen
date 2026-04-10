@@ -8,7 +8,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/BebasNeue-Regular.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/BebasNeue-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -16,7 +16,7 @@
   font-style: normal;
   font-weight: 400 700;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/DancingScript[wght].woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/DancingScript[wght].woff2') format('woff2');
 }
 
 @font-face {
@@ -24,7 +24,7 @@
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/Inter[wght].woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/Inter[wght].woff2') format('woff2');
 }
 
 @font-face {
@@ -32,7 +32,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/LobsterTwo-Regular.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/LobsterTwo-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -40,7 +40,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/LobsterTwo-Bold.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/LobsterTwo-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -48,7 +48,7 @@
   font-style: normal;
   font-weight: 400 700;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/Lora[wght].woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/Lora[wght].woff2') format('woff2');
 }
 
 @font-face {
@@ -56,7 +56,7 @@
   font-style: normal;
   font-weight: 300 800;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/OpenSans[wght].woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/OpenSans[wght].woff2') format('woff2');
 }
 
 @font-face {
@@ -64,7 +64,7 @@
   font-style: normal;
   font-weight: 400 700;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/Oswald[wght].woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/Oswald[wght].woff2') format('woff2');
 }
 
 @font-face {
@@ -72,7 +72,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/PTSerif-Regular.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/PTSerif-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -80,7 +80,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/PTSerif-Bold.woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/PTSerif-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -88,7 +88,7 @@
   font-style: normal;
   font-weight: 400 900;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/PlayfairDisplay[wght].woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/PlayfairDisplay[wght].woff2') format('woff2');
 }
 
 @font-face {
@@ -96,5 +96,5 @@
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url('~/assets/fonts/custom-design/Roboto[wght].woff2') format('woff2');
+  src: url('~/assets/fonts/custom-design/textile-advertisement-decor/Roboto[wght].woff2') format('woff2');
 }

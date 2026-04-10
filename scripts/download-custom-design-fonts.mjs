@@ -192,7 +192,7 @@ async function main() {
 
   // Group by family so the declarations are tidy
   for (const { face, file2, weightRange } of downloaded) {
-    const src = `url('~/assets/fonts/custom-design/${file2}') format('woff2')`
+    const src = `url('~/assets/fonts/custom-design/textile-advertisement-decor/${file2}') format('woff2')`
 
     lines.push('@font-face {')
     lines.push(`  font-family: '${face.family}';`)
