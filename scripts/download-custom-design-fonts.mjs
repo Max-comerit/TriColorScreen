@@ -8,7 +8,7 @@ import https from 'https'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
-const FONTS_DIR = join(ROOT, 'assets', 'fonts', 'custom-design')
+const FONTS_DIR = join(ROOT, 'assets', 'fonts', 'custom-design', 'textile-advertisement-decor')
 const CSS_OUT  = join(ROOT, 'assets', 'css', 'custom-design-fonts.css')
 
 mkdirSync(FONTS_DIR, { recursive: true })
