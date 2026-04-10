@@ -1,4 +1,4 @@
-// pages/custom-design.vue
+// pages/custom-design/textile-advertisement-decor.vue
 
 <script setup lang="ts">
 // ===== IMPORTS =====
@@ -33,7 +33,7 @@ useHead({
       property: 'og:description',
       content: 'Skapa unika trikåprodukter med eget tryck. Använd vårt designverktyg för att ladda upp bilder och text. Professionell produktion av textiltryck och brodyr.',
     },
-    { property: 'og:url', content: `${siteUrl}/custom-design` },
+    { property: 'og:url', content: `${siteUrl}/custom-design/textile-advertisement-decor` },
     { property: 'og:image', content: `${siteUrl}/images/custom-design/hero-v2.jpg` },
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
