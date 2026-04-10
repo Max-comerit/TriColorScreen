@@ -44,7 +44,14 @@ export const useNavigationStore = defineStore('navigation', {
           { label: 'EVENT & MÄSSOR', href: '/services/event-advertisement' },
         ],
       },
-      { label: 'DESIGNA SJÄLV', href: '/custom-design' },
+      {
+        label: 'DESIGNA SJÄLV',
+        href: '/custom-design',
+        children: [
+          { label: 'TEXTIL, REKLAM & BILDEKOR', href: '/custom-design/textile-advertisement-decor' },
+          { label: 'TRYCKSAKER', href: '/custom-design/printed-matter' },
+        ],
+      },
       { label: 'OM OSS', href: '/about' },
       { label: 'KONTAKT', href: '/contact' },
     ],

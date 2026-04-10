@@ -80,16 +80,19 @@ TriColorScreen/
 │   │   └── custom-design-fonts.css  # Custom Design tool fonts
 │   ├── fonts/              # Local font files
 │   │   └── custom-design/  # Fonts used by the Custom Design tool
+│   │       └── textile-advertisement-decor/  # Fonts for Textil, Reklam & Bildekor page
 │   ├── images/             # Image assets organised by feature
 │   │   ├── brag-bar/       # Brag bar component images
 │   │   ├── common/         # Shared/generic images
 │   │   ├── custom-design/  # Custom Design tool images
+│   │   │   └── textile-advertisement-decor/  # Images for Textil, Reklam & Bildekor page
 │   │   ├── footer/         # Footer component images
 │   │   └── icons/          # Icon assets
 │   └── json/               # Static JSON data organised by page
 │       ├── about/          # About page data
 │       ├── contact/        # Contact page data
 │       ├── custom-design/  # Custom Design tool data
+│       │   └── textile-advertisement-decor/  # Data for Textil, Reklam & Bildekor page
 │       ├── index/          # Home page data
 │       └── services/       # Services page data
 ├── components/             # Vue components
@@ -103,7 +106,9 @@ TriColorScreen/
 ├── pages/                  # File-based routing pages
 │   ├── about.vue           # About page
 │   ├── contact.vue         # Contact page
-│   ├── custom-design.vue   # Custom Design tool page
+│   ├── custom-design/      # Custom Design section
+│   │   ├── textile-advertisement-decor.vue  # Textil, Reklam & Bildekor page
+│   │   └── printed-matter.vue              # Trycksaker page
 │   ├── index.vue           # Home page
 │   └── services/           # Services pages
 ├── plugins/                # Nuxt plugins
@@ -112,6 +117,7 @@ TriColorScreen/
 │   │   ├── about/          # About page images
 │   │   ├── contact/        # Contact page images
 │   │   ├── custom-design/  # Custom design images
+│   │   │   └── textile-advertisement-decor/  # Images for Textil, Reklam & Bildekor page
 │   │   ├── header/         # Header images
 │   │   ├── index/          # Home page images
 │   │   ├── services/       # Services page images

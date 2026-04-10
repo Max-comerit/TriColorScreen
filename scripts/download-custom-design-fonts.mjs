@@ -8,7 +8,7 @@ import https from 'https'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
-const FONTS_DIR = join(ROOT, 'assets', 'fonts', 'custom-design')
+const FONTS_DIR = join(ROOT, 'assets', 'fonts', 'custom-design', 'textile-advertisement-decor')
 const CSS_OUT  = join(ROOT, 'assets', 'css', 'custom-design-fonts.css')
 
 mkdirSync(FONTS_DIR, { recursive: true })
@@ -192,7 +192,7 @@ async function main() {
 
   // Group by family so the declarations are tidy
   for (const { face, file2, weightRange } of downloaded) {
-    const src = `url('~/assets/fonts/custom-design/${file2}') format('woff2')`
+    const src = `url('~/assets/fonts/custom-design/textile-advertisement-decor/${file2}') format('woff2')`
 
     lines.push('@font-face {')
     lines.push(`  font-family: '${face.family}';`)

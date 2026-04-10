@@ -1,7 +1,7 @@
-import resizeIcon from '@/assets/images/custom-design/resize.svg?url'
-import rotateIcon from '@/assets/images/custom-design/rotate.svg?url'
-import trashCanIcon from '@/assets/images/custom-design/trash-can.svg?url'
-import bringToFrontIcon from '@/assets/images/custom-design/bring-to-front.svg?url'
+import resizeIcon from '@/assets/images/custom-design/textile-advertisement-decor/resize.svg?url'
+import rotateIcon from '@/assets/images/custom-design/textile-advertisement-decor/rotate.svg?url'
+import trashCanIcon from '@/assets/images/custom-design/textile-advertisement-decor/trash-can.svg?url'
+import bringToFrontIcon from '@/assets/images/custom-design/textile-advertisement-decor/bring-to-front.svg?url'
 
 // Create images on client side only to avoid SSR issues
 const trashCanImage = typeof window !== 'undefined' ? new Image() : null

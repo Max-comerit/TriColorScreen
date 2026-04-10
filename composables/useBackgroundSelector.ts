@@ -2,7 +2,7 @@
 
 // 1. Imports
 import { useCanvasStore } from '@/stores/canvasStore'
-import rawBackgroundOptions from '~/assets/json/custom-design/products.json'
+import rawBackgroundOptions from '~/assets/json/custom-design/textile-advertisement-decor/products.json'
 import type { ProductCategories } from '~/types/BackgroundSelector'
 
 const PRODUCT_CATEGORIES_OBJ = rawBackgroundOptions as ProductCategories
