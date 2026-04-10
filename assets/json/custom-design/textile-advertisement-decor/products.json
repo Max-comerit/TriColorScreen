@@ -331,15 +331,6 @@
       "label": "Reklam",
       "products": [
         {
-          "label": "Affisch",
-          "sides": [
-            {
-              "label": "Fram",
-              "src": "/images/custom-design/textile-advertisement-decor/advertisement/poster.jpg"
-            }
-          ]
-        },
-        {
           "label": "Banderoll",
           "sides": [
             {
