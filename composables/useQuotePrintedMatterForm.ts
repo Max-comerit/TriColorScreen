@@ -13,7 +13,18 @@ import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_QUOTE_PRINTED_MATTER_
 
 // ===== CONSTANTS =====
 /** Allowed file MIME types */
-const ALLOWED_FILE_TYPES = ['application/pdf']
+const ALLOWED_FILE_TYPES = [
+  'application/pdf', // PDF
+  'application/postscript', // AI and EPS
+  'application/illustrator', // AI
+  'image/tiff', // TIFF
+  'image/vnd.adobe.photoshop', // PSD
+  'application/x-photoshop', // PSD (alternative)
+  'image/jpeg', // JPEG
+  'image/jpg', // JPEG (alternative)
+  'image/png', // PNG
+  'image/x-png', // PNG (alternative)
+]
 
 // ===== ZOD SCHEMA =====
 /** Printed matter form validation schema */
@@ -75,8 +86,12 @@ export const quotePrintedMatterFormSchema = z.object({
       if (file.size > FORM_MAX_FILE_SIZE) return false
       return ALLOWED_FILE_TYPES.includes(file.type)
     }, {
-      message: 'Filen måste vara mindre än 7MB och i formatet PDF',
+      message: 'Filen måste vara mindre än 7MB och i formatet PDF, AI, EPS, TIFF, PSD, JPEG eller PNG',
     }))
+    .refine(
+      (array) => array.length >= 1,
+      { message: 'Du måste bifoga minst en fil' }
+    )
     .refine(
       (array) => array.length <= MAX_QUOTE_PRINTED_MATTER_FILE_COUNT,
       { message: `Du kan bifoga max ${MAX_QUOTE_PRINTED_MATTER_FILE_COUNT} filer` }
@@ -84,9 +99,7 @@ export const quotePrintedMatterFormSchema = z.object({
     .refine(
       files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
       { message: `Den totala filstorleken får inte överstiga ${FORM_MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
-    )
-    .nullable()
-    .optional(),
+    ),
   message: z
     .string()
     .max(2000, 'Meddelandet får inte vara längre än 2000 tecken')
@@ -231,7 +244,7 @@ export function usePrintedMatterForm() {
     formData.value.print = ''
     formData.value.finishing = ''
     formData.value.productCount = undefined as unknown as number
-    formData.value.files = null
+    formData.value.files = []
     formData.value.message = ''
     formData.value.gdprConsent = false
     initialFormData.value = JSON.parse(JSON.stringify(formData.value))

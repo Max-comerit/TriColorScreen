@@ -23,7 +23,7 @@ export const useQuotePrintedMatterFormStore = defineStore('quotePrintedMatterFor
     print: '',
     finishing: '',
     productCount: undefined as unknown as number,
-    files: null,
+    files: [],
     message: '',
     gdprConsent: false,
   })
@@ -71,7 +71,7 @@ export const useQuotePrintedMatterFormStore = defineStore('quotePrintedMatterFor
       print: '',
       finishing: '',
       productCount: undefined as unknown as number,
-      files: null,
+      files: [],
       message: '',
       gdprConsent: false,
     }

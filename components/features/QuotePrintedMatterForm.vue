@@ -637,20 +637,20 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- File Upload (Optional) -->
+      <!-- File Upload (Required) -->
       <div>
         <label 
           for="quote-printed-matter-file" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ladda upp filer <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 10 st, max 7 MB totalt)</span>
+          Ladda upp design filer <span class="text-error" aria-label="obligatoriskt fält">*</span> <span class="text-neutral-600 text-xs sm:text-sm">(max 10 st, max 7 MB totalt)</span>
         </label>
         <!-- UI trigger input — no name, never submitted directly -->
         <input
           id="quote-printed-matter-file"
           ref="fileInputRef"
           type="file"
-          accept="application/pdf"
+          accept="application/pdf,.ai,.eps,.tif,.tiff,.psd,.jpg,.jpeg,.png,application/postscript"
           autocomplete="off"
           multiple
           :aria-invalid="!!getFieldError('files')"

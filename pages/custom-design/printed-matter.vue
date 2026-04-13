@@ -75,7 +75,7 @@ useHead({
             <li>Välj <strong>Material / Papperstyp</strong></li>
             <li>Välj <strong>Tryck</strong></li>
             <li>Välj <strong>Efterbehandling</strong></li>
-            <li>Ladda upp din design (i PDF format)</li>
+            <li>Ladda upp din design</li>
             <li>Lägg till eventuell övrig information i <strong>Medddelande</strong></li>
             <li>Skicka din offertförfrågan</li>
           </ol>

@@ -18,8 +18,8 @@
       "print": [
         "4/0 (ensidig färg)",
         "4/4 (dubbelsidig färg)",
-        "1/0 (black/one color front, blank back)",
-        "1/1 (black/one color both sides)",
+        "1/0 (ensidig svart framsida, blank baksida)",
+        "1/1 (dubbelsidig svart)",
         "PMS/spotfärg",
         "custom print"
       ],
@@ -49,7 +49,7 @@
       "print": [
         "4/4 (dubbelsidig färg)",
         "4/0 (ensidig färg)",
-        "1/1 (black/one color both sides)",
+        "1/1 (dubbelsidig svart)",
         "PMS/spotfärg",
         "custom print"
       ],
@@ -78,7 +78,7 @@
       ],
       "print": [
         "4/0 (ensidig färg)",
-        "1/0 (black/one color front, blank back)",
+        "1/0 (ensidig svart framsida, blank baksida)",
         "custom print"
       ],
       "finishing": [
@@ -105,7 +105,7 @@
       "print": [
         "4/4 (dubbelsidig färg)",
         "4/0 (ensidig färg)",
-        "1/1 (black/one color both sides)",
+        "1/1 (dubbelsidig svart)",
         "PMS/spotfärg",
         "custom print"
       ],
@@ -136,7 +136,7 @@
         "custom material"
       ],
       "print": [
-        "1/0 (black/one color front, blank back)",
+        "1/0 (ensidig svart framsida, blank baksida)",
         "4/0 (ensidig färg)",
         "PMS/spotfärg",
         "custom print"
@@ -164,7 +164,7 @@
       "print": [
         "4/4 (dubbelsidig färg)",
         "4/0 (ensidig färg)",
-        "1/1 (black/one color both sides)",
+        "1/1 (dubbelsidig svart)",
         "custom print"
       ],
       "finishing": [
