@@ -129,10 +129,10 @@ onBeforeUnmount(() => {
                 class="underline outline-visible-spaced-link"
               >Jobman Texets produktkatalog</a>
             </li>
-            <li>Välj sedan samma produkt i designverktyget (t.ex. T-Shirt om du har valt en T-Shirt)</li>
-            <li>Ladda upp bilder &amp; text och se hur det kommer att se ut innan du beställer</li>
-            <li>Designa olika sidor (t.ex. Fram &amp; Bak) för en helt personlig produkt</li>
-            <li>När du är nöjd med din design fyller du i din Kontakt Information samt Produkt ID &amp; Storlek på din produkt från
+            <li>Välj sedan samma <strong>Produkt</strong> i designverktyget (t.ex. T-Shirt om du har valt en T-Shirt)</li>
+            <li>Lägg till bilder &amp; text och se hur det kommer att se ut innan du beställer</li>
+            <li>Designa olika <strong>Sidor</strong> (t.ex. Fram &amp; Bak) för en helt personlig produkt</li>
+            <li>När du är nöjd med din design fyller du i din <strong>Kontakt Information</strong>, <strong>Produkt ID</strong> &amp; <strong>Storlek</strong> på din produkt från
               <a
                 href="https://www.jobmantexet.se"
                 target="_blank"
