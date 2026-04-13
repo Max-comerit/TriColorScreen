@@ -9,6 +9,8 @@ import Section from '~/components/common/Section.vue'
 // Lazy-load QuotePrintedMatterForm so Zod is kept out of the shared synchronous bundle
 const QuotePrintedMatterForm = defineAsyncComponent(() => import('~/components/features/QuotePrintedMatterForm.vue'))
 
+const HERO_IMAGE = '/images/custom-design/printed-matter/hero.jpg'
+
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
 
@@ -29,7 +31,7 @@ useHead({
       content: 'Skräddarsydda trycksaker - från design till färdig produkt. Broschyrer, flyers, visitkort och mer med hög kvalitet och snabb leverans.',
     },
     { property: 'og:url', content: `${siteUrl}/custom-design/printed-matter` },
-    { property: 'og:image', content: `${siteUrl}/images/custom-design/printed-matter/hero.jpg` },
+    { property: 'og:image', content: `${siteUrl}${HERO_IMAGE}` },
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
@@ -38,7 +40,7 @@ useHead({
       name: 'twitter:description',
       content: 'Skräddarsydda trycksaker - från design till färdig produkt. Broschyrer, flyers, visitkort och mer med hög kvalitet och snabb leverans.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/custom-design/printed-matter/hero.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}${HERO_IMAGE}` },
   ],
 })
 </script>
@@ -47,7 +49,7 @@ useHead({
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/custom-design/printed-matter/hero.jpg"
+      :src="HERO_IMAGE"
       title="Designa trycksaker med eget tryck"
       description="Designa dina unika trycksaker och ladda upp din design till oss."
       :width="1280"

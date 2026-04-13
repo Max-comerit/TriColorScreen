@@ -10,6 +10,7 @@ import Section from '~/components/common/Section.vue'
 import CardGrid from '~/components/common/CardGrid.vue'
 import CtaSection from '~/components/features/CtaSection.vue'
 
+const HERO_IMAGE = '/images/services/graphic-production/hero.jpg'
 
 // ===== PROPS & EMITS =====
 // (Page component - no props/emits needed)
@@ -33,7 +34,7 @@ useHead({
       content: 'Vi designar logotyper, broschyrer, affischer och all sorts grafiskt material. Från budskap till färdiga trycksaker med rätt papper och kommunikativ design.',
     },
     { property: 'og:url', content: `${siteUrl}/services/graphic-production` },
-    { property: 'og:image', content: `${siteUrl}/images/services/graphic-production/hero.jpg` },
+    { property: 'og:image', content: `${siteUrl}${HERO_IMAGE}` },
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
@@ -42,7 +43,7 @@ useHead({
       name: 'twitter:description',
       content: 'Vi designar logotyper, broschyrer, affischer och all sorts grafiskt material. Från budskap till färdiga trycksaker.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/services/graphic-production/hero.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}${HERO_IMAGE}` },
   ],
 })
 
@@ -87,7 +88,7 @@ const stepCards = computed<CardItem[]>(() => (
   <div>
     <!-- Hero: full width -->
     <HeroImage
-      src="/images/services/graphic-production/hero.jpg"
+      :src="HERO_IMAGE"
       title="Design & Grafisk Produktion"
       description="Vi hjälper dig att designa din logotyp och allt annat som är kopplat till ditt varumärke på ett sätt som förför dina kunder."
       :width="1280"

@@ -8,6 +8,8 @@ import CtaSection from '~/components/features/CtaSection.vue'
 import type { CardItem, IServiceCardContent } from '~/types/CardContent'
 import servicesData from '~/assets/json/services/event-advertisement/services.json'
 
+const HERO_IMAGE = '/images/services/event-advertisement/hero.jpg'
+
 // ===== PROPS & EMITS =====
 
 // ===== COMPOSABLES =====
@@ -29,7 +31,7 @@ useHead({
       content: 'Tricolor Screen hjälper dig att ta fram mässmaterial som skyltar, banderoller, dekaler, flaggor och profilkläder.',
     },
     { property: 'og:url', content: `${siteUrl}/services/event-advertisement` },
-    { property: 'og:image', content: `${siteUrl}/images/services/event-advertisement/hero.jpg` },
+    { property: 'og:image', content: `${siteUrl}${HERO_IMAGE}` },
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
@@ -38,7 +40,7 @@ useHead({
       name: 'twitter:description',
       content: 'Tricolor Screen hjälper dig att ta fram mässmaterial som skyltar, banderoller, dekaler, flaggor och profilkläder.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/services/event-advertisement/hero.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}${HERO_IMAGE}` },
   ],
 })
 
@@ -67,7 +69,7 @@ const serviceCards = computed<CardItem[]>(() =>
   <div>
     <!-- Hero: full width -->
     <HeroImage
-      src="/images/services/event-advertisement/hero.jpg"
+      :src="HERO_IMAGE"
       title="Allt för Mässor & Events"
       description="Mässmaterial som skyltar, banderoller, dekaler, flaggor och profilkläder. Vi får dig att synas!"
       :width="1280"

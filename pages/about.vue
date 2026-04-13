@@ -9,6 +9,8 @@ import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import CtaSection from '~/components/features/CtaSection.vue'
 
+const HERO_IMAGE = '/images/about/hero.jpg'
+
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
 useHead({
@@ -28,7 +30,7 @@ useHead({
       content: 'Lär känna Tricolor Screen - ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
     },
     { property: 'og:url', content: `${siteUrl}/about` },
-    { property: 'og:image', content: `${siteUrl}/images/about/hero.jpg` },
+    { property: 'og:image', content: `${siteUrl}${HERO_IMAGE}` },
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
@@ -37,7 +39,7 @@ useHead({
       name: 'twitter:description',
       content: 'Lär känna Tricolor Screen - ett familjeföretag med över 25 års erfarenhet av reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/about/hero.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}${HERO_IMAGE}` },
   ],
 })
 
@@ -95,7 +97,7 @@ const valueCards = computed<CardItem[]>(() => [
   <div>
     <!-- Hero: full width -->
     <HeroImage
-      src="/images/about/hero.jpg"
+      :src="HERO_IMAGE"
       title="Om Oss"
       description="Lär känna teamet bakom Tricolor Screen - mer än 25 år av passion för tryck och design."
       :width="1280"

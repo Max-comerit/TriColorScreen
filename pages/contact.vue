@@ -11,6 +11,8 @@ import ContactPanel from '~/components/features/ContactPanel.vue'
 // Lazy-load ContactForm so Zod is kept out of the shared synchronous bundle
 const ContactForm = defineAsyncComponent(() => import('~/components/features/ContactForm.vue'))
 
+const HERO_IMAGE = '/images/contact/hero.jpg'
+
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
 
@@ -31,7 +33,7 @@ useHead({
       content: 'Kontakta Tricolor Screen för reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering. Vi ser fram emot ditt ärende!',
     },
     { property: 'og:url', content: `${siteUrl}/contact` },
-    { property: 'og:image', content: `${siteUrl}/images/contact/hero.jpg` },
+    { property: 'og:image', content: `${siteUrl}${HERO_IMAGE}` },
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
@@ -40,7 +42,7 @@ useHead({
       name: 'twitter:description',
       content: 'Kontakta Tricolor Screen för reklam- och profiltryck, brodyr, textiltryck, bildekor och bilfoliering.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/contact/hero.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}${HERO_IMAGE}` },
   ],
 })
 
@@ -51,7 +53,7 @@ useHead({
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/contact/hero.jpg"
+      :src="HERO_IMAGE"
       title="Kontakta Oss På TCS"
       :width="1280"
       :height="854"

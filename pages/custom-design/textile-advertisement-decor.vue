@@ -13,6 +13,8 @@ const DesignPanel = defineAsyncComponent(() => import('~/components/features/Des
 // Lazy-load QuoteTextilesForm so Zod is kept out of the shared synchronous bundle
 const QuoteTextilesForm = defineAsyncComponent(() => import('~/components/features/QuoteTextilesForm.vue'))
 
+const HERO_IMAGE = '/images/custom-design/textile-advertisement-decor/hero-v2.jpg'
+
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
 
@@ -33,7 +35,7 @@ useHead({
       content: 'Skapa unika trikåprodukter med eget tryck. Använd vårt designverktyg för att ladda upp bilder och text. Professionell produktion av textiltryck och brodyr.',
     },
     { property: 'og:url', content: `${siteUrl}/custom-design/textile-advertisement-decor` },
-    { property: 'og:image', content: `${siteUrl}/images/custom-design/textile-advertisement-decor/hero-v2.jpg` },
+    { property: 'og:image', content: `${siteUrl}${HERO_IMAGE}` },
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
@@ -42,7 +44,7 @@ useHead({
       name: 'twitter:description',
       content: 'Skapa unika trikåprodukter med eget tryck. Använd vårt designverktyg för att ladda upp bilder och text.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/custom-design/textile-advertisement-decor/hero-v2.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}${HERO_IMAGE}` },
   ],
 })
 
@@ -98,7 +100,7 @@ onBeforeUnmount(() => {
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/custom-design/textile-advertisement-decor/hero-v2.jpg"
+      :src="HERO_IMAGE"
       title="Designa produkter med eget tryck"
       description="Skapa unika textilprodukter med vårt design verktyg. Ladda upp dina bilder, lägg till egen text och se resultatet innan produktion."
       :width="1280"
