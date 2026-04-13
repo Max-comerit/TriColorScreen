@@ -66,7 +66,7 @@ useHead({
         align="center"
          padding-y="pt-4 md:pt-6 lg:pt-8 xl:pt-12 2xl:pt-16"
       >
-        <div class="mx-auto max-w-2xl space-y-4">
+        <div class="mx-auto max-w-lg space-y-4">
           <p class="leading-relaxed">
             Designa dina egna trycksaker genom att fylla i formuläret nedan och ladda upp din design till oss.
           </p>
