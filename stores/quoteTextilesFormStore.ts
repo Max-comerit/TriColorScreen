@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 
 // Lazy-load QuoteTextilesFormData type - composable is only imported when actually used
 type QuoteTextilesFormData = import('~/composables/useQuoteTextilesForm').QuoteTextilesFormData

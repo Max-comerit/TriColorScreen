@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 
 // Lazy-load QuotePrintedMatterFormData type - composable is only imported when actually used
 type QuotePrintedMatterFormData = import('~/composables/useQuotePrintedMatterForm').QuotePrintedMatterFormData

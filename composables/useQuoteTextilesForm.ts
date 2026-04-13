@@ -8,7 +8,6 @@
  */
 
 import { z } from 'zod'
-import { computed, readonly, ref, watch, toRaw } from 'vue'
 import { useQuoteTextilesFormStore } from '~/stores/quoteTextilesFormStore'
 import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_QUOTE_TEXTILES_IMAGE_COUNT } from '~/constants/ui'
 
