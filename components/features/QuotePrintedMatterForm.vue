@@ -412,13 +412,13 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- ── Size/Format (Optional) ─────────────────────────── -->
+      <!-- ── Size / Format (Optional) ─────────────────────────── -->
       <div>
         <label
           for="quote-printed-matter-size"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Storlek/Format <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
+          Storlek / Format <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <input
           id="quote-printed-matter-size"
@@ -442,6 +442,39 @@ watch(isChanged, (newValue) => {
           role="alert"
         >
           {{ getFieldError('size') }}
+        </p>
+      </div>
+
+      <!-- ── Material / Papperstyp (Optional) ──────────────────── -->
+      <div>
+        <label
+          for="quote-printed-matter-material"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Material / Papperstyp <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
+        </label>
+        <input
+          id="quote-printed-matter-material"
+          v-model="formData.material"
+          type="text"
+          name="material"
+          autocomplete="off"
+          placeholder="T.ex. 170g gloss, 300g matt, kartong"
+          :aria-invalid="!!getFieldError('material')"
+          :aria-describedby="getFieldError('material') ? 'material-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('material') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('material')"
+          @input="handleInput('material')"
+        >
+        <p
+          v-if="getFieldError('material')"
+          id="material-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('material') }}
         </p>
       </div>
 

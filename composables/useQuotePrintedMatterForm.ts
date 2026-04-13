@@ -47,6 +47,11 @@ export const quotePrintedMatterFormSchema = z.object({
     .max(50, 'Storlek/Format får inte vara längre än 50 tecken')
     .optional()
     .or(z.literal('')),
+  material: z
+    .string()
+    .max(100, 'Material/Papperstyp får inte vara längre än 100 tecken')
+    .optional()
+    .or(z.literal('')),
   productCount: z
     .number({
       required_error: 'Ange antal',
@@ -214,6 +219,7 @@ export function usePrintedMatterForm() {
     // they are controlled by the parent component via props.
     formData.value.product = '' as 'Foldrar' | 'Broschyrer' | 'Affischer' | 'Visitkort' | 'Kuvert' | 'Menyer & Bordsryttare'
     formData.value.size = ''
+    formData.value.material = ''
     formData.value.productCount = undefined as unknown as number
     formData.value.files = null
     formData.value.message = ''
@@ -253,6 +259,9 @@ export function usePrintedMatterForm() {
       }
       if (formData.value.size) {
         formDataToSubmit.append('size', formData.value.size)
+      }
+      if (formData.value.material) {
+        formDataToSubmit.append('material', formData.value.material)
       }
       formDataToSubmit.append('product_count', String(formData.value.productCount))
       formData.value.files?.forEach((file, index) => {
