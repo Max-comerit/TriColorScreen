@@ -12,8 +12,8 @@
     "postinstall": "nuxi prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "audit": "audit-ci --fail-level moderate --allowlist GHSA-2g4f-4pwh-qvx6",
-    "security:audit": "audit-ci --fail-level moderate --allowlist GHSA-2g4f-4pwh-qvx6"
+    "audit": "audit-ci --fail-level moderate --allowlist GHSA-hfvx-25r5-qc3w",
+    "security:audit": "audit-ci --fail-level moderate --allowlist GHSA-hfvx-25r5-qc3w"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.12.1",
@@ -22,7 +22,7 @@
     "embla-carousel-vue": "^8.6.0",
     "fabric": "7.1.0",
     "nanoid": "^5.1.6",
-    "nuxt": "^3.20.2",
+    "nuxt": "^3.21.2",
     "pinia": "^3.0.4",
     "typescript": "^5.9.3",
     "vue": "^3.5.27",

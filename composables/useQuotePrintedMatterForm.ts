@@ -1,24 +1,34 @@
-// composables/useQuoteForm.ts
+// composables/useQuotePrintedMatterForm.ts
 
 /**
- * Quote Form Composable
+ * Printed Matter Form Composable
  *
  * Provides form state management, validation, and submission handling
- * for the quote request form with Zod schema validation.
+ * for the quote printed matter form with Zod schema validation.
  */
 
 import { z } from 'zod'
-import { toRaw } from 'vue'
-import { useQuoteFormStore } from '~/stores/quoteFormStore'
-import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_QUOTE_IMAGE_COUNT } from '~/constants/ui'
+import { useQuotePrintedMatterFormStore } from '~/stores/quotePrintedMatterFormStore'
+import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_QUOTE_PRINTED_MATTER_FILE_COUNT } from '~/constants/ui'
 
 // ===== CONSTANTS =====
-/** Allowed image MIME types */
-const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']
+/** Allowed file MIME types */
+const ALLOWED_FILE_TYPES = [
+  'application/pdf', // PDF
+  'application/postscript', // AI and EPS
+  'application/illustrator', // AI
+  'image/tiff', // TIFF
+  'image/vnd.adobe.photoshop', // PSD
+  'application/x-photoshop', // PSD (alternative)
+  'image/jpeg', // JPEG
+  'image/jpg', // JPEG (alternative)
+  'image/png', // PNG
+  'image/x-png', // PNG (alternative)
+]
 
 // ===== ZOD SCHEMA =====
-/** Quote form validation schema */
-export const quoteFormSchema = z.object({
+/** Printed matter form validation schema */
+export const quotePrintedMatterFormSchema = z.object({
   name: z
     .string()
     .min(2, 'Namnet måste vara minst 2 tecken')
@@ -36,25 +46,29 @@ export const quoteFormSchema = z.object({
     .enum(['Privatperson', 'Företag'], {
       errorMap: () => ({ message: 'Välj om du är privatperson eller företag' }),
     }),
-  subject: z.literal('Offertförfrågan'),
-  productCategory: z
-    .string()
-    .optional()
-    .or(z.literal('')),
+  subject: z.literal('Offertförfrågan (Trycksaker)'),
+  productCategory: z.literal('Trycksaker'),
   product: z
     .string()
-    .optional()
-    .or(z.literal('')),
-  productId: z
-    .string()
-    .regex(/^[A-Za-z0-9_-]+$/, 'Produkt ID får endast innehålla bokstäver, siffror, _ och -')
-    .max(20, 'Produkt ID får inte vara längre än 20 tecken')
-    .optional()
-    .or(z.literal('')),
+    .min(1, 'Välj en produkt'),
   size: z
     .string()
-    .regex(/^[A-Za-z0-9.,/\-xX]+$/, 'Storlek får endast innehålla bokstäver, siffror, . , / och -')
-    .max(10, 'Storlek får inte vara längre än 10 tecken')
+    .max(50, 'Storlek / Format får inte vara längre än 50 tecken')
+    .optional()
+    .or(z.literal('')),
+  material: z
+    .string()
+    .max(100, 'Material / Papperstyp får inte vara längre än 100 tecken')
+    .optional()
+    .or(z.literal('')),
+  print: z
+    .string()
+    .max(100, 'Tryck får inte vara längre än 100 tecken')
+    .optional()
+    .or(z.literal('')),
+  finishing: z
+    .string()
+    .max(100, 'Efterbehandling får inte vara längre än 100 tecken')
     .optional()
     .or(z.literal('')),
   productCount: z
@@ -65,26 +79,27 @@ export const quoteFormSchema = z.object({
     .int('Antal måste vara ett heltal')
     .min(1, 'Antal måste vara minst 1')
     .max(10000, 'Antal får inte vara mer än 10 000'),
-  canvasTexts: z.string().optional(),
-  images: z
+  files: z
     .array(z.custom<File>((file) => {
       if (!file) return true // Optional field
       if (!(file instanceof File)) return false
       if (file.size > FORM_MAX_FILE_SIZE) return false
-      return ALLOWED_IMAGE_TYPES.includes(file.type)
+      return ALLOWED_FILE_TYPES.includes(file.type)
     }, {
-      message: 'Bilden måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF eller SVG',
+      message: 'Filen måste vara mindre än 7MB och i formatet PDF, AI, EPS, TIFF, PSD, JPEG eller PNG',
     }))
     .refine(
-      (array) => array.length <= MAX_QUOTE_IMAGE_COUNT,
-      { message: `Maximalt ${MAX_QUOTE_IMAGE_COUNT} bilder kan bifogas` }
+      (array) => array.length >= 1,
+      { message: 'Du måste bifoga minst en design fil' }
+    )
+    .refine(
+      (array) => array.length <= MAX_QUOTE_PRINTED_MATTER_FILE_COUNT,
+      { message: `Du kan bifoga max ${MAX_QUOTE_PRINTED_MATTER_FILE_COUNT} filer` }
     )
     .refine(
       files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
       { message: `Den totala filstorleken får inte överstiga ${FORM_MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
-    )
-    .nullable()
-    .optional(),
+    ),
   message: z
     .string()
     .max(2000, 'Meddelandet får inte vara längre än 2000 tecken')
@@ -98,44 +113,35 @@ export const quoteFormSchema = z.object({
 })
 
 /** TypeScript type from Zod schema */
-export type QuoteFormData = z.infer<typeof quoteFormSchema>
+export type QuotePrintedMatterFormData = z.infer<typeof quotePrintedMatterFormSchema>
 
 // ===== TYPES =====
-
-/** Form field error type */
-export interface FormFieldError<T> {
-  field: keyof T
-  message: string
-}
 
 /** Form submission state */
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
 // ===== COMPOSABLE =====
 /**
- * Quote form composable with validation and state management
+ * Printed matter form composable with validation and state management
  */
-export function useQuoteForm() {
+export function usePrintedMatterForm() {
   // ===== STORE =====
-  const quoteFormStore = useQuoteFormStore()
+  const quotePrintedMatterFormStore = useQuotePrintedMatterFormStore()
 
   // ===== STATE =====
-  const formData = ref<QuoteFormData>({ ...quoteFormStore.formData })
-  const initialFormData = ref<Omit<QuoteFormData, 'images' | 'canvasTexts'>>(
-    (({ images: _i, canvasTexts: _ct, ...rest }) => rest)(formData.value),
-  )
+  const formData = ref<QuotePrintedMatterFormData>({ ...quotePrintedMatterFormStore.formData })
+  const initialFormData = ref<QuotePrintedMatterFormData>(JSON.parse(JSON.stringify(formData.value)))
   const formState = ref<FormState>('idle')
-  const fieldErrors = ref<Map<keyof QuoteFormData, string>>(new Map())
+  const fieldErrors = ref<Map<keyof QuotePrintedMatterFormData, string>>(new Map())
   const generalError = ref<string | null>(null)
 
   // ===== COMPUTED =====
   /**
-   * Check if user-editable form data has changed from initial state.
-   * Files are excluded because they are prop-injected and cannot be serialised.
+   * Check if form data has changed from initial state.
+   * Files are not tracked in change detection as they are only handled during submission.
    */
   const isChanged = computed(() => {
-    const editableData = (({ images: _i, canvasTexts: _ct, ...rest }) => rest)(formData.value)
-    return JSON.stringify(editableData) !== JSON.stringify(initialFormData.value)
+    return JSON.stringify(formData.value) !== JSON.stringify(initialFormData.value)
   })
 
   /**
@@ -162,9 +168,9 @@ export function useQuoteForm() {
   /**
    * Validate a single field
    */
-  function validateField(field: keyof QuoteFormData): boolean {
+  function validateField(field: keyof QuotePrintedMatterFormData): boolean {
     try {
-      const fieldSchema = quoteFormSchema.shape[field]
+      const fieldSchema = quotePrintedMatterFormSchema.shape[field]
       fieldSchema.parse(formData.value[field])
       fieldErrors.value.delete(field)
       return true
@@ -182,7 +188,7 @@ export function useQuoteForm() {
    */
   function validateForm(): boolean {
     try {
-      quoteFormSchema.parse(formData.value)
+      quotePrintedMatterFormSchema.parse(formData.value)
       fieldErrors.value.clear()
       generalError.value = null
       return true
@@ -191,7 +197,7 @@ export function useQuoteForm() {
       if (error instanceof z.ZodError) {
         fieldErrors.value.clear()
         error.errors.forEach((err) => {
-          const field = err.path[0] as keyof QuoteFormData
+          const field = err.path[0] as keyof QuotePrintedMatterFormData
           fieldErrors.value.set(field, err.message)
         })
       }
@@ -202,14 +208,14 @@ export function useQuoteForm() {
   /**
    * Get error message for a specific field
    */
-  function getFieldError(field: keyof QuoteFormData): string | undefined {
+  function getFieldError(field: keyof QuotePrintedMatterFormData): string | undefined {
     return fieldErrors.value.get(field)
   }
 
   /**
    * Clear error for a specific field
    */
-  function clearFieldError(field: keyof QuoteFormData): void {
+  function clearFieldError(field: keyof QuotePrintedMatterFormData): void {
     fieldErrors.value.delete(field)
   }
 
@@ -223,25 +229,28 @@ export function useQuoteForm() {
 
   /**
    * Reset all user-editable fields to their initial state.
-   * Prop-injected fields (subject, productCategory, product, images) are preserved by the store.
+   * Prop-injected fields (subject, productCategory, product, files) are preserved by the store.
    */
   function resetForm(): void {
     formData.value.name = ''
     formData.value.email = ''
     formData.value.phone = ''
     formData.value.customerType = '' as 'Privatperson' | 'Företag'
-    // subject, productCategory, product and images are intentionally NOT reset —
+    // subject and productCategory are intentionally NOT reset —
     // they are controlled by the parent component via props.
-    formData.value.productId = ''
+    formData.value.product = ''
     formData.value.size = ''
+    formData.value.material = ''
+    formData.value.print = ''
+    formData.value.finishing = ''
     formData.value.productCount = undefined as unknown as number
-    formData.value.canvasTexts = ''
+    formData.value.files = []
     formData.value.message = ''
     formData.value.gdprConsent = false
-    initialFormData.value = (({ images: _i, canvasTexts: _ct, ...rest }) => rest)(formData.value)
+    initialFormData.value = JSON.parse(JSON.stringify(formData.value))
     clearErrors()
     formState.value = 'idle'
-    quoteFormStore.resetForm()
+    quotePrintedMatterFormStore.resetForm()
   }
 
   /**
@@ -257,7 +266,7 @@ export function useQuoteForm() {
       clearErrors()
 
       const formDataToSubmit = new FormData()
-      formDataToSubmit.append('form-name', 'quote')
+      formDataToSubmit.append('form-name', 'quote-printed-matter')
       formDataToSubmit.append('name', formData.value.name)
       formDataToSubmit.append('email', formData.value.email)
       if (formData.value.phone) {
@@ -271,25 +280,28 @@ export function useQuoteForm() {
       if (formData.value.product) {
         formDataToSubmit.append('product', formData.value.product)
       }
-      if (formData.value.productId) {
-        formDataToSubmit.append('product_id', formData.value.productId)
-      }
       if (formData.value.size) {
         formDataToSubmit.append('size', formData.value.size)
       }
+      if (formData.value.material) {
+        formDataToSubmit.append('material', formData.value.material)
+      }
+      if (formData.value.print) {
+        formDataToSubmit.append('print', formData.value.print)
+      }
+      if (formData.value.finishing) {
+        formDataToSubmit.append('finishing', formData.value.finishing)
+      }
       formDataToSubmit.append('product_count', String(formData.value.productCount))
-      formData.value.images?.forEach((file, index) => {
+      formData.value.files?.forEach((file, index) => {
         // toRaw unwraps Vue's reactive Proxy — FormData.append uses internal-slot
         // brand checks that fail on Proxy-wrapped File/Blob objects.
-        formDataToSubmit.append(`image_${index + 1}`, toRaw(file))
+        formDataToSubmit.append(`file_${index + 1}`, toRaw(file))
       })
       if (formData.value.message) {
         formDataToSubmit.append('message', formData.value.message)
       }
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
-      if (formData.value.canvasTexts) {
-        formDataToSubmit.append('texter', formData.value.canvasTexts)
-      }
       formDataToSubmit.append('bot-field', '')
 
       // Submit to Netlify Forms
@@ -304,10 +316,10 @@ export function useQuoteForm() {
       }
 
       formState.value = 'success'
-      initialFormData.value = (({ images: _i, ...rest }) => rest)(formData.value)
+      initialFormData.value = JSON.parse(JSON.stringify(formData.value))
       // Reset form after successful submission
-      quoteFormStore.resetForm()
-      formData.value = { ...quoteFormStore.formData }
+      quotePrintedMatterFormStore.resetForm()
+      formData.value = { ...quotePrintedMatterFormStore.formData }
 
       return true
     }
@@ -328,7 +340,7 @@ export function useQuoteForm() {
    * Sync formData changes to Pinia store for session persistence
    */
   watch(formData, (newData) => {
-    quoteFormStore.setFormData(newData)
+    quotePrintedMatterFormStore.setFormData(newData)
   }, { deep: true })
 
   return {

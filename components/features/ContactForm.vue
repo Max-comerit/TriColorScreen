@@ -55,6 +55,7 @@ const fileInputLabel = computed(() => {
  * List of selected file names for vertical display
  */
 const selectedFileNames = computed(() => formData.value.image?.map(f => f.name) ?? [])
+
 /**
  * Handle input blur event and validate field
  */
@@ -275,7 +276,7 @@ watch(isChanged, (newValue) => {
           type="tel"
           name="phone"
           autocomplete="tel"
-          placeholder="+46 70 123 4567 (eller +Landskod Nummer)"
+          placeholder="+46 70 123 4567"
           :aria-invalid="!!getFieldError('phone')"
           :aria-describedby="getFieldError('phone') ? 'phone-error' : undefined"
           class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"

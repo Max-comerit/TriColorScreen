@@ -9,8 +9,8 @@ import InfoDialog from '~/components/layout/InfoDialog.vue'
 interface Props {
   /** Controls modal visibility via v-model */
   modelValue: boolean
-  /** Form type: 'Contact' or 'Quote' */
-  form?: 'Contact' | 'Quote'
+  /** Form type: 'Contact', 'Quote-Textiles' or 'Quote-Printed-Matter' */
+  form?: 'Contact' | 'Quote-Textiles' | 'Quote-Printed-Matter'
 }
 
 // ===== PROPS & EMITS =====
@@ -44,8 +44,8 @@ const emit = defineEmits<{
         <p class="mb-2 text-base">
           När du kontaktar oss via formuläret samlar vi in följande uppgifter:
         </p>
-        <!-- Quote Form Fields -->
-        <ul v-if="form === 'Quote'" class="list-disc list-inside space-y-1 ml-2 text-base">
+        <!-- Quote Textiles Form Fields -->
+        <ul v-if="form === 'Quote-Textiles'" class="list-disc list-inside space-y-1 ml-2 text-base">
           <li>Namn</li>
           <li>E-postadress</li>
           <li>Telefonnummer (om angivet)</li>
@@ -57,6 +57,24 @@ const emit = defineEmits<{
           <li>Antal</li>
           <li>Tillagda design bilder</li>
           <li>Tillagda design texter</li>
+          <li>Meddelande (om angivet)</li>
+          <li>GDPR samtycke</li>
+        </ul>
+        <!-- Quote Printed Matter Form Fields -->
+        <ul v-else-if="form === 'Quote-Printed-Matter'" class="list-disc list-inside space-y-1 ml-2 text-base">
+          <li>Namn</li>
+          <li>E-postadress</li>
+          <li>Telefonnummer (om angivet)</li>
+          <li>Kundtyp (privatperson eller företag)</li>
+          <li>Ämne</li>
+          <li>Produkt Kategori</li>
+          <li>Produkt</li>
+          <li>Storlek / Format (om angivet)</li>
+          <li>Material / Papperstyp (om angivet)</li>
+          <li>Tryck (om angivet)</li>
+          <li>Efterbehandling (om angivet)</li>
+          <li>Antal</li>
+          <li>Eventuellt bifogade filer</li>
           <li>Meddelande (om angivet)</li>
           <li>GDPR samtycke</li>
         </ul>

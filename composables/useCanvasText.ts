@@ -70,7 +70,7 @@ export function useCanvasText() {
     setTextboxTextRadius(textbox, textRadius)
 
     // Center before add so that object:added fires with the correct position.
-    // QuoteForm listens to object:added to trigger a canvas export, and would
+    // QuoteTextilesForm listens to object:added to trigger a canvas export, and would
     // capture left: 0, top: 0 if centerObject were called after add.
     canvas.centerObject(textbox)
     canvas.add(textbox)

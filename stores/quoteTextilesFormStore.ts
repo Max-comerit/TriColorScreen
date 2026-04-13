@@ -1,22 +1,21 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 
-// Lazy-load QuoteFormData type - composable is only imported when actually used
-type QuoteFormData = import('~/composables/useQuoteForm').QuoteFormData
+// Lazy-load QuoteTextilesFormData type - composable is only imported when actually used
+type QuoteTextilesFormData = import('~/composables/useQuoteTextilesForm').QuoteTextilesFormData
 
 /**
- * Quote Form Pinia Store
+ * Quote Textiles Form Pinia Store
  *
- * Manages quote form state with reactivity using Vue 3 composition API.
+ * Manages quote textiles form state with reactivity using Vue 3 composition API.
  */
-export const useQuoteFormStore = defineStore('quoteForm', () => {
+export const useQuoteTextilesFormStore = defineStore('quoteTextilesForm', () => {
   // ===== STATE =====
-  const formData = ref<QuoteFormData>({
+  const formData = ref<QuoteTextilesFormData>({
     name: '',
     email: '',
     phone: '',
     customerType: '' as 'Privatperson' | 'Företag',
-    subject: 'Offertförfrågan',
+    subject: 'Offertförfrågan (Textil, Reklam och Bildekor)',
     productCategory: '',
     product: '',
     productId: '',
@@ -32,7 +31,7 @@ export const useQuoteFormStore = defineStore('quoteForm', () => {
   /**
    * Update form data
    */
-  function updateFormData(updates: Partial<QuoteFormData>): void {
+  function updateFormData(updates: Partial<QuoteTextilesFormData>): void {
     formData.value = {
       ...formData.value,
       ...updates,
@@ -42,14 +41,14 @@ export const useQuoteFormStore = defineStore('quoteForm', () => {
   /**
    * Replace entire form data
    */
-  function setFormData(data: QuoteFormData): void {
+  function setFormData(data: QuoteTextilesFormData): void {
     formData.value = { ...data }
   }
 
   /**
    * Update a single field
    */
-  function updateField<K extends keyof QuoteFormData>(field: K, value: QuoteFormData[K]): void {
+  function updateField<K extends keyof QuoteTextilesFormData>(field: K, value: QuoteTextilesFormData[K]): void {
     formData.value[field] = value
   }
 

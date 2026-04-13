@@ -1,0 +1,179 @@
+{
+  "products": [
+    {
+      "name": "Foldrar",
+      "size": [
+        "A4 (210x297 mm)",
+        "A5 (148x210 mm)",
+        "DL (99x210 mm)",
+        "anpassad storlek"
+      ],
+      "material": [
+        "130 g/m² gloss",
+        "150 g/m² silk",
+        "170 g/m² silk",
+        "150 g/m² obestruket",
+        "anpassat material"
+      ],
+      "print": [
+        "4/0 (ensidig färg)",
+        "4/4 (dubbelsidig färg)",
+        "1/0 (ensidig svart framsida, blank baksida)",
+        "1/1 (dubbelsidig svart)",
+        "PMS/spotfärg",
+        "anpassat tryck"
+      ],
+      "finishing": [
+        "ingen",
+        "matt laminering",
+        "glans laminering",
+        "soft touch laminering",
+        "anpassad efterbehandling"
+      ]
+    },
+    {
+      "name": "Broschyrer",
+      "size": [
+        "A6 (105x148 mm)",
+        "A5 (148x210 mm)",
+        "A4 (210x297 mm)",
+        "anpassad storlek"
+      ],
+      "material": [
+        "130 g/m² gloss",
+        "150 g/m² silk",
+        "170 g/m² silk",
+        "120 g/m² obestruket",
+        "anpassat material"
+      ],
+      "print": [
+        "4/4 (dubbelsidig färg)",
+        "4/0 (ensidig färg)",
+        "1/1 (dubbelsidig svart)",
+        "PMS/spotfärg",
+        "anpassat tryck"
+      ],
+      "finishing": [
+        "ingen",
+        "matt laminering",
+        "glans laminering",
+        "UV-lack",
+        "anpassad efterbehandling"
+      ]
+    },
+    {
+      "name": "Affischer",
+      "size": [
+        "A4 (210x297 mm)",
+        "A3 (297x420 mm)",
+        "A2 (420x594 mm)",
+        "anpassad storlek"
+      ],
+      "material": [
+        "130 g/m² gloss",
+        "150 g/m² silk",
+        "170 g/m² affischpapper",
+        "blueback (utomhus)",
+        "anpassat material"
+      ],
+      "print": [
+        "4/0 (ensidig färg)",
+        "1/0 (ensidig svart framsida, blank baksida)",
+        "anpassat tryck"
+      ],
+      "finishing": [
+        "ingen",
+        "UV-lack",
+        "laminering",
+        "anpassad efterbehandling"
+      ]
+    },
+    {
+      "name": "Visitkort",
+      "size": [
+        "85x55 mm",
+        "90x50 mm",
+        "anpassad storlek"
+      ],
+      "material": [
+        "300 g/m² silk",
+        "350 g/m² silk",
+        "400 g/m² kartong",
+        "300 g/m² obestruket",
+        "anpassat material"
+      ],
+      "print": [
+        "4/4 (dubbelsidig färg)",
+        "4/0 (ensidig färg)",
+        "1/1 (dubbelsidig svart)",
+        "PMS/spotfärg",
+        "anpassat tryck"
+      ],
+      "finishing": [
+        "ingen",
+        "matt laminering",
+        "glans laminering",
+        "mjuk laminering",
+        "foliering",
+        "prägling",
+        "spot UV",
+        "anpassad efterbehandling"
+      ]
+    },
+    {
+      "name": "Kuvert",
+      "size": [
+        "C6 (114x162 mm)",
+        "DL (110x220 mm)",
+        "C5 (162x229 mm)",
+        "anpassad storlek"
+      ],
+      "material": [
+        "80 g/m² offset",
+        "90 g/m² offset",
+        "100 g/m² offset",
+        "kraftpapper",
+        "anpassat material"
+      ],
+      "print": [
+        "1/0 (ensidig svart framsida, blank baksida)",
+        "4/0 (ensidig färg)",
+        "PMS/spotfärg",
+        "anpassat tryck"
+      ],
+      "finishing": [
+        "ingen",
+        "insidetryck (säkerhetstryck)",
+        "anpassad efterbehandling"
+      ]
+    },
+    {
+      "name": "Menyer & Bordsryttare",
+      "size": [
+        "A5 (148x210 mm)",
+        "A4 (210x297 mm)",
+        "anpassad storlek"
+      ],
+      "material": [
+        "200 g/m² silk",
+        "250 g/m² silk",
+        "300 g/m² kartong",
+        "syntetpapper (vattenresistent)",
+        "anpassat material"
+      ],
+      "print": [
+        "4/4 (dubbelsidig färg)",
+        "4/0 (ensidig färg)",
+        "1/1 (dubbelsidig svart)",
+        "anpassat tryck"
+      ],
+      "finishing": [
+        "ingen",
+        "matt laminering",
+        "glans laminering",
+        "mjuk laminering",
+        "anpassad efterbehandling"
+      ]
+    }
+  ]
+}
