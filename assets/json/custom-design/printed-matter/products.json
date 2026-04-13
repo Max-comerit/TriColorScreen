@@ -2,45 +2,178 @@
   "products": [
     {
       "name": "Foldrar",
-      "size": ["DL (210x99 mm)", "A5 (210x148 mm)", "A4 (210x297 mm)", "custom size"],
-      "material": ["170 g/m² matt papper", "170 g/m² glansigt papper", "200 g/m² matt papper", "custom material"],
-      "print": ["4-färgstryck", "svartvitt", "spotfärg", "custom print"],
-      "finishing": ["matt laminering", "glansig laminering", "soft touch laminering", "custom finishing"]
+      "size": [
+        "A4 (210x297 mm)",
+        "A5 (148x210 mm)",
+        "DL (99x210 mm)",
+        "custom size"
+      ],
+      "material": [
+        "130 g/m² gloss",
+        "150 g/m² silk",
+        "170 g/m² silk",
+        "150 g/m² obestruket",
+        "custom material"
+      ],
+      "print": [
+        "4/0",
+        "4/4",
+        "1/0",
+        "1/1",
+        "PMS/spotfärg",
+        "custom print"
+      ],
+      "finishing": [
+        "ingen",
+        "matt laminering",
+        "glans laminering",
+        "soft touch laminering",
+        "custom finishing"
+      ]
     },
     {
       "name": "Broschyrer",
-      "size": ["A6 (105x148 mm)", "A5 (210x148 mm)", "A4 (210x297 mm)", "custom size"],
-      "material": ["170 g/m² matt papper", "170 g/m² glansigt papper", "200 g/m² glansigt papper", "custom material"],
-      "print": ["4-färgstryck", "svartvitt", "spotfärg", "custom print"],
-      "finishing": ["matt laminering", "glansig laminering", "soft touch laminering", "custom finishing"]
+      "size": [
+        "A6 (105x148 mm)",
+        "A5 (148x210 mm)",
+        "A4 (210x297 mm)",
+        "custom size"
+      ],
+      "material": [
+        "130 g/m² gloss",
+        "150 g/m² silk",
+        "170 g/m² silk",
+        "120 g/m² obestruket",
+        "custom material"
+      ],
+      "print": [
+        "4/4",
+        "4/0",
+        "1/1",
+        "PMS/spotfärg",
+        "custom print"
+      ],
+      "finishing": [
+        "ingen",
+        "matt laminering",
+        "glans laminering",
+        "UV-lack",
+        "custom finishing"
+      ]
     },
     {
       "name": "Affischer",
-      "size": ["A4", "A3", "A2", "custom size"],
-      "material": ["150 g/m² matt papper", "200 g/m² glansigt papper", "250 g/m² exklusivt papper", "custom material"],
-      "print": ["4-färgstryck", "svartvitt", "spotfärg", "custom print"],
-      "finishing": ["matt laminering", "glansig laminering", "soft touch laminering", "custom finishing"]
+      "size": [
+        "A4 (210x297 mm)",
+        "A3 (297x420 mm)",
+        "A2 (420x594 mm)",
+        "custom size"
+      ],
+      "material": [
+        "130 g/m² gloss",
+        "150 g/m² silk",
+        "170 g/m² affischpapper",
+        "blueback (utomhus)",
+        "custom material"
+      ],
+      "print": [
+        "4/0",
+        "1/0",
+        "custom print"
+      ],
+      "finishing": [
+        "ingen",
+        "UV-lack",
+        "laminering",
+        "custom finishing"
+      ]
     },
     {
       "name": "Visitkort",
-      "size": ["85x55 mm", "90x50 mm", "100x60 mm", "custom size"],
-      "material": ["300 g/m² matt papper", "350 g/m² glansigt papper", "400 g/m² exklusivt papper", "custom material"],
-      "print": ["4-färgstryck", "svartvitt", "spotfärg", "custom print"],
-      "finishing": ["matt laminering", "glansig laminering", "soft touch laminering", "custom finishing"]
+      "size": [
+        "85x55 mm",
+        "90x50 mm",
+        "custom size"
+      ],
+      "material": [
+        "300 g/m² silk",
+        "350 g/m² silk",
+        "400 g/m² kartong",
+        "300 g/m² obestruket",
+        "custom material"
+      ],
+      "print": [
+        "4/4",
+        "4/0",
+        "1/1",
+        "PMS/spotfärg",
+        "custom print"
+      ],
+      "finishing": [
+        "ingen",
+        "matt laminering",
+        "glans laminering",
+        "soft touch laminering",
+        "foliering",
+        "prägling",
+        "spot UV",
+        "custom finishing"
+      ]
     },
     {
       "name": "Kuvert",
-      "size": ["C6 (114x162 mm)", "DL (110x220 mm)", "C5 (162x229 mm)", "custom size"],
-      "material": ["80 g/m² standardpapper", "100 g/m² kraftpapper", "120 g/m² exklusivt papper", "custom material"],
-      "print": ["4-färgstryck", "svartvitt", "spotfärg", "custom print"],
-      "finishing": ["matt laminering", "glansig laminering", "soft touch laminering", "custom finishing"]
+      "size": [
+        "C6 (114x162 mm)",
+        "DL (110x220 mm)",
+        "C5 (162x229 mm)",
+        "custom size"
+      ],
+      "material": [
+        "80 g/m² offset",
+        "90 g/m² offset",
+        "100 g/m² offset",
+        "kraftpapper",
+        "custom material"
+      ],
+      "print": [
+        "1/0",
+        "4/0",
+        "PMS/spotfärg",
+        "custom print"
+      ],
+      "finishing": [
+        "ingen",
+        "insidetryck (säkerhetstryck)",
+        "custom finishing"
+      ]
     },
     {
       "name": "Menyer & Bordsryttare",
-      "size": ["A5 (148x210 mm)", "A4 (210x297 mm)", "custom size"],
-      "material": ["200 g/m² matt papper", "250 g/m² glansigt papper", "300 g/m² exklusivt papper", "custom material"],
-      "print": ["4-färgstryck", "svartvitt", "spotfärg", "custom print"],
-      "finishing": ["matt laminering", "glansig laminering", "soft touch laminering", "custom finishing"]
+      "size": [
+        "A5 (148x210 mm)",
+        "A4 (210x297 mm)",
+        "custom size"
+      ],
+      "material": [
+        "200 g/m² silk",
+        "250 g/m² silk",
+        "300 g/m² kartong",
+        "syntetpapper (vattenresistent)",
+        "custom material"
+      ],
+      "print": [
+        "4/4",
+        "4/0",
+        "1/1",
+        "custom print"
+      ],
+      "finishing": [
+        "ingen",
+        "matt laminering",
+        "glans laminering",
+        "soft touch laminering",
+        "custom finishing"
+      ]
     }
   ]
 }
