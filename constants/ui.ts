@@ -6,6 +6,12 @@
  */
 export const TAP_ANIMATION_TIME = 200 // ms
 
+/**
+ * Simulated network delay for development server form submissions (in milliseconds)
+ * Used to mimic real network latency when testing locally
+ */
+export const DEV_FORM_SUBMISSION_DELAY = 1500 // ms
+
 // ===== Form file upload limits =====
 
 /** Maximum file size per file for form uploads: 7MB */

@@ -285,9 +285,14 @@ export function useQuoteTextilesForm() {
       }
       formDataToSubmit.append('bot-field', '')
 
-      // Submit to Netlify Forms
+      // Determine submission endpoint based on environment
+      // Local development: use /api/forms/submit (logs submission)
+      // Production: use Netlify Forms endpoint at /
+      const endpoint = import.meta.dev ? '/api/forms/submit' : '/'
+
+      // Submit to Netlify Forms or local endpoint
       // Note: Do not set Content-Type — browser sets it with the correct multipart boundary
-      const response = await fetch('/', {
+      const response = await fetch(endpoint, {
         method: 'POST',
         body: formDataToSubmit,
       })

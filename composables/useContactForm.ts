@@ -243,9 +243,14 @@ export function useContactForm() {
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
       formDataToSubmit.append('bot-field', '') // Honeypot field for spam protection
 
+      // Determine submission endpoint based on environment
+      // Local development: use /api/forms/submit (logs submission)
+      // Production: use Netlify Forms endpoint at /
+      const endpoint = import.meta.dev ? '/api/forms/submit' : '/'
+
       // Submit to Netlify Forms at root (Netlify processes all forms at /)
       // Note: Don't set Content-Type header - browser will set it correctly for multipart/form-data with boundary
-      const response = await fetch('/', {
+      const response = await fetch(endpoint, {
         method: 'POST',
         body: formDataToSubmit,
       })
