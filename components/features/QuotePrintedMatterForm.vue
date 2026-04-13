@@ -8,6 +8,7 @@ import type { QuotePrintedMatterFormData } from '~/composables/useQuotePrintedMa
 import { usePrintedMatterForm } from '~/composables/useQuotePrintedMatterForm'
 import TextButton from '~/components/common/TextButton.vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
+import productsData from '~/assets/json/custom-design/printed-matter/products.json'
 import { TAP_ANIMATION_TIME } from '~/constants/ui'
 
 // ===== ASYNC COMPONENTS =====
@@ -59,6 +60,11 @@ const fileInputLabel = computed(() => {
  * List of selected file names for vertical display
  */
 const selectedFileNames = computed(() => formData.value.files?.map(f => f.name) ?? [])
+
+/**
+ * Products list from products.json
+ */
+const products = computed(() => productsData.products)
 
 // ===== METHODS =====
 
@@ -395,12 +401,9 @@ watch(isChanged, (newValue) => {
           @change="handleInput('product')"
         >
           <option value="" disabled>Välj produkt</option>
-          <option value="Foldrar">Foldrar</option>
-          <option value="Broschyrer">Broschyrer</option>
-          <option value="Affischer">Affischer</option>
-          <option value="Visitkort">Visitkort</option>
-          <option value="Kuvert">Kuvert</option>
-          <option value="Menyer & Bordsryttare">Menyer & Bordsryttare</option>
+          <option v-for="product in products" :key="product.name" :value="product.name">
+            {{ product.name }}
+          </option>
         </select>
         <p
           v-if="getFieldError('product')"

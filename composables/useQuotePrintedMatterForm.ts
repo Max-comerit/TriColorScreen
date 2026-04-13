@@ -39,9 +39,8 @@ export const quotePrintedMatterFormSchema = z.object({
   subject: z.literal('Offertförfrågan (Trycksaker)'),
   productCategory: z.literal('Trycksaker'),
   product: z
-    .enum(['Foldrar', 'Broschyrer', 'Affischer', 'Visitkort', 'Kuvert', 'Menyer & Bordsryttare'], {
-      errorMap: () => ({ message: 'Välj en produkt' }),
-    }),
+    .string()
+    .min(1, 'Välj en produkt'),
   size: z
     .string()
     .max(50, 'Storlek / Format får inte vara längre än 50 tecken')
@@ -227,7 +226,7 @@ export function usePrintedMatterForm() {
     formData.value.customerType = '' as 'Privatperson' | 'Företag'
     // subject and productCategory are intentionally NOT reset —
     // they are controlled by the parent component via props.
-    formData.value.product = '' as 'Foldrar' | 'Broschyrer' | 'Affischer' | 'Visitkort' | 'Kuvert' | 'Menyer & Bordsryttare'
+    formData.value.product = ''
     formData.value.size = ''
     formData.value.material = ''
     formData.value.print = ''
