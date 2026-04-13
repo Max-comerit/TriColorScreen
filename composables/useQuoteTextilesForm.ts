@@ -1,16 +1,16 @@
-// composables/useQuoteForm.ts
+// composables/useQuoteTextilesForm.ts
 
 /**
  * Quote Form Composable
  *
  * Provides form state management, validation, and submission handling
- * for the quote request form with Zod schema validation.
+ * for the quote textiles form with Zod schema validation.
  */
 
 import { z } from 'zod'
-import { toRaw } from 'vue'
-import { useQuoteFormStore } from '~/stores/quoteFormStore'
-import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_QUOTE_IMAGE_COUNT } from '~/constants/ui'
+import { computed, readonly, ref, watch, toRaw } from 'vue'
+import { useQuoteTextilesFormStore } from '~/stores/quoteTextilesFormStore'
+import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_QUOTE_TEXTILES_IMAGE_COUNT } from '~/constants/ui'
 
 // ===== CONSTANTS =====
 /** Allowed image MIME types */
@@ -18,7 +18,7 @@ const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp
 
 // ===== ZOD SCHEMA =====
 /** Quote form validation schema */
-export const quoteFormSchema = z.object({
+export const quoteTextilesFormSchema = z.object({
   name: z
     .string()
     .min(2, 'Namnet måste vara minst 2 tecken')
@@ -36,7 +36,7 @@ export const quoteFormSchema = z.object({
     .enum(['Privatperson', 'Företag'], {
       errorMap: () => ({ message: 'Välj om du är privatperson eller företag' }),
     }),
-  subject: z.literal('Offertförfrågan'),
+  subject: z.literal('Offertförfrågan (Textil, Reklam & Bildekor)'),
   productCategory: z
     .string()
     .optional()
@@ -76,8 +76,8 @@ export const quoteFormSchema = z.object({
       message: 'Bilden måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF eller SVG',
     }))
     .refine(
-      (array) => array.length <= MAX_QUOTE_IMAGE_COUNT,
-      { message: `Maximalt ${MAX_QUOTE_IMAGE_COUNT} bilder kan bifogas` }
+      (array) => array.length <= MAX_QUOTE_TEXTILES_IMAGE_COUNT,
+      { message: `Du kan bifoga max ${MAX_QUOTE_TEXTILES_IMAGE_COUNT} bilder` }
     )
     .refine(
       files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
@@ -98,15 +98,9 @@ export const quoteFormSchema = z.object({
 })
 
 /** TypeScript type from Zod schema */
-export type QuoteFormData = z.infer<typeof quoteFormSchema>
+export type QuoteTextilesFormData = z.infer<typeof quoteTextilesFormSchema>
 
 // ===== TYPES =====
-
-/** Form field error type */
-export interface FormFieldError<T> {
-  field: keyof T
-  message: string
-}
 
 /** Form submission state */
 type FormState = 'idle' | 'submitting' | 'success' | 'error'
@@ -115,17 +109,17 @@ type FormState = 'idle' | 'submitting' | 'success' | 'error'
 /**
  * Quote form composable with validation and state management
  */
-export function useQuoteForm() {
+export function useQuoteTextilesForm() {
   // ===== STORE =====
-  const quoteFormStore = useQuoteFormStore()
+  const quoteTextilesFormStore = useQuoteTextilesFormStore()
 
   // ===== STATE =====
-  const formData = ref<QuoteFormData>({ ...quoteFormStore.formData })
-  const initialFormData = ref<Omit<QuoteFormData, 'images' | 'canvasTexts'>>(
+  const formData = ref<QuoteTextilesFormData>({ ...quoteTextilesFormStore.formData })
+  const initialFormData = ref<Omit<QuoteTextilesFormData, 'images' | 'canvasTexts'>>(
     (({ images: _i, canvasTexts: _ct, ...rest }) => rest)(formData.value),
   )
   const formState = ref<FormState>('idle')
-  const fieldErrors = ref<Map<keyof QuoteFormData, string>>(new Map())
+  const fieldErrors = ref<Map<keyof QuoteTextilesFormData, string>>(new Map())
   const generalError = ref<string | null>(null)
 
   // ===== COMPUTED =====
@@ -162,9 +156,9 @@ export function useQuoteForm() {
   /**
    * Validate a single field
    */
-  function validateField(field: keyof QuoteFormData): boolean {
+  function validateField(field: keyof QuoteTextilesFormData): boolean {
     try {
-      const fieldSchema = quoteFormSchema.shape[field]
+      const fieldSchema = quoteTextilesFormSchema.shape[field]
       fieldSchema.parse(formData.value[field])
       fieldErrors.value.delete(field)
       return true
@@ -182,7 +176,7 @@ export function useQuoteForm() {
    */
   function validateForm(): boolean {
     try {
-      quoteFormSchema.parse(formData.value)
+      quoteTextilesFormSchema.parse(formData.value)
       fieldErrors.value.clear()
       generalError.value = null
       return true
@@ -191,7 +185,7 @@ export function useQuoteForm() {
       if (error instanceof z.ZodError) {
         fieldErrors.value.clear()
         error.errors.forEach((err) => {
-          const field = err.path[0] as keyof QuoteFormData
+          const field = err.path[0] as keyof QuoteTextilesFormData
           fieldErrors.value.set(field, err.message)
         })
       }
@@ -202,14 +196,14 @@ export function useQuoteForm() {
   /**
    * Get error message for a specific field
    */
-  function getFieldError(field: keyof QuoteFormData): string | undefined {
+  function getFieldError(field: keyof QuoteTextilesFormData): string | undefined {
     return fieldErrors.value.get(field)
   }
 
   /**
    * Clear error for a specific field
    */
-  function clearFieldError(field: keyof QuoteFormData): void {
+  function clearFieldError(field: keyof QuoteTextilesFormData): void {
     fieldErrors.value.delete(field)
   }
 
@@ -241,7 +235,7 @@ export function useQuoteForm() {
     initialFormData.value = (({ images: _i, canvasTexts: _ct, ...rest }) => rest)(formData.value)
     clearErrors()
     formState.value = 'idle'
-    quoteFormStore.resetForm()
+    quoteTextilesFormStore.resetForm()
   }
 
   /**
@@ -257,7 +251,7 @@ export function useQuoteForm() {
       clearErrors()
 
       const formDataToSubmit = new FormData()
-      formDataToSubmit.append('form-name', 'quote')
+      formDataToSubmit.append('form-name', 'quote-textiles')
       formDataToSubmit.append('name', formData.value.name)
       formDataToSubmit.append('email', formData.value.email)
       if (formData.value.phone) {
@@ -306,8 +300,8 @@ export function useQuoteForm() {
       formState.value = 'success'
       initialFormData.value = (({ images: _i, ...rest }) => rest)(formData.value)
       // Reset form after successful submission
-      quoteFormStore.resetForm()
-      formData.value = { ...quoteFormStore.formData }
+      quoteTextilesFormStore.resetForm()
+      formData.value = { ...quoteTextilesFormStore.formData }
 
       return true
     }
@@ -328,7 +322,7 @@ export function useQuoteForm() {
    * Sync formData changes to Pinia store for session persistence
    */
   watch(formData, (newData) => {
-    quoteFormStore.setFormData(newData)
+    quoteTextilesFormStore.setFormData(newData)
   }, { deep: true })
 
   return {

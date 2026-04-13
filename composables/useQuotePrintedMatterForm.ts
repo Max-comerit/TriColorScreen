@@ -1,30 +1,24 @@
-// composables/useContactForm.ts
+// composables/useQuotePrintedMatterForm.ts
 
 /**
- * Contact Form Composable
+ * Printed Matter Form Composable
  *
  * Provides form state management, validation, and submission handling
- * for the contact form with Zod schema validation.
+ * for the quote printed matter form with Zod schema validation.
  */
 
 import { z } from 'zod'
 import { computed, readonly, ref, watch, toRaw } from 'vue'
-import { useContactFormStore } from '~/stores/contactFormStore'
-import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_CONTACT_IMAGE_COUNT } from '~/constants/ui'
+import { useQuotePrintedMatterFormStore } from '~/stores/quotePrintedMatterFormStore'
+import { FORM_MAX_FILE_SIZE, FORM_MAX_TOTAL_FILE_SIZE, MAX_QUOTE_PRINTED_MATTER_FILE_COUNT } from '~/constants/ui'
 
 // ===== CONSTANTS =====
-/** Allowed image MIME types */
-const ALLOWED_IMAGE_TYPES = [
-  'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml',
-  // Vector / print formats
-  'application/postscript', 'application/eps', 'application/x-eps', 'image/x-eps',
-  'application/illustrator',
-  'application/pdf',
-]
+/** Allowed file MIME types */
+const ALLOWED_FILE_TYPES = ['application/pdf']
 
 // ===== ZOD SCHEMA =====
-/** Contact form validation schema */
-export const contactFormSchema = z.object({
+/** Printed matter form validation schema */
+export const quotePrintedMatterFormSchema = z.object({
   name: z
     .string()
     .min(2, 'Namnet måste vara minst 2 tecken')
@@ -42,33 +36,44 @@ export const contactFormSchema = z.object({
     .enum(['Privatperson', 'Företag'], {
       errorMap: () => ({ message: 'Välj om du är privatperson eller företag' }),
     }),
-  subject: z
-    .string()
-    .min(3, 'Ämnet måste vara minst 3 tecken')
-    .max(200, 'Ämnet får inte vara längre än 200 tecken'),
+  subject: z.literal('Offertförfrågan (Trycksaker)'),
+  productCategory: z.literal('Trycksaker'),
+  product: z
+    .enum(['Foldrar', 'Broschyrer', 'Affischer', 'Visitkort', 'Kuvert', 'Menyer & Bordsryttare'], {
+      errorMap: () => ({ message: 'Välj en produkt' }),
+    }),
+  productCount: z
+    .number({
+      required_error: 'Ange antal',
+      invalid_type_error: 'Ange ett giltigt antal',
+    })
+    .int('Antal måste vara ett heltal')
+    .min(1, 'Antal måste vara minst 1')
+    .max(10000, 'Antal får inte vara mer än 10 000'),
+  files: z
+    .array(z.custom<File>((file) => {
+      if (!file) return true // Optional field
+      if (!(file instanceof File)) return false
+      if (file.size > FORM_MAX_FILE_SIZE) return false
+      return ALLOWED_FILE_TYPES.includes(file.type)
+    }, {
+      message: 'Filen måste vara mindre än 7MB och i formatet PDF',
+    }))
+    .refine(
+      (array) => array.length <= MAX_QUOTE_PRINTED_MATTER_FILE_COUNT,
+      { message: `Du kan bifoga max ${MAX_QUOTE_PRINTED_MATTER_FILE_COUNT} filer` }
+    )
+    .refine(
+      files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
+      { message: `Den totala filstorleken får inte överstiga ${FORM_MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
+    )
+    .nullable()
+    .optional(),
   message: z
     .string()
     .max(2000, 'Meddelandet får inte vara längre än 2000 tecken')
     .optional()
     .or(z.literal('')),
-  image: z
-    .array(
-      z.custom<File>(
-        (file) => {
-          if (!(file instanceof File)) return false
-          if (file.size > FORM_MAX_FILE_SIZE) return false
-          return ALLOWED_IMAGE_TYPES.includes(file.type)
-        },
-        { message: 'Varje fil måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF, SVG, EPS, AI eller PDF' },
-      ),
-    )
-    .max(MAX_CONTACT_IMAGE_COUNT, `Du kan bifoga max ${MAX_CONTACT_IMAGE_COUNT} filer`)
-    .refine(
-      files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
-      { message: `Den totala filstorleken får inte överstiga ${FORM_MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
-    )
-    .optional()
-    .nullable(),
   gdprConsent: z
     .boolean()
     .refine(val => val === true, {
@@ -77,7 +82,7 @@ export const contactFormSchema = z.object({
 })
 
 /** TypeScript type from Zod schema */
-export type ContactFormData = z.infer<typeof contactFormSchema>
+export type QuotePrintedMatterFormData = z.infer<typeof quotePrintedMatterFormSchema>
 
 // ===== TYPES =====
 
@@ -86,22 +91,23 @@ type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
 // ===== COMPOSABLE =====
 /**
- * Contact form composable with validation and state management
+ * Printed matter form composable with validation and state management
  */
-export function useContactForm() {
+export function usePrintedMatterForm() {
   // ===== STORE =====
-  const contactFormStore = useContactFormStore()
+  const quotePrintedMatterFormStore = useQuotePrintedMatterFormStore()
 
   // ===== STATE =====
-  const formData = ref<ContactFormData>({ ...contactFormStore.formData })
-  const initialFormData = ref<ContactFormData>(JSON.parse(JSON.stringify(formData.value)))
+  const formData = ref<QuotePrintedMatterFormData>({ ...quotePrintedMatterFormStore.formData })
+  const initialFormData = ref<QuotePrintedMatterFormData>(JSON.parse(JSON.stringify(formData.value)))
   const formState = ref<FormState>('idle')
-  const fieldErrors = ref<Map<keyof ContactFormData, string>>(new Map())
+  const fieldErrors = ref<Map<keyof QuotePrintedMatterFormData, string>>(new Map())
   const generalError = ref<string | null>(null)
 
   // ===== COMPUTED =====
   /**
-   * Check if form data has changed from initial state
+   * Check if form data has changed from initial state.
+   * Files are not tracked in change detection as they are only handled during submission.
    */
   const isChanged = computed(() => {
     return JSON.stringify(formData.value) !== JSON.stringify(initialFormData.value)
@@ -131,9 +137,9 @@ export function useContactForm() {
   /**
    * Validate a single field
    */
-  function validateField(field: keyof ContactFormData): boolean {
+  function validateField(field: keyof QuotePrintedMatterFormData): boolean {
     try {
-      const fieldSchema = contactFormSchema.shape[field]
+      const fieldSchema = quotePrintedMatterFormSchema.shape[field]
       fieldSchema.parse(formData.value[field])
       fieldErrors.value.delete(field)
       return true
@@ -151,7 +157,7 @@ export function useContactForm() {
    */
   function validateForm(): boolean {
     try {
-      contactFormSchema.parse(formData.value)
+      quotePrintedMatterFormSchema.parse(formData.value)
       fieldErrors.value.clear()
       generalError.value = null
       return true
@@ -160,7 +166,7 @@ export function useContactForm() {
       if (error instanceof z.ZodError) {
         fieldErrors.value.clear()
         error.errors.forEach((err) => {
-          const field = err.path[0] as keyof ContactFormData
+          const field = err.path[0] as keyof QuotePrintedMatterFormData
           fieldErrors.value.set(field, err.message)
         })
       }
@@ -171,14 +177,14 @@ export function useContactForm() {
   /**
    * Get error message for a specific field
    */
-  function getFieldError(field: keyof ContactFormData): string | undefined {
+  function getFieldError(field: keyof QuotePrintedMatterFormData): string | undefined {
     return fieldErrors.value.get(field)
   }
 
   /**
    * Clear error for a specific field
    */
-  function clearFieldError(field: keyof ContactFormData): void {
+  function clearFieldError(field: keyof QuotePrintedMatterFormData): void {
     fieldErrors.value.delete(field)
   }
 
@@ -191,30 +197,31 @@ export function useContactForm() {
   }
 
   /**
-   * Reset form to initial state
+   * Reset all user-editable fields to their initial state.
+   * Prop-injected fields (subject, productCategory, product, files) are preserved by the store.
    */
   function resetForm(): void {
-    formData.value = {
-      name: '',
-      email: '',
-      phone: '',
-      customerType: '' as 'Privatperson' | 'Företag',
-      subject: '',
-      message: '',
-      image: null as File[] | null,
-      gdprConsent: false,
-    }
+    formData.value.name = ''
+    formData.value.email = ''
+    formData.value.phone = ''
+    formData.value.customerType = '' as 'Privatperson' | 'Företag'
+    // subject and productCategory are intentionally NOT reset —
+    // they are controlled by the parent component via props.
+    formData.value.product = ''
+    formData.value.productCount = undefined as unknown as number
+    formData.value.files = null
+    formData.value.message = ''
+    formData.value.gdprConsent = false
     initialFormData.value = JSON.parse(JSON.stringify(formData.value))
     clearErrors()
     formState.value = 'idle'
-    contactFormStore.resetForm()
+    quotePrintedMatterFormStore.resetForm()
   }
 
   /**
    * Submit form data to Netlify Forms
    */
   async function submitForm(): Promise<boolean> {
-    // Validate form before submission
     if (!validateForm()) {
       return false
     }
@@ -223,9 +230,8 @@ export function useContactForm() {
       formState.value = 'submitting'
       clearErrors()
 
-      // Prepare form data for Netlify submission
       const formDataToSubmit = new FormData()
-      formDataToSubmit.append('form-name', 'contact-v2')
+      formDataToSubmit.append('form-name', 'quote-printed-matter')
       formDataToSubmit.append('name', formData.value.name)
       formDataToSubmit.append('email', formData.value.email)
       if (formData.value.phone) {
@@ -233,19 +239,26 @@ export function useContactForm() {
       }
       formDataToSubmit.append('customer_type', formData.value.customerType)
       formDataToSubmit.append('subject', formData.value.subject)
+      if (formData.value.productCategory) {
+        formDataToSubmit.append('product_category', formData.value.productCategory)
+      }
+      if (formData.value.product) {
+        formDataToSubmit.append('product', formData.value.product)
+      }
+      formDataToSubmit.append('product_count', String(formData.value.productCount))
+      formData.value.files?.forEach((file, index) => {
+        // toRaw unwraps Vue's reactive Proxy — FormData.append uses internal-slot
+        // brand checks that fail on Proxy-wrapped File/Blob objects.
+        formDataToSubmit.append(`file_${index + 1}`, toRaw(file))
+      })
       if (formData.value.message) {
         formDataToSubmit.append('message', formData.value.message)
       }
-      if (formData.value.image) {
-        // toRaw unwraps Vue's reactive Proxy — FormData.append uses internal-slot
-        // brand checks that fail on Proxy-wrapped File/Blob objects.
-        formData.value.image.forEach((file, index) => formDataToSubmit.append(`image_${index + 1}`, toRaw(file)))
-      }
       formDataToSubmit.append('gdpr_consent', formData.value.gdprConsent.toString())
-      formDataToSubmit.append('bot-field', '') // Honeypot field for spam protection
+      formDataToSubmit.append('bot-field', '')
 
-      // Submit to Netlify Forms at root (Netlify processes all forms at /)
-      // Note: Don't set Content-Type header - browser will set it correctly for multipart/form-data with boundary
+      // Submit to Netlify Forms
+      // Note: Do not set Content-Type — browser sets it with the correct multipart boundary
       const response = await fetch('/', {
         method: 'POST',
         body: formDataToSubmit,
@@ -255,18 +268,16 @@ export function useContactForm() {
         throw new Error('Formuläret kunde inte skickas. Försök igen.')
       }
 
-      // Success
       formState.value = 'success'
       initialFormData.value = JSON.parse(JSON.stringify(formData.value))
       // Reset form after successful submission
-      contactFormStore.resetForm()
-      formData.value = { ...contactFormStore.formData }
+      quotePrintedMatterFormStore.resetForm()
+      formData.value = { ...quotePrintedMatterFormStore.formData }
 
       return true
     }
     catch (error) {
       formState.value = 'error'
-      
       if (error instanceof Error) {
         console.error('Form submission error:', error.message)
       }
@@ -282,7 +293,7 @@ export function useContactForm() {
    * Sync formData changes to Pinia store for session persistence
    */
   watch(formData, (newData) => {
-    contactFormStore.setFormData(newData)
+    quotePrintedMatterFormStore.setFormData(newData)
   }, { deep: true })
 
   return {
@@ -291,14 +302,14 @@ export function useContactForm() {
     formState,
     fieldErrors: readonly(fieldErrors),
     generalError: readonly(generalError),
-    
+
     // Computed
     isChanged,
     isSubmitting,
     isSuccess,
     isError,
     hasErrors,
-    
+
     // Methods
     validateField,
     validateForm,

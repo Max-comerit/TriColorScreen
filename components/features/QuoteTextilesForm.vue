@@ -1,4 +1,4 @@
-// components/features/QuoteForm.vue
+// components/features/QuoteTextilesForm.vue
 
 <script setup lang="ts">
 // ===== IMPORTS =====
@@ -6,8 +6,8 @@ import { computed, defineAsyncComponent, markRaw, ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import type { Canvas } from 'fabric'
 import { Textbox } from 'fabric'
-import type { QuoteFormData } from '~/composables/useQuoteForm'
-import { useQuoteForm } from '~/composables/useQuoteForm'
+import type { QuoteTextilesFormData } from '~/composables/useQuoteTextilesForm'
+import { useQuoteTextilesForm } from '~/composables/useQuoteTextilesForm'
 import TextButton from '~/components/common/TextButton.vue'
 import { storeToRefs } from 'pinia'
 import { useCanvasStore } from '@/stores/canvasStore'
@@ -45,7 +45,7 @@ const {
   clearFieldError,
   submitForm,
   resetForm,
-} = useQuoteForm()
+} = useQuoteTextilesForm()
 
 // ===== STATE =====
 const showSuccessMessage = ref(false)
@@ -296,7 +296,7 @@ async function onCanvasChange(): Promise<void> {
 /**
  * Handle input blur event and validate field
  */
-function handleBlur(field: keyof QuoteFormData): void {
+function handleBlur(field: keyof QuoteTextilesFormData): void {
   if (formData.value[field]) {
     validateField(field)
   }
@@ -305,7 +305,7 @@ function handleBlur(field: keyof QuoteFormData): void {
 /**
  * Handle input change and clear error
  */
-function handleInput(field: keyof QuoteFormData): void {
+function handleInput(field: keyof QuoteTextilesFormData): void {
   clearFieldError(field)
 }
 
@@ -422,7 +422,7 @@ watch(canvasMap, async (newCanvases) => {
 
 <template>
   <form
-    name="quote"
+    name="quote-textiles"
     method="POST"
     action="/"
     data-netlify="true"
@@ -438,7 +438,7 @@ watch(canvasMap, async (newCanvases) => {
     <h3 class="sr-only">Offertförfrågningsformulär</h3>
 
     <!-- Hidden fields for Netlify -->
-    <input type="hidden" name="form-name" value="quote">
+    <input type="hidden" name="form-name" value="quote-textiles">
     <p class="sr-only">
       <label>
         Don't fill this out if you're human:
@@ -451,13 +451,13 @@ watch(canvasMap, async (newCanvases) => {
       <!-- ── Name ──────────────────────────────────────────── -->
       <div>
         <label
-          for="quote-name"
+          for="quote-textiles-name"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Ditt namn <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
         <input
-          id="quote-name"
+          id="quote-textiles-name"
           v-model="formData.name"
           type="text"
           name="name"
@@ -483,13 +483,13 @@ watch(canvasMap, async (newCanvases) => {
       <!-- ── Email ─────────────────────────────────────────── -->
       <div>
         <label
-          for="quote-email"
+          for="quote-textiles-email"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Din e-post <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
         <input
-          id="quote-email"
+          id="quote-textiles-email"
           v-model="formData.email"
           type="email"
           name="email"
@@ -515,18 +515,18 @@ watch(canvasMap, async (newCanvases) => {
       <!-- ── Phone (optional) ──────────────────────────────── -->
       <div>
         <label
-          for="quote-phone"
+          for="quote-textiles-phone"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Telefon <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <input
-          id="quote-phone"
+          id="quote-textiles-phone"
           v-model="formData.phone"
           type="tel"
           name="phone"
           autocomplete="tel"
-          placeholder="+46 70 123 4567 (eller +Landskod Nummer)"
+          placeholder="+46 70 123 4567"
           :aria-invalid="!!getFieldError('phone')"
           :aria-describedby="getFieldError('phone') ? 'phone-error' : undefined"
           class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
@@ -548,13 +548,13 @@ watch(canvasMap, async (newCanvases) => {
       <!-- ── Customer type ──────────────────────────────────── -->
       <div>
         <label
-          for="quote-customer-type"
+          for="quote-textiles-customer-type"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Kundtyp <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
         <select
-          id="quote-customer-type"
+          id="quote-textiles-customer-type"
           v-model="formData.customerType"
           name="customer_type"
           autocomplete="off"
@@ -583,13 +583,13 @@ watch(canvasMap, async (newCanvases) => {
       <!-- ── Subject (disabled / hardcoded) ───────────────── -->
       <div>
         <label
-          for="quote-subject"
+          for="quote-textiles-subject"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Ämne
         </label>
         <input
-          id="quote-subject"
+          id="quote-textiles-subject"
           type="text"
           name="subject"
           :value="formData.subject"
@@ -603,13 +603,13 @@ watch(canvasMap, async (newCanvases) => {
 
       <!-- ── Product category (disabled / prop-filled) ─────── -->
       <label
-        for="quote-product-category"
+        for="quote-textiles-product-category"
         class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
       >
         Produktkategori
       </label>
       <input
-        id="quote-product-category"
+        id="quote-textiles-product-category"
         type="text"
         name="product_category"
         :value="formData.productCategory"
@@ -622,13 +622,13 @@ watch(canvasMap, async (newCanvases) => {
 
       <!-- ── Product (disabled / prop-filled) ─────────────── -->
       <label
-        for="quote-product"
+        for="quote-textiles-product"
         class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
       >
         Produkt
       </label>
       <input
-        id="quote-product"
+        id="quote-textiles-product"
         type="text"
         name="product"
         :value="formData.product"
@@ -642,13 +642,13 @@ watch(canvasMap, async (newCanvases) => {
       <!-- ── Product ID (optional) ─────────────────────────── -->
       <div>
         <label
-          for="quote-product-id"
+          for="quote-textiles-product-id"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Produkt ID <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <input
-          id="quote-product-id"
+          id="quote-textiles-product-id"
           v-model="formData.productId"
           type="text"
           name="product_id"
@@ -675,13 +675,13 @@ watch(canvasMap, async (newCanvases) => {
       <!-- ── Size (optional) ───────────────────────────────── -->
       <div>
         <label
-          for="quote-size"
+          for="quote-textiles-size"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Storlek <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <input
-          id="quote-size"
+          id="quote-textiles-size"
           v-model="formData.size"
           type="text"
           name="size"
@@ -708,13 +708,13 @@ watch(canvasMap, async (newCanvases) => {
       <!-- ── Product count ──────────────────────────────────── -->
       <div>
         <label
-          for="quote-product-count"
+          for="quote-textiles-product-count"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Antal <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
         <input
-          id="quote-product-count"
+          id="quote-textiles-product-count"
           v-model.number="formData.productCount"
           type="number"
           name="product_count"
@@ -744,38 +744,38 @@ watch(canvasMap, async (newCanvases) => {
       <!-- ── Attached design images (hidden / prop-filled) ───── -->
       <!-- Hidden file inputs for Netlify SSG crawler registration, one per image slot -->
       <div aria-hidden="true" class="sr-only">
-        <label for="quote-image-1" class="block">Bild 1</label>
-        <input id="quote-image-1" type="file" name="image_1" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-2" class="block">Bild 2</label>
-        <input id="quote-image-2" type="file" name="image_2" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-3" class="block">Bild 3</label>
-        <input id="quote-image-3" type="file" name="image_3" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-4" class="block">Bild 4</label>
-        <input id="quote-image-4" type="file" name="image_4" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-5" class="block">Bild 5</label>
-        <input id="quote-image-5" type="file" name="image_5" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-6" class="block">Bild 6</label>
-        <input id="quote-image-6" type="file" name="image_6" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-7" class="block">Bild 7</label>
-        <input id="quote-image-7" type="file" name="image_7" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-8" class="block">Bild 8</label>
-        <input id="quote-image-8" type="file" name="image_8" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-9" class="block">Bild 9</label>
-        <input id="quote-image-9" type="file" name="image_9" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-10" class="block">Bild 10</label>
-        <input id="quote-image-10" type="file" name="image_10" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-11" class="block">Bild 11</label>
-        <input id="quote-image-11" type="file" name="image_11" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-12" class="block">Bild 12</label>
-        <input id="quote-image-12" type="file" name="image_12" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-13" class="block">Bild 13</label>
-        <input id="quote-image-13" type="file" name="image_13" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-14" class="block">Bild 14</label>
-        <input id="quote-image-14" type="file" name="image_14" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-15" class="block">Bild 15</label>
-        <input id="quote-image-15" type="file" name="image_15" tabindex="-1" aria-hidden="true">
-        <label for="quote-image-16" class="block">Bild 16</label>
-        <input id="quote-image-16" type="file" name="image_16" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-1" class="block">Bild 1</label>
+        <input id="quote-textiles-image-1" type="file" name="image_1" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-2" class="block">Bild 2</label>
+        <input id="quote-textiles-image-2" type="file" name="image_2" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-3" class="block">Bild 3</label>
+        <input id="quote-textiles-image-3" type="file" name="image_3" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-4" class="block">Bild 4</label>
+        <input id="quote-textiles-image-4" type="file" name="image_4" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-5" class="block">Bild 5</label>
+        <input id="quote-textiles-image-5" type="file" name="image_5" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-6" class="block">Bild 6</label>
+        <input id="quote-textiles-image-6" type="file" name="image_6" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-7" class="block">Bild 7</label>
+        <input id="quote-textiles-image-7" type="file" name="image_7" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-8" class="block">Bild 8</label>
+        <input id="quote-textiles-image-8" type="file" name="image_8" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-9" class="block">Bild 9</label>
+        <input id="quote-textiles-image-9" type="file" name="image_9" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-10" class="block">Bild 10</label>
+        <input id="quote-textiles-image-10" type="file" name="image_10" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-11" class="block">Bild 11</label>
+        <input id="quote-textiles-image-11" type="file" name="image_11" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-12" class="block">Bild 12</label>
+        <input id="quote-textiles-image-12" type="file" name="image_12" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-13" class="block">Bild 13</label>
+        <input id="quote-textiles-image-13" type="file" name="image_13" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-14" class="block">Bild 14</label>
+        <input id="quote-textiles-image-14" type="file" name="image_14" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-15" class="block">Bild 15</label>
+        <input id="quote-textiles-image-15" type="file" name="image_15" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-16" class="block">Bild 16</label>
+        <input id="quote-textiles-image-16" type="file" name="image_16" tabindex="-1" aria-hidden="true">
       </div>
 
       <!-- Display attached files to user (optional) -->
@@ -835,13 +835,13 @@ watch(canvasMap, async (newCanvases) => {
       <!-- ── Message (optional) ─────────────────────────────── -->
       <div>
         <label
-          for="quote-message"
+          for="quote-textiles-message"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Meddelande <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <textarea
-          id="quote-message"
+          id="quote-textiles-message"
           v-model="formData.message"
           name="message"
           rows="4"
@@ -869,7 +869,7 @@ watch(canvasMap, async (newCanvases) => {
       <div>
         <div class="flex items-start gap-3">
           <input
-            id="quote-gdpr"
+            id="quote-textiles-gdpr"
             v-model="formData.gdprConsent"
             type="checkbox"
             name="gdpr_consent"
@@ -881,7 +881,7 @@ watch(canvasMap, async (newCanvases) => {
             @change="handleInput('gdprConsent')"
           >
           <label
-            for="quote-gdpr"
+            for="quote-textiles-gdpr"
             class="text-sm sm:text-base text-neutral-900 cursor-pointer"
           >
             Jag godkänner behandling av mina personuppgifter enligt
@@ -945,6 +945,6 @@ watch(canvasMap, async (newCanvases) => {
     </div>
 
     <!-- GDPR dialog -->
-    <GdprDialog v-if="showGdprDialog" v-model="showGdprDialog" form="Quote" />
+    <GdprDialog v-if="showGdprDialog" v-model="showGdprDialog" form="Quote-Textiles" />
   </form>
 </template>

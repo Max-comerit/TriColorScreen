@@ -140,7 +140,8 @@ TriColorScreen/
 │   ├── canvasStore.ts      # Canvas / Custom Design tool state
 │   ├── contactFormStore.ts # Contact form state
 │   ├── navigationStore.ts  # Navigation / menu state
-│   └── quoteFormStore.ts   # Quote request form state
+│   ├── quotePrintedMatterFormStore.ts   # Quote printed matter request form state
+│   └── quoteTextilesFormStore.ts   # Quote textiles request form state
 ├── types/                  # TypeScript type definitions
 ├── utils/                  # Utility functions
 ├── app.vue                 # Root Vue component

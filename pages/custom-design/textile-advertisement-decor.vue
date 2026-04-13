@@ -11,8 +11,8 @@ import LoadingSpinner from '~/components/common/LoadingSpinner.vue'
 // Lazy-load DesignPanel so Fabric.js is kept out of the shared synchronous bundle
 const DesignPanel = defineAsyncComponent(() => import('~/components/features/DesignPanel.vue'))
 
-// Lazy-load QuoteForm so Zod is kept out of the shared synchronous bundle
-const QuoteForm = defineAsyncComponent(() => import('~/components/features/QuoteForm.vue'))
+// Lazy-load QuoteTextilesForm so Zod is kept out of the shared synchronous bundle
+const QuoteTextilesForm = defineAsyncComponent(() => import('~/components/features/QuoteTextilesForm.vue'))
 
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
@@ -173,7 +173,7 @@ onBeforeUnmount(() => {
           class="mt-10 flex justify-center"
           aria-label="Offertformulär"
         >
-          <QuoteForm />
+          <QuoteTextilesForm />
         </div>
       </Section>
     </div>

@@ -1,10 +1,11 @@
-// components/features/ContactForm.vue
+// components/features/QuotePrintedMatterForm.vue
 
 <script setup lang="ts">
 // ===== IMPORTS =====
 import { computed, defineAsyncComponent, markRaw, ref, watch } from 'vue'
-import { useContactForm } from '~/composables/useContactForm'
-import type { ContactFormData } from '~/composables/useContactForm'
+
+import type { QuotePrintedMatterFormData } from '~/composables/useQuotePrintedMatterForm'
+import { usePrintedMatterForm } from '~/composables/useQuotePrintedMatterForm'
 import TextButton from '~/components/common/TextButton.vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
 import { TAP_ANIMATION_TIME } from '~/constants/ui'
@@ -14,13 +15,16 @@ const GdprDialog = defineAsyncComponent(() =>
   import('~/components/features/GdprDialog.vue')
 )
 
+// ===== PROPS =====
+// (none)
+
 // ===== EMITS =====
 const emit = defineEmits<{
   (e: 'changed', value: boolean): void
   (e: 'success'): void
 }>()
 
-// ===== COMPOSABLES =====
+// ===== COMPOSABLES & STORES =====
 const {
   formData,
   isChanged,
@@ -33,7 +37,7 @@ const {
   clearFieldError,
   submitForm,
   resetForm,
-} = useContactForm()
+} = usePrintedMatterForm()
 
 // ===== STATE =====
 const fileInputRef = ref<HTMLInputElement | null>(null)
@@ -46,7 +50,7 @@ const showGdprDialog = ref(false)
  * Display label for file input (used for ARIA and empty-state checks)
  */
 const fileInputLabel = computed(() => {
-  const files = formData.value.image
+  const files = formData.value.files
   if (!files || files.length === 0) return 'Ingen fil vald'
   return files.map(f => f.name).join(', ')
 })
@@ -54,12 +58,14 @@ const fileInputLabel = computed(() => {
 /**
  * List of selected file names for vertical display
  */
-const selectedFileNames = computed(() => formData.value.image?.map(f => f.name) ?? [])
+const selectedFileNames = computed(() => formData.value.files?.map(f => f.name) ?? [])
+
+// ===== METHODS =====
 
 /**
  * Handle input blur event and validate field
  */
-function handleBlur(field: keyof ContactFormData): void {
+function handleBlur(field: keyof QuotePrintedMatterFormData): void {
   if (formData.value[field]) {
     validateField(field)
   }
@@ -68,7 +74,7 @@ function handleBlur(field: keyof ContactFormData): void {
 /**
  * Handle input change and clear error
  */
-function handleInput(field: keyof ContactFormData): void {
+function handleInput(field: keyof QuotePrintedMatterFormData): void {
   clearFieldError(field)
 }
 
@@ -86,12 +92,12 @@ function handleFileChange(event: Event): void {
 
   if (incoming.length === 0) return
 
-  const existing = formData.value.image ?? []
+  const existing = formData.value.files ?? []
   const existingNames = new Set(existing.map(f => f.name))
   const merged = [...existing, ...incoming.filter(f => !existingNames.has(f.name))]
 
-  formData.value.image = merged
-  validateField('image')
+  formData.value.files = merged
+  validateField('files')
 }
 
 /**
@@ -105,18 +111,17 @@ function triggerFileInput(): void {
  * Remove a single file by name
  */
 function removeFile(name: string): void {
-  const remaining = (formData.value.image ?? []).filter(f => f.name !== name)
-  formData.value.image = remaining.length > 0 ? remaining : null
+  const remaining = (formData.value.files ?? []).filter(f => f.name !== name)
+  formData.value.files = remaining.length > 0 ? remaining : null
   if (remaining.length === 0) {
-    clearFieldError('image')
+    clearFieldError('files')
   }
   else {
-    validateField('image')
+    validateField('files')
   }
 }
 
 /**
-
  * Open GDPR information dialog
  */
 function openGdprDialog(): void {
@@ -155,18 +160,22 @@ async function handleSubmit(): Promise<void> {
 }
 
 // ===== WATCHERS =====
+
 /**
- * Watch isChanged and emit event when it changes
+ * Emit changed event when form change state updates
  */
 watch(isChanged, (newValue) => {
   emit('changed', newValue)
 })
+
+
+// ===== LIFECYCLE HOOKS =====
+
 </script>
 
 <template>
-  <!-- ✅ Visible form -->
-  <form 
-    name="contact-v2"
+  <form
+    name="quote-printed-matter"
     method="POST"
     action="/"
     data-netlify="true"
@@ -174,32 +183,34 @@ watch(isChanged, (newValue) => {
     enctype="multipart/form-data"
     autocomplete="off"
     class="w-full max-w-2xl bg-primary-100 p-6 sm:p-8 rounded-card"
-    aria-label="Kontaktformulär"
+    aria-label="Offertförfrågningsformulär"
+    tabindex="-1"
     @submit.prevent="handleSubmit"
   >
-    <!-- Form Title -->
-    <h3 class="sr-only">Kontaktformulär</h3>
+    <!-- Form title -->
+    <h3 class="sr-only">Offertförfrågningsformulär</h3>
 
     <!-- Hidden fields for Netlify -->
-    <input type="hidden" name="form-name" value="contact-v2">
+    <input type="hidden" name="form-name" value="quote-printed-matter">
     <p class="sr-only">
       <label>
-        Don't fill this out if you're human: 
+        Don't fill this out if you're human:
         <input name="bot-field" tabindex="-1" autocomplete="off">
       </label>
     </p>
 
     <div class="space-y-4 sm:space-y-5">
-      <!-- Name Field -->
+
+      <!-- ── Name ──────────────────────────────────────────── -->
       <div>
-        <label 
-          for="contact-name" 
+        <label
+          for="quote-printed-matter-name"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Ditt namn <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
         <input
-          id="contact-name"
+          id="quote-printed-matter-name"
           v-model="formData.name"
           type="text"
           name="name"
@@ -207,11 +218,7 @@ watch(isChanged, (newValue) => {
           :aria-invalid="!!getFieldError('name')"
           :aria-describedby="getFieldError('name') ? 'name-error' : undefined"
           class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="[
-            getFieldError('name')
-              ? 'border-error focus:ring-error'
-              : 'border-neutral-300 hover:border-neutral-400',
-          ]"
+          :class="getFieldError('name') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('name')"
           @input="handleInput('name')"
@@ -226,16 +233,16 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- Email Field -->
+      <!-- ── Email ─────────────────────────────────────────── -->
       <div>
-        <label 
-          for="contact-email" 
+        <label
+          for="quote-printed-matter-email"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Din e-post <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
         <input
-          id="contact-email"
+          id="quote-printed-matter-email"
           v-model="formData.email"
           type="email"
           name="email"
@@ -243,11 +250,7 @@ watch(isChanged, (newValue) => {
           :aria-invalid="!!getFieldError('email')"
           :aria-describedby="getFieldError('email') ? 'email-error' : undefined"
           class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="[
-            getFieldError('email')
-              ? 'border-error focus:ring-error'
-              : 'border-neutral-300 hover:border-neutral-400',
-          ]"
+          :class="getFieldError('email') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('email')"
           @input="handleInput('email')"
@@ -262,16 +265,16 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- Phone Field (Optional) -->
+      <!-- ── Phone (optional) ──────────────────────────────── -->
       <div>
-        <label 
-          for="contact-phone" 
+        <label
+          for="quote-printed-matter-phone"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Telefon <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <input
-          id="contact-phone"
+          id="quote-printed-matter-phone"
           v-model="formData.phone"
           type="tel"
           name="phone"
@@ -280,11 +283,7 @@ watch(isChanged, (newValue) => {
           :aria-invalid="!!getFieldError('phone')"
           :aria-describedby="getFieldError('phone') ? 'phone-error' : undefined"
           class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="[
-            getFieldError('phone')
-              ? 'border-error focus:ring-error'
-              : 'border-neutral-300 hover:border-neutral-400',
-          ]"
+          :class="getFieldError('phone') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('phone')"
           @input="handleInput('phone')"
@@ -299,27 +298,23 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- Customer Type Select -->
+      <!-- ── Customer type ──────────────────────────────────── -->
       <div>
-        <label 
-          for="contact-customer-type" 
+        <label
+          for="quote-printed-matter-customer-type"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
           Kundtyp <span class="text-error" aria-label="obligatoriskt fält">*</span>
         </label>
         <select
-          id="contact-customer-type"
+          id="quote-printed-matter-customer-type"
           v-model="formData.customerType"
           name="customer_type"
           autocomplete="off"
           :aria-invalid="!!getFieldError('customerType')"
           :aria-describedby="getFieldError('customerType') ? 'customer-type-error' : undefined"
           class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
-          :class="[
-            getFieldError('customerType')
-              ? 'border-error focus:ring-error'
-              : 'border-neutral-300 hover:border-neutral-400',
-          ]"
+          :class="getFieldError('customerType') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('customerType')"
           @change="handleInput('customerType')"
@@ -338,60 +333,139 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- Subject Field -->
+      <!-- ── Subject (disabled / hardcoded) ───────────────── -->
       <div>
-        <label 
-          for="contact-subject" 
+        <label
+          for="quote-printed-matter-subject"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ämne <span class="text-error" aria-label="obligatoriskt fält">*</span>
+          Ämne
         </label>
         <input
-          id="contact-subject"
-          v-model="formData.subject"
+          id="quote-printed-matter-subject"
           type="text"
           name="subject"
+          :value="formData.subject"
+          disabled
+          readonly
           autocomplete="off"
-          :aria-invalid="!!getFieldError('subject')"
-          :aria-describedby="getFieldError('subject') ? 'subject-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="[
-            getFieldError('subject')
-              ? 'border-error focus:ring-error'
-              : 'border-neutral-300 hover:border-neutral-400',
-          ]"
-          :disabled="isSubmitting"
-          @blur="handleBlur('subject')"
-          @input="handleInput('subject')"
+          aria-readonly="true"
+          class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
         >
+      </div>
+
+      <!-- ── Product category (disabled / hardcoded) ─────── -->
+      <label
+        for="quote-printed-matter-product-category"
+        class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+      >
+        Produktkategori
+      </label>
+      <input
+        id="quote-printed-matter-product-category"
+        type="text"
+        name="product_category"
+        :value="formData.productCategory"
+        disabled
+        readonly
+        autocomplete="off"
+        aria-readonly="true"
+        class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
+      >
+
+      <!-- ── Product (select) ───────────────────────────────── -->
+      <div>
+        <label
+          for="quote-printed-matter-product"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Produkt <span class="text-error" aria-label="obligatoriskt fält">*</span>
+        </label>
+        <select
+          id="quote-printed-matter-product"
+          v-model="formData.product"
+          name="product"
+          autocomplete="off"
+          :aria-invalid="!!getFieldError('product')"
+          :aria-describedby="getFieldError('product') ? 'product-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
+          :class="getFieldError('product') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('product')"
+          @change="handleInput('product')"
+        >
+          <option value="" disabled>Välj produkt</option>
+          <option value="Foldrar">Foldrar</option>
+          <option value="Broschyrer">Broschyrer</option>
+          <option value="Affischer">Affischer</option>
+          <option value="Visitkort">Visitkort</option>
+          <option value="Kuvert">Kuvert</option>
+          <option value="Menyer & Bordsryttare">Menyer & Bordsryttare</option>
+        </select>
         <p
-          v-if="getFieldError('subject')"
-          id="subject-error"
+          v-if="getFieldError('product')"
+          id="product-error"
           class="mt-1.5 text-sm text-error-dark"
           role="alert"
         >
-          {{ getFieldError('subject') }}
+          {{ getFieldError('product') }}
+        </p>
+      </div>
+
+      <!-- ── Product count ──────────────────────────────────── -->
+      <div>
+        <label
+          for="quote-printed-matter-product-count"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Antal <span class="text-error" aria-label="obligatoriskt fält">*</span>
+        </label>
+        <input
+          id="quote-printed-matter-product-count"
+          v-model.number="formData.productCount"
+          type="number"
+          name="product_count"
+          min="1"
+          max="10000"
+          step="1"
+          autocomplete="off"
+          placeholder="Ange önskat antal"
+          :aria-invalid="!!getFieldError('productCount')"
+          :aria-describedby="getFieldError('productCount') ? 'product-count-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('productCount') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('productCount')"
+          @input="handleInput('productCount')"
+        >
+        <p
+          v-if="getFieldError('productCount')"
+          id="product-count-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('productCount') }}
         </p>
       </div>
 
       <!-- File Upload (Optional) -->
       <div>
         <label 
-          for="contact-image" 
+          for="quote-printed-matter-file" 
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ladda upp bilder <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 10 st, max 7 MB totalt)</span>
+          Ladda upp filer <span class="text-neutral-600 text-xs sm:text-sm">(valfritt, max 10 st, max 7 MB totalt)</span>
         </label>
         <!-- UI trigger input — no name, never submitted directly -->
         <input
-          id="contact-image"
+          id="quote-printed-matter-file"
           ref="fileInputRef"
           type="file"
-          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/svg+xml,application/postscript,application/eps,application/x-eps,image/x-eps,application/illustrator,application/pdf,.eps,.ai,.pdf"
+          accept="application/pdf,.pdf"
           autocomplete="off"
           multiple
-          :aria-invalid="!!getFieldError('image')"
-          :aria-describedby="getFieldError('image') ? 'image-error' : undefined"
+          :aria-invalid="!!getFieldError('files')"
+          :aria-describedby="getFieldError('files') ? 'file-error' : undefined"
           class="sr-only"
           tabindex="-1"
           :disabled="isSubmitting"
@@ -399,32 +473,32 @@ watch(isChanged, (newValue) => {
         >
         <!-- Hidden named inputs — registered by Netlify's SSG crawler -->
         <div aria-hidden="true" class="sr-only">
-          <label for="contact-image-1" class="block">Bild 1</label>
-          <input id="contact-image-1" type="file" name="image_1" tabindex="-1" aria-hidden="true">
-          <label for="contact-image-2" class="block">Bild 2</label>
-          <input id="contact-image-2" type="file" name="image_2" tabindex="-1" aria-hidden="true">
-          <label for="contact-image-3" class="block">Bild 3</label>
-          <input id="contact-image-3" type="file" name="image_3" tabindex="-1" aria-hidden="true">
-          <label for="contact-image-4" class="block">Bild 4</label>
-          <input id="contact-image-4" type="file" name="image_4" tabindex="-1" aria-hidden="true">
-          <label for="contact-image-5" class="block">Bild 5</label>
-          <input id="contact-image-5" type="file" name="image_5" tabindex="-1" aria-hidden="true">
-          <label for="contact-image-6" class="block">Bild 6</label>
-          <input id="contact-image-6" type="file" name="image_6" tabindex="-1" aria-hidden="true">
-          <label for="contact-image-7" class="block">Bild 7</label>
-          <input id="contact-image-7" type="file" name="image_7" tabindex="-1" aria-hidden="true">
-          <label for="contact-image-8" class="block">Bild 8</label>
-          <input id="contact-image-8" type="file" name="image_8" tabindex="-1" aria-hidden="true">
-          <label for="contact-image-9" class="block">Bild 9</label>
-          <input id="contact-image-9" type="file" name="image_9" tabindex="-1" aria-hidden="true">
-          <label for="contact-image-10" class="block">Bild 10</label>
-          <input id="contact-image-10" type="file" name="image_10" tabindex="-1" aria-hidden="true">
+          <label for="quote-printed-matter-file-1" class="block">Fil 1</label>
+          <input id="quote-printed-matter-file-1" type="file" name="file_1" tabindex="-1" aria-hidden="true">
+          <label for="quote-printed-matter-file-2" class="block">Fil 2</label>
+          <input id="quote-printed-matter-file-2" type="file" name="file_2" tabindex="-1" aria-hidden="true">
+          <label for="quote-printed-matter-file-3" class="block">Fil 3</label>
+          <input id="quote-printed-matter-file-3" type="file" name="file_3" tabindex="-1" aria-hidden="true">
+          <label for="quote-printed-matter-file-4" class="block">Fil 4</label>
+          <input id="quote-printed-matter-file-4" type="file" name="file_4" tabindex="-1" aria-hidden="true">
+          <label for="quote-printed-matter-file-5" class="block">Fil 5</label>
+          <input id="quote-printed-matter-file-5" type="file" name="file_5" tabindex="-1" aria-hidden="true">
+          <label for="quote-printed-matter-file-6" class="block">Fil 6</label>
+          <input id="quote-printed-matter-file-6" type="file" name="file_6" tabindex="-1" aria-hidden="true">
+          <label for="quote-printed-matter-file-7" class="block">Fil 7</label>
+          <input id="quote-printed-matter-file-7" type="file" name="file_7" tabindex="-1" aria-hidden="true">
+          <label for="quote-printed-matter-file-8" class="block">Fil 8</label>
+          <input id="quote-printed-matter-file-8" type="file" name="file_8" tabindex="-1" aria-hidden="true">
+          <label for="quote-printed-matter-file-9" class="block">Fil 9</label>
+          <input id="quote-printed-matter-file-9" type="file" name="file_9" tabindex="-1" aria-hidden="true">
+          <label for="quote-printed-matter-file-10" class="block">Fil 10</label>
+          <input id="quote-printed-matter-file-10" type="file" name="file_10" tabindex="-1" aria-hidden="true">
         </div>
         <button
           type="button"
           class="w-full px-4 py-2.5 text-base form-button-base outline-tight-button disabled:opacity-50 disabled:cursor-not-allowed text-left bg-white flex items-start justify-between"
           :class="[
-            getFieldError('image')
+            getFieldError('files')
               ? 'border-error focus:ring-error'
               : 'border-neutral-300 hover:border-neutral-400',
           ]"
@@ -453,25 +527,25 @@ watch(isChanged, (newValue) => {
           </ul>
         </button>
         <p
-          v-if="getFieldError('image')"
-          id="image-error"
+          v-if="getFieldError('files')"
+          id="file-error"
           class="mt-1.5 text-sm text-error-dark"
           role="alert"
         >
-          {{ getFieldError('image') }}
+          {{ getFieldError('files') }}
         </p>
       </div>
 
-      <!-- Message Field (Optional) -->
+      <!-- ── Message (optional) ─────────────────────────────── -->
       <div>
-        <label 
-          for="contact-message" 
+        <label
+          for="quote-printed-matter-message"
           class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
         >
-          Ditt meddelande <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
+          Meddelande <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
         <textarea
-          id="contact-message"
+          id="quote-printed-matter-message"
           v-model="formData.message"
           name="message"
           rows="4"
@@ -479,12 +553,8 @@ watch(isChanged, (newValue) => {
           placeholder="Skriv ditt meddelande här…"
           :aria-invalid="!!getFieldError('message')"
           :aria-describedby="getFieldError('message') ? 'message-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed resize-y min-h-[100px]"
-          :class="[
-            getFieldError('message')
-              ? 'border-error focus:ring-error'
-              : 'border-neutral-300 hover:border-neutral-400',
-          ]"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input resize-y min-h-[100px]"
+          :class="getFieldError('message') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
           :disabled="isSubmitting"
           @blur="handleBlur('message')"
           @input="handleInput('message')"
@@ -499,11 +569,11 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- GDPR Consent Checkbox -->
+      <!-- ── GDPR consent ───────────────────────────────────── -->
       <div>
         <div class="flex items-start gap-3">
           <input
-            id="contact-gdpr"
+            id="quote-printed-matter-gdpr"
             v-model="formData.gdprConsent"
             type="checkbox"
             name="gdpr_consent"
@@ -514,11 +584,11 @@ watch(isChanged, (newValue) => {
             :disabled="isSubmitting"
             @change="handleInput('gdprConsent')"
           >
-          <label 
-            for="contact-gdpr" 
+          <label
+            for="quote-printed-matter-gdpr"
             class="text-sm sm:text-base text-neutral-900 cursor-pointer"
           >
-            Jag godkänner behandling av mina personuppgifter enligt 
+            Jag godkänner behandling av mina personuppgifter enligt
             <button
               type="button"
               class="text-primary-800 underline hover:text-primary-900 outline-visible-tight-link"
@@ -539,7 +609,7 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- Success Message -->
+      <!-- ── Success message ───────────────────────────────── -->
       <div
         v-if="showSuccessMessage && isSuccess"
         role="alert"
@@ -547,7 +617,7 @@ watch(isChanged, (newValue) => {
         class="p-4 bg-success-light border-l-4 border-success rounded-input"
       >
         <p class="font-medium text-success-dark">
-          Tack för ditt meddelande! Vi återkommer så snart som möjligt.
+          Tack för din offertförfrågan! Vi återkommer så snart som möjligt.
         </p>
       </div>
 
@@ -563,8 +633,7 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-
-      <!-- Submit Button -->
+      <!-- ── Submit ─────────────────────────────────────────── -->
       <div class="pt-2">
         <TextButton
           type="submit"
@@ -572,14 +641,14 @@ watch(isChanged, (newValue) => {
           size="fit"
           :disabled="isSubmitting"
           :busy="isSubmitting"
-          :aria-label="isSubmitting ? 'Skickar kontaktformulär' : 'Skicka kontaktformulär'"
+          :aria-label="isSubmitting ? 'Skickar offertförfrågan' : 'Skicka offertförfrågan'"
         >
-          {{ isSubmitting ? 'Skickar...' : 'Skicka' }}
+          {{ isSubmitting ? 'Skickar...' : 'Skicka offertförfrågan' }}
         </TextButton>
       </div>
     </div>
 
-    <!-- GDPR Information Dialog -->
-    <GdprDialog v-if="showGdprDialog" v-model="showGdprDialog" form="Contact" />
+    <!-- GDPR dialog -->
+    <GdprDialog v-if="showGdprDialog" v-model="showGdprDialog" form="Quote-Printed-Matter" />
   </form>
 </template>

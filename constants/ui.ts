@@ -17,5 +17,8 @@ export const FORM_MAX_TOTAL_FILE_SIZE = 7 * 1024 * 1024
 /** Maximum number of images allowed in the contact form */
 export const MAX_CONTACT_IMAGE_COUNT = 10
 
-/** Maximum number of images allowed in the quote form */
-export const MAX_QUOTE_IMAGE_COUNT = 16
+/** Maximum number of images allowed in the quote textiles form */
+export const MAX_QUOTE_TEXTILES_IMAGE_COUNT = 16
+
+/** Maximum number of files allowed in the quote printed matter form */
+export const MAX_QUOTE_PRINTED_MATTER_FILE_COUNT = 16
