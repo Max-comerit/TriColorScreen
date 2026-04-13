@@ -29,23 +29,6 @@ const ALLOWED_FILE_TYPES = [
 // ===== ZOD SCHEMA =====
 /** Printed matter form validation schema */
 export const quotePrintedMatterFormSchema = z.object({
-  name: z
-    .string()
-    .min(2, 'Namnet måste vara minst 2 tecken')
-    .max(100, 'Namnet får inte vara längre än 100 tecken'),
-  email: z
-    .string()
-    .email('Ange en giltig e-postadress')
-    .min(1, 'E-post är obligatoriskt'),
-  phone: z
-    .string()
-    .regex(/^(\+\d{1,3})?[\s]*-?[\s]*(\(?\d{1,4}\)?)?[\s]*-?[\s]*\d[\d\s-]{5,14}$/, 'Ange ett giltigt telefonnummer')
-    .optional()
-    .or(z.literal('')),
-  customerType: z
-    .enum(['Privatperson', 'Företag'], {
-      errorMap: () => ({ message: 'Välj om du är privatperson eller företag' }),
-    }),
   subject: z.literal('Offertförfrågan (Trycksaker)'),
   productCategory: z.literal('Trycksaker'),
   product: z
@@ -105,6 +88,23 @@ export const quotePrintedMatterFormSchema = z.object({
     .max(2000, 'Meddelandet får inte vara längre än 2000 tecken')
     .optional()
     .or(z.literal('')),
+  name: z
+    .string()
+    .min(2, 'Namnet måste vara minst 2 tecken')
+    .max(100, 'Namnet får inte vara längre än 100 tecken'),
+  email: z
+    .string()
+    .email('Ange en giltig e-postadress')
+    .min(1, 'E-post är obligatoriskt'),
+  phone: z
+    .string()
+    .regex(/^(\+\d{1,3})?[\s]*-?[\s]*(\(?\d{1,4}\)?)?[\s]*-?[\s]*\d[\d\s-]{5,14}$/, 'Ange ett giltigt telefonnummer')
+    .optional()
+    .or(z.literal('')),
+  customerType: z
+    .enum(['Privatperson', 'Företag'], {
+      errorMap: () => ({ message: 'Välj om du är privatperson eller företag' }),
+    }),
   gdprConsent: z
     .boolean()
     .refine(val => val === true, {

@@ -448,6 +448,291 @@ watch(canvasMap, async (newCanvases) => {
 
     <div class="space-y-4 sm:space-y-5">
 
+      <!-- ── Subject (disabled / hardcoded) ───────────────── -->
+      <div>
+        <label
+          for="quote-textiles-subject"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Ämne
+        </label>
+        <input
+          id="quote-textiles-subject"
+          type="text"
+          name="subject"
+          :value="formData.subject"
+          disabled
+          readonly
+          autocomplete="off"
+          aria-readonly="true"
+          class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
+        >
+      </div>
+
+      <!-- ── Product category (disabled / design-panel-filled) ─────── -->
+      <label
+        for="quote-textiles-product-category"
+        class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+      >
+        Produktkategori
+      </label>
+      <input
+        id="quote-textiles-product-category"
+        type="text"
+        name="product_category"
+        :value="formData.productCategory"
+        disabled
+        readonly
+        autocomplete="off"
+        aria-readonly="true"
+        class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
+      >
+
+      <!-- ── Product (disabled / design-panel-filled) ─────────────── -->
+      <label
+        for="quote-textiles-product"
+        class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+      >
+        Produkt
+      </label>
+      <input
+        id="quote-textiles-product"
+        type="text"
+        name="product"
+        :value="formData.product"
+        disabled
+        readonly
+        autocomplete="off"
+        aria-readonly="true"
+        class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
+      >
+
+      <!-- ── Attached design images (hidden / design-panel-filled) ───── -->
+      <!-- Hidden file inputs for Netlify SSG crawler registration, one per image slot -->
+      <div aria-hidden="true" class="sr-only">
+        <label for="quote-textiles-image-1" class="block">Bild 1</label>
+        <input id="quote-textiles-image-1" type="file" name="image_1" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-2" class="block">Bild 2</label>
+        <input id="quote-textiles-image-2" type="file" name="image_2" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-3" class="block">Bild 3</label>
+        <input id="quote-textiles-image-3" type="file" name="image_3" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-4" class="block">Bild 4</label>
+        <input id="quote-textiles-image-4" type="file" name="image_4" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-5" class="block">Bild 5</label>
+        <input id="quote-textiles-image-5" type="file" name="image_5" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-6" class="block">Bild 6</label>
+        <input id="quote-textiles-image-6" type="file" name="image_6" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-7" class="block">Bild 7</label>
+        <input id="quote-textiles-image-7" type="file" name="image_7" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-8" class="block">Bild 8</label>
+        <input id="quote-textiles-image-8" type="file" name="image_8" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-9" class="block">Bild 9</label>
+        <input id="quote-textiles-image-9" type="file" name="image_9" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-10" class="block">Bild 10</label>
+        <input id="quote-textiles-image-10" type="file" name="image_10" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-11" class="block">Bild 11</label>
+        <input id="quote-textiles-image-11" type="file" name="image_11" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-12" class="block">Bild 12</label>
+        <input id="quote-textiles-image-12" type="file" name="image_12" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-13" class="block">Bild 13</label>
+        <input id="quote-textiles-image-13" type="file" name="image_13" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-14" class="block">Bild 14</label>
+        <input id="quote-textiles-image-14" type="file" name="image_14" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-15" class="block">Bild 15</label>
+        <input id="quote-textiles-image-15" type="file" name="image_15" tabindex="-1" aria-hidden="true">
+        <label for="quote-textiles-image-16" class="block">Bild 16</label>
+        <input id="quote-textiles-image-16" type="file" name="image_16" tabindex="-1" aria-hidden="true">
+      </div>
+
+      <!-- Display attached files to user (optional) -->
+      <div v-if="formData.images && formData.images.length > 0" aria-live="polite">
+        <p class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5">
+          Tillagda designbilder
+        </p>
+        <ul
+          class="w-full px-4 py-2.5 text-sm border rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
+          :class="[
+            getFieldError('images')
+              ? 'border-error'
+              : 'border-neutral-300',
+          ]"
+          :aria-invalid="!!getFieldError('images')"
+          :aria-describedby="getFieldError('images') ? 'images-error' : undefined"
+          aria-label="Designbilder som biläggs formuläret"
+        >
+          <li
+            v-for="(image) in formData.images"
+            :key="image.name"
+            class="flex items-center gap-2"
+          >
+            {{ image.name }}
+          </li>
+        </ul>
+      </div>
+      <!-- ── Images error (from canvas export) ──────────────── -->
+      <p
+        v-if="getFieldError('images')"
+        id="images-error"
+        class="mt-1.5 text-sm text-error-dark"
+        role="alert"
+      >
+        {{ getFieldError('images') }}
+      </p>
+
+      <!-- ── Attached design texts (hidden / design-panel-filled) ───── -->
+      <input type="hidden" name="texter" :value="formData.canvasTexts">
+      <div v-if="formData.canvasTexts" aria-live="polite">
+        <p class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5">
+          Tillagda designtexter
+        </p>
+        <ul
+          class="w-full px-4 py-2.5 text-sm border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
+          aria-label="Texter som biläggs formuläret"
+        >
+          <li
+            v-for="line in formData.canvasTexts.split('\n')"
+            :key="line"
+          >
+            {{ line }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- ── Product ID (optional) ─────────────────────────── -->
+      <div>
+        <label
+          for="quote-textiles-product-id"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Produkt ID <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
+        </label>
+        <input
+          id="quote-textiles-product-id"
+          v-model="formData.productId"
+          type="text"
+          name="product_id"
+          autocomplete="off"
+          placeholder="T.ex. 3410020"
+          :aria-invalid="!!getFieldError('productId')"
+          :aria-describedby="getFieldError('productId') ? 'product-id-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('productId') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('productId')"
+          @input="handleInput('productId')"
+        >
+        <p
+          v-if="getFieldError('productId')"
+          id="product-id-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('productId') }}
+        </p>
+      </div>
+
+      <!-- ── Size (optional) ───────────────────────────────── -->
+      <div>
+        <label
+          for="quote-textiles-size"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Storlek <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
+        </label>
+        <input
+          id="quote-textiles-size"
+          v-model="formData.size"
+          type="text"
+          name="size"
+          autocomplete="off"
+          placeholder="T.ex. M, XL, 10, 31/32"
+          :aria-invalid="!!getFieldError('size')"
+          :aria-describedby="getFieldError('size') ? 'size-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('size') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('size')"
+          @input="handleInput('size')"
+        >
+        <p
+          v-if="getFieldError('size')"
+          id="size-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('size') }}
+        </p>
+      </div>
+
+      <!-- ── Product count ──────────────────────────────────── -->
+      <div>
+        <label
+          for="quote-textiles-product-count"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Antal <span class="text-error" aria-label="obligatoriskt fält">*</span>
+        </label>
+        <input
+          id="quote-textiles-product-count"
+          v-model.number="formData.productCount"
+          type="number"
+          name="product_count"
+          min="1"
+          max="10000"
+          step="1"
+          autocomplete="off"
+          placeholder="Ange önskat antal"
+          :aria-invalid="!!getFieldError('productCount')"
+          :aria-describedby="getFieldError('productCount') ? 'product-count-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('productCount') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('productCount')"
+          @input="handleInput('productCount')"
+        >
+        <p
+          v-if="getFieldError('productCount')"
+          id="product-count-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('productCount') }}
+        </p>
+      </div>
+
+      <!-- ── Message (optional) ─────────────────────────────── -->
+      <div>
+        <label
+          for="quote-textiles-message"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Meddelande <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
+        </label>
+        <textarea
+          id="quote-textiles-message"
+          v-model="formData.message"
+          name="message"
+          rows="4"
+          autocomplete="off"
+          placeholder="Skriv ditt meddelande här…"
+          :aria-invalid="!!getFieldError('message')"
+          :aria-describedby="getFieldError('message') ? 'message-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input resize-y min-h-[100px]"
+          :class="getFieldError('message') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('message')"
+          @input="handleInput('message')"
+        />
+        <p
+          v-if="getFieldError('message')"
+          id="message-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('message') }}
+        </p>
+      </div>
+
       <!-- ── Name ──────────────────────────────────────────── -->
       <div>
         <label
@@ -577,291 +862,6 @@ watch(canvasMap, async (newCanvases) => {
           role="alert"
         >
           {{ getFieldError('customerType') }}
-        </p>
-      </div>
-
-      <!-- ── Subject (disabled / hardcoded) ───────────────── -->
-      <div>
-        <label
-          for="quote-textiles-subject"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Ämne
-        </label>
-        <input
-          id="quote-textiles-subject"
-          type="text"
-          name="subject"
-          :value="formData.subject"
-          disabled
-          readonly
-          autocomplete="off"
-          aria-readonly="true"
-          class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
-        >
-      </div>
-
-      <!-- ── Product category (disabled / prop-filled) ─────── -->
-      <label
-        for="quote-textiles-product-category"
-        class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-      >
-        Produktkategori
-      </label>
-      <input
-        id="quote-textiles-product-category"
-        type="text"
-        name="product_category"
-        :value="formData.productCategory"
-        disabled
-        readonly
-        autocomplete="off"
-        aria-readonly="true"
-        class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
-      >
-
-      <!-- ── Product (disabled / prop-filled) ─────────────── -->
-      <label
-        for="quote-textiles-product"
-        class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-      >
-        Produkt
-      </label>
-      <input
-        id="quote-textiles-product"
-        type="text"
-        name="product"
-        :value="formData.product"
-        disabled
-        readonly
-        autocomplete="off"
-        aria-readonly="true"
-        class="w-full px-4 py-2.5 text-base border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 cursor-not-allowed"
-      >
-
-      <!-- ── Product ID (optional) ─────────────────────────── -->
-      <div>
-        <label
-          for="quote-textiles-product-id"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Produkt ID <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
-        </label>
-        <input
-          id="quote-textiles-product-id"
-          v-model="formData.productId"
-          type="text"
-          name="product_id"
-          autocomplete="off"
-          placeholder="T.ex. 3410020"
-          :aria-invalid="!!getFieldError('productId')"
-          :aria-describedby="getFieldError('productId') ? 'product-id-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="getFieldError('productId') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
-          @blur="handleBlur('productId')"
-          @input="handleInput('productId')"
-        >
-        <p
-          v-if="getFieldError('productId')"
-          id="product-id-error"
-          class="mt-1.5 text-sm text-error-dark"
-          role="alert"
-        >
-          {{ getFieldError('productId') }}
-        </p>
-      </div>
-
-      <!-- ── Size (optional) ───────────────────────────────── -->
-      <div>
-        <label
-          for="quote-textiles-size"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Storlek <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
-        </label>
-        <input
-          id="quote-textiles-size"
-          v-model="formData.size"
-          type="text"
-          name="size"
-          autocomplete="off"
-          placeholder="T.ex. M, XL, 10, 31/32"
-          :aria-invalid="!!getFieldError('size')"
-          :aria-describedby="getFieldError('size') ? 'size-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="getFieldError('size') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
-          @blur="handleBlur('size')"
-          @input="handleInput('size')"
-        >
-        <p
-          v-if="getFieldError('size')"
-          id="size-error"
-          class="mt-1.5 text-sm text-error-dark"
-          role="alert"
-        >
-          {{ getFieldError('size') }}
-        </p>
-      </div>
-
-      <!-- ── Product count ──────────────────────────────────── -->
-      <div>
-        <label
-          for="quote-textiles-product-count"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Antal <span class="text-error" aria-label="obligatoriskt fält">*</span>
-        </label>
-        <input
-          id="quote-textiles-product-count"
-          v-model.number="formData.productCount"
-          type="number"
-          name="product_count"
-          min="1"
-          max="10000"
-          step="1"
-          autocomplete="off"
-          placeholder="Ange önskat antal"
-          :aria-invalid="!!getFieldError('productCount')"
-          :aria-describedby="getFieldError('productCount') ? 'product-count-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="getFieldError('productCount') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
-          @blur="handleBlur('productCount')"
-          @input="handleInput('productCount')"
-        >
-        <p
-          v-if="getFieldError('productCount')"
-          id="product-count-error"
-          class="mt-1.5 text-sm text-error-dark"
-          role="alert"
-        >
-          {{ getFieldError('productCount') }}
-        </p>
-      </div>
-
-      <!-- ── Attached design images (hidden / prop-filled) ───── -->
-      <!-- Hidden file inputs for Netlify SSG crawler registration, one per image slot -->
-      <div aria-hidden="true" class="sr-only">
-        <label for="quote-textiles-image-1" class="block">Bild 1</label>
-        <input id="quote-textiles-image-1" type="file" name="image_1" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-2" class="block">Bild 2</label>
-        <input id="quote-textiles-image-2" type="file" name="image_2" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-3" class="block">Bild 3</label>
-        <input id="quote-textiles-image-3" type="file" name="image_3" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-4" class="block">Bild 4</label>
-        <input id="quote-textiles-image-4" type="file" name="image_4" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-5" class="block">Bild 5</label>
-        <input id="quote-textiles-image-5" type="file" name="image_5" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-6" class="block">Bild 6</label>
-        <input id="quote-textiles-image-6" type="file" name="image_6" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-7" class="block">Bild 7</label>
-        <input id="quote-textiles-image-7" type="file" name="image_7" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-8" class="block">Bild 8</label>
-        <input id="quote-textiles-image-8" type="file" name="image_8" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-9" class="block">Bild 9</label>
-        <input id="quote-textiles-image-9" type="file" name="image_9" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-10" class="block">Bild 10</label>
-        <input id="quote-textiles-image-10" type="file" name="image_10" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-11" class="block">Bild 11</label>
-        <input id="quote-textiles-image-11" type="file" name="image_11" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-12" class="block">Bild 12</label>
-        <input id="quote-textiles-image-12" type="file" name="image_12" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-13" class="block">Bild 13</label>
-        <input id="quote-textiles-image-13" type="file" name="image_13" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-14" class="block">Bild 14</label>
-        <input id="quote-textiles-image-14" type="file" name="image_14" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-15" class="block">Bild 15</label>
-        <input id="quote-textiles-image-15" type="file" name="image_15" tabindex="-1" aria-hidden="true">
-        <label for="quote-textiles-image-16" class="block">Bild 16</label>
-        <input id="quote-textiles-image-16" type="file" name="image_16" tabindex="-1" aria-hidden="true">
-      </div>
-
-      <!-- Display attached files to user (optional) -->
-      <div v-if="formData.images && formData.images.length > 0" aria-live="polite">
-        <p class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5">
-          Tillagda designbilder
-        </p>
-        <ul
-          class="w-full px-4 py-2.5 text-sm border rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
-          :class="[
-            getFieldError('images')
-              ? 'border-error'
-              : 'border-neutral-300',
-          ]"
-          :aria-invalid="!!getFieldError('images')"
-          :aria-describedby="getFieldError('images') ? 'images-error' : undefined"
-          aria-label="Designbilder som biläggs formuläret"
-        >
-          <li
-            v-for="(image) in formData.images"
-            :key="image.name"
-            class="flex items-center gap-2"
-          >
-            {{ image.name }}
-          </li>
-        </ul>
-      </div>
-      <!-- ── Images error (from canvas export) ──────────────── -->
-      <p
-        v-if="getFieldError('images')"
-        id="images-error"
-        class="mt-1.5 text-sm text-error-dark"
-        role="alert"
-      >
-        {{ getFieldError('images') }}
-      </p>
-
-      <!-- Display canvas texts to user -->
-      <input type="hidden" name="texter" :value="formData.canvasTexts">
-      <div v-if="formData.canvasTexts" aria-live="polite">
-        <p class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5">
-          Tillagda designtexter
-        </p>
-        <ul
-          class="w-full px-4 py-2.5 text-sm border border-neutral-300 rounded-input bg-neutral-100 text-neutral-600 space-y-1 list-none cursor-not-allowed"
-          aria-label="Texter som biläggs formuläret"
-        >
-          <li
-            v-for="line in formData.canvasTexts.split('\n')"
-            :key="line"
-          >
-            {{ line }}
-          </li>
-        </ul>
-      </div>
-
-      <!-- ── Message (optional) ─────────────────────────────── -->
-      <div>
-        <label
-          for="quote-textiles-message"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Meddelande <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
-        </label>
-        <textarea
-          id="quote-textiles-message"
-          v-model="formData.message"
-          name="message"
-          rows="4"
-          autocomplete="off"
-          placeholder="Skriv ditt meddelande här…"
-          :aria-invalid="!!getFieldError('message')"
-          :aria-describedby="getFieldError('message') ? 'message-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input resize-y min-h-[100px]"
-          :class="getFieldError('message') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
-          @blur="handleBlur('message')"
-          @input="handleInput('message')"
-        />
-        <p
-          v-if="getFieldError('message')"
-          id="message-error"
-          class="mt-1.5 text-sm text-error-dark"
-          role="alert"
-        >
-          {{ getFieldError('message') }}
         </p>
       </div>
 
