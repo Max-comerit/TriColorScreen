@@ -90,7 +90,7 @@ export const quotePrintedMatterFormSchema = z.object({
     }))
     .refine(
       (array) => array.length >= 1,
-      { message: 'Du måste bifoga minst en fil' }
+      { message: 'Du måste bifoga minst en design fil' }
     )
     .refine(
       (array) => array.length <= MAX_QUOTE_PRINTED_MATTER_FILE_COUNT,
