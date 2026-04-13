@@ -61,15 +61,25 @@ useHead({
       <!-- Intro -->
       <Section
         id="intro"
-        title="Skapa dina egna trycksaker"
+        title="Designa dina egna trycksaker"
         aria-label="Hur du designar dina egna trycksaker"
         align="center"
          padding-y="pt-4 md:pt-6 lg:pt-8 xl:pt-12 2xl:pt-16"
       >
-        <div class="mx-auto max-w-3xl space-y-4">
+        <div class="mx-auto max-w-2xl space-y-4">
           <p class="leading-relaxed">
-            Designa dina unika trycksaker och ladda upp din design till oss.
+            Designa dina egna trycksaker genom att fylla i formuläret nedan och ladda upp din design till oss.
           </p>
+          <ol>
+            <li>Välj <strong>Produkt</strong> i formuläret nedan</li>
+            <li>Välj <strong>Storlek / Format</strong></li>
+            <li>Välj <strong>Material / Papperstyp</strong></li>
+            <li>Välj <strong>Tryck</strong></li>
+            <li>Välj <strong>Efterbehandling</strong></li>
+            <li>Ladda upp din design (i PDF format)</li>
+            <li>Lägg till eventuell övrig information i <strong>Medddelande</strong></li>
+            <li>Skicka din offertförfrågan</li>
+          </ol>
           <p class="leading-relaxed">
             Vi återkommer snabbt med pris och leveranstid.
           </p>
