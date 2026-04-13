@@ -412,6 +412,39 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
+      <!-- ── Size/Format (Optional) ─────────────────────────── -->
+      <div>
+        <label
+          for="quote-printed-matter-size"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Storlek/Format <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
+        </label>
+        <input
+          id="quote-printed-matter-size"
+          v-model="formData.size"
+          type="text"
+          name="size"
+          autocomplete="off"
+          placeholder="T.ex. A4, A3, C4, C3, DL, 85x55 mm"
+          :aria-invalid="!!getFieldError('size')"
+          :aria-describedby="getFieldError('size') ? 'size-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('size') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('size')"
+          @input="handleInput('size')"
+        >
+        <p
+          v-if="getFieldError('size')"
+          id="size-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('size') }}
+        </p>
+      </div>
+
       <!-- ── Product count ──────────────────────────────────── -->
       <div>
         <label

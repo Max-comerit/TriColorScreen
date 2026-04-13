@@ -42,6 +42,11 @@ export const quotePrintedMatterFormSchema = z.object({
     .enum(['Foldrar', 'Broschyrer', 'Affischer', 'Visitkort', 'Kuvert', 'Menyer & Bordsryttare'], {
       errorMap: () => ({ message: 'Välj en produkt' }),
     }),
+  size: z
+    .string()
+    .max(50, 'Storlek/Format får inte vara längre än 50 tecken')
+    .optional()
+    .or(z.literal('')),
   productCount: z
     .number({
       required_error: 'Ange antal',
@@ -207,7 +212,8 @@ export function usePrintedMatterForm() {
     formData.value.customerType = '' as 'Privatperson' | 'Företag'
     // subject and productCategory are intentionally NOT reset —
     // they are controlled by the parent component via props.
-    formData.value.product = ''
+    formData.value.product = '' as 'Foldrar' | 'Broschyrer' | 'Affischer' | 'Visitkort' | 'Kuvert' | 'Menyer & Bordsryttare'
+    formData.value.size = ''
     formData.value.productCount = undefined as unknown as number
     formData.value.files = null
     formData.value.message = ''
@@ -244,6 +250,9 @@ export function usePrintedMatterForm() {
       }
       if (formData.value.product) {
         formDataToSubmit.append('product', formData.value.product)
+      }
+      if (formData.value.size) {
+        formDataToSubmit.append('size', formData.value.size)
       }
       formDataToSubmit.append('product_count', String(formData.value.productCount))
       formData.value.files?.forEach((file, index) => {
