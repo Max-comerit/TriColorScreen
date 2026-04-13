@@ -511,6 +511,39 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
+      <!-- ── Finishing (Optional) ───────────────────── -->
+      <div>
+        <label
+          for="quote-printed-matter-finishing"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Efterbehandling <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
+        </label>
+        <input
+          id="quote-printed-matter-finishing"
+          v-model="formData.finishing"
+          type="text"
+          name="finishing"
+          autocomplete="off"
+          placeholder="T.ex. laminering (matt/glans), lack (UV/spot UV), prägling"
+          :aria-invalid="!!getFieldError('finishing')"
+          :aria-describedby="getFieldError('finishing') ? 'finishing-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('finishing') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('finishing')"
+          @input="handleInput('finishing')"
+        >
+        <p
+          v-if="getFieldError('finishing')"
+          id="finishing-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('finishing') }}
+        </p>
+      </div>
+
       <!-- ── Product count ──────────────────────────────────── -->
       <div>
         <label

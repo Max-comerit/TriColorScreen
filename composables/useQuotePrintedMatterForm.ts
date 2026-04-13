@@ -57,6 +57,11 @@ export const quotePrintedMatterFormSchema = z.object({
     .max(100, 'Tryck får inte vara längre än 100 tecken')
     .optional()
     .or(z.literal('')),
+  finishing: z
+    .string()
+    .max(100, 'Efterbehandling får inte vara längre än 100 tecken')
+    .optional()
+    .or(z.literal('')),
   productCount: z
     .number({
       required_error: 'Ange antal',
@@ -226,6 +231,7 @@ export function usePrintedMatterForm() {
     formData.value.size = ''
     formData.value.material = ''
     formData.value.print = ''
+    formData.value.finishing = ''
     formData.value.productCount = undefined as unknown as number
     formData.value.files = null
     formData.value.message = ''
@@ -271,6 +277,9 @@ export function usePrintedMatterForm() {
       }
       if (formData.value.print) {
         formDataToSubmit.append('print', formData.value.print)
+      }
+      if (formData.value.finishing) {
+        formDataToSubmit.append('finishing', formData.value.finishing)
       }
       formDataToSubmit.append('product_count', String(formData.value.productCount))
       formData.value.files?.forEach((file, index) => {
