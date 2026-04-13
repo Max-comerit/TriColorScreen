@@ -18,23 +18,6 @@ const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp
 // ===== ZOD SCHEMA =====
 /** Quote form validation schema */
 export const quoteTextilesFormSchema = z.object({
-  name: z
-    .string()
-    .min(2, 'Namnet måste vara minst 2 tecken')
-    .max(100, 'Namnet får inte vara längre än 100 tecken'),
-  email: z
-    .string()
-    .email('Ange en giltig e-postadress')
-    .min(1, 'E-post är obligatoriskt'),
-  phone: z
-    .string()
-    .regex(/^(\+\d{1,3})?[\s]*-?[\s]*(\(?\d{1,4}\)?)?[\s]*-?[\s]*\d[\d\s-]{5,14}$/, 'Ange ett giltigt telefonnummer')
-    .optional()
-    .or(z.literal('')),
-  customerType: z
-    .enum(['Privatperson', 'Företag'], {
-      errorMap: () => ({ message: 'Välj om du är privatperson eller företag' }),
-    }),
   subject: z.literal('Offertförfrågan (Textil, Reklam och Bildekor)'),
   productCategory: z
     .string()
@@ -44,6 +27,26 @@ export const quoteTextilesFormSchema = z.object({
     .string()
     .optional()
     .or(z.literal('')),
+  images: z
+    .array(z.custom<File>((file) => {
+      if (!file) return true // Optional field
+      if (!(file instanceof File)) return false
+      if (file.size > FORM_MAX_FILE_SIZE) return false
+      return ALLOWED_IMAGE_TYPES.includes(file.type)
+    }, {
+      message: 'Bilden måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF eller SVG',
+    }))
+    .refine(
+      (array) => array.length <= MAX_QUOTE_TEXTILES_IMAGE_COUNT,
+      { message: `Du kan bifoga max ${MAX_QUOTE_TEXTILES_IMAGE_COUNT} bilder` }
+    )
+    .refine(
+      files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
+      { message: `Den totala filstorleken får inte överstiga ${FORM_MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
+    )
+    .nullable()
+    .optional(),
+  canvasTexts: z.string().optional(),
   productId: z
     .string()
     .regex(/^[A-Za-z0-9_-]+$/, 'Produkt ID får endast innehålla bokstäver, siffror, _ och -')
@@ -64,31 +67,28 @@ export const quoteTextilesFormSchema = z.object({
     .int('Antal måste vara ett heltal')
     .min(1, 'Antal måste vara minst 1')
     .max(10000, 'Antal får inte vara mer än 10 000'),
-  canvasTexts: z.string().optional(),
-  images: z
-    .array(z.custom<File>((file) => {
-      if (!file) return true // Optional field
-      if (!(file instanceof File)) return false
-      if (file.size > FORM_MAX_FILE_SIZE) return false
-      return ALLOWED_IMAGE_TYPES.includes(file.type)
-    }, {
-      message: 'Bilden måste vara mindre än 7MB och i formatet JPEG, PNG, WebP, GIF eller SVG',
-    }))
-    .refine(
-      (array) => array.length <= MAX_QUOTE_TEXTILES_IMAGE_COUNT,
-      { message: `Du kan bifoga max ${MAX_QUOTE_TEXTILES_IMAGE_COUNT} bilder` }
-    )
-    .refine(
-      files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
-      { message: `Den totala filstorleken får inte överstiga ${FORM_MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
-    )
-    .nullable()
-    .optional(),
   message: z
     .string()
     .max(2000, 'Meddelandet får inte vara längre än 2000 tecken')
     .optional()
     .or(z.literal('')),
+  name: z
+    .string()
+    .min(2, 'Namnet måste vara minst 2 tecken')
+    .max(100, 'Namnet får inte vara längre än 100 tecken'),
+  email: z
+    .string()
+    .email('Ange en giltig e-postadress')
+    .min(1, 'E-post är obligatoriskt'),
+  phone: z
+    .string()
+    .regex(/^(\+\d{1,3})?[\s]*-?[\s]*(\(?\d{1,4}\)?)?[\s]*-?[\s]*\d[\d\s-]{5,14}$/, 'Ange ett giltigt telefonnummer')
+    .optional()
+    .or(z.literal('')),
+  customerType: z
+    .enum(['Privatperson', 'Företag'], {
+      errorMap: () => ({ message: 'Välj om du är privatperson eller företag' }),
+    }),
   gdprConsent: z
     .boolean()
     .refine(val => val === true, {
@@ -285,9 +285,14 @@ export function useQuoteTextilesForm() {
       }
       formDataToSubmit.append('bot-field', '')
 
-      // Submit to Netlify Forms
+      // Determine submission endpoint based on environment
+      // Local development: use /api/forms/submit (logs submission)
+      // Production: use Netlify Forms endpoint at /
+      const endpoint = import.meta.dev ? '/api/forms/submit' : '/'
+
+      // Submit to Netlify Forms or local endpoint
       // Note: Do not set Content-Type — browser sets it with the correct multipart boundary
-      const response = await fetch('/', {
+      const response = await fetch(endpoint, {
         method: 'POST',
         body: formDataToSubmit,
       })

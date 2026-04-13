@@ -46,26 +46,22 @@ const emit = defineEmits<{
         </p>
         <!-- Quote Textiles Form Fields -->
         <ul v-if="form === 'Quote-Textiles'" class="list-disc list-inside space-y-1 ml-2 text-base">
+          <li>Ämne</li>
+          <li>Produkt Kategori</li>
+          <li>Produkt</li>
+          <li>Tillagda design bilder</li>
+          <li>Tillagda design texter</li>
+          <li>Produkt ID och storlek (om angivet)</li>
+          <li>Antal</li>
+          <li>Meddelande (om angivet)</li>
           <li>Namn</li>
           <li>E-postadress</li>
           <li>Telefonnummer (om angivet)</li>
           <li>Kundtyp (privatperson eller företag)</li>
-          <li>Ämne</li>
-          <li>Produkt Kategori</li>
-          <li>Produkt</li>
-          <li>Produkt ID och storlek (om angivet)</li>
-          <li>Antal</li>
-          <li>Tillagda design bilder</li>
-          <li>Tillagda design texter</li>
-          <li>Meddelande (om angivet)</li>
           <li>GDPR samtycke</li>
         </ul>
         <!-- Quote Printed Matter Form Fields -->
         <ul v-else-if="form === 'Quote-Printed-Matter'" class="list-disc list-inside space-y-1 ml-2 text-base">
-          <li>Namn</li>
-          <li>E-postadress</li>
-          <li>Telefonnummer (om angivet)</li>
-          <li>Kundtyp (privatperson eller företag)</li>
           <li>Ämne</li>
           <li>Produkt Kategori</li>
           <li>Produkt</li>
@@ -76,6 +72,10 @@ const emit = defineEmits<{
           <li>Antal</li>
           <li>Eventuellt bifogade filer</li>
           <li>Meddelande (om angivet)</li>
+          <li>Namn</li>
+          <li>E-postadress</li>
+          <li>Telefonnummer (om angivet)</li>
+          <li>Kundtyp (privatperson eller företag)</li>
           <li>GDPR samtycke</li>
         </ul>
         <!-- Default (Contact Form Fields) -->

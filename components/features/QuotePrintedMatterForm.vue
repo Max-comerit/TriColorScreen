@@ -150,7 +150,7 @@ function triggerFileInput(): void {
  */
 function removeFile(name: string): void {
   const remaining = (formData.value.files ?? []).filter(f => f.name !== name)
-  formData.value.files = remaining.length > 0 ? remaining : null
+  formData.value.files = remaining
   if (remaining.length === 0) {
     clearFieldError('files')
   }
@@ -248,138 +248,6 @@ watch(isChanged, (newValue) => {
     </p>
 
     <div class="space-y-4 sm:space-y-5">
-
-      <!-- ── Name ──────────────────────────────────────────── -->
-      <div>
-        <label
-          for="quote-printed-matter-name"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Ditt namn <span class="text-error" aria-label="obligatoriskt fält">*</span>
-        </label>
-        <input
-          id="quote-printed-matter-name"
-          v-model="formData.name"
-          type="text"
-          name="name"
-          autocomplete="name"
-          :aria-invalid="!!getFieldError('name')"
-          :aria-describedby="getFieldError('name') ? 'name-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="getFieldError('name') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
-          @blur="handleBlur('name')"
-          @input="handleInput('name')"
-        >
-        <p
-          v-if="getFieldError('name')"
-          id="name-error"
-          class="mt-1.5 text-sm text-error-dark"
-          role="alert"
-        >
-          {{ getFieldError('name') }}
-        </p>
-      </div>
-
-      <!-- ── Email ─────────────────────────────────────────── -->
-      <div>
-        <label
-          for="quote-printed-matter-email"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Din e-post <span class="text-error" aria-label="obligatoriskt fält">*</span>
-        </label>
-        <input
-          id="quote-printed-matter-email"
-          v-model="formData.email"
-          type="email"
-          name="email"
-          autocomplete="email"
-          :aria-invalid="!!getFieldError('email')"
-          :aria-describedby="getFieldError('email') ? 'email-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="getFieldError('email') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
-          @blur="handleBlur('email')"
-          @input="handleInput('email')"
-        >
-        <p
-          v-if="getFieldError('email')"
-          id="email-error"
-          class="mt-1.5 text-sm text-error-dark"
-          role="alert"
-        >
-          {{ getFieldError('email') }}
-        </p>
-      </div>
-
-      <!-- ── Phone (optional) ──────────────────────────────── -->
-      <div>
-        <label
-          for="quote-printed-matter-phone"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Telefon <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
-        </label>
-        <input
-          id="quote-printed-matter-phone"
-          v-model="formData.phone"
-          type="tel"
-          name="phone"
-          autocomplete="tel"
-          placeholder="+46 70 123 4567"
-          :aria-invalid="!!getFieldError('phone')"
-          :aria-describedby="getFieldError('phone') ? 'phone-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="getFieldError('phone') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
-          @blur="handleBlur('phone')"
-          @input="handleInput('phone')"
-        >
-        <p
-          v-if="getFieldError('phone')"
-          id="phone-error"
-          class="mt-1.5 text-sm text-error-dark"
-          role="alert"
-        >
-          {{ getFieldError('phone') }}
-        </p>
-      </div>
-
-      <!-- ── Customer type ──────────────────────────────────── -->
-      <div>
-        <label
-          for="quote-printed-matter-customer-type"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Kundtyp <span class="text-error" aria-label="obligatoriskt fält">*</span>
-        </label>
-        <select
-          id="quote-printed-matter-customer-type"
-          v-model="formData.customerType"
-          name="customer_type"
-          autocomplete="off"
-          :aria-invalid="!!getFieldError('customerType')"
-          :aria-describedby="getFieldError('customerType') ? 'customer-type-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
-          :class="getFieldError('customerType') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
-          @blur="handleBlur('customerType')"
-          @change="handleInput('customerType')"
-        >
-          <option value="" disabled>Välj kundtyp</option>
-          <option value="Privatperson">Privatperson</option>
-          <option value="Företag">Företag</option>
-        </select>
-        <p
-          v-if="getFieldError('customerType')"
-          id="customer-type-error"
-          class="mt-1.5 text-sm text-error-dark"
-          role="alert"
-        >
-          {{ getFieldError('customerType') }}
-        </p>
-      </div>
 
       <!-- ── Subject (disabled / hardcoded) ───────────────── -->
       <div>
@@ -755,6 +623,138 @@ watch(isChanged, (newValue) => {
           role="alert"
         >
           {{ getFieldError('message') }}
+        </p>
+      </div>
+
+      <!-- ── Name ──────────────────────────────────────────── -->
+      <div>
+        <label
+          for="quote-printed-matter-name"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Ditt namn <span class="text-error" aria-label="obligatoriskt fält">*</span>
+        </label>
+        <input
+          id="quote-printed-matter-name"
+          v-model="formData.name"
+          type="text"
+          name="name"
+          autocomplete="name"
+          :aria-invalid="!!getFieldError('name')"
+          :aria-describedby="getFieldError('name') ? 'name-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('name') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('name')"
+          @input="handleInput('name')"
+        >
+        <p
+          v-if="getFieldError('name')"
+          id="name-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('name') }}
+        </p>
+      </div>
+
+      <!-- ── Email ─────────────────────────────────────────── -->
+      <div>
+        <label
+          for="quote-printed-matter-email"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Din e-post <span class="text-error" aria-label="obligatoriskt fält">*</span>
+        </label>
+        <input
+          id="quote-printed-matter-email"
+          v-model="formData.email"
+          type="email"
+          name="email"
+          autocomplete="email"
+          :aria-invalid="!!getFieldError('email')"
+          :aria-describedby="getFieldError('email') ? 'email-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('email') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('email')"
+          @input="handleInput('email')"
+        >
+        <p
+          v-if="getFieldError('email')"
+          id="email-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('email') }}
+        </p>
+      </div>
+
+      <!-- ── Phone (optional) ──────────────────────────────── -->
+      <div>
+        <label
+          for="quote-printed-matter-phone"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Telefon <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
+        </label>
+        <input
+          id="quote-printed-matter-phone"
+          v-model="formData.phone"
+          type="tel"
+          name="phone"
+          autocomplete="tel"
+          placeholder="+46 70 123 4567"
+          :aria-invalid="!!getFieldError('phone')"
+          :aria-describedby="getFieldError('phone') ? 'phone-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('phone') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('phone')"
+          @input="handleInput('phone')"
+        >
+        <p
+          v-if="getFieldError('phone')"
+          id="phone-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('phone') }}
+        </p>
+      </div>
+
+      <!-- ── Customer type ──────────────────────────────────── -->
+      <div>
+        <label
+          for="quote-printed-matter-customer-type"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Kundtyp <span class="text-error" aria-label="obligatoriskt fält">*</span>
+        </label>
+        <select
+          id="quote-printed-matter-customer-type"
+          v-model="formData.customerType"
+          name="customer_type"
+          autocomplete="off"
+          :aria-invalid="!!getFieldError('customerType')"
+          :aria-describedby="getFieldError('customerType') ? 'customer-type-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
+          :class="getFieldError('customerType') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('customerType')"
+          @change="handleInput('customerType')"
+        >
+          <option value="" disabled>Välj kundtyp</option>
+          <option value="Privatperson">Privatperson</option>
+          <option value="Företag">Företag</option>
+        </select>
+        <p
+          v-if="getFieldError('customerType')"
+          id="customer-type-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('customerType') }}
         </p>
       </div>
 
