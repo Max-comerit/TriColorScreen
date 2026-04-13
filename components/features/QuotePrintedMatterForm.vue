@@ -66,6 +66,38 @@ const selectedFileNames = computed(() => formData.value.files?.map(f => f.name) 
  */
 const products = computed(() => productsData.products)
 
+/**
+ * Available sizes for selected product
+ */
+const sizeOptions = computed(() => {
+  const product = products.value.find(p => p.name === formData.value.product)
+  return product?.size ?? []
+})
+
+/**
+ * Available materials for selected product
+ */
+const materialOptions = computed(() => {
+  const product = products.value.find(p => p.name === formData.value.product)
+  return product?.material ?? []
+})
+
+/**
+ * Available print options for selected product
+ */
+const printOptions = computed(() => {
+  const product = products.value.find(p => p.name === formData.value.product)
+  return product?.print ?? []
+})
+
+/**
+ * Available finishing options for selected product
+ */
+const finishingOptions = computed(() => {
+  const product = products.value.find(p => p.name === formData.value.product)
+  return product?.finishing ?? []
+})
+
 // ===== METHODS =====
 
 /**
@@ -166,6 +198,16 @@ async function handleSubmit(): Promise<void> {
 }
 
 // ===== WATCHERS =====
+
+/**
+ * Reset dependent fields when product changes
+ */
+watch(() => formData.value.product, () => {
+  formData.value.size = ''
+  formData.value.material = ''
+  formData.value.print = ''
+  formData.value.finishing = ''
+})
 
 /**
  * Emit changed event when form change state updates
@@ -423,21 +465,24 @@ watch(isChanged, (newValue) => {
         >
           Storlek / Format <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
-        <input
+        <select
           id="quote-printed-matter-size"
           v-model="formData.size"
-          type="text"
           name="size"
           autocomplete="off"
-          placeholder="T.ex. A4, A3, C4, C3, DL, 85x55 mm"
           :aria-invalid="!!getFieldError('size')"
           :aria-describedby="getFieldError('size') ? 'size-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
           :class="getFieldError('size') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
+          :disabled="isSubmitting || sizeOptions.length === 0"
           @blur="handleBlur('size')"
-          @input="handleInput('size')"
+          @change="handleInput('size')"
         >
+          <option value="">Välj storlek</option>
+          <option v-for="size in sizeOptions" :key="size" :value="size">
+            {{ size }}
+          </option>
+        </select>
         <p
           v-if="getFieldError('size')"
           id="size-error"
@@ -456,21 +501,24 @@ watch(isChanged, (newValue) => {
         >
           Material / Papperstyp <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
-        <input
+        <select
           id="quote-printed-matter-material"
           v-model="formData.material"
-          type="text"
           name="material"
           autocomplete="off"
-          placeholder="T.ex. 170g gloss, 300g matt, kartong"
           :aria-invalid="!!getFieldError('material')"
           :aria-describedby="getFieldError('material') ? 'material-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
           :class="getFieldError('material') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
+          :disabled="isSubmitting || materialOptions.length === 0"
           @blur="handleBlur('material')"
-          @input="handleInput('material')"
+          @change="handleInput('material')"
         >
+          <option value="">Välj material</option>
+          <option v-for="material in materialOptions" :key="material" :value="material">
+            {{ material }}
+          </option>
+        </select>
         <p
           v-if="getFieldError('material')"
           id="material-error"
@@ -489,21 +537,24 @@ watch(isChanged, (newValue) => {
         >
           Tryck <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
-        <input
+        <select
           id="quote-printed-matter-print"
           v-model="formData.print"
-          type="text"
           name="print"
           autocomplete="off"
-          placeholder="T.ex. 1-sidig / 2-sidig, färg/svartvit"
           :aria-invalid="!!getFieldError('print')"
           :aria-describedby="getFieldError('print') ? 'print-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
           :class="getFieldError('print') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
+          :disabled="isSubmitting || printOptions.length === 0"
           @blur="handleBlur('print')"
-          @input="handleInput('print')"
+          @change="handleInput('print')"
         >
+          <option value="">Välj tryck</option>
+          <option v-for="print in printOptions" :key="print" :value="print">
+            {{ print }}
+          </option>
+        </select>
         <p
           v-if="getFieldError('print')"
           id="print-error"
@@ -514,7 +565,7 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- ── Finishing (Optional) ───────────────────── -->
+      <!-- ── Finishing (Optional) ────────────────────────────────── -->
       <div>
         <label
           for="quote-printed-matter-finishing"
@@ -522,21 +573,24 @@ watch(isChanged, (newValue) => {
         >
           Efterbehandling <span class="text-neutral-600 text-xs sm:text-sm">(valfritt)</span>
         </label>
-        <input
+        <select
           id="quote-printed-matter-finishing"
           v-model="formData.finishing"
-          type="text"
           name="finishing"
           autocomplete="off"
-          placeholder="T.ex. laminering (matt/glans), lack (UV/spot UV), prägling"
           :aria-invalid="!!getFieldError('finishing')"
           :aria-describedby="getFieldError('finishing') ? 'finishing-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed appearance-none bg-white"
           :class="getFieldError('finishing') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
+          :disabled="isSubmitting || finishingOptions.length === 0"
           @blur="handleBlur('finishing')"
-          @input="handleInput('finishing')"
+          @change="handleInput('finishing')"
         >
+          <option value="">Välj efterbehandling</option>
+          <option v-for="finishing in finishingOptions" :key="finishing" :value="finishing">
+            {{ finishing }}
+          </option>
+        </select>
         <p
           v-if="getFieldError('finishing')"
           id="finishing-error"
