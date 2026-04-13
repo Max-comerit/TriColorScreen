@@ -16,7 +16,7 @@ export const useQuoteTextilesFormStore = defineStore('quoteTextilesForm', () => 
     email: '',
     phone: '',
     customerType: '' as 'Privatperson' | 'Företag',
-    subject: 'Offertförfrågan (Textil, Reklam &amp; Bildekor)',
+    subject: 'Offertförfrågan (Textil, Reklam och Bildekor)',
     productCategory: '',
     product: '',
     productId: '',

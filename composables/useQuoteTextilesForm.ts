@@ -36,7 +36,7 @@ export const quoteTextilesFormSchema = z.object({
     .enum(['Privatperson', 'Företag'], {
       errorMap: () => ({ message: 'Välj om du är privatperson eller företag' }),
     }),
-  subject: z.literal('Offertförfrågan (Textil, Reklam &amp; Bildekor)'),
+  subject: z.literal('Offertförfrågan (Textil, Reklam och Bildekor)'),
   productCategory: z
     .string()
     .optional()
