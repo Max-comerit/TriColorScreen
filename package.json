@@ -10,6 +10,7 @@
     "generate:clean": "rimraf dist .nuxt .output && nuxi generate",
     "preview": "nuxi preview",
     "postinstall": "nuxi prepare",
+    "typecheck": "nuxi typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "audit": "audit-ci --fail-level moderate --allowlist GHSA-hfvx-25r5-qc3w",

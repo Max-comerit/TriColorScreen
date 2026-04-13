@@ -24,6 +24,9 @@ jobs:
       # 4. Run linter (Next.js has next lint built-in)
       - run: npm run lint
 
-      # 5. Run security audit
+      # 5. Run TypeScript type checking
+      - run: npm run typecheck
+
+      # 6. Run security audit
       - name: Run security audit
         run: npm run security:audit
