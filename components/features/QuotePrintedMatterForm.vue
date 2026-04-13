@@ -461,7 +461,7 @@ watch(isChanged, (newValue) => {
           id="quote-printed-matter-file"
           ref="fileInputRef"
           type="file"
-          accept="application/pdf,.pdf"
+          accept="application/pdf"
           autocomplete="off"
           multiple
           :aria-invalid="!!getFieldError('files')"
