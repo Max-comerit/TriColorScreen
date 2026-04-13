@@ -14,6 +14,8 @@ import CardGrid from '~/components/common/CardGrid.vue'
 // Lazy-load Carousel into its own chunk — it and Embla are only needed on mobile
 const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
 
+const HERO_IMAGE = '/images/index/hero.jpg'
+
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
 
@@ -35,7 +37,7 @@ useHead({
       content: 'Kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper företag, organisationer, föreningar, entreprenörer & privatpersoner att sticka ut!',
     },
     { property: 'og:url', content: `${siteUrl}/` },
-    { property: 'og:image', content: `${siteUrl}/images/index/hero.jpg` },
+    { property: 'og:image', content: `${siteUrl}${HERO_IMAGE}` },
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
@@ -44,7 +46,7 @@ useHead({
       name: 'twitter:description',
       content: 'Kompletta trycklösningar: trycksaker, screentryck, brodyr, textiltryck, bildekor och bilfoliering. Vi hjälper företag, organisationer, föreningar, entreprenörer & privatpersoner att sticka ut!',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/index/hero.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}${HERO_IMAGE}` },
   ],
 })
 
@@ -67,7 +69,7 @@ const reviewCards = computed<CardItem[]>(() =>
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/index/hero.jpg"
+      :src="HERO_IMAGE"
       title="Tricolor Screen"
       description="Vi hjälper dig med allt inom reklam, profiltryck, brodyr, textiltryck, bildekor och bilfoliering."
       :width="1280"

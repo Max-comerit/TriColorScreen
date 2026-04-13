@@ -11,6 +11,10 @@ import { useResponsivePerPage } from '~/composables/useResponsivePerPage'
 import { defineAsyncComponent } from 'vue'
 const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
 
+const HERO_IMAGE = '/images/services/screen-printing-embroidery/hero-v2.jpg'
+const HERO_VIDEO_WEBM = '/videos/services/screen-printing-embroidery/hero.webm'
+const HERO_VIDEO_MP4 = '/videos/services/screen-printing-embroidery/hero.mp4'
+
 // ===== COMPOSABLES & STORES =====
 const siteUrl = useSiteUrl()
 useHead({
@@ -30,7 +34,7 @@ useHead({
       content: 'Professionella lösningar inom screentryck, brodyr och textiltryck för företag och privatpersoner. Kontakta oss för skräddarsydda trycklösningar.',
     },
     { property: 'og:url', content: `${siteUrl}/services/screen-printing-embroidery` },
-    { property: 'og:image', content: `${siteUrl}/images/services/screen-printing-embroidery/hero-v2.jpg` },
+    { property: 'og:image', content: `${siteUrl}${HERO_IMAGE}` },
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '1272' },
     { property: 'og:image:type', content: 'image/jpeg' },
@@ -39,7 +43,7 @@ useHead({
       name: 'twitter:description',
       content: 'Professionella lösningar inom screentryck, brodyr och textiltryck för företag och privatpersoner.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/services/screen-printing-embroidery/hero-v2.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}${HERO_IMAGE}` },
   ],
 })
 
@@ -55,10 +59,10 @@ const imageCards = computed<CardItem[]>(() =>
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/services/screen-printing-embroidery/hero-v2.jpg"
+      :src="HERO_IMAGE"
       :video-sources="[
-        { src: '/videos/services/screen-printing-embroidery/hero.webm', type: 'video/webm' },
-        { src: '/videos/services/screen-printing-embroidery/hero.mp4', type: 'video/mp4' }
+        { src: HERO_VIDEO_WEBM, type: 'video/webm' },
+        { src: HERO_VIDEO_MP4, type: 'video/mp4' }
       ]"
       title="Screentryck, Brodyr & Textiltryck"
       description="Vi använder alla sorters metoder för att trycka er design på valt underlag."

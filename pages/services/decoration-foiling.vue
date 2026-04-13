@@ -8,6 +8,10 @@ import CtaSection from '~/components/features/CtaSection.vue'
 import type { CardItem, IServiceCardContent } from '~/types/CardContent'
 import decorationFoilingServicesData from '~/assets/json/services/decoration-foiling/services.json'
 
+const HERO_IMAGE = '/images/services/decoration-foiling/hero-v2.jpg'
+const HERO_VIDEO_WEBM = '/videos/services/decoration-foiling/hero.webm'
+const HERO_VIDEO_MP4 = '/videos/services/decoration-foiling/hero.mp4'
+
 // ===== PROPS & EMITS =====
 
 // ===== COMPOSABLES & STORES =====
@@ -29,7 +33,7 @@ useHead({
       content: 'Professionell bildekor, fordonsdekor och helfoliering för privatpersoner och företag i Stockholm.',
     },
     { property: 'og:url', content: `${siteUrl}/services/decoration-foiling` },
-    { property: 'og:image', content: `${siteUrl}/images/services/decoration-foiling/hero-v2.jpg` },
+    { property: 'og:image', content: `${siteUrl}${HERO_IMAGE}` },
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '2331' },
     { property: 'og:image:type', content: 'image/jpeg' },
@@ -38,7 +42,7 @@ useHead({
       name: 'twitter:description',
       content: 'Professionell bildekor, fordonsdekor och helfoliering för privatpersoner och företag i Stockholm.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/services/decoration-foiling/hero-v2.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}${HERO_IMAGE}` },
   ],
 })
 
@@ -68,10 +72,10 @@ const decorationFoilingCards = computed<CardItem[]>(() =>
   <div>
     <!-- Hero: full width -->
     <HeroImage 
-      src="/images/services/decoration-foiling/hero-v2.jpg"
+      :src="HERO_IMAGE"
       :video-sources="[
-        { src: '/videos/services/decoration-foiling/hero.webm', type: 'video/webm' },
-        { src: '/videos/services/decoration-foiling/hero.mp4', type: 'video/mp4' }
+        { src: HERO_VIDEO_WEBM, type: 'video/webm' },
+        { src: HERO_VIDEO_MP4, type: 'video/mp4' }
       ]"
       title="Dekor & Foliering"
       description="Bildekor, helfoliering, glasfasader och insynsskydd. Ditt budskap på ytor som syns."

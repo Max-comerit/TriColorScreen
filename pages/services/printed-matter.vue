@@ -12,6 +12,8 @@ import { useResponsivePerPage } from '~/composables/useResponsivePerPage'
 import { defineAsyncComponent } from 'vue'
 const Carousel = defineAsyncComponent(() => import('~/components/common/Carousel.vue'))
 
+const HERO_IMAGE = '/images/services/printed-matter/hero.jpg'
+
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
 useHead({
@@ -31,7 +33,7 @@ useHead({
       content: 'Högkvalitativa trycksaker för alla ändamål. Från designkoncept till leverans - Tricolor Screen har löst allt sedan 1998.',
     },
     { property: 'og:url', content: `${siteUrl}/services/printed-matter` },
-    { property: 'og:image', content: `${siteUrl}/images/services/printed-matter/hero.jpg` },
+    { property: 'og:image', content: `${siteUrl}${HERO_IMAGE}` },
     { property: 'og:image:width', content: '1280' },
     { property: 'og:image:height', content: '854' },
     { property: 'og:image:type', content: 'image/jpeg' },
@@ -40,7 +42,7 @@ useHead({
       name: 'twitter:description',
       content: 'Högkvalitativa trycksaker för alla ändamål. Från designkoncept till leverans - Tricolor Screen har löst allt sedan 1998.',
     },
-    { name: 'twitter:image', content: `${siteUrl}/images/services/printed-matter/hero.jpg` },
+    { name: 'twitter:image', content: `${siteUrl}${HERO_IMAGE}` },
   ],
 })
 
@@ -61,7 +63,7 @@ const serviceCards = computed<CardItem[]>(() =>
   <div>
     <!-- Hero: full width -->
     <HeroImage
-      src="/images/services/printed-matter/hero.jpg"
+      :src="HERO_IMAGE"
       title="Designa produkter med eget tryck"
       :width="1280"
       :height="854"
