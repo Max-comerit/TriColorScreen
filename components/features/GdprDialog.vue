@@ -69,6 +69,10 @@ const emit = defineEmits<{
           <li>Ämne</li>
           <li>Produkt Kategori</li>
           <li>Produkt</li>
+          <li>Storlek / Format (om angivet)</li>
+          <li>Material / Papperstyp (om angivet)</li>
+          <li>Tryck (om angivet)</li>
+          <li>Efterbehandling (om angivet)</li>
           <li>Antal</li>
           <li>Eventuellt bifogade filer</li>
           <li>Meddelande (om angivet)</li>
