@@ -69,8 +69,8 @@ const emit = defineEmits<{
           <li>Material / Papperstyp (om angivet)</li>
           <li>Tryck (om angivet)</li>
           <li>Efterbehandling (om angivet)</li>
-          <li>Antal</li>
           <li>Eventuellt bifogade filer</li>
+          <li>Antal</li>
           <li>Meddelande (om angivet)</li>
           <li>Namn</li>
           <li>E-postadress</li>
