@@ -107,25 +107,33 @@ watch(
 <template>
   <div class="w-full max-w-xl mx-auto my-4 px-4 justify-center flex">
     <div class="flex items-stretch sm:items-center gap-3 p-3 bg-white border border-gray-300 rounded-lg justify-center flex-wrap">
-        <BaseDropdown
-          :options="categoryOptions"
-          :model-value="activeCategory"
-          label="Välj produktkategori"
-          @change="(val) => onCategoryChange(Number(val))"
-        />
-        <BaseDropdown
-          :options="productOptions"
-          :model-value="activeProduct"
-          label="Välj produkt"
-          @change="(val) => onProductChange(Number(val))"
-        />
-        <BaseDropdown
-          :options="sideOptions"
-          :model-value="activeSide"
-          label="Välj sida"
-          @change="(val) => onSideChange(Number(val))"
-        />
-
+        <div class="flex flex-col gap-1">
+          <span class="pl-2 text-sm font-medium text-gray-700">Kategori</span>
+          <BaseDropdown
+            :options="categoryOptions"
+            :model-value="activeCategory"
+            label="Välj produktkategori"
+            @change="(val) => onCategoryChange(Number(val))"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <span class="pl-2 text-sm font-medium text-gray-700">Produkt</span>
+          <BaseDropdown
+            :options="productOptions"
+            :model-value="activeProduct"
+            label="Välj produkt"
+            @change="(val) => onProductChange(Number(val))"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <span class="pl-2 text-sm font-medium text-gray-700">Sida</span>
+          <BaseDropdown
+            :options="sideOptions"
+            :model-value="activeSide"
+            label="Välj sida"
+            @change="(val) => onSideChange(Number(val))"
+          />
+        </div>
       <button
         v-if="isCustomSelected"
         class="inline-flex items-center justify-center h-11 px-4 text-sm font-semibold bg-primary-600 text-white shadow-sm transition hover:bg-primary-700 outline-visible-spaced-button"
