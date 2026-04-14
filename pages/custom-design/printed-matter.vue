@@ -78,7 +78,7 @@ useHead({
             <li>Välj <strong>Tryck</strong></li>
             <li>Välj <strong>Efterbehandling</strong></li>
             <li>Ladda sedan upp dina <strong>design filer</strong></li>
-            <li>Lägg till eventuell övrig information i <strong>Medddelande</strong></li>
+            <li>Fyll i <strong>Antal</strong> och lägg till eventuell övrig information i <strong>Medddelande</strong></li>
             <li>Fyll i kontakt uppgifter (<strong>Namn</strong>, <strong>E-post</strong>, <strong>Telefon</strong>) och <strong>Kundtyp</strong></li>
             <li>Skicka din offertförfrågan</li>
           </ol>

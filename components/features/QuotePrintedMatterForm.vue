@@ -469,42 +469,6 @@ watch(isChanged, (newValue) => {
         </p>
       </div>
 
-      <!-- ── Product count ──────────────────────────────────── -->
-      <div>
-        <label
-          for="quote-printed-matter-product-count"
-          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
-        >
-          Antal <span class="text-error" aria-label="obligatoriskt fält">*</span>
-        </label>
-        <input
-          id="quote-printed-matter-product-count"
-          v-model.number="formData.productCount"
-          type="number"
-          name="product_count"
-          min="1"
-          max="10000"
-          step="1"
-          autocomplete="off"
-          placeholder="Ange önskat antal"
-          :aria-invalid="!!getFieldError('productCount')"
-          :aria-describedby="getFieldError('productCount') ? 'product-count-error' : undefined"
-          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="getFieldError('productCount') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
-          :disabled="isSubmitting"
-          @blur="handleBlur('productCount')"
-          @input="handleInput('productCount')"
-        >
-        <p
-          v-if="getFieldError('productCount')"
-          id="product-count-error"
-          class="mt-1.5 text-sm text-error-dark"
-          role="alert"
-        >
-          {{ getFieldError('productCount') }}
-        </p>
-      </div>
-
       <!-- File Upload (Required) -->
       <div>
         <label 
@@ -590,6 +554,42 @@ watch(isChanged, (newValue) => {
           role="alert"
         >
           {{ getFieldError('files') }}
+        </p>
+      </div>
+
+      <!-- ── Product count ──────────────────────────────────── -->
+      <div>
+        <label
+          for="quote-printed-matter-product-count"
+          class="block text-sm sm:text-base font-medium text-neutral-900 mb-1.5"
+        >
+          Antal <span class="text-error" aria-label="obligatoriskt fält">*</span>
+        </label>
+        <input
+          id="quote-printed-matter-product-count"
+          v-model.number="formData.productCount"
+          type="number"
+          name="product_count"
+          min="1"
+          max="10000"
+          step="1"
+          autocomplete="off"
+          placeholder="Ange önskat antal"
+          :aria-invalid="!!getFieldError('productCount')"
+          :aria-describedby="getFieldError('productCount') ? 'product-count-error' : undefined"
+          class="w-full px-4 py-2.5 text-base form-input-base outline-tight-input disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="getFieldError('productCount') ? 'border-error focus:ring-error' : 'border-neutral-300 hover:border-neutral-400'"
+          :disabled="isSubmitting"
+          @blur="handleBlur('productCount')"
+          @input="handleInput('productCount')"
+        >
+        <p
+          v-if="getFieldError('productCount')"
+          id="product-count-error"
+          class="mt-1.5 text-sm text-error-dark"
+          role="alert"
+        >
+          {{ getFieldError('productCount') }}
         </p>
       </div>
 

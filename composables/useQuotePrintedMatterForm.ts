@@ -54,14 +54,6 @@ export const quotePrintedMatterFormSchema = z.object({
     .max(100, 'Efterbehandling får inte vara längre än 100 tecken')
     .optional()
     .or(z.literal('')),
-  productCount: z
-    .number({
-      required_error: 'Ange antal',
-      invalid_type_error: 'Ange ett giltigt antal',
-    })
-    .int('Antal måste vara ett heltal')
-    .min(1, 'Antal måste vara minst 1')
-    .max(10000, 'Antal får inte vara mer än 10 000'),
   files: z
     .array(z.custom<File>((file) => {
       if (!file) return true // Optional field
@@ -83,6 +75,14 @@ export const quotePrintedMatterFormSchema = z.object({
       files => files.reduce((sum, f) => sum + f.size, 0) <= FORM_MAX_TOTAL_FILE_SIZE,
       { message: `Den totala filstorleken får inte överstiga ${FORM_MAX_TOTAL_FILE_SIZE / 1024 / 1024} MB` },
     ),
+  productCount: z
+    .number({
+      required_error: 'Ange antal',
+      invalid_type_error: 'Ange ett giltigt antal',
+    })
+    .int('Antal måste vara ett heltal')
+    .min(1, 'Antal måste vara minst 1')
+    .max(10000, 'Antal får inte vara mer än 10 000'),
   message: z
     .string()
     .max(2000, 'Meddelandet får inte vara längre än 2000 tecken')
