@@ -136,14 +136,14 @@ onBeforeUnmount(() => {
             <li>Designa olika <strong>Sidor</strong> (t.ex. Fram &amp; Bak) för en helt personlig produkt</li>
             <li>När du är nöjd med din design fyller du i din <strong>Produkt ID</strong> &amp; <strong>Storlek</strong> på din produkt från Jobman Texets produktkatalog i formuläret nedan</li>
             <li>Fyll i <strong>Antal</strong> och eventuell övrig information i <strong>Meddelande</strong></li>
-            <li>Fyll i <strong>Kontakt Uppgifter</strong></li>
+            <li>Fyll i kontakt uppgifter (<strong>Namn</strong>, <strong>E-post</strong>, <strong>Telefon</strong>) och <strong>Kundtyp</strong></li>
             <li>Sedan skickar du en offertförfrågan direkt från verktyget</li>
           </ol>
           <p class="leading-relaxed">
             Vi återkommer snabbt med pris och leveranstid.
           </p>
           <p class="leading-normal">
-            <em>Notera att du kan designa dina helt egna produkter i vårt designverktyg också genom att välja <strong>Kategori: Övrigt</strong> och <strong>Sidan</strong> du vill trycka på, och ladda upp egna bilder av din produkt.</em>
+            <em>Du kan även designa dina helt egna produkter i vårt designverktyg genom att välja <strong>Kategori: Övrigt</strong> och <strong>Sidan</strong> du vill trycka på, och sedan ladda upp dina egna bilder av din produkt.</em>
           </p>
         </div>
       </Section>
