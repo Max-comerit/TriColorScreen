@@ -131,23 +131,19 @@ onBeforeUnmount(() => {
                 class="underline outline-visible-spaced-link"
               >Jobman Texets produktkatalog</a>
             </li>
-            <li>Välj sedan samma <strong>Produkt</strong> i designverktyget (t.ex. T-Shirt om du har valt en T-Shirt)</li>
-            <li>Lägg till bilder &amp; text och se hur det kommer att se ut innan du beställer</li>
+            <li>Välj sedan <strong>Kategori: Textil</strong> eller <strong>Arbetskläder</strong> och samma <strong>Produkt</strong> i designverktyget nedan (t.ex. T-Shirt om du har valt en T-Shirt)</li>
+            <li><strong>Lägg till bilder &amp; text</strong> och se hur det kommer att se ut innan du beställer</li>
             <li>Designa olika <strong>Sidor</strong> (t.ex. Fram &amp; Bak) för en helt personlig produkt</li>
-            <li>När du är nöjd med din design fyller du i din <strong>Kontakt Information</strong>, <strong>Produkt ID</strong> &amp; <strong>Storlek</strong> på din produkt från
-              <a
-                href="https://www.jobmantexet.se"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-hidden="true"
-                tabindex="-1"
-                class="underline outline-visible-spaced-link"
-              >Jobman Texets produktkatalog</a>
-              i formuläret nedan</li>
-              <li>Sedan skickar du en offertförfrågan direkt från verktyget</li>
+            <li>När du är nöjd med din design fyller du i din <strong>Produkt ID</strong> &amp; <strong>Storlek</strong> på din produkt från Jobman Texets produktkatalog i formuläret nedan</li>
+            <li>Fyll i <strong>Antal</strong> och eventuell övrig information i <strong>Meddelande</strong></li>
+            <li>Fyll i <strong>Kontakt Uppgifter</strong></li>
+            <li>Sedan skickar du en offertförfrågan direkt från verktyget</li>
           </ol>
           <p class="leading-relaxed">
             Vi återkommer snabbt med pris och leveranstid.
+          </p>
+          <p class="leading-normal">
+            <em>Notera att du kan designa dina helt egna produkter i vårt designverktyg också genom att välja <strong>Kategori: Övrigt</strong> och <strong>Sidan</strong> du vill trycka på, och ladda upp egna bilder av din produkt.</em>
           </p>
         </div>
       </Section>
