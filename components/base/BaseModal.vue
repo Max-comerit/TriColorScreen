@@ -46,6 +46,7 @@ const emit = defineEmits<{
 
 // ===== STATE =====
 const modalBodyRef = ref<HTMLElement | null>(null)
+const dialogRef = ref<HTMLDialogElement | null>(null)
 const touchStartY = ref<number>(0)
 
 // ===== METHODS =====
@@ -107,7 +108,7 @@ function handleKeyDown(e: KeyboardEvent): void {
   }
 
   // Focus trap: keep Tab navigation within the modal
-  const modalElement = document.querySelector('dialog[open]')
+  const modalElement = dialogRef.value
   if (e.key === 'Tab' && modalElement) {
     const focusableElements = modalElement.querySelectorAll(
       'button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]):not([readonly]), [tabindex]:not([tabindex="-1"]):not([disabled])'
@@ -118,6 +119,17 @@ function handleKeyDown(e: KeyboardEvent): void {
 
     const firstElement = focusableArray[0]
     const lastElement = focusableArray[focusableArray.length - 1]
+
+    // If focus has escaped the modal, redirect it back in
+    if (!modalElement.contains(document.activeElement)) {
+      e.preventDefault()
+      if (e.shiftKey) {
+        lastElement.focus()
+      } else {
+        firstElement.focus()
+      }
+      return
+    }
 
     if (e.shiftKey) {
       // Shift + Tab: if on first element, go to last
@@ -136,14 +148,20 @@ function handleKeyDown(e: KeyboardEvent): void {
 }
 
 /**
- * Set focus to close button when modal opens
+ * Set focus to first focusable element when modal opens
  */
 function setInitialFocus(): void {
   nextTick(() => {
-    const modalElement = document.querySelector('dialog[open]')
-    const closeButton = modalElement?.querySelector('button[aria-label="Close dialog"]') as HTMLElement
-    if (closeButton) {
-      closeButton.focus()
+    const modalElement = dialogRef.value
+    if (!modalElement) return
+    const focusableElements = modalElement.querySelectorAll(
+      'button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]):not([readonly]), [tabindex]:not([tabindex="-1"]):not([disabled])'
+    )
+    const firstElement = focusableElements[0] as HTMLElement | undefined
+    if (firstElement) {
+      firstElement.focus()
+    } else {
+      modalElement.focus()
     }
   })
 }
@@ -186,10 +204,12 @@ watch(
       >
         <!-- Modal Dialog -->
         <dialog
+          ref="dialogRef"
           open
           role="dialog"
           aria-modal="true"
-          class="bg-white p-7 min-w-48 max-w-[calc(100vw_-_2rem)] overflow-hidden rounded-modal shadow-drop relative flex flex-col"
+          tabindex="-1"
+          class="bg-white p-7 min-w-48 max-w-[calc(100vw_-_2rem)] overflow-hidden rounded-modal shadow-drop relative flex flex-col focus:outline-none"
           :style="{ width: props.width, height: props.height }"
           :aria-labelledby="props.title ? 'modal-title' : undefined"
           aria-describedby="modal-body"
