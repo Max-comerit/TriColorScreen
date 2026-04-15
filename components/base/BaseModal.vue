@@ -139,6 +139,7 @@ function handleWheelScroll(e: WheelEvent): void {
   // Only scroll if event target is the body slot or inside it
   const target = e.target as Node
   if (!element.contains(target)) {
+    e.preventDefault()
     return
   }
 
@@ -169,6 +170,7 @@ function handleTouchMove(e: TouchEvent): void {
   // Only scroll if event target is the body slot or inside it
   const target = e.target as Node
   if (!element.contains(target)) {
+    e.preventDefault()
     return
   }
 
