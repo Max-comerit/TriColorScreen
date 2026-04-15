@@ -290,8 +290,6 @@ function setInitialFocus(): void {
 /**
  * Setup keyboard support (ESC key) to close modal
  * and Tab key to manage focus within modal
- * Also manage body scroll lock and initial focus  
- * when modal opens, and restore focus when it closes
  */
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
