@@ -231,6 +231,15 @@ function handleKeyDown(e: KeyboardEvent): void {
 
 /**
  * Set focus to first focusable element when modal opens
+ *
+ * This is intentionally deferred until after Vue has rendered the dialog and
+ * then one animation frame beyond that. The extra frame avoids a race where a
+ * mouse click that opened the modal can still finish after the DOM mount and
+ * wipe out an earlier `.focus()` call.
+ *
+ * Before moving focus, the method also checks whether something inside the
+ * modal is already focused. That protects normal pointer interaction inside
+ * the dialog by avoiding a late focus jump back to the first control.
  */
 function setInitialFocus(): void {
   nextTick(() => {
