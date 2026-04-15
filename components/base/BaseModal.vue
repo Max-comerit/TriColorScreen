@@ -8,12 +8,21 @@
  */
 
 // ===== IMPORTS =====
-import { watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { watch, nextTick, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
 
 // ===== TYPES =====
 /** Inner border style type */
 export type ModalInnerBorderStyle = 'none' | 'sunken'
+
+const FOCUSABLE_SELECTOR = [
+  'button:not([disabled])',
+  '[href]:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled]):not([readonly])',
+  '[tabindex]:not([tabindex="-1"]):not([disabled])',
+].join(', ')
 
 /** Props for BaseModal component */
 interface Props {
@@ -48,8 +57,54 @@ const emit = defineEmits<{
 const modalBodyRef = ref<HTMLElement | null>(null)
 const dialogRef = ref<HTMLDialogElement | null>(null)
 const touchStartY = ref<number>(0)
+const previouslyFocusedElement = ref<HTMLElement | null>(null)
+let initialFocusFrameId: number | null = null
+let restoreFocusFrameId: number | null = null
 
 // ===== METHODS =====
+function getFocusableElements(container: ParentNode): HTMLElement[] {
+  return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)) as HTMLElement[]
+}
+
+/**
+ * Save the currently focused element so it can be restored when the modal closes.
+ */
+function savePreviouslyFocusedElement(): void {
+  const activeElement = document.activeElement
+
+  if (activeElement instanceof HTMLElement && activeElement !== document.body) {
+    previouslyFocusedElement.value = activeElement
+  } else {
+    previouslyFocusedElement.value = null
+  }
+}
+
+/**
+ * Restore focus to the element that had focus before the modal opened.
+ * The focus move is deferred until the modal has been removed from the DOM
+ * and the triggering click/keydown event has fully settled.
+ */
+function restoreFocus(): void {
+  const elementToFocus = previouslyFocusedElement.value
+  previouslyFocusedElement.value = null
+
+  if (!elementToFocus) return
+
+  if (restoreFocusFrameId !== null) {
+    cancelAnimationFrame(restoreFocusFrameId)
+  }
+
+  nextTick(() => {
+    restoreFocusFrameId = window.requestAnimationFrame(() => {
+      restoreFocusFrameId = null
+
+      if (elementToFocus.isConnected && !elementToFocus.hasAttribute('disabled')) {
+        elementToFocus.focus({ preventScroll: true })
+      }
+    })
+  })
+}
+
 /**
  * Close modal by emitting update:modelValue event
  */
@@ -110,10 +165,7 @@ function handleKeyDown(e: KeyboardEvent): void {
   // Focus trap: keep Tab navigation within the modal
   const modalElement = dialogRef.value
   if (e.key === 'Tab' && modalElement) {
-    const focusableElements = modalElement.querySelectorAll(
-      'button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]):not([readonly]), [tabindex]:not([tabindex="-1"]):not([disabled])'
-    )
-    const focusableArray = Array.from(focusableElements) as HTMLElement[]
+    const focusableArray = getFocusableElements(modalElement)
 
     if (focusableArray.length === 0) return
 
@@ -152,17 +204,24 @@ function handleKeyDown(e: KeyboardEvent): void {
  */
 function setInitialFocus(): void {
   nextTick(() => {
+    if (initialFocusFrameId !== null) {
+      cancelAnimationFrame(initialFocusFrameId)
+    }
+
     const modalElement = dialogRef.value
     if (!modalElement) return
-    const focusableElements = modalElement.querySelectorAll(
-      'button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]):not([readonly]), [tabindex]:not([tabindex="-1"]):not([disabled])'
-    )
-    const firstElement = focusableElements[0] as HTMLElement | undefined
-    if (firstElement) {
-      firstElement.focus()
-    } else {
-      modalElement.focus()
-    }
+
+    initialFocusFrameId = window.requestAnimationFrame(() => {
+      initialFocusFrameId = null
+
+      const firstElement = getFocusableElements(modalElement)[0]
+
+      if (firstElement) {
+        firstElement.focus({ preventScroll: true })
+      } else {
+        modalElement.focus({ preventScroll: true })
+      }
+    })
   })
 }
 
@@ -173,21 +232,45 @@ function setInitialFocus(): void {
  */
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
+
+  if (props.modelValue) {
+    savePreviouslyFocusedElement()
+    setInitialFocus()
+  }
+})
+
+onBeforeUnmount(() => {
+  if (previouslyFocusedElement.value) {
+    restoreFocus()
+  }
 })
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown)
+
+  if (initialFocusFrameId !== null) {
+    cancelAnimationFrame(initialFocusFrameId)
+  }
+
+  if (restoreFocusFrameId !== null) {
+    cancelAnimationFrame(restoreFocusFrameId)
+  }
 })
 
 // ===== WATCHERS =====
 /**
- * Set focus to first focusable element when modal opens
+ * Manage focus when the modal opens and closes.
  */
 watch(
   () => props.modelValue,
-  (isOpen) => {
-    if (isOpen) {
+  (isOpen, wasOpen) => {
+    if (isOpen && !wasOpen) {
+      savePreviouslyFocusedElement()
       setInitialFocus()
+    }
+
+    if (!isOpen && wasOpen) {
+      restoreFocus()
     }
   }
 )
