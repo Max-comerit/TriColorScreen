@@ -66,6 +66,13 @@ function getFocusableElements(container: ParentNode): HTMLElement[] {
   return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)) as HTMLElement[]
 }
 
+function isTextEntryElement(element: Element | null): boolean {
+  return element instanceof HTMLInputElement
+    || element instanceof HTMLTextAreaElement
+    || element instanceof HTMLSelectElement
+    || (element instanceof HTMLElement && element.isContentEditable)
+}
+
 /**
  * Save the currently focused element so it can be restored when the modal closes.
  */
@@ -158,13 +165,28 @@ function handleTouchMove(e: TouchEvent): void {
  * Handle keyboard navigation and events within modal
  */
 function handleKeyDown(e: KeyboardEvent): void {
+  const modalElement = dialogRef.value
+
+  if (!props.modelValue || !modalElement) {
+    return
+  }
+
   if (e.key === 'Escape') {
     close()
   }
 
+  if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !isTextEntryElement(document.activeElement)) {
+    const modalBody = modalBodyRef.value
+
+    if (modalBody) {
+      const scrollDelta = e.key === 'ArrowDown' ? 40 : -40
+      modalBody.scrollBy({ top: scrollDelta })
+      e.preventDefault()
+    }
+  }
+
   // Focus trap: keep Tab navigation within the modal
-  const modalElement = dialogRef.value
-  if (e.key === 'Tab' && modalElement) {
+  if (e.key === 'Tab') {
     const focusableArray = getFocusableElements(modalElement)
 
     if (focusableArray.length === 0) return
@@ -213,6 +235,11 @@ function setInitialFocus(): void {
 
     initialFocusFrameId = window.requestAnimationFrame(() => {
       initialFocusFrameId = null
+
+      const activeElement = document.activeElement
+      if (activeElement instanceof HTMLElement && modalElement.contains(activeElement)) {
+        return
+      }
 
       const firstElement = getFocusableElements(modalElement)[0]
 
@@ -320,6 +347,7 @@ watch(
           <section 
             id="modal-body" 
             ref="modalBodyRef"
+            :tabindex="props.innerBorder === 'sunken' ? 0 : undefined"
             class="pb-5 text-neutral-700 flex-grow overflow-y-auto min-h-0 overscroll-contain"
             :class="[
               props.innerBorder === 'sunken'
