@@ -8,12 +8,21 @@
  */
 
 // ===== IMPORTS =====
-import { watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { watch, nextTick, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 import CloseIcon from '~/assets/images/common/close-icon.svg?component'
 
 // ===== TYPES =====
 /** Inner border style type */
 export type ModalInnerBorderStyle = 'none' | 'sunken'
+
+const FOCUSABLE_SELECTOR = [
+  'button:not([disabled])',
+  '[href]:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled]):not([readonly])',
+  '[tabindex]:not([tabindex="-1"]):not([disabled])',
+].join(', ')
 
 /** Props for BaseModal component */
 interface Props {
@@ -46,9 +55,71 @@ const emit = defineEmits<{
 
 // ===== STATE =====
 const modalBodyRef = ref<HTMLElement | null>(null)
+const dialogRef = ref<HTMLDialogElement | null>(null)
 const touchStartY = ref<number>(0)
+const previouslyFocusedElement = ref<HTMLElement | null>(null)
+let initialFocusFrameId: number | null = null
+let restoreFocusFrameId: number | null = null
 
 // ===== METHODS =====
+function getFocusableElements(container: ParentNode): HTMLElement[] {
+  return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)) as HTMLElement[]
+}
+
+function isTextEntryElement(element: Element | null): boolean {
+  return element instanceof HTMLInputElement
+    || element instanceof HTMLTextAreaElement
+    || element instanceof HTMLSelectElement
+    || (element instanceof HTMLElement && element.isContentEditable)
+}
+
+/**
+ * Save the currently focused element so it can be restored when the modal closes.
+ */
+function savePreviouslyFocusedElement(): void {
+  const activeElement = document.activeElement
+
+  if (activeElement instanceof HTMLElement && activeElement !== document.body) {
+    previouslyFocusedElement.value = activeElement
+  } else {
+    previouslyFocusedElement.value = null
+  }
+}
+
+/**
+ * Restore focus to the element that had focus before the modal opened.
+ *
+ * The timing matters here. If focus is restored too early, the browser can
+ * still override it while Vue is tearing the modal out of the DOM, which
+ * leaves focus on <body> instead of the original trigger element.
+ *
+ * `nextTick()` waits for Vue's DOM update so the modal is no longer part of
+ * the rendered tree. `requestAnimationFrame()` then pushes the actual focus
+ * call one frame later, after the click/keyboard event that closed the modal
+ * has fully settled. That makes the restore far more reliable for `v-if`
+ * mounted dialogs and wrapper components that close asynchronously.
+ */
+function restoreFocus(): void {
+  const elementToFocus = previouslyFocusedElement.value
+  previouslyFocusedElement.value = null
+
+  if (!elementToFocus) return
+
+  if (restoreFocusFrameId !== null) {
+    cancelAnimationFrame(restoreFocusFrameId)
+  }
+
+  nextTick(() => {
+    restoreFocusFrameId = window.requestAnimationFrame(() => {
+      restoreFocusFrameId = null
+
+      if (elementToFocus.isConnected && !elementToFocus.hasAttribute('disabled')) {
+        elementToFocus.focus({ preventScroll: true })
+      }
+    })
+  })
+}
+
 /**
  * Close modal by emitting update:modelValue event
  */
@@ -102,22 +173,45 @@ function handleTouchMove(e: TouchEvent): void {
  * Handle keyboard navigation and events within modal
  */
 function handleKeyDown(e: KeyboardEvent): void {
+  const modalElement = dialogRef.value
+
+  if (!props.modelValue || !modalElement) {
+    return
+  }
+
   if (e.key === 'Escape') {
     close()
   }
 
+  if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !isTextEntryElement(document.activeElement)) {
+    const modalBody = modalBodyRef.value
+
+    if (modalBody) {
+      const scrollDelta = e.key === 'ArrowDown' ? 40 : -40
+      modalBody.scrollBy({ top: scrollDelta })
+      e.preventDefault()
+    }
+  }
+
   // Focus trap: keep Tab navigation within the modal
-  const modalElement = document.querySelector('dialog[open]')
-  if (e.key === 'Tab' && modalElement) {
-    const focusableElements = modalElement.querySelectorAll(
-      'button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]):not([readonly]), [tabindex]:not([tabindex="-1"]):not([disabled])'
-    )
-    const focusableArray = Array.from(focusableElements) as HTMLElement[]
+  if (e.key === 'Tab') {
+    const focusableArray = getFocusableElements(modalElement)
 
     if (focusableArray.length === 0) return
 
     const firstElement = focusableArray[0]
     const lastElement = focusableArray[focusableArray.length - 1]
+
+    // If focus has escaped the modal, redirect it back in
+    if (!modalElement.contains(document.activeElement)) {
+      e.preventDefault()
+      if (e.shiftKey) {
+        lastElement.focus()
+      } else {
+        firstElement.focus()
+      }
+      return
+    }
 
     if (e.shiftKey) {
       // Shift + Tab: if on first element, go to last
@@ -136,15 +230,42 @@ function handleKeyDown(e: KeyboardEvent): void {
 }
 
 /**
- * Set focus to close button when modal opens
+ * Set focus to first focusable element when modal opens
+ *
+ * This is intentionally deferred until after Vue has rendered the dialog and
+ * then one animation frame beyond that. The extra frame avoids a race where a
+ * mouse click that opened the modal can still finish after the DOM mount and
+ * wipe out an earlier `.focus()` call.
+ *
+ * Before moving focus, the method also checks whether something inside the
+ * modal is already focused. That protects normal pointer interaction inside
+ * the dialog by avoiding a late focus jump back to the first control.
  */
 function setInitialFocus(): void {
   nextTick(() => {
-    const modalElement = document.querySelector('dialog[open]')
-    const closeButton = modalElement?.querySelector('button[aria-label="Close dialog"]') as HTMLElement
-    if (closeButton) {
-      closeButton.focus()
+    if (initialFocusFrameId !== null) {
+      cancelAnimationFrame(initialFocusFrameId)
     }
+
+    const modalElement = dialogRef.value
+    if (!modalElement) return
+
+    initialFocusFrameId = window.requestAnimationFrame(() => {
+      initialFocusFrameId = null
+
+      const activeElement = document.activeElement
+      if (activeElement instanceof HTMLElement && modalElement.contains(activeElement)) {
+        return
+      }
+
+      const firstElement = getFocusableElements(modalElement)[0]
+
+      if (firstElement) {
+        firstElement.focus({ preventScroll: true })
+      } else {
+        modalElement.focus({ preventScroll: true })
+      }
+    })
   })
 }
 
@@ -155,21 +276,45 @@ function setInitialFocus(): void {
  */
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
+
+  if (props.modelValue) {
+    savePreviouslyFocusedElement()
+    setInitialFocus()
+  }
+})
+
+onBeforeUnmount(() => {
+  if (previouslyFocusedElement.value) {
+    restoreFocus()
+  }
 })
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown)
+
+  if (initialFocusFrameId !== null) {
+    cancelAnimationFrame(initialFocusFrameId)
+  }
+
+  if (restoreFocusFrameId !== null) {
+    cancelAnimationFrame(restoreFocusFrameId)
+  }
 })
 
 // ===== WATCHERS =====
 /**
- * Set focus to first focusable element when modal opens
+ * Manage focus when the modal opens and closes.
  */
 watch(
   () => props.modelValue,
-  (isOpen) => {
-    if (isOpen) {
+  (isOpen, wasOpen) => {
+    if (isOpen && !wasOpen) {
+      savePreviouslyFocusedElement()
       setInitialFocus()
+    }
+
+    if (!isOpen && wasOpen) {
+      restoreFocus()
     }
   }
 )
@@ -186,10 +331,12 @@ watch(
       >
         <!-- Modal Dialog -->
         <dialog
+          ref="dialogRef"
           open
           role="dialog"
           aria-modal="true"
-          class="bg-white p-7 min-w-48 max-w-[calc(100vw_-_2rem)] overflow-hidden rounded-modal shadow-drop relative flex flex-col"
+          tabindex="-1"
+          class="bg-white p-7 min-w-48 max-w-[calc(100vw_-_2rem)] overflow-hidden rounded-modal shadow-drop relative flex flex-col focus:outline-none"
           :style="{ width: props.width, height: props.height }"
           :aria-labelledby="props.title ? 'modal-title' : undefined"
           aria-describedby="modal-body"
@@ -217,6 +364,7 @@ watch(
           <section 
             id="modal-body" 
             ref="modalBodyRef"
+            :tabindex="props.innerBorder === 'sunken' ? 0 : undefined"
             class="pb-5 text-neutral-700 flex-grow overflow-y-auto min-h-0 overscroll-contain"
             :class="[
               props.innerBorder === 'sunken'
