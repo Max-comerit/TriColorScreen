@@ -58,6 +58,7 @@ const modalBodyRef = ref<HTMLElement | null>(null)
 const dialogRef = ref<HTMLDialogElement | null>(null)
 const touchStartY = ref<number>(0)
 const previouslyFocusedElement = ref<HTMLElement | null>(null)
+const originalBodyOverflow = ref<string>('')
 let initialFocusFrameId: number | null = null
 let restoreFocusFrameId: number | null = null
 
@@ -273,14 +274,11 @@ function setInitialFocus(): void {
 /**
  * Setup keyboard support (ESC key) to close modal
  * and Tab key to manage focus within modal
+ * Also manage body scroll lock and initial focus  
+ * when modal opens, and restore focus when it closes
  */
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
-
-  if (props.modelValue) {
-    savePreviouslyFocusedElement()
-    setInitialFocus()
-  }
 })
 
 onBeforeUnmount(() => {
@@ -299,24 +297,35 @@ onUnmounted(() => {
   if (restoreFocusFrameId !== null) {
     cancelAnimationFrame(restoreFocusFrameId)
   }
+
+  // Restore original overflow style if component unmounts while modal is open
+  document.body.style.overflow = originalBodyOverflow.value
 })
 
 // ===== WATCHERS =====
 /**
  * Manage focus when the modal opens and closes.
+ * Also manage body scroll lock while modal is open.
  */
 watch(
   () => props.modelValue,
   (isOpen, wasOpen) => {
     if (isOpen && !wasOpen) {
+      originalBodyOverflow.value = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
       savePreviouslyFocusedElement()
       setInitialFocus()
     }
 
     if (!isOpen && wasOpen) {
       restoreFocus()
+      // Restore original overflow style after modal is hidden
+      nextTick(() => {
+        document.body.style.overflow = originalBodyOverflow.value
+      })
     }
-  }
+  },
+  { immediate: true }
 )
 </script>
 
