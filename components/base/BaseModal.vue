@@ -321,7 +321,14 @@ onUnmounted(() => {
 // ===== WATCHERS =====
 /**
  * Manage focus when the modal opens and closes.
- * Also manage body scroll lock while modal is open.
+ * Also manage document body scroll lock while modal is open.
+ * 
+ * Scroll lock is achieved by setting `overflow: hidden` on the body, 
+ * and restoring the original overflow style when the modal closes. 
+ * 
+ * Focus is saved when the modal opens and restored when it
+ * closes, with careful timing to ensure it works reliably across different
+ * modal implementations and wrapper components.
  */
 watch(
   () => props.modelValue,
