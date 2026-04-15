@@ -88,8 +88,16 @@ function savePreviouslyFocusedElement(): void {
 
 /**
  * Restore focus to the element that had focus before the modal opened.
- * The focus move is deferred until the modal has been removed from the DOM
- * and the triggering click/keydown event has fully settled.
+ *
+ * The timing matters here. If focus is restored too early, the browser can
+ * still override it while Vue is tearing the modal out of the DOM, which
+ * leaves focus on <body> instead of the original trigger element.
+ *
+ * `nextTick()` waits for Vue's DOM update so the modal is no longer part of
+ * the rendered tree. `requestAnimationFrame()` then pushes the actual focus
+ * call one frame later, after the click/keyboard event that closed the modal
+ * has fully settled. That makes the restore far more reliable for `v-if`
+ * mounted dialogs and wrapper components that close asynchronously.
  */
 function restoreFocus(): void {
   const elementToFocus = previouslyFocusedElement.value
