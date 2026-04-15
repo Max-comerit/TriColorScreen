@@ -352,6 +352,7 @@ watch(
       <div
         v-if="props.modelValue"
         class="fixed inset-0 bg-black/45 flex items-center justify-center z-50"
+        style="touch-action: none"
         @click.self="props.closeOnBackdrop ? close() : null"
       >
         <!-- Modal Dialog -->
