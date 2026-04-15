@@ -129,11 +129,18 @@ function close(): void {
 }
 
 /**
- * Handle wheel scroll to prevent scroll propagation at boundaries
+ * Handle wheel scroll to prevent scroll propagation at boundaries.
+ * Only allows scrolling if the scroll event is on the body slot.
  */
 function handleWheelScroll(e: WheelEvent): void {
   const element = modalBodyRef.value
   if (!element) return
+
+  // Only scroll if event target is the body slot or inside it
+  const target = e.target as Node
+  if (!element.contains(target)) {
+    return
+  }
 
   const isAtTop = element.scrollTop === 0
   const isAtBottom = element.scrollHeight - element.scrollTop - element.clientHeight < 1
@@ -152,11 +159,18 @@ function handleTouchStart(e: TouchEvent): void {
 }
 
 /**
- * Handle touch move to prevent scroll propagation at boundaries
+ * Handle touch move to prevent scroll propagation at boundaries.
+ * Only allows scrolling if the touch event is on the body slot.
  */
 function handleTouchMove(e: TouchEvent): void {
   const element = modalBodyRef.value
   if (!element) return
+
+  // Only scroll if event target is the body slot or inside it
+  const target = e.target as Node
+  if (!element.contains(target)) {
+    return
+  }
 
   const touchY = e.touches[0].clientY
   const deltaY = touchStartY.value - touchY // Positive = scrolling down, negative = scrolling up
@@ -187,7 +201,7 @@ function handleKeyDown(e: KeyboardEvent): void {
   if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !isTextEntryElement(document.activeElement)) {
     const modalBody = modalBodyRef.value
 
-    if (modalBody) {
+    if (modalBody && document.activeElement && modalBody.contains(document.activeElement)) {
       const scrollDelta = e.key === 'ArrowDown' ? 40 : -40
       modalBody.scrollBy({ top: scrollDelta })
       e.preventDefault()
