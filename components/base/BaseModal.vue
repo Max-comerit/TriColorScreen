@@ -58,6 +58,7 @@ const modalBodyRef = ref<HTMLElement | null>(null)
 const dialogRef = ref<HTMLDialogElement | null>(null)
 const touchStartY = ref<number>(0)
 const previouslyFocusedElement = ref<HTMLElement | null>(null)
+const originalBodyOverflow = ref<string>('')
 let initialFocusFrameId: number | null = null
 let restoreFocusFrameId: number | null = null
 
@@ -128,11 +129,19 @@ function close(): void {
 }
 
 /**
- * Handle wheel scroll to prevent scroll propagation at boundaries
+ * Handle wheel scroll to prevent scroll propagation at boundaries.
+ * Only allows scrolling if the scroll event is on the body slot.
  */
 function handleWheelScroll(e: WheelEvent): void {
   const element = modalBodyRef.value
   if (!element) return
+
+  // Only scroll if event target is the body slot or inside it
+  const target = e.target as Node
+  if (!element.contains(target)) {
+    e.preventDefault()
+    return
+  }
 
   const isAtTop = element.scrollTop === 0
   const isAtBottom = element.scrollHeight - element.scrollTop - element.clientHeight < 1
@@ -151,11 +160,19 @@ function handleTouchStart(e: TouchEvent): void {
 }
 
 /**
- * Handle touch move to prevent scroll propagation at boundaries
+ * Handle touch move to prevent scroll propagation at boundaries.
+ * Only allows scrolling if the touch event is on the body slot.
  */
 function handleTouchMove(e: TouchEvent): void {
   const element = modalBodyRef.value
   if (!element) return
+
+  // Only scroll if event target is the body slot or inside it
+  const target = e.target as Node
+  if (!element.contains(target)) {
+    e.preventDefault()
+    return
+  }
 
   const touchY = e.touches[0].clientY
   const deltaY = touchStartY.value - touchY // Positive = scrolling down, negative = scrolling up
@@ -186,7 +203,7 @@ function handleKeyDown(e: KeyboardEvent): void {
   if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !isTextEntryElement(document.activeElement)) {
     const modalBody = modalBodyRef.value
 
-    if (modalBody) {
+    if (modalBody && document.activeElement && modalBody.contains(document.activeElement)) {
       const scrollDelta = e.key === 'ArrowDown' ? 40 : -40
       modalBody.scrollBy({ top: scrollDelta })
       e.preventDefault()
@@ -276,11 +293,6 @@ function setInitialFocus(): void {
  */
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
-
-  if (props.modelValue) {
-    savePreviouslyFocusedElement()
-    setInitialFocus()
-  }
 })
 
 onBeforeUnmount(() => {
@@ -299,24 +311,42 @@ onUnmounted(() => {
   if (restoreFocusFrameId !== null) {
     cancelAnimationFrame(restoreFocusFrameId)
   }
+
+  // Restore original overflow style if component unmounts while modal is open
+  document.body.style.overflow = originalBodyOverflow.value
 })
 
 // ===== WATCHERS =====
 /**
  * Manage focus when the modal opens and closes.
+ * Also manage document body scroll lock while modal is open.
+ * 
+ * Scroll lock is achieved by setting `overflow: hidden` on the body, 
+ * and restoring the original overflow style when the modal closes. 
+ * 
+ * Focus is saved when the modal opens and restored when it
+ * closes, with careful timing to ensure it works reliably across different
+ * modal implementations and wrapper components.
  */
 watch(
   () => props.modelValue,
   (isOpen, wasOpen) => {
     if (isOpen && !wasOpen) {
+      originalBodyOverflow.value = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
       savePreviouslyFocusedElement()
       setInitialFocus()
     }
 
     if (!isOpen && wasOpen) {
       restoreFocus()
+      // Restore original overflow style after modal is hidden
+      nextTick(() => {
+        document.body.style.overflow = originalBodyOverflow.value
+      })
     }
-  }
+  },
+  { immediate: true }
 )
 </script>
 
@@ -327,6 +357,7 @@ watch(
       <div
         v-if="props.modelValue"
         class="fixed inset-0 bg-black/45 flex items-center justify-center z-50"
+        style="touch-action: none"
         @click.self="props.closeOnBackdrop ? close() : null"
       >
         <!-- Modal Dialog -->
