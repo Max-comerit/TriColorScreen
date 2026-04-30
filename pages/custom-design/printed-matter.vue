@@ -9,7 +9,7 @@ import Section from '~/components/common/Section.vue'
 // Lazy-load QuotePrintedMatterForm so Zod is kept out of the shared synchronous bundle
 const QuotePrintedMatterForm = defineAsyncComponent(() => import('~/components/features/QuotePrintedMatterForm.vue'))
 
-const HERO_IMAGE = '/images/custom-design/printed-matter/hero.jpg'
+const HERO_IMAGE = '/images/custom-design/printed-matter/hero-v2.jpg'
 
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
