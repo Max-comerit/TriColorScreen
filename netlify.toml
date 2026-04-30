@@ -11,8 +11,7 @@
   SITE_URL = ""
 
 [context.production.environment]
-  # TODO: Change back to https://www.tricolorscreen.se once www.tricolorscreen.se is properly routed to Netlify
-  SITE_URL = "https://tricolorscreen.netlify.app"
+  SITE_URL = "https://www.tricolorscreen.se"
 
 [[redirects]]
 from = "http://tricolorscreen.se/*"
