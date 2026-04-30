@@ -9,7 +9,7 @@ import HeroImage from '~/components/common/HeroImage.vue'
 import Section from '~/components/common/Section.vue'
 import CtaSection from '~/components/features/CtaSection.vue'
 
-const HERO_IMAGE = '/images/about/hero.jpg'
+const HERO_IMAGE = '/images/about/hero-v2.jpg'
 
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
