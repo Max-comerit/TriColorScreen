@@ -11,7 +11,7 @@ import ContactPanel from '~/components/features/ContactPanel.vue'
 // Lazy-load ContactForm so Zod is kept out of the shared synchronous bundle
 const ContactForm = defineAsyncComponent(() => import('~/components/features/ContactForm.vue'))
 
-const HERO_IMAGE = '/images/contact/hero.jpg'
+const HERO_IMAGE = '/images/contact/hero-v2.jpg'
 
 // ===== COMPOSABLES =====
 const siteUrl = useSiteUrl()
